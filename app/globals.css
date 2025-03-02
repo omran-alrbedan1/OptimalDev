@@ -6,9 +6,36 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    /* Additional Colors */
+    --primary-color1: #ffb400;
+    --primary-color2: #000000;
+    --primary-color3: #ffffff;
+   
   }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Dark Mode Colors */
+    --primary: 180 100% 41.6%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --ring: 180 100% 41.6%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+  }
+
+
 }
+body{
+  @apply text-black-100
+}
+
 
 @layer utilities {
   .flex-between {
@@ -50,4 +77,33 @@
 
 .w-md-editor-toolbar {
   padding: 10px !important;
+}
+
+section {
+  @apply mb-28;
+}
+
+.active-link{
+  @apply font-bold text-primary-color1
+}
+.header {
+  @apply flex flex-col py-4 mb-4 justify-between;
+}
+
+.hero {
+  @apply container px-5 flex flex-col mx-auto;
+}
+
+.portofolio-card:hover .img-hover {
+  @apply opacity-25;
+}
+
+@media (min-width: 1024px) {
+  .header {
+    @apply container w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center border-b border-gray-100;
+  }
+
+  .hero {
+    @apply container flex-row mx-auto mt-8;
+  }
 }
