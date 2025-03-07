@@ -32,30 +32,6 @@ export default function Projects() {
       likes: 0,
     },
     {
-      id: 1,
-      title: "Pinkey App",
-      subtitle: "",
-      description: "",
-      content: "",
-      image: "projects/images/01JMSHK0HZTP2YQR8XTPQZ5M7D.jpg",
-      project_link: null,
-      demo_link: null,
-      views: 0,
-      likes: 0,
-    },
-    {
-      id: 2,
-      title: "CarConsultant App",
-      subtitle: "",
-      description: "",
-      content: "",
-      image: "projects/images/01JMSHX71XBY1EADX3QABPAMKS.jpg",
-      project_link: null,
-      demo_link: null,
-      views: 0,
-      likes: 0,
-    },
-    {
       id: 3,
       title: "Labor App",
       subtitle: "",
@@ -186,12 +162,12 @@ export default function Projects() {
                   alt={item.title}
                   width={400}
                   height={300}
-                  className="rounded-t-2xl z-0"
+                  className="rounded-t-2xl z-0 bg-contain h-80"
                 />
               </div>
             </Link>
-            <div className="py-4 text-center">
-              <h2 className="text-theme-blue text-xl">{item.title}</h2>
+            <div className="py-7 text-center">
+              <h2 className="text-[#152C5B] text-xl font-semibold">{item.title}</h2>
             </div>
           </motion.div>
         ))}

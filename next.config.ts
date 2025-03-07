@@ -14,7 +14,16 @@ const nextConfig: NextConfig = {
         hostname:'*'
       }
     ]
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/', // The path you want to redirect from
+        destination: '/home', // The path you want to redirect to
+        permanent: true, // Set to true for permanent redirect (301) or false for temporary (302)
+      },
+    ];
+  },
   
 
 

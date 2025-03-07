@@ -6,11 +6,11 @@ import Button from "../elements/Button/button";
 import { usePathname } from "next/navigation";
 
 // Define the type for the props
-interface HeaderProps {
-  location: {
-    pathname: string;
-  };
-}
+// interface HeaderProps {
+//   location: {
+//     pathname: string;
+//   };
+// }
 
 const Header = () => {
   const [isCollapse, setIsCollapse] = useState<boolean>(false);

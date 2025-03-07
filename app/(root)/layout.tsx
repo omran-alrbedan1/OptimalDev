@@ -4,7 +4,7 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <main className="font-work-sans bg-foreground text-white">
+    <main className="font-poppins bg-foreground text-white">
       <Header />
       {children}
     </main>
