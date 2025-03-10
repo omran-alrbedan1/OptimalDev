@@ -1,7 +1,7 @@
-/* eslint-disable react/jsx-filename-extension */
+
 import React from 'react';
 import Image from 'next/image'; // Use Next.js Image component
-import Link from 'next/link'; // Use Next.js Link for internal links
+
 import Button from '../elements/Button/button';
 
 export default function Footer() {
@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="container flex-col mx-auto">
         <div className="flex flex-col sm:flex-row mt-8 justify-center">
           {/* Brand Section */}
-          <div className="w-full sm:w-1/3 flex-col ml-16 mr-8 justify-center items-center">
+          <div className="w-full sm:w-1/3 flex-col ml-16 mr-8 justify-center items-center md:ml-24">
             <Image
               src={"/Hive Tech.png"}
               width={230}

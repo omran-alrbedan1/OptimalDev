@@ -71,21 +71,21 @@ export default function Services() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-items-center">
         {Services.map((item, index) => {
           // Define custom animations based on the index
-          let animations = {
-            initial: {},
-            whileInView: {},
-          };
+          // const animations = {
+          //   initial: {},
+          //   whileInView: {},
+          // };
 
-          if (index === 0) {
-            animations.initial = { opacity: 0, x: "-100%" };
-            animations.whileInView = { opacity: 1, x: 0 };
-          } else if (index === 1) {
-            animations.initial = { opacity: 0, y: 200 };
-            animations.whileInView = { opacity: 1, y: 0 };
-          } else if (index === 2) {
-            animations.initial = { opacity: 0, x: "100%" };
-            animations.whileInView = { opacity: 1, x: 0 };
-          }
+          // if (index === 0) {
+          //   animations.initial = { opacity: 0, x: "-100%" };
+          //   animations.whileInView = { opacity: 1, x: 0 };
+          // } else if (index === 1) {
+          //   animations.initial = { opacity: 0, y: 200 };
+          //   animations.whileInView = { opacity: 1, y: 0 };
+          // } else if (index === 2) {
+          //   animations.initial = { opacity: 0, x: "100%" };
+          //   animations.whileInView = { opacity: 1, x: 0 };
+          // }
 
           return (
             <motion.div
