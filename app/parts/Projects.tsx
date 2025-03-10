@@ -123,7 +123,7 @@ export default function Projects() {
   return (
     <section
       ref={sectionRef}
-      className="container mx-auto flex flex-col items-center mt-20"
+      className="container mx-auto flex flex-col items-center mt-20 px-3 pr-5"
     >
       <motion.h1
         className="text-4xl text-primary-color1 text-center font-semibold"
@@ -145,7 +145,7 @@ export default function Projects() {
         We are ready to scale up your business with our great work result.
       </motion.p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 justify-items-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-8 justify-items-center">
         {projects.map((item, index) => (
           <motion.div
             key={item.id}
@@ -153,8 +153,11 @@ export default function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.4 }}
             viewport={{ once: true }}
-            className="group rounded-2xl shadow-xl w-11/12 m-3 transform transition duration-500 hover:scale-105"
+            
           >
+            <div className="group rounded-2xl shadow-xl w-11/12 m-3 transform transition duration-500 hover:scale-105">
+              
+         
             <Link href={`/project/${item.id}`} passHref>
               <div className="relative cursor-pointer">
                 <Image
@@ -162,12 +165,13 @@ export default function Projects() {
                   alt={item.title}
                   width={400}
                   height={300}
-                  className="rounded-t-2xl z-0 bg-contain h-80"
+                  className="rounded-t-2xl z-0 bg-contain h-48 sm:h-72 cover-contain"
                 />
               </div>
             </Link>
             <div className="py-7 text-center">
               <h2 className="text-[#152C5B] text-xl font-semibold">{item.title}</h2>
+            </div>
             </div>
           </motion.div>
         ))}

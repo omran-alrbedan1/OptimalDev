@@ -1,3 +1,4 @@
+import Footer from "../parts/Footer";
 import Header from "../parts/Header";
 
 export default function Layout({
@@ -7,6 +8,7 @@ export default function Layout({
     <main className="font-poppins bg-foreground text-white">
       <Header />
       {children}
+      <Footer />
     </main>
   );
 }

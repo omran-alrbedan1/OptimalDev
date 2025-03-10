@@ -20,6 +20,11 @@ const config: Config = {
                     color1:'#FFB400',
                     color2:'#000000',
                     color3:'#FFFFFF',
+                    color4:'#005AFF',
+                    color5:'#FF6B00',
+                    color6:'#FFD100 ',
+                    color7:'#00FFB4',
+                    color8:'#B400FF'
                 },
                 secondary: "#FBE843",
                 black: {
@@ -46,6 +51,21 @@ const config: Config = {
                 100: "2px 2px 0px 0px rgb(0, 0, 0)",
                 200: "2px 2px 0px 2px rgb(0, 0, 0)",
                 300: "2px 2px 0px 2px rgb(238, 43, 105)",
+            },
+            animation: {
+                'bounce-x' : 'bouncex 1s infinite'
+              },
+              keyframes: {
+                bouncex: {
+                  '0%, 100%': { 
+                    transform: 'translateX(-25%)',
+                    animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
+                   },
+                   '50%': {
+                    transform: 'translateY(0)',
+                    animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
+                  },
+                }
             },
         },
     },

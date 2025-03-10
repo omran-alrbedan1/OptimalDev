@@ -26,7 +26,7 @@ const Hero = () => {
         <Button
           href="/project"
           type="link"
-          className="flex w-71 h-18 text-black-100 items-center px-14 py-5   text-xl bg-theme-purple rounded-lg  hover:bg-dark-theme-purple transition duration-200"
+          className="flex w-72 h-18 text-black-100 items-center px-14 py-5 text-xl bg-primary-color1 rounded-xl hover:text-white hover:bg-black-100 transition duration-200"
         >
           See Our Work
           <svg

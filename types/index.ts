@@ -22,3 +22,10 @@ export interface Service {
     views: number;
     likes: number;
   }
+  export interface Testimoni {
+    id: number
+    imageUrl : string;
+    name: string;
+    company: string;
+    testimoni: string
+  }

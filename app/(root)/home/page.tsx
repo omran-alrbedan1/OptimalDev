@@ -8,6 +8,9 @@ import '@fontsource/poppins/600.css'; // Semi-bold weight (600)
 // import { motion } from "framer-motion"; // Import Framer Motion
 import Projects from "@/app/parts/Projects";
 import Services from "@/app/parts/Services";
+import Testimonial from "@/app/parts/Testimonial";
+
+
 
 // interface SiteDetail {
 //   id: number;
@@ -95,6 +98,7 @@ const Page = () => {
       {/* Display Projects */}
       <Projects />
       <Services />
+ <Testimonial />
     </div>
   );
 };

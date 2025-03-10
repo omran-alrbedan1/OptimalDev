@@ -60,7 +60,7 @@ const Header = () => {
           <Button
             className={`${path === "/home" ? "active-link" : " text-black-100"} text-lg px-5 no-underline hover:underline`}
             type="link"
-            href=""
+            href="home"
           >
             Home
           </Button>
