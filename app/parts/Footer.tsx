@@ -5,12 +5,12 @@ import Image from 'next/image'; // Use Next.js Image component
 import Button from '../elements/Button/button';
 
 export default function Footer() {
-  return (
-    <div className="bg-gray-50 border-t border-gray-200 pb-6">
-      <div className="container flex-col mx-auto">
+  return (<>    <div className="text-center">this is the footer</div>
+    <div className="max-w-full bg-gray-50 border-t border-gray-200 pb-6 mx-auto">
+      <div className=" flex-col">
         <div className="flex flex-col sm:flex-row mt-8 justify-center">
           {/* Brand Section */}
-          <div className="w-full sm:w-1/3 flex-col ml-16 mr-8 justify-center items-center md:ml-24">
+          <div className="sm:w-1/3 flex-col ml-16 mr-8 justify-center items-center md:ml-24">
             <Image
               src={"/Hive Tech.png"}
               width={230}
@@ -82,12 +82,14 @@ export default function Footer() {
         </div>
 
         {/* Copyright Section */}
-        <div className="flex-col text-center mt-5 mb-2">
+        <div className="flex justify-center items-center text-center text-gray-100 mt-10 mb-2">
           <p className="text-lg text-black-300 font-light">
-            copyright 2025. All Rights Reserved by <span className='text-primary-color4 font-medium'>Hive Tech</span>
+            copyright 2025. All Rights Reserved by <span className='text-primary-color1 font-medium text-2xl'>Hive<span className='text-black'>Tech</span></span>
           </p>
         </div>
       </div>
     </div>
+    </>
+
   );
 }

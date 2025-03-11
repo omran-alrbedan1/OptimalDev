@@ -49,9 +49,9 @@ export default function Services() {
       {/* Animated Heading */}
       <motion.h1
         className="text-5xl text-primary-color1 text-center font-extrabold"
-        initial={{ opacity: 0, x: "100%" }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "linear" }}
+        initial={{ opacity: 0, y:-200 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay:0.2 }}
         // viewport={{ once: true }}
       >
         Our Services
@@ -59,9 +59,9 @@ export default function Services() {
 
       <motion.p
         className="text-lg text-gray-400 text-center mt-4 mb-12 mx-auto"
-        initial={{ opacity: 0, y: 20, x: "-100%" }}
-        whileInView={{ opacity: 1, y: 0, x: 0 }}
-        transition={{ duration: 0.8, ease: "linear" }}
+        initial={{ opacity: 0, y:100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay:0.5 }}
         // viewport={{ once: true }}
       >
         We are ready to scale up your business with our great service.
@@ -90,10 +90,10 @@ export default function Services() {
           return (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40, scale:"90%" }}
-              whileInView={{ opacity: 1, y: 0, scale: "100%" }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: (index%2===0?150:-150), scale:"90%"}}
+              whileInView={{ opacity: 1, y: 0, scale:"100%" }}
+              transition={{ delay: index * 0.2, duration: 0.9 }}
+          
             >
               <div className="group rounded-2xl shadow-xl w-11/12 m-3 transform transition duration-500 hover:scale-105">
                 <Link href={`/project/${item.id}`} passHref>

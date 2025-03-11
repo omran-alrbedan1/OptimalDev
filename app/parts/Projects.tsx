@@ -130,7 +130,6 @@ export default function Projects() {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
       >
         Our Selected Projects
       </motion.h1>
@@ -151,8 +150,8 @@ export default function Projects() {
             key={item.id}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }}
-            viewport={{ once: true }}
+            transition={{ delay: index * 0.2, duration: 0.9 }}
+           
             
           >
             <div className="group rounded-2xl shadow-xl w-11/12 m-3 transform transition duration-500 hover:scale-105">

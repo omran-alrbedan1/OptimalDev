@@ -11,14 +11,14 @@ const Hero = () => {
         initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
         animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
         transition={{ duration: 0.8, ease: "easeOut" }} // Animation duration and easing
-        className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-8 shadow-sm  p-12"
+        className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-2 sm:mt-4 shadow-sm  p-12 "
       >
-        <h1 className="text-5xl sm:text-6xl text-theme-blue font-bold leading-tight mb-5 text-black-100">
+        <h1 className="text-4xl sm:text-5xl text-theme-blue font-bold leading-tight mb-2 sm:mb-7 text-black-100">
           Growing Your Business <br />
           Is Our Calling
         </h1>
 
-        <p className=" text-xl text-gray-600 mt-3 mb-16">
+        <p className=" text-xl text-gray-300 mt-3 mb-16">
           We provide developers & designers using latest technologies to help
           you scale up your business.
         </p>
@@ -26,7 +26,7 @@ const Hero = () => {
         <Button
           href="/project"
           type="link"
-          className="flex w-72 h-18 text-black-100 items-center px-14 py-5 text-xl bg-primary-color1 rounded-xl hover:text-white hover:bg-black-100 transition duration-200"
+          className="flex w-72 h-18 text-black-100 items-center px-14 py-5 text-xl mr-10 -ml-10 sm:-ml-5  bg-primary-color1 rounded-xl hover:text-white hover:bg-black-100 transition duration-200"
         >
           See Our Work
           <svg
@@ -56,9 +56,9 @@ const Hero = () => {
         <Image
           src="/Hive Tech Logo.svg"
           alt="Build Website"
-          width={300}
+          width={270}
           height={300}
-          className=""
+          className="w-52 h-56 sm:w-80 sm:h-80"
         />
       </motion.div>
     </section>

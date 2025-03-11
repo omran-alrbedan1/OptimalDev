@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image"; // Next.js optimized image component
 import Team from "../../../public/assets/team.png";
-import ProfileDefault from '../../../public/assets/profile.png'
+import ProfileDefault from "../../../public/assets/profile.png";
 const teams = [
   {
     id: 1,
@@ -227,19 +227,17 @@ export default function TeamPage() {
           transition={{ duration: 0.8, ease: "easeOut" }} // Animation duration and easing
           className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-8 px-4 sm:py-10"
         >
-          <h1 className="text-5xl sm:text-6xl text-primary-color1 font-bold leading-tight mb-5">
+          <h1 className="text-5xl sm:text-6xl text-primary-color1 font-bold leading-tight mb-6">
             Our Team
           </h1>
           <motion.p
             initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
             animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }} // Animation duration and easing
-            className=" text-xl text-gray-600"
+            className=" text-xl text-gray-400"
           >
-         
-              Our team is full of passionate people and ready to make your dream
-              software come true.
-          
+            Our team is full of passionate people and ready to make your dream
+            software come true.
           </motion.p>
         </motion.div>
 
@@ -247,7 +245,7 @@ export default function TeamPage() {
         <motion.div
           initial={{ opacity: 0, y: -400, x: 600 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
+          transition={{ duration: 1, delay: 0.4 }}
           className="flex pt-5 w-full justify-center items-center order-first md:w-full lg:order-last lg:w-1/2"
         >
           <Image
@@ -260,40 +258,36 @@ export default function TeamPage() {
         </motion.div>
       </section>
 
-      {/* Team Members Section */}
-      <section className="container mx-0 sm:mx-auto mt-20 px-3">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-5 gap-x-5  justify-items-center">
+      <section className="sm:mx-auto mt-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-5 gap-x-2 min-w-0 ml-5 sm:ml-12">
           {teams.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, x: -200 }}
+              initial={{ opacity: 0, x: "-100%" }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              // viewport={{ once: true }}
+              className="w-full" // Ensure grid items take full width
             >
-              <div className="flex flex-col w-44 h-60 sm:w-56 sm:h-72 rounded-xl shadow-xl border border-light-theme-purple justify-center transform transition duration-500 hover:scale-105">
-                <div className="flex justify-center xl:mb-5">
+              <div className="flex flex-col w-36 px-2 h-60 sm:w-56 sm:h-72 rounded-xl shadow-xl border border-light-theme-purple justify-center transform transition duration-500 hover:scale-105">
+                <div className="flex justify-center xl:mb-5 mb-3">
                   <Image
-                  // `https://main.hivetech.space/storage/team/${item.image}`
                     src={ProfileDefault}
                     alt="Team Member"
                     width={128}
                     height={128}
-                    className="flex w-32 h-32 rounded-full"  
+                    className="flex w-32 h-32 rounded-full"
                   />
                 </div>
                 <h2 className="text-2xl text-theme-blue text-center text-[#152C5B]">
                   {item.name}
                 </h2>
-                <p className="text-gray-400 text-center">
-                  {item.position}
-                </p>
+                <p className="text-gray-400 text-center">{item.position}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
-
     </div>
   );
 }

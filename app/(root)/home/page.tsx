@@ -97,7 +97,7 @@ const Page = () => {
 
       {/* Display Projects */}
       <Projects />
-      <Services />
+     <Services />
  <Testimonial />
     </div>
   );

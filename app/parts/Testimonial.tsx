@@ -1,11 +1,11 @@
-"use client"
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/themes/splide-default.min.css';
-import { Testimoni } from '@/types';
-import ProfileDefault from "../../public/assets/profile.png"
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/splide/dist/css/themes/splide-default.min.css";
+import { Testimoni } from "@/types";
+import ProfileDefault from "../../public/assets/profile.png";
 
 export default function Testimonial() {
   const testimonial: Testimoni[] = [
@@ -38,26 +38,30 @@ export default function Testimonial() {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
       className="container mx-auto"
     >
-      <motion.h1 className="text-5xl text-primary-color1 text-center font-extrabold"initial={{ opacity: 0, y: 100  }}
+      <motion.h1
+        className="text-5xl text-primary-color1 text-center font-extrabold"
+        initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "linear" }}>Testimonials</motion.h1>
-  
+        transition={{ duration: 0.8, ease: "linear" }}
+      >
+        Testimonials
+      </motion.h1>
+
       <motion.p
         className="text-lg text-gray-400 text-center mt-4 mb-12 mx-auto"
-        initial={{ opacity: 0, y: 100  }}
+        initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "linear" }}
         // viewport={{ once: true }}
       >
-         What they said about us.
+        What they said about us.
       </motion.p>
 
       <Splide
         options={{
-          type: 'loop',
+          type: "loop",
           autoplay: true,
           perPage: 1,
           pagination: false,
@@ -69,7 +73,6 @@ export default function Testimonial() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: item.id * 0.1 }}
-              viewport={{ once: true }}
               className="flex-col w-11/12 rounded-2xl shadow-xl sm:shadow-2xl border border-light-theme-purple px-8 py-6 mx-2 mb-6 mt-6 xl:mx-auto sm:mx-6 sm:mb-12"
             >
               <div className="flex items-center mb-5">
