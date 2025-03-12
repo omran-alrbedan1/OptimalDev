@@ -76,15 +76,15 @@ const Header = () => {
         </li>
         <li className="py-2 lg:py-0">
           <Button
-            className={`${path === "/project" ? "active-link" : "text-black-100"} text-lg  px-5 no-underline hover:underline`}
+            className={`${path === "/projects" ? "active-link" : "text-black-100"} text-lg  px-5 no-underline hover:underline`}
             type="link"
-            href="/project"
+            href="/projects"
           >
-            Project
+            Projects
           </Button>
         </li>
         <li>
-          <Button type="link" href="/discuss-project">
+          <Button type="link" className="w-80 h-80 px-8 py-3 bg-primary-color1 rounded-full text-white-100" href="/discuss-project">
             Discuss Project
           </Button>
         </li>
@@ -102,9 +102,10 @@ const Header = () => {
         <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-20 absolute bg-white w-full border-b-2 border-gray-300 lg:hidden">
           <li className="py-2 bg-white">
             <Button
-              className={`${path === "/home" ? "active-link" : "text-primary-color3"} px-10 no-underline hover:underline`}
+              className={`${path === "/home" ? "active-link" : "text-primary-color2"} px-10 no-underline hover:underline`}
               type="link"
-              href="/"
+              href="/home"
+              onClick={() => setIsCollapse(false)}
             >
               Home
             </Button>
@@ -114,24 +115,27 @@ const Header = () => {
               className={`${path === "/team" ? "active-link" : "text-primary-color2"} px-10 no-underline hover:underline`}
               type="link"
               href="/team"
+              onClick={() => setIsCollapse(false)}
             >
               Team
             </Button>
           </li>
           <li className="py-2 bg-white">
             <Button
-              className={`${path === "/project" ? "active-link" : "text-primary-color2"} px-10 no-underline hover:underline`}
+              className={`${path === "/projects" ? "active-link" : "text-primary-color2"} px-10 no-underline hover:underline`}
               type="link"
-              href="/project"
+              href="/projects"
+              onClick={() => setIsCollapse(false)}
             >
-              Project
+              Projects
             </Button>
           </li>
           <li className="mx-auto my-9 bg-white">
             <Button
-              className="mx-auto px-5 py-2 bg-theme-purple text-white rounded-full border-2 border-theme-purple hover:bg-dark-theme-purple border-purple-800 transition duration-200"
+              className=" -ml-10 px-6 py-3 bg-primary-color1 text-white rounded-full transition duration-200"
               type="link"
               href="/discuss-project"
+              onClick={() => setIsCollapse(false)}
             >
               Discuss Project
             </Button>

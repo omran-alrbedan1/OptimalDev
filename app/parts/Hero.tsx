@@ -18,13 +18,13 @@ const Hero = () => {
           Is Our Calling
         </h1>
 
-        <p className=" text-xl text-gray-300 mt-3 mb-16">
+        <p className=" text-xl text-gray-400 mt-3 mb-16">
           We provide developers & designers using latest technologies to help
           you scale up your business.
         </p>
 
         <Button
-          href="/project"
+          href="/projects"
           type="link"
           className="flex w-72 h-18 text-black-100 items-center px-14 py-5 text-xl mr-10 -ml-10 sm:-ml-5  bg-primary-color1 rounded-xl hover:text-white hover:bg-black-100 transition duration-200"
         >

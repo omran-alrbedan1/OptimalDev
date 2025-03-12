@@ -91,7 +91,7 @@ section {
 }
 
 .hero {
-  @apply container px-5 flex flex-col mx-auto;
+  @apply  px-5 flex flex-col mx-auto;
 }
 
 .portofolio-card:hover .img-hover {
@@ -100,10 +100,10 @@ section {
 
 @media (min-width: 1024px) {
   .header {
-    @apply container w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center border-b border-gray-100;
+    @apply  w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center border-b border-gray-100;
   }
 
   .hero {
-    @apply container flex-row mx-auto mt-8;
+    @apply container flex-row mt-8;
   }
 }
