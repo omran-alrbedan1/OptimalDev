@@ -138,7 +138,7 @@ const PortfolioPage = () => {
   return (
     <div>
       {/* Hero Section */}
-       <section className="hero sm:items-center lg:items-start sm:flex-row">
+      <section className="hero sm:items-center lg:items-start sm:flex-row">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -221,13 +221,13 @@ const PortfolioPage = () => {
                     >
                       <div className="rounded-2xl w-full shadow-xl transform transition duration-500 hover:scale-110">
                         <div className="relative">
-                        <Image
-  src={`https://main.hivetech.space/storage/${item.image}`}
-  alt="Portfolio"
-  width={400} // Fixed width for larger devices
-  height={300} // Fixed height for larger devices
-  className="rounded-t-2xl min-w-full h-64 sm:h-72 object-cover bg-gray-200" // Enforce consistent size
-/>
+                          <Image
+                            src={`https://main.hivetech.space/storage/${item.image}`}
+                            alt="Portfolio"
+                            width={400} // Fixed width for larger devices
+                            height={300} // Fixed height for larger devices
+                            className="rounded-t-2xl min-w-full h-64 sm:h-72 bg-contain bg-gray-200" // Enforce consistent size
+                          />
                           <div className="absolute flex w-full h-full top-0 opacity-0 bg-black justify-center rounded-t-2xl rounded-b img-hover">
                             <button className="focus:outline-none">
                               <svg
@@ -254,10 +254,10 @@ const PortfolioPage = () => {
                           </div>
                         </div>
                         <div className="py-4">
-                          <h2 className="text-theme-blue text-center text-xl">
+                          <h2 className="text-gray-500 text-center text-xl">
                             {item.title}
                           </h2>
-                          <p className="font-light text-gray-400 text-center">
+                          <p className=" text-gray-400 text-center">
                             {item.type}
                           </p>
                         </div>

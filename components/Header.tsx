@@ -1,15 +1,16 @@
-'use client';
-import React from 'react'
-import { motion } from 'framer-motion';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
 
-const Header = ({title , paragragh}: {title:string; paragragh: string}) => {
+const Header = ({ title, paragragh }: { title: string; paragragh: string }) => {
   return (
     <div>
-                <motion.h1
-        className="text-4xl text-primary-color1 text-center font-semibold"
+      <motion.h1
+        className="text-4xl sm:text-5xl text-primary-color1 text-center font-semibold"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        style={{letterSpacing:"3px"}}
       >
         {title}
       </motion.h1>
@@ -20,10 +21,10 @@ const Header = ({title , paragragh}: {title:string; paragragh: string}) => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-{paragragh}
+        {paragragh}
       </motion.p>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

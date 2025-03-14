@@ -163,13 +163,13 @@ export default function Projects() {
                   alt={item.title}
                   width={400}
                   height={300}
-                  className="rounded-t-2xl z-0 bg-contain h-48 sm:h-72 cover-contain"
+                  className="rounded-t-2xl rounded-b-xl z-0 bg-contain h-48 sm:h-72 cover-contain"
                 />
               </div>
             </Link>
-            <div className="py-7 text-center">
-              <h2 className="text-[#152C5B] text-xl font-semibold">{item.title}</h2>
-            </div>
+         
+            </div>   <div className="my-5 text-center">
+              <h2 className="text-gray-500 sm:text-xl font-semibold">{item.title}</h2>
             </div>
           </motion.div>
         ))}

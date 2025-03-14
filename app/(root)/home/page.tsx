@@ -1,6 +1,7 @@
 import Hero from "@/app/parts/Hero";
 import React from "react";
 
+
 import '@fontsource/poppins/300.css'; // Light weight (300)
 import '@fontsource/poppins/500.css'; // Medium weight (500)
 import '@fontsource/poppins/600.css'; // Semi-bold weight (600)
@@ -11,6 +12,7 @@ import Services from "@/app/parts/Services";
 import Testimonial from "@/app/parts/Testimonial";
 import Categories from "@/app/parts/Categories";
 import Clients from "@/app/parts/Clients";
+
 
 
 
@@ -86,6 +88,7 @@ const Page = async () => {
   return (
     <div className="">
       <Hero />
+   
 {/* 
       Display Site Details
       <div className="p-8">

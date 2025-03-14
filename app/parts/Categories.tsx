@@ -33,7 +33,7 @@ const Categories = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
           viewport={{ once: false }}
-          className="text-4xl sm:text-5xl font-bold text-primary-color1 mb-5"
+          className="text-4xl sm:text-5xl font-bold text-primary-color1 mb-5 sm:mb-16"
           style={{ letterSpacing: "4px" }}
         >
           Categories

@@ -48,7 +48,7 @@ export default function Services() {
     <section className="container mx-auto flex flex-col items-center mt-20 bg-gray-100 py-10 px-3">
       {/* Animated Heading */}
       <motion.h1
-        className="text-5xl text-primary-color1 text-center font-extrabold"
+        className="text-4xl sm:text-5xl text-primary-color1 text-center font-extrabold"
         initial={{ opacity: 0, y:-200 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay:0.2 }}
@@ -58,7 +58,7 @@ export default function Services() {
       </motion.h1>
 
       <motion.p
-        className="text-lg text-gray-400 text-center mt-4 mb-12 mx-auto"
+        className="sm:text-lg text-gray-400 text-center mt-4 mb-12 sm:mx-auto"
         initial={{ opacity: 0, y:100 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay:0.5 }}
@@ -108,7 +108,7 @@ export default function Services() {
                   </div>
                 </Link>
                 <div className="py-7 text-center">
-                  <h2 className="text-[#152C5B] text-xl font-semibold">
+                  <h2 className="text-gray-500 text-xl font-semibold">
                     {item.title}
                   </h2>
                 </div>
