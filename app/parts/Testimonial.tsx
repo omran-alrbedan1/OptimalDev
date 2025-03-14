@@ -38,7 +38,7 @@ export default function Testimonial() {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="container mx-auto"
+      className="container mx-auto -mt-12"
     >
       <motion.h1
         className="text-5xl text-primary-color1 text-center font-extrabold"

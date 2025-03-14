@@ -139,7 +139,6 @@ export default function Projects() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        viewport={{ once: true }}
       >
         We are ready to scale up your business with our great work result.
       </motion.p>

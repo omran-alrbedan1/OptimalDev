@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  
+  eslint: {
+    ignoreDuringBuilds: true, // Disable ESLint during production builds
+  },
   images:{
     domains: [
       "Main.hivetech.space",

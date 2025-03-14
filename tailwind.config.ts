@@ -1,5 +1,7 @@
 import type {Config} from "tailwindcss";
-
+const {
+    default: flattenColorPalette,
+  } = require("tailwindcss/lib/util/flattenColorPalette");
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -53,7 +55,10 @@ const config: Config = {
                 300: "2px 2px 0px 2px rgb(238, 43, 105)",
             },
             animation: {
-                'bounce-x' : 'bouncex 1s infinite'
+                'bounce-x' : 'bouncex 1s infinite',
+                scroll:
+                "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+      
               },
               keyframes: {
                 bouncex: {
@@ -65,11 +70,27 @@ const config: Config = {
                     transform: 'translateY(0)',
                     animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
                   },
-                }
+                },
+                scroll: {
+                    to: {
+                      transform: "translate(calc(-50% - 0.5rem))",
+                    },
+                  },
             },
         },
     },
-    plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+    plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography"), ],
 };
 
 export default config;
+
+function addVariablesForColors({ addBase, theme }: any) {
+    let allColors = flattenColorPalette(theme("colors"));
+    let newVars = Object.fromEntries(
+      Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+    );
+   
+    addBase({
+      ":root": newVars,
+    });
+  }

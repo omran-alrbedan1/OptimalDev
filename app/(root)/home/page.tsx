@@ -9,6 +9,9 @@ import '@fontsource/poppins/600.css'; // Semi-bold weight (600)
 import Projects from "@/app/parts/Projects";
 import Services from "@/app/parts/Services";
 import Testimonial from "@/app/parts/Testimonial";
+import Categories from "@/app/parts/Categories";
+import Clients from "@/app/parts/Clients";
+
 
 
 
@@ -26,7 +29,7 @@ import Testimonial from "@/app/parts/Testimonial";
 //   };
 // }
 
-const Page = () => {
+const Page = async () => {
   // Define animation variants
   // const container = {
   //   hidden: { opacity: 1, scale: 0 },
@@ -79,6 +82,7 @@ const Page = () => {
   //   // Add more site details as needed
   // ];
 
+
   return (
     <div className="">
       <Hero />
@@ -96,9 +100,13 @@ const Page = () => {
       </div> */}
 
       {/* Display Projects */}
+ {/* <Experience/> */}
+
       <Projects />
      <Services />
  <Testimonial />
+ <Categories />
+ <Clients />
     </div>
   );
 };

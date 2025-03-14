@@ -84,7 +84,7 @@ export default function Footer() {
         {/* Copyright Section */}
         <div className="flex justify-center items-center text-center text-gray-100 mt-10 mb-2">
           <p className="text-lg text-black-300 font-light">
-            copyright 2025. All Rights Reserved by <span className='text-primary-color1 font-medium text-2xl'>Hive<span className='text-black'>Tech</span></span>
+          &copy; 2025 Your Company. All rights reserved. by <span className='text-primary-color1 font-medium text-2xl'>Hive<span className='text-black'>Tech</span></span>
           </p>
         </div>
       </div>
