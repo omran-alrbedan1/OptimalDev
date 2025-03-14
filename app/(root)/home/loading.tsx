@@ -3,17 +3,15 @@ import React from 'react'
 
 const loading = () => {
   return (
-    <div>
-Loading
-   
-    {/* <div dangerouslySetInnerHTML={{ __html: loadingContent }} />
  
-         <div className='flex justify-center gap-1 items-center h-screen'>
-         <div className='animate-pulse h-20 w-20 rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
-         <div className='animate-pulse h-20 w-20  rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
-         <div className='animate-pulse h-20 w-20  rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
-         </div> */}
-    </div>
+        //  <div className='flex justify-center gap-1 items-center h-screen'>
+        //  <div className='animate-pulse h-20 w-20 rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
+        //  <div className='animate-pulse h-20 w-20  rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
+        //  <div className='animate-pulse h-20 w-20  rounded-full border-b-2 border-t-2 border-white bg-red-800'/>
+        //  </div>
+   <div>
+    loading
+   </div>
   )
 }
 

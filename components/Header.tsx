@@ -16,7 +16,7 @@ const Header = ({ title, paragragh }: { title: string; paragragh: string }) => {
       </motion.h1>
 
       <motion.p
-        className=" text-lg text-gray-400 text-center mt-4 mb-12"
+        className=" text-lg text-gray-400 text-center mt-4 mb-12 mx-5"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
