@@ -1,4 +1,4 @@
-export interface Project {
+export interface ProjectProps {
     id: number;
     title: string;
     subtitle: string;
@@ -10,7 +10,7 @@ export interface Project {
     views: number;
     likes: number;
   }
-export interface Service {
+export interface ServiceProps {
     id: number;
     title: string;
     subtitle: string;
@@ -24,10 +24,12 @@ export interface Service {
   }
   export interface Testimoni {
     id: number
-    imageUrl : string;
-    name: string;
-    company: string;
-    testimoni: string
+    image : string;
+    title: string;
+    sub_title: string;
+    content: string;
+    url: string;
+
   }
   export interface Projects {
     id: number;

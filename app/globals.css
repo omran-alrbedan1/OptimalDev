@@ -37,6 +37,23 @@ body{
 }
 
 
+        /* Hide scrollbar for the entire page */
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+      }
+
+      /* Optional: Hide scrollbar but allow scrolling */
+      html {
+          scrollbar-width: none; /* For Firefox */
+          -ms-overflow-style: none; /* For IE and Edge */
+      }
+
+      html::-webkit-scrollbar {
+          display: none; /* For Chrome, Safari, and Opera */
+      }
+
 @layer utilities {
   .flex-between {
     @apply flex justify-between items-center;
@@ -100,7 +117,7 @@ section {
 
 @media (min-width: 1024px) {
   .header {
-    @apply  w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center border-b border-gray-100;
+    @apply  w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center ;
   }
 
   .hero {

@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="flex justify-between px-4 lg:px-0">
+      <div className="flex justify-between px-4 lg:px-0 border-none">
         <Image
           src={"/Hive Tech.png"}
           width={230}
@@ -27,32 +27,7 @@ const Header = () => {
           className=""
           alt="logo"
         />
-        <button
-          className="block text-theme-blue lg:hidden focus:outline-none"
-          onClick={() => setIsCollapse(!isCollapse)}
-        >
-          <svg
-            className="w-8 h-8 stroke-black" // Add stroke-black class
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              className={`${isCollapse ? "hidden" : "block"}`}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-            <path
-              className={`${!isCollapse ? "hidden" : "block"}`}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+
       </div>
 
       <ul className="hidden text-theme-blue tracking-widest items-center lg:flex flex-row mt-0">
@@ -99,7 +74,7 @@ const Header = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-20 absolute bg-white w-full border-b-2 border-gray-300 lg:hidden">
+        <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-20 absolute bg-white w-full lg:hidden">
           <li className="py-2 bg-white">
             <Button
               className={`${path === "/home" ? "active-link" : "text-primary-color2"} px-10 no-underline hover:underline`}

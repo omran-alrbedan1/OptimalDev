@@ -5,13 +5,13 @@ import { motion } from "framer-motion"; // Import Framer Motion
 
 const Hero = () => {
   return (
-    <section className="hero">
+    <section className="hero ">
       {/* Fade effect with Framer Motion */}
       <motion.div
         initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
         animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
         transition={{ duration: 0.8, ease: "easeOut" }} // Animation duration and easing
-        className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-2 sm:mt-4 shadow-sm  p-12 "
+        className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-2 sm:mt-4  p-12 "
       >
         <h1 className="text-4xl sm:text-5xl text-theme-blue font-bold leading-tight mb-2 sm:mb-7 text-black-100">
           Growing Your Business <br />
