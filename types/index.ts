@@ -22,7 +22,7 @@ export interface ServiceProps {
     views: number;
     likes: number;
   }
-  export interface Testimoni {
+  export interface TestimoniProps {
     id: number
     image : string;
     title: string;
@@ -44,3 +44,7 @@ export interface ServiceProps {
     likes: number;
     type: string;
   }
+
+  export type ProjectsArray = ProjectProps[];
+  export type ServicesArray = ServiceProps[];
+  export type TestimoniArray = TestimoniProps[];

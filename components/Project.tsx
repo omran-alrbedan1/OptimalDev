@@ -1,11 +1,11 @@
 "use client";
-import { ProjectProps } from "@/types";
+import {  ProjectsArray } from "@/types";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 
-const Project = ({projects}:{projects:ProjectProps}) =>  {
+const Project = ({projects}:{projects:ProjectsArray}) =>  {
 
   return (
     <section

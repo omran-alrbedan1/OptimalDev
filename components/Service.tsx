@@ -1,10 +1,10 @@
 "use client";
-import { ServiceProps } from "@/types";
+import { ServicesArray } from "@/types";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-const Service = ({services}:{services:ServiceProps}) => {
+const Service = ({services}:{services:ServicesArray}) => {
   return (
     <section className=" flex flex-col items-center mt-20 bg-gray-50 py-10 px-3 sm:px-10 sm:mb-40">
     {/* Animated Heading */}

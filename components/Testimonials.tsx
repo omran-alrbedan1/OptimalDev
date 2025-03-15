@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
-import { Testimoni } from "@/types";
+import { TestimoniArray } from "@/types";
 
 
-const Testimonials = ({testimonials}:{testimonials:Testimoni}) => {
+const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
   return (
     <motion.section
     initial={{ opacity: 0, y: 50 }}
@@ -53,7 +53,7 @@ const Testimonials = ({testimonials}:{testimonials:Testimoni}) => {
             <div className="flex items-center mb-5">
               <Image
                 src={`https://main.hivetech.space/storage/${item.image}`}
-                alt={`Testimonial by ${item.name}`}
+                alt={`Testimonial by ${item.id}`}
                 width={80}
                 height={80}
                 className="w-20 h-20 rounded-full"
