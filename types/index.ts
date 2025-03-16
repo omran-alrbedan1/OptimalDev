@@ -44,7 +44,19 @@ export interface ServiceProps {
     likes: number;
     type: string;
   }
+  export interface SliderProps {
+    id: number;                                               
+    image: string;
+    title: string;
+    description: string;
+    first_btn_text: string
+    first_btn_url: string;
+    second_btn_text: string;
+    second_btn_url: string;
+  }
 
   export type ProjectsArray = ProjectProps[];
   export type ServicesArray = ServiceProps[];
   export type TestimoniArray = TestimoniProps[];
+  export type SliderArray = SliderProps[];
+ 

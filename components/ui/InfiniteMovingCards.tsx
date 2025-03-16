@@ -243,7 +243,7 @@ export const InfiniteMovingCards = ({
             border-radius: 4px;
           }
           .scroller::-webkit-scrollbar-thumb {
-            background: #FF6B00;
+            background: #7D8087;
             border-radius: 4px;
           }
           .scroller::-webkit-scrollbar-thumb:hover {

@@ -259,7 +259,7 @@ export default function TeamPage() {
       </section>
 
       <section className="sm:mx-auto mt-16">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-5 gap-x-2 min-w-0 ml-5 sm:ml-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-5 gap-x-4 min-w-0 mx-5 sm:ml-12">
           {teams.map((item, index) => (
             <motion.div
               key={item.id}
@@ -269,7 +269,7 @@ export default function TeamPage() {
               // viewport={{ once: true }}
               className="w-full" // Ensure grid items take full width
             >
-              <div className="flex flex-col w-36 px-2 h-60 sm:w-56 sm:h-72 rounded-xl shadow-xl border border-light-theme-purple justify-center transform transition duration-500 hover:scale-105">
+              <div className="flex flex-col px-4 h-60 sm:w-56 sm:h-72 py-20 rounded-xl shadow-xl border border-light-theme-purple justify-center transform transition duration-500 hover:scale-105">
                 <div className="flex justify-center xl:mb-5 mb-3">
                   <Image
                     src={ProfileDefault}
@@ -279,10 +279,10 @@ export default function TeamPage() {
                     className="flex w-32 h-32 rounded-full"
                   />
                 </div>
-                <h2 className="text-2xl text-theme-blue text-center text-[#152C5B]">
+                <h2 className="text-lg sm:text-2xl text-theme-blue text-center text-[#152C5B]">
                   {item.name}
                 </h2>
-                <p className="text-gray-400 text-center">{item.position}</p>
+                <p className="text-[15px] sm:text-lg text-gray-400 text-center">{item.position}</p>
               </div>
             </motion.div>
           ))}

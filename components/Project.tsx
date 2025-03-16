@@ -30,7 +30,7 @@ const Project = ({projects}:{projects:ProjectsArray}) =>  {
         We are ready to scale up your business with our great work result.
       </motion.p>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 justify-items-center sm:mx-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-8 justify-items-center ml-4 sm:mx-10 mt-20">
         {projects?.map((item, index) => (
           <motion.div
             key={item.id}
@@ -40,7 +40,7 @@ const Project = ({projects}:{projects:ProjectsArray}) =>  {
            
             
           >
-            <div className="group rounded-2xl shadow-xl w-11/12 m-3 transform transition duration-500 hover:scale-105">
+            <div className=" flex flex-col justify-evenly group rounded-2xl shadow-xl w-11/12 h-60 sm:h-96 pb-2 transform transition duration-500 hover:scale-105">
               
          
             <Link href={`/project/${item.id}`} passHref>
@@ -50,14 +50,15 @@ const Project = ({projects}:{projects:ProjectsArray}) =>  {
                   alt={item.title}
                   width={400}
                   height={300}
-                  className="rounded-t-2xl rounded-b-xl z-0 bg-contain h-48 sm:h-64 lg:h-72 cover-contain"
+                  className="rounded-t-2xl rounded-b-xl z-0 bg-contain h-40 sm:h-64 lg:h-72 cover-contain"
                 />
               </div>
             </Link>
+      
+              <h2 className="text-center text-gray-500 text-[16px] sm:text-xl font-semibold"
+              >{item.title}</h2>
          
-            </div>   <div className="my-5 text-center">
-              <h2 className="text-gray-500 sm:text-xl font-semibold">{item.title}</h2>
-            </div>
+            </div>  
           </motion.div>
         ))}
       </div>

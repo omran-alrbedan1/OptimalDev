@@ -12,6 +12,7 @@ import Services from "@/app/parts/Services";
 import Testimonial from "@/app/parts/Testimonial";
 import Categories from "@/app/parts/Categories";
 import Clients from "@/app/parts/Clients";
+import Sliders from "@/app/parts/Sliders";
 
 
 
@@ -86,8 +87,8 @@ const Page = async () => {
 
 
   return (
-    <div>
-      <Hero />
+    <div className="relative duration-500">
+      <Sliders />
    
 {/* 
       Display Site Details
