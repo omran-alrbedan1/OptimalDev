@@ -27,19 +27,19 @@ const Header = () => {
     <div className="">
       {/* Conditionally render the Topbar based on scroll position */}
        <Topbar />
-
-      {/* Header with fixed positioning */}
+     
+      {/* Header with fixed positioning #75767e */}
       <header
         className={`header fixed ${
-          isScrolled ? "top-0 sm:-top-[24px] bg-white bg-opacity-95" : "top-[49px] bg-[#75767e] bg-opacity-90"
-        } z-50 min-w-full sm:h-[110px] shadow-sm transition-all duration-400`}
+          isScrolled ? "top-0 sm:-top-[24px] bg-[#fff] bg-opacity-95 sm:h-[110px]" : "top-[69px] sm:top-[62px] bg-[#75767e] bg-opacity-90 sm:h-[100px]"
+        } z-50 min-w-full  shadow-sm transition-all duration-400`}
       >
-        <div className="flex justify-between px-4 lg:px-0 border-none">
-          <Link href={"/home"}>
+        <div className="flex justify-between items-center px-6 lg:px-0 border-none lg:ml-20">
+          <Link href={"/home"} >
             <Image
               src={"/Hive Tech.png"}
-              width={230}
-              height={230}
+              width={190}
+              height={190}
               className=""
               alt="logo"
             />
@@ -77,19 +77,41 @@ const Header = () => {
           <li>
             <Button
               className={`${
-                path === "/home" ? "active-link" : " text-black-100"
-              } text-lg px-5 no-underline hover:underline`}
+                path === "/home" ? "active-link" : " text-primary-color2"
+              } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
               href="home"
             >
               Home
             </Button>
           </li>
+          <li>
+            <Button
+              className={`${
+                path === "/about-us" ? "active-link" : " text-primary-color2"
+              } text-[16px] font-semibold px-5 no-underline hover:underline`}
+              type="link"
+              href="about-us"
+            >
+              About Us
+            </Button>
+          </li>
+          <li>
+            <Button
+              className={`${
+                path === "/contact-us" ? "active-link" : " text-primary-color2"
+              } text-[16px] font-semibold px-5 no-underline hover:underline`}
+              type="link"
+              href="contact-us"
+            >
+              Contact Us
+            </Button>
+          </li>
           <li className="py-2 lg:py-0">
             <Button
               className={`${
-                path === "/team" ? "active-link" : "text-black-100"
-              } text-lg  px-5 no-underline hover:underline`}
+                path === "/team" ? "active-link" : "text-primary-color2"
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
               type="link"
               href="/team"
             >
@@ -99,18 +121,18 @@ const Header = () => {
           <li className="py-2 lg:py-0">
             <Button
               className={`${
-                path === "/projects" ? "active-link" : "text-black-100"
-              } text-lg  px-5 no-underline hover:underline`}
+                path === "/projects" ? "active-link" : "text-primary-color2"
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
               type="link"
               href="/projects"
             >
               Projects
             </Button>
           </li>
-          <li>
+          <li className="hidden xl:block">
             <Button
               type="link"
-              className="w-80 h-80 px-8 py-3 bg-primary-color1 rounded-full text-white-100"
+              className="text-[16px] font-semibold w-80 h-80 px-8 py-3 bg-primary-color1 rounded-full text-white-100"
               href="/discuss-project"
             >
               Discuss Project
@@ -127,7 +149,7 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-20 absolute bg-white w-full lg:hidden">
+          <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-16 absolute bg-white w-full lg:hidden">
             <li className="py-2 bg-white">
               <Button
                 className={`${
@@ -162,6 +184,30 @@ const Header = () => {
                 onClick={() => setIsCollapse(false)}
               >
                 Projects
+              </Button>
+            </li>
+            <li className="py-2 bg-white">
+              <Button
+                className={`${
+                  path === "/contact-us" ? "active-link" : "text-primary-color2"
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/contact-us"
+                onClick={() => setIsCollapse(false)}
+              >
+                Contact Us
+              </Button>
+            </li>
+            <li className="py-2 bg-white">
+              <Button
+                className={`${
+                  path === "/about-us" ? "active-link" : "text-primary-color2"
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/about-us"
+                onClick={() => setIsCollapse(false)}
+              >
+                About Us
               </Button>
             </li>
             <li className="mx-auto my-9 bg-white">

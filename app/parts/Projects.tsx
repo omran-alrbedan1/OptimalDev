@@ -10,7 +10,7 @@ export default async function Projects() {
         "Content-Type": "application/json",
       }
     });
-    const projects = response.data.data; // Assuming the array is nested under `data`
+    const projects = response.data.data.slice(0, 6); // Assuming the array is nested under `data`
     // console.log(testimonials); // Verify the structure
 
 

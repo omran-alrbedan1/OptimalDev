@@ -261,26 +261,26 @@ export const InfiniteMovingCards = ({
       <ul
         ref={scrollerRef}
         className={cn(
-          "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
+          "flex min-w-full shrink-0 gap-5 py-4 w-max flex-nowrap",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
         {items.map((item, _) => (
           <Link
-            className="sm:w-80 sm:h-80 relative rounded-2xl border-slate-700 px-8 py-6"
+            className="sm:w-72 sm:h-72 relative rounded-2xl border-slate-700 px-8 py-6"
             key={item.id}
             href={item.url}
           >
             <div className="flex flex-col justify-between items-center">
               <Image
                 src={`https://main.hivetech.space/storage/${item.image}`}
-                width={300} // Fixed width
-                height={300} // Fixed height
+                width={100} // Fixed width
+                height={100} // Fixed height
                 alt={`image${item.id}`}
-                className="w-32 h-32 sm:w-48 sm:h-48 rounded-lg mb-5" // Ensure consistent size
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg mb-5 bg-cover" // Ensure consistent size
               />
-              <h1 className="text-gray-500 sm:text-2xl mt-4">{item.title}</h1>
+              <h1 className="text-primary-color2 mt-3">{item.title}</h1>
             </div>
           </Link>
         ))}

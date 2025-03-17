@@ -13,6 +13,7 @@ import Testimonial from "@/app/parts/Testimonial";
 import Categories from "@/app/parts/Categories";
 import Clients from "@/app/parts/Clients";
 import Sliders from "@/app/parts/Sliders";
+import Sections from "@/app/parts/Sections";
 
 
 
@@ -89,6 +90,7 @@ const Page = async () => {
   return (
     <div className="relative duration-500">
       <Sliders />
+      <Sections />
    
 {/* 
       Display Site Details
@@ -108,8 +110,8 @@ const Page = async () => {
 
       <Projects />
      <Services />
- <Testimonial />
  <Categories />
+ <Testimonial />
  <Clients />
     </div>
   );

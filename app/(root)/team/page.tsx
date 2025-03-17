@@ -218,14 +218,14 @@ const teams = [
 
 export default function TeamPage() {
   return (
-    <div>
-      <section className="hero">
+    <div className="">
+      <section className="hero h-[80vh] my-auto">
         {/* Fade effect with Framer Motion */}
         <motion.div
           initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
           animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
           transition={{ duration: 0.8, ease: "easeOut" }} // Animation duration and easing
-          className="w-full lg:w-1/2 xl:pl-12 sm:pr-2 mt-8 px-4 sm:py-10"
+          className="my-auto ml-10"
         >
           <h1 className="text-5xl sm:text-6xl text-primary-color1 font-bold leading-tight mb-6">
             Our Team

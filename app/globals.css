@@ -104,7 +104,7 @@ section {
   @apply font-bold text-primary-color1
 }
 .header {
-  @apply flex flex-col py-4 mb-4 justify-between;
+  @apply flex flex-col py-4 mb-4 justify-between ;
 }
 
 .hero {
@@ -123,4 +123,10 @@ section {
   .hero {
     @apply container flex-row mt-8;
   }
+}
+.responsive_image {
+  width: 100%;
+  height: auto; /* Maintains aspect ratio */
+  object-fit: cover;
+  background-size: cover;
 }

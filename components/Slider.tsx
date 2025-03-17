@@ -25,14 +25,19 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
 
   return (
     <div
-      className="relative w-full h-screen min-h-screen mx-auto overflow-hidden transition-all duration-1000 shadow-2xl"
-      style={{
-        backgroundImage: `url(https://main.hivetech.space/storage/${sliders[currentIndex].image})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
+      className="relative h-screen w-full overflow-hidden transition-all duration-1000 shadow-2xl"
+      // style={{
+      //   backgroundImage: `url(https://main.hivetech.space/storage/${sliders[currentIndex].image})`,
+      //   // backgroundSize: "contain",
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundPosition: "center",
+     
+      // }}
     >
+    
+  <img src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`} alt="Background" className="absolute bg-cover w-full h-full"/>
+
+
       {/* Black overlay layer */}
       <div
         className="absolute inset-0 bg-black opacity-60"
@@ -90,7 +95,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
       </motion.div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+      <div className="absolute bottom-20 sm:bottom-32 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
         {sliders.map((_, index) => (
           <button
             key={index}

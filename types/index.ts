@@ -54,9 +54,34 @@ export interface ServiceProps {
     second_btn_text: string;
     second_btn_url: string;
   }
+  export interface CategoryProps {
+    id: number;                                               
+    title: string;
+    description: string;
+    image: string;
+    image_icon: string
+    created_at: string;
+    updated_at: string;
+  }
+  export interface SectionProps {
+    id: number;                                               
+    title: string;
+    description: string;
+    image: string;
+    type:{
+      id:number;
+      type:string;   
+      created_at: string;
+      updated_at: string;
+    }
+
+
+  }
 
   export type ProjectsArray = ProjectProps[];
   export type ServicesArray = ServiceProps[];
   export type TestimoniArray = TestimoniProps[];
   export type SliderArray = SliderProps[];
+  export type CategoryArray = CategoryProps[];
+  export type SectionArray = SectionProps[];
  
