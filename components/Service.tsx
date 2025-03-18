@@ -14,6 +14,9 @@ const Service = ({ services }: { services: ServicesArray }) => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         // viewport={{ once: true }}
+        style={{
+          letterSpacing:"3px"
+        }}
       >
         Our Services
       </motion.h1>
@@ -26,7 +29,7 @@ const Service = ({ services }: { services: ServicesArray }) => {
         // viewport={{ once: true }}
       >
         We are ready to scale up your business with our great service.
-        <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-10"/>
+        <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-10" />
       </motion.p>
 
       {/* Service Cards */}
@@ -60,8 +63,8 @@ const Service = ({ services }: { services: ServicesArray }) => {
               whileInView={{ opacity: 1, y: 0, scale: "100%" }}
               transition={{ delay: index * 0.2, duration: 0.9 }}
             >
-              <div className="group rounded-2xl shadow-xl w-11/12 sm:max-h-[400px] m-3 transform transition duration-500 hover:scale-110">
-                <Link href={`/project/${item.id}`} passHref>
+              <div className="flex flex-col justify-between h-full rounded-2xl bg-gray-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
+                <Link href={`/service/${item.id}`} passHref>
                   <div className="relative cursor-pointer">
                     <div className="absolute w-full rounded-t-2xl rounded-b-lg z-20 h-full bg-primary-color2 opacity-0 hover:opacity-50" />
                     <Image
@@ -69,7 +72,7 @@ const Service = ({ services }: { services: ServicesArray }) => {
                       alt={item.title}
                       width={400}
                       height={300}
-                      className="rounded-t-2xl rounded-b-[5px] z-0 bg-contain h-72 sm:h-72"
+                      className="rounded-t-2xl rounded-b-[5px] z-0 bg-cover"
                     />
                   </div>
                 </Link>

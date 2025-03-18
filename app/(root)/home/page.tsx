@@ -1,5 +1,5 @@
 import Hero from "@/app/parts/Hero";
-import React from "react";
+import React, { Suspense } from "react";
 
 
 import '@fontsource/poppins/300.css'; // Light weight (300)
@@ -14,6 +14,7 @@ import Categories from "@/app/parts/Categories";
 import Clients from "@/app/parts/Clients";
 import Sliders from "@/app/parts/Sliders";
 import Sections from "@/app/parts/Sections";
+import Loader from "@/components/Loader";
 
 
 
@@ -88,6 +89,7 @@ const Page = async () => {
 
 
   return (
+    <Suspense fallback={<Loader />}>
     <div className="relative duration-500">
       <Sliders />
       <Sections />
@@ -113,7 +115,7 @@ const Page = async () => {
  <Categories />
  <Testimonial />
  <Clients />
-    </div>
+    </div></Suspense>
   );
 };
 

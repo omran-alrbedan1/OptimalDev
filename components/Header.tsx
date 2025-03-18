@@ -2,9 +2,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Header = ({ title, paragragh }: { title: string; paragragh: string }) => {
+const Header = ({ title, paragragh,className }: { title: string; paragragh?: string;className?:string }) => {
   return (
-    <div className="">
+    <div className={className}>
       <motion.h1
         className="text-2xl sm:text-3xl text-primary-color2 text-center font-semibold"
         initial={{ opacity: 0, y: 50 }}

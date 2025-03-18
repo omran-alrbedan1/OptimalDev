@@ -21,6 +21,13 @@ export interface ServiceProps {
     demo_link: string | null;
     views: number;
     likes: number;
+    category: {
+      id: number
+      title: string;
+      description: string;
+      image: string;
+      created_at: string;
+      updated_at: string;    }
   }
   export interface TestimoniProps {
     id: number
@@ -73,7 +80,12 @@ export interface ServiceProps {
       type:string;   
       created_at: string;
       updated_at: string;
-    }
+    }}
+  export interface AboutUsProps {
+    id: number;                                               
+    url: string;
+    content: string;
+    type:string;
 
 
   }

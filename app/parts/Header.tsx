@@ -34,7 +34,7 @@ const Header = () => {
           isScrolled ? "top-0 sm:-top-[24px] bg-[#fff] bg-opacity-95 sm:h-[110px]" : "top-[69px] sm:top-[62px] bg-[#75767e] bg-opacity-90 sm:h-[100px]"
         } z-50 min-w-full  shadow-sm transition-all duration-400`}
       >
-        <div className="flex justify-between items-center px-6 lg:px-0 border-none lg:ml-20">
+        <div className="flex justify-between sm:justify-around sm:pt-3 lg:pt-0 items-center px-6 lg:px-0 border-none lg:ml-20">
           <Link href={"/home"} >
             <Image
               src={"/Hive Tech.png"}
