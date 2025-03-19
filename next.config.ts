@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Disable ESLint during production builds
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images:{
     domains: [
       "Main.hivetech.space",

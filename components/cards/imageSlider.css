@@ -1,0 +1,15 @@
+.perspective-container {
+  perspective: 1000px; /* Enables 3D space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-card {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.image-card.selected {
+  transform: translateZ(50px) scale(1.5); /* Bring selected image forward and enlarge */
+  opacity: 1;
+}

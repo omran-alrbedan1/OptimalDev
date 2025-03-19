@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import Button from "../elements/Button/button";
@@ -14,6 +14,7 @@ const Header = () => {
 
   React.useEffect(() => {
     const handleScroll = () => {
+
       setIsScrolled(window.scrollY > 0);
     };
 
@@ -31,10 +32,10 @@ const Header = () => {
       {/* Header with fixed positioning #75767e */}
       <header
         className={`header fixed ${
-          isScrolled ? "top-0 sm:-top-[24px] bg-[#fff] bg-opacity-95 sm:h-[110px]" : "top-[69px] sm:top-[62px] bg-[#75767e] bg-opacity-90 sm:h-[100px]"
-        } z-50 min-w-full  shadow-sm transition-all duration-400`}
+          isScrolled ? "top-0 sm:-top-[24px] bg-[#fff] bg-opacity-95 md:h-[110px]" : "top-[69px] sm:top-[62px] bg-[#75767e] bg-opacity-90 sm:h-[100px]"
+        } z-50 min-w-full  shadow-sm transition-all duration-900 ease-linear`}
       >
-        <div className="flex justify-between sm:justify-around sm:pt-3 lg:pt-0 items-center px-6 lg:px-0 border-none lg:ml-20">
+        <div className={`flex justify-between sm:justify-around ${isScrolled ? 'sm:pt-5': '' }  lg:pt-0  px-6 lg:px-0 border-none lg:ml-20`}>
           <Link href={"/home"} >
             <Image
               src={"/Hive Tech.png"}

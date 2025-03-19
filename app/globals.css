@@ -104,7 +104,7 @@ section {
   @apply font-bold text-primary-color1
 }
 .header {
-  @apply flex flex-col py-4 mb-4 justify-between ;
+  @apply flex flex-col py-4 justify-between max-h-fit ;
 }
 
 .hero {
@@ -119,6 +119,7 @@ section {
   .header {
     @apply  w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center ;
   }
+
 
   .hero {
     @apply container flex-row mt-8;

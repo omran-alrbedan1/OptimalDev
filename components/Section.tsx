@@ -50,7 +50,7 @@ const Section = ({ sections }: { sections: SectionArray }) => {
             className="max-sm:h-16 w-56 sm:w-80 2xl:w-96"
           />
           <div
-            className="text-[12px] md:text-[13px]"
+            className="text-[12px] md:text-[13px] text-white"
             dangerouslySetInnerHTML={{ __html: sections[0].description }}
           />
         </div>

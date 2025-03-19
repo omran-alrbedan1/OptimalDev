@@ -7,7 +7,7 @@ import { MdOutlineMarkEmailUnread } from "react-icons/md";
 export default function Topbar() {
       
   return (
-    <div className=" bg-[#000000] h-[70px] opacity-80 min-w-full z-50 pt-3 sm:pt-4 md:block relative ">
+    <div className=" bg-[#000000] h-[70px] opacity-80 min-w-full z-50 pt-3 md:block relative ">
       <div className="container mx-auto px-4 w-full flex items-center justify-between ">
         {/* Contact Info */}
         <div className="flex flex-col space-y-1 sm:flex-row  sm:space-x-6 text-sm  w-fit">

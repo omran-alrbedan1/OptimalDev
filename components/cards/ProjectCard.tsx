@@ -13,7 +13,7 @@ export default function ProjectCard({ project, index }:{project:ProjectProps; in
   >
      {/* flex flex-col justify-evenly group rounded-2xl shadow-xl w-full h-[350px] sm:h-96 pb-2 */}
     <div className="rounded-2xl flex flex-col justify-between h-full drop-shadow-2xl bg-gray-100  transition duration-500 hover:scale-110">
-      <Link href={`/project/${project.id}`} passHref>
+      <Link href={`/projects/${project.id}`} passHref>
         <div className="relative cursor-pointer h-full">
           <div className="absolute w-full rounded-t-2xl rounded-b-lg z-20 h-full bg-primary-color2 opacity-0 hover:opacity-30" />
           <Image

@@ -5,7 +5,7 @@ import Image from 'next/image'; // Use Next.js Image component
 import Button from '../elements/Button/button';
 
 export default function Footer() {
-  return (<>    <div className="text-center">this is the footer</div>
+  return (<> 
     <div className="max-w-full bg-gray-50 border-t border-gray-200 pb-6 mx-auto">
       <div className=" flex-col">
         <div className="flex flex-col sm:flex-row mt-8 justify-center">
