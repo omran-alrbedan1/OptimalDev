@@ -38,7 +38,7 @@ const Section = ({ sections }: { sections: SectionArray }) => {
           alt="image"
           className="bg-cover w-full h-full absolute"
         />
-        <div className="absolute w-full h-full bg-primary-color2 opacity-60" />
+        <div className="absolute w-full h-full bg-primary-color2 opacity-80" />
         <div className="flex w-full h-full flex-col lg:flex-row py-5
         justify-evenly xl:justify-center items-center 
         absolute px-5 md:px-10">
@@ -50,7 +50,7 @@ const Section = ({ sections }: { sections: SectionArray }) => {
             className="max-sm:h-16 w-56 sm:w-80 2xl:w-96"
           />
           <div
-            className="text-[12px] md:text-[13px] text-white"
+            className="text-[12px] md:text-[14px] text-white"
             dangerouslySetInnerHTML={{ __html: sections[0].description }}
           />
         </div>

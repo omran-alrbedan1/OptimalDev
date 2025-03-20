@@ -35,7 +35,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
       // }}
     >
     
-  <img src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`} alt="Background" className="absolute bg-cover w-full h-full"/>
+  <img src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`} alt="Background" className="absolute object-cover w-full h-full"/>
 
 
       {/* Black overlay layer */}

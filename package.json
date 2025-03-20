@@ -35,7 +35,7 @@
     "react-slick": "^0.30.3",
     "react-tabs": "^6.1.0",
     "slick-carousel": "^1.8.1",
-    "swiper": "^11.2.5",
+    "swiper": "^11.2.6",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },

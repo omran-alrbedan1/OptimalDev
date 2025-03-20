@@ -16,21 +16,20 @@ const ServiceCard = ({service, index}:{service:ServiceProps; index:number}) => {
     whileInView={{ opacity: 1, y: 0, scale: "100%" }}
     transition={{ delay: index * 0.2, duration: 0.9 }}
   >
-    <div className="flex flex-col justify-between h-full rounded-2xl bg-gray-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
-      <Link href={`/service/${service.id}`} passHref>
-        <div className="relative cursor-pointer">
-          <div className="absolute w-full rounded-t-2xl rounded-b-lg z-20 h-full bg-primary-color2 opacity-0 hover:opacity-50" />
+    <div className="flex flex-col justify-between h-full w-full rounded-2xl bg-gray-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
+      <Link href={`/services/${service.id}`} className="relative cursor-pointer h-4/5">
+
+          <div className="absolute w-full rounded-t-2xl rounded-b-lg h-full bg-primary-color2 opacity-0 hover:opacity-30" />
           <Image
             src={`https://main.hivetech.space/storage/${service.image}`}
-            alt={service.title}
+            alt={`image${service.id}`}
             width={400}
             height={300}
-            className="rounded-t-2xl rounded-b-[5px] z-0 bg-cover"
+            className="rounded-t-2xl rounded-b-[5px] object-fill bg-cover w-full h-full"
           />
-        </div>
       </Link>
       <div className="py-7 text-center mx-2">
-        <h2 className="text-primary-color2 text-[16px]  sm:text-lg  font-medium">
+        <h2 className="text-primary-color2 text-[16px] sm:text-lg font-medium">
           {service.title}
         </h2>
       </div>

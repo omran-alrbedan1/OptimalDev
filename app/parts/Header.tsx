@@ -4,7 +4,7 @@ import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import Button from "../elements/Button/button";
 import { usePathname } from "next/navigation";
-import Topbar from "./Topbar";
+
 import Link from "next/link";
 
 const Header = () => {
@@ -27,15 +27,15 @@ const Header = () => {
   return (
     <div className="">
       {/* Conditionally render the Topbar based on scroll position */}
-       <Topbar />
+ 
      
       {/* Header with fixed positioning #75767e */}
       <header
-        className={`header fixed ${
-          isScrolled ? "top-0 sm:-top-[24px] bg-[#fff] bg-opacity-95 md:h-[110px]" : "top-[69px] sm:top-[62px] bg-[#75767e] bg-opacity-90 sm:h-[100px]"
+        className={`header fixed lg:-top-[20px] sm:h-[110px] bg-white ${
+          isScrolled ? "top-0  bg-opacity-95 " : ""
         } z-50 min-w-full  shadow-sm transition-all duration-900 ease-linear`}
       >
-        <div className={`flex justify-between sm:justify-around ${isScrolled ? 'sm:pt-5': '' }  lg:pt-0  px-6 lg:px-0 border-none lg:ml-20`}>
+        <div className={`flex justify-between sm:justify-around  px-6 lg:px-0 border-none lg:ml-20`}>
           <Link href={"/home"} >
             <Image
               src={"/Hive Tech.png"}

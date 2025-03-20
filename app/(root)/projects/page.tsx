@@ -15,7 +15,7 @@ const  ProjectsPage = async () =>  {
   const projects = response.data.data;
   return (
 
-      <section className="container flex flex-col items-center  mt-40 px-5 mx-auto">
+      <section className="container flex flex-col items-center  mt-40 px-5 md:px-12">
         <Header
           title="All Projects"
           paragragh="this is the all of our projects"

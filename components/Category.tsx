@@ -40,7 +40,7 @@ const Category = ({ categories }: { categories: CategoryArray }) => {
                   width={200}
                   height={200}
                   alt="placeholder"
-                  className="bg-cover h-full w-full"
+                  className="object-cover h-full w-full"
                 />
 
                 {/* <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
