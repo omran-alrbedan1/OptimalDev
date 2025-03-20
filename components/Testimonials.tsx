@@ -33,7 +33,7 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
 
     >
       What they said about us.
-      Categories <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-10"/>
+    <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-10"/>
     </motion.p>
 
     <Splide
