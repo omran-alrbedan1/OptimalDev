@@ -15,15 +15,15 @@ const Header = ({ title, paragragh,className }: { title: string; paragragh?: str
         {title}
       </motion.h1>
 
-      <motion.p
-        className=" text-lg text-gray-500 text-center mt-4 mb-12 mx-5 flex flex-col items-center"
+      <motion.div
+        className="  mb-12 mx-5 flex flex-col items-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        {paragragh}
-        <span className="block text-center w-36 h-[3px] bg-primary-color1 mt-10"/>
-      </motion.p>
+        {paragragh &&<p className=" text-lg text-gray-500 text-center mt-4">{paragragh}</p>}
+        <span className="block text-center w-36 h-[3px] bg-primary-color1 mt-8"/>
+      </motion.div>
     </div>
   );
 };

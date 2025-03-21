@@ -20,10 +20,16 @@ interface SlideProps {
   totalSlides: number;
 }
 
-const Slide = ({ slide, index, current, handleSlideClick, totalSlides }: SlideProps) => {
+const Slide = ({
+  slide,
+  index,
+  current,
+  handleSlideClick,
+  totalSlides,
+}: SlideProps) => {
   const { id, name, path } = slide;
 
-  const translateXFactor = window.innerWidth < 400 ? 10 : 22;
+  const translateXFactor = window.innerWidth < 400 ? 15 : 25;
 
   return (
     <li
@@ -33,9 +39,18 @@ const Slide = ({ slide, index, current, handleSlideClick, totalSlides }: SlidePr
           index === current
             ? "translateX(0) scale(1.2)"
             : index < current
-            ? `translateX(${-translateXFactor * (current - index)}%) scale(${1 - 0.1 * (current - index)})`
-            : `translateX(${translateXFactor * (index - current)}%) scale(${1 - 0.1 * (index - current)})`,
-        zIndex: index === current ? totalSlides : index < current ? index : totalSlides - index,
+            ? `translateX(${-translateXFactor * (current - index)}%) scale(${
+                1 - 0.1 * (current - index)
+              })`
+            : `translateX(${translateXFactor * (index - current)}%) scale(${
+                1 - 0.1 * (index - current)
+              })`,
+        zIndex:
+          index === current
+            ? totalSlides
+            : index < current
+            ? index
+            : totalSlides - index,
       }}
       onClick={() => handleSlideClick(index)}
     >
@@ -43,13 +58,14 @@ const Slide = ({ slide, index, current, handleSlideClick, totalSlides }: SlidePr
         <img
           alt={`image${id}`}
           src={`https://main.hivetech.space/storage/${path}`}
-          className="h-full w-full object-cover bg-cover"
-        
+          className="h-full w-full object-fill bg-cover"
         />
 
-
-             <div className={`absolute inset-0 rounded-[5%] ${current !== index ?"bg-black/30":"bg-black/10"} transition-all duration-1000`} />
-         
+        <div
+          className={`absolute inset-0 rounded-[5%] ${
+            current !== index ? "bg-black/30" : "bg-black/10"
+          } transition-all duration-1000`}
+        />
       </div>
     </li>
   );
@@ -72,8 +88,8 @@ const CarouselControl = ({
          bg-neutral-200 dark:bg-neutral-800 border-3 border-transparent 
          rounded-full focus:border-[#6D64F7] focus:outline-none hover:-translate-y-0.5 
          active:translate-y-0.5 transition duration-200 ${
-        type === "previous" ? "rotate-180" : ""
-      }`}
+           type === "previous" ? "rotate-180" : ""
+         }`}
       title={title}
       onClick={handleClick}
     >
@@ -110,7 +126,7 @@ export function Carousel({ slides }: CarouselProps) {
 
   return (
     <div
-      className="relative w-[40vh] h-[35vh] sm:w-[50vh] sm:h-[40vh] lg:w-[55vh] lg:h-[45vh] mx-auto"
+      className="relative w-[35vh] h-[35vh] sm:w-[50vh] sm:h-[40vh] lg:w-[55vh] lg:h-[45vh] mx-auto"
       aria-labelledby={`carousel-heading-${id}`}
     >
       <ul className="relative w-full h-full">

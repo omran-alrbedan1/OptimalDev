@@ -3,6 +3,9 @@ import axios from "axios";
 import React, { Suspense } from "react";
 import { Carousel } from "@/components/cards/Carousel";
 import Image from "next/image";
+import CategoryCard from "@/components/cards/CategoryCard";
+import { Category } from "@/types";
+import Animation from "@/components/animation/Animation";
 
 interface Props {
   params: {
@@ -12,7 +15,7 @@ interface Props {
 
 const ServicesPage = async ({ id }: { id: number }) => {
   // Simulate loading delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 200));
 
   // Fetch project data
   const response = await axios.get(
@@ -28,31 +31,29 @@ const ServicesPage = async ({ id }: { id: number }) => {
   console.log(project);
 
   return (
-    <div className="min-h-screen py-12 pt-36 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-20 pt-40 px-4 sm:px-8 lg:px-10">
       {/* Project Header */}
       <div className="max-w-7xl mx-auto text-center pb-10">
-        <h1
-          className="text-3xl md:text-4xl font-semibold text-primary-color2 mb-4"
-          style={{ letterSpacing: "2.6px" }}
-        >
-          {project.title}
-        </h1>
-        <p className="text-lg text-gray-600">{project.subtitle}</p>
+       
+          <Animation animationVertix={'x'} text={project.title} style={ {letterSpacing: "2.6px" }}  className={"text-3xl md:text-4xl font-semibold mb-4"}/>
+         
+          {/* <Animation text={project.title}/> */}
+        <Animation className="text-lg text-gray-600" animationVertix="y" text={project.sub_title} />
       </div>
       <div className="flex w-full max-lg:flex-col-reverse justify-center">
         <div className="flex justify-center flex-1 p-4 pt-10 md:pl-10">
-          <p
+          <Animation
             className="lg:text-lg"
             style={{ letterSpacing: "1.7px", lineHeight: "2.4rem" }}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam
+          animationVertix="x"
+            text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam
             dolore voluptas eaque eum perferendis consectetur vero blanditiis
             ipsum illo adipisci voluptates soluta a velit cum impedit,
             excepturi, natus ipsam.Lorem Lorem ipsum dolor sit amet, consectetur
             adipisicing elit. Optio fugiat quae minima autem sequi commodi
             incidunt eum magnam rem pariatur aliquid, excepturi, at harum
-            laudantium qui officia soluta dolorum adipisci!
-          </p>
+            laudantium qui officia soluta dolorum adipisci!"
+          />
         </div>
         <div className="flex flex-1 p-4 items-center justify-center">
           <Image
@@ -60,7 +61,7 @@ const ServicesPage = async ({ id }: { id: number }) => {
             alt={project.title}
             width={500}
             height={400}
-            className="" // Ensure the image scales properly
+            className="rounded-xl" // Ensure the image scales properly
           />
         </div>
       </div>
@@ -70,24 +71,14 @@ const ServicesPage = async ({ id }: { id: number }) => {
         <Carousel slides={project.files} />
       </div>
 
-      <div className="max-w-6xl mx-auto mt-10">
-        <h2 className="text-2xl font-bold mb-10">
-          Project Responsibilities
-        </h2>
+      <div className="max-w-6xl mx-auto mt-14 text-center">
+        <Animation animationVertix="x" className="text-2xl font-bold mb-10"
+          text="Project Responsibilities"
+        />
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {project.categories.map((category: any) => (
-            <li
-              key={category.id}
-              className="relative min-h-36  flex flex-1  p-6 bg-[#f8f9fa]  flex-col justify-between"
-            >
-              {category.image && (<img className="absolute h-full w-full"src={category.image} alt={`image${category.id}`} />)}
-              <div className="absolute w-full h-full flex-col justify-between ">
-              {category.image_icon && <img className=""src={category.image_icon} alt={`image_icon${category.id}`} />}
-              <h3 className="mb-3 font-semibold text-2xl">{category.title}</h3>
-              <p className="mr-5">{category.description}</p>
-              </div>
-            </li>
+          {project.categories.map((category: Category, index: number) => (
+        <CategoryCard key={category.id} category={category} index={index}/>
           ))}
         </ul>
       </div>

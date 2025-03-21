@@ -9,20 +9,20 @@ import Link from "next/link";
 
 const Header = () => {
   const [isCollapse, setIsCollapse] = useState<boolean>(false);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  // const [isScrolled, setIsScrolled] = useState<boolean>(true);
   const path = usePathname();
 
-  React.useEffect(() => {
-    const handleScroll = () => {
+  // React.useEffect(() => {
+  //   const handleScroll = () => {
 
-      setIsScrolled(window.scrollY > 0);
-    };
+  //     setIsScrolled(window.scrollY > 0);
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   return (
     <div className="">
@@ -31,9 +31,7 @@ const Header = () => {
      
       {/* Header with fixed positioning #75767e */}
       <header
-        className={`header fixed lg:-top-[20px] sm:h-[110px] bg-white ${
-          isScrolled ? "top-0  bg-opacity-95 " : ""
-        } z-50 min-w-full  shadow-sm transition-all duration-900 ease-linear`}
+        className={`header fixed top-0 lg:-top-[20px] py-3 bg-white z-50 min-w-full  shadow-sm transition-all duration-900 ease-linear`}
       >
         <div className={`flex justify-between sm:justify-around  px-6 lg:px-0 border-none lg:ml-20`}>
           <Link href={"/home"} >
