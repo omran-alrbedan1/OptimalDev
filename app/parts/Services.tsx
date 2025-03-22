@@ -14,12 +14,12 @@ export default async function Services() {
   const services =response.data.data.slice(0, 3);
 
   return (
-    <section className=" flex flex-col items-center mt-20 bg-gray-50 py-10 px-3 sm:px-10 sm:mb-40">
+    <section className=" flex flex-col items-center pt-20 bg-gray-50 py-10 px-5 sm:px-10 sm:pb-40 overflow-hidden">
   
-      <Header title=" Our Services" paragragh=" We are ready to scale up your business with our great service."/>
+      <Header title=" Our Services" paragragh=" We are ready to scale up your business with our great service." className="mx-auto"/>
 
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mx-auto">
         {services.map((service: ServiceProps, index: number) => {
         
 

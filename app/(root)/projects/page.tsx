@@ -6,7 +6,7 @@ import Loader from "@/components/Loader";
 import { Suspense } from "react";
 
 const  ProjectsPage = async () =>  {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 500))
   const response = await axios.get("https://main.hivetech.space/api/projects", {
     headers: {
       "Content-Type": "application/json",

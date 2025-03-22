@@ -31,14 +31,14 @@ const Header = () => {
      
       {/* Header with fixed positioning #75767e */}
       <header
-        className={`header fixed top-0 lg:-top-[20px] py-3 bg-white z-50 min-w-full  shadow-sm transition-all duration-900 ease-linear`}
+        className={`header fixed top-0 lg:-top-[20px] py-3 bg-white z-50 min-w-full lg:h-[13vh] shadow-sm transition-all duration-900 ease-linear`}
       >
         <div className={`flex justify-between sm:justify-around  px-6 lg:px-0 border-none lg:ml-20`}>
           <Link href={"/home"} >
             <Image
               src={"/Hive Tech.png"}
-              width={190}
-              height={190}
+              width={220}
+              height={220}
               className=""
               alt="logo"
             />
@@ -79,7 +79,7 @@ const Header = () => {
                 path === "/home" ? "active-link" : " text-primary-color2"
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
-              href="home"
+              href="/home"
             >
               Home
             </Button>
@@ -90,7 +90,7 @@ const Header = () => {
                 path === "/about-us" ? "active-link" : " text-primary-color2"
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
-              href="about-us"
+              href="/about-us"
             >
               About Us
             </Button>
@@ -101,7 +101,7 @@ const Header = () => {
                 path === "/contact-us" ? "active-link" : " text-primary-color2"
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
-              href="contact-us"
+              href="/contact-us"
             >
               Contact Us
             </Button>
@@ -148,7 +148,7 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col text-theme-blue tracking-widest my-6 mt-16 absolute bg-white w-full lg:hidden">
+          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-[350px] sm:h-[400px] top-[81px] py-8 bg-white max-xs:w-[80%] xs:w-[50%] md:w-[40%] lg:hidden">
             <li className="py-2 bg-white">
               <Button
                 className={`${
@@ -211,7 +211,7 @@ const Header = () => {
             </li>
             <li className="mx-auto my-9 bg-white">
               <Button
-                className=" -ml-10 px-6 py-3 bg-primary-color1 text-white rounded-full transition duration-200"
+                className=" px-6 py-3 bg-primary-color1 text-white rounded-full transition duration-200"
                 type="link"
                 href="/discuss-project"
                 onClick={() => setIsCollapse(false)}

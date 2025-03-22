@@ -40,7 +40,7 @@ const Section = ({ sections }: { sections: SectionArray }) => {
         />
         <div className="absolute w-full h-full bg-primary-color2 opacity-80" />
         <div className="flex w-full h-full flex-col lg:flex-row py-5
-        justify-evenly xl:justify-center items-center 
+        justify-center xl:justify-center items-center 
         absolute px-5 md:px-10">
           <Image
             src={"/logos/logo with text dark.png"}
@@ -50,7 +50,7 @@ const Section = ({ sections }: { sections: SectionArray }) => {
             className="max-sm:h-16 w-56 sm:w-80 2xl:w-96"
           />
           <div
-            className="text-[12px] md:text-[14px] text-white"
+            className="text-[12px] md:text-[14px] text-white text-center md:text-start"
             dangerouslySetInnerHTML={{ __html: sections[0].description }}
           />
         </div>

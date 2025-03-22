@@ -54,12 +54,15 @@ const Slide = ({
       }}
       onClick={() => handleSlideClick(index)}
     >
-      <div className="w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden">
-        <img
-          alt={`image${id}`}
-          src={`https://main.hivetech.space/storage/${path}`}
-          className="h-full w-full object-fill bg-cover"
-        />
+    <div className="relative w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden"
+     style={{
+       backgroundImage: `url(https://main.hivetech.space/storage/${path})`,
+       backgroundSize: "100% 100%", 
+       backgroundPosition: "center",
+       backgroundRepeat: "no-repeat",
+      
+     }}
+>
 
         <div
           className={`absolute inset-0 rounded-[5%] ${

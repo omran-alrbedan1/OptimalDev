@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Category } from "@/types";
 import Image from "next/image";
 import { MdModelTraining } from "react-icons/md";
+import Link from "next/link";
 
 const CategoryCard = ({
   category,
@@ -21,7 +22,7 @@ const CategoryCard = ({
         delay: index * 0.2,
         duration: 0.8,
       }}
-      className="h-40 relative flex flex-1 bg-[#fafafa] rounded-xl"
+      className="h-44 relative flex flex-1 bg-[#fafafa] rounded-xl"
     >
       {/* {category.image && (
         <img
@@ -33,21 +34,14 @@ const CategoryCard = ({
       {category.image && (
         <div className="absolute w-full h-full bg-primary-color2 opacity-10" />
       )} */}
-      <div className="absolute p-5 w-full drop-shadow-2xl  h-full flex justify-evenly flex-col ">
+      <Link   href={`/services/category/${category.id}`} className="absolute cursor-pointer py-4 px-6 w-full drop-shadow-2xl  h-full flex justify-between flex-col ">
       
-          {category.image_icon && (
-            // <Image
-            //   className="bg-primary-color2 text-black-100"
-            //   width={50}
-            //   height={100}
-            //   src={category.image_icon}
-            //   alt={`image_icon${category.id}`}
-            // />
+       
             <MdModelTraining  className="text-3xl"/>
-          )}
+        
           <h3 className="mb-3 font-semibold text-2xl">{category.title}</h3>
           <p className="">{category.description}</p>
-        </div>
+        </Link>
 
     </motion.div>
   );

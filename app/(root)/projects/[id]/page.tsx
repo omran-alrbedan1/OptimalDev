@@ -61,12 +61,12 @@ const ServicesPage = async ({ id }: { id: number }) => {
             alt={project.title}
             width={500}
             height={400}
-            className="rounded-xl" // Ensure the image scales properly
+            className="rounded-xl h-full xl:w-[80%] aspect-auto" // Ensure the image scales properly
           />
         </div>
       </div>
 
-      <div className=" py-28 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto ">
+      <div className=" md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto ">
         {" "}
         <Carousel slides={project.files} />
       </div>

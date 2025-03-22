@@ -19,10 +19,10 @@ export default async function Projects() {
 
 
   return (
-    <section className="container flex flex-col items-center  mt-40 px-5 md:px-12 mx-auto">
+    <section className=" flex flex-col items-center  mt-40 px-5 md:px-12 mx-auto">
     
     <Header title='Our Projects' paragragh='We are ready to scale up your business with our great work result.'/>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-x-8 sm:gap-y-10 justify-items-center mx-auto mt-10 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-10  sm:gap-y-10 justify-items-center mx-auto mt-10 ">
           {projects.map((project:ProjectProps, index:number) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}

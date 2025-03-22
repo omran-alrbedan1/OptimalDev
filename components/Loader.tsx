@@ -1,8 +1,16 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Loader = () => {
   return (
-    <div className='h-[60vh] flex justify-center items-center text-5xl mt-20 text-primary-color2'>Loading...</div>
+    <div className='h-[70vh] flex justify-center items-center '>
+      <Image 
+        src={'/loading.gif'}
+        width={600}
+        height={600}
+        alt='loader'
+      />
+    </div>
   )
 }
 
