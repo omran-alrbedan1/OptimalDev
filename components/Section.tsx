@@ -37,15 +37,15 @@ const Section = ({ sections }: { sections: SectionArray }) => {
       >
         <Image
           src={"/Hive Tech.png"}
-          width={windowWidth > 800 ? 300 : 150}
-          height={windowWidth > 800 ? 300 : 150}
+          width={windowWidth > 800 ? 250 : 150}
+          height={windowWidth > 800 ? 250 : 150}
           alt="Logo"
           className=" sm:mt-3 dark:hidden block"
         />
         <Image
           src={"/logos/logo with text dark.png"}
-          width={windowWidth > 800 ? 300 : 150}
-          height={windowWidth > 800 ? 300 : 150}
+          width={windowWidth > 800 ? 240 : 150}
+          height={windowWidth > 800 ? 240 : 150}
           alt="Logo"
           className="sm:mt-3 hidden dark:block"
         />
@@ -61,17 +61,19 @@ const Section = ({ sections }: { sections: SectionArray }) => {
         <div className="absolute w-full h-full bg-primary-color2 opacity-80" />
         <div
           className="absolute flex w-full h-full flex-col lg:flex-row py-10
-  justify-center items-center px-5 gap-10 top-0"
-        >
+  justify-between items-center px-5 md:px-10 gap-10 top-0"
+        ><div className="w-1/3 flex items-center justify-center">
+
           <Image
             src={"/logos/logo with text dark.png"}
-            width={windowWidth > 900 ? 310 : 160}
-            height={windowWidth > 900 ? 310 : 160}
+            width={windowWidth > 900 ? 270 : 160}
+            height={windowWidth > 900 ? 270 : 160}
             alt="Logo"
-            className="max-w-[90%]"
-          />
+       
+            />
+            </div>
           <div
-            className="text-[13px] md:text-lg text-gray-600 dark:text-gray-300 text-center md:text-start px-4 overflow-y-auto"
+            className="w-2/3 text-[13px] md:text-[15px] text-gray-300 text-center md:text-start px-4 overflow-y-auto"
             dangerouslySetInnerHTML={{ __html: sections[0].description }}
           />
         </div>

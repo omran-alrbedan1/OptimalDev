@@ -13,7 +13,7 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
-    className="container mx-auto mt-10"
+    className="container mx-auto mt-10 mb-0"
   >
     <motion.h1
       className="text-3xl md:text-4xl  text-center font-extrabold tracking-widest"

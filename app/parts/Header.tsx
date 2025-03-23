@@ -48,12 +48,18 @@ const Header = () => {
           <Link href={"/home"} className="hidden dark:block">
             <Image
               src={"/logos/logo with text dark.png"}
-              width={windowWidth  > 800 ? 230 : 150}
-              height={windowWidth  > 800 ? 230 : 150}
+              width={windowWidth  > 800 ? 210 : 150}
+              height={windowWidth  > 800 ? 210 : 150}
            
               alt="logo"
             />
           </Link>
+          <div className="flex items-center justify-end gap-5">
+            <span className="lg:hidden">
+
+            <ThemeToggler />
+            </span>
+          
           <button
             className="block text-primary-color1 lg:hidden focus:outline-none"
             onClick={() => setIsCollapse(!isCollapse)}
@@ -81,6 +87,7 @@ const Header = () => {
               />
             </svg>
           </button>
+          </div>
         </div>
 
         <ul className="hidden text-theme-blue tracking-widest items-center lg:flex flex-row mt-0">
