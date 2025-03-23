@@ -29,8 +29,6 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
   }
-
-
 }
 body{
   @apply text-black-100

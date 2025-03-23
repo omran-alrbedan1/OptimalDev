@@ -1,28 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import Button from "../elements/Button/button";
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
+import { ThemeToggler } from "@/components/ui/ThemeToggler";
 
 const Header = () => {
   const [isCollapse, setIsCollapse] = useState<boolean>(false);
   // const [isScrolled, setIsScrolled] = useState<boolean>(true);
   const path = usePathname();
 
-  // React.useEffect(() => {
-  //   const handleScroll = () => {
-
-  //     setIsScrolled(window.scrollY > 0);
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+  const [windowWidth, setWindowWidth] = useState(0);
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+    
+    // Handle window resize
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="">
@@ -31,15 +33,24 @@ const Header = () => {
      
       {/* Header with fixed positioning #75767e */}
       <header
-        className={`header fixed top-0 lg:-top-[20px] py-3 bg-white z-50 min-w-full lg:h-[13vh] shadow-sm transition-all duration-900 ease-linear`}
+        className={`header fixed top-0 lg:-top-[20px] py-3 dark:bg-darkMod-100 bg-white z-50 min-w-full lg:h-[14vh] shadow-xl transition-all duration-900 ease-linear`}
       >
         <div className={`flex justify-between sm:justify-around  px-6 lg:px-0 border-none lg:ml-20`}>
-          <Link href={"/home"} >
+          <Link href={"/home"} className="dark:hidden block">
             <Image
               src={"/Hive Tech.png"}
-              width={220}
-              height={220}
-              className=""
+              width={windowWidth  > 800 ? 230 : 150}
+              height={windowWidth  > 800 ? 230 : 150}
+   
+              alt="logo"
+            />
+          </Link>
+          <Link href={"/home"} className="hidden dark:block">
+            <Image
+              src={"/logos/logo with text dark.png"}
+              width={windowWidth  > 800 ? 230 : 150}
+              height={windowWidth  > 800 ? 230 : 150}
+           
               alt="logo"
             />
           </Link>
@@ -76,18 +87,18 @@ const Header = () => {
           <li>
             <Button
               className={`${
-                path === "/home" ? "active-link" : " text-primary-color2"
+                path === "/home" ? "active-link" : ""
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
               href="/home"
             >
-              Home
+              Home 
             </Button>
           </li>
           <li>
             <Button
               className={`${
-                path === "/about-us" ? "active-link" : " text-primary-color2"
+                path === "/about-us" ? "active-link" : ""
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
               href="/about-us"
@@ -98,7 +109,7 @@ const Header = () => {
           <li>
             <Button
               className={`${
-                path === "/contact-us" ? "active-link" : " text-primary-color2"
+                path === "/contact-us" ? "active-link" : ""
               } text-[16px] font-semibold px-5 no-underline hover:underline`}
               type="link"
               href="/contact-us"
@@ -109,7 +120,7 @@ const Header = () => {
           <li className="py-2 lg:py-0">
             <Button
               className={`${
-                path === "/team" ? "active-link" : "text-primary-color2"
+                path === "/team" ? "active-link" : ""
               } text-[16px] font-semibold  px-5 no-underline hover:underline`}
               type="link"
               href="/team"
@@ -120,7 +131,7 @@ const Header = () => {
           <li className="py-2 lg:py-0">
             <Button
               className={`${
-                path === "/projects" ? "active-link" : "text-primary-color2"
+                path === "/projects" ? "active-link" : ""
               } text-[16px] font-semibold  px-5 no-underline hover:underline`}
               type="link"
               href="/projects"
@@ -128,7 +139,7 @@ const Header = () => {
               Projects
             </Button>
           </li>
-          <li className="hidden xl:block">
+          {/* <li className="hidden xl:block">
             <Button
               type="link"
               className="text-[16px] font-semibold w-80 h-80 px-8 py-3 bg-primary-color1 rounded-full text-white-100"
@@ -136,6 +147,9 @@ const Header = () => {
             >
               Discuss Project
             </Button>
+          </li> */}
+          <li className="">
+          <ThemeToggler />
           </li>
         </ul>
 
@@ -148,11 +162,11 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-[350px] sm:h-[400px] top-[81px] py-8 bg-white max-xs:w-[80%] xs:w-[50%] md:w-[40%] lg:hidden">
-            <li className="py-2 bg-white">
+          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-[400px] sm:h-[400px] top-[80px] md:top-[96px] py-8 dark:bg-darkMod-300 bg-white-100 max-xs:w-[80%] xs:w-[70%] md:w-[60%] lg:hidden">
+            <li className="py-2 ">
               <Button
                 className={`${
-                  path === "/home" ? "active-link" : "text-primary-color2"
+                  path === "/home" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
                 href="/home"
@@ -161,10 +175,10 @@ const Header = () => {
                 Home
               </Button>
             </li>
-            <li className="py-2 bg-white">
+            <li className="py-2">
               <Button
                 className={`${
-                  path === "/team" ? "active-link" : "text-primary-color2"
+                  path === "/team" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
                 href="/team"
@@ -173,10 +187,10 @@ const Header = () => {
                 Team
               </Button>
             </li>
-            <li className="py-2 bg-white">
+            <li className="py-2">
               <Button
                 className={`${
-                  path === "/projects" ? "active-link" : "text-primary-color2"
+                  path === "/projects" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
                 href="/projects"
@@ -185,10 +199,10 @@ const Header = () => {
                 Projects
               </Button>
             </li>
-            <li className="py-2 bg-white">
+            <li className="py-2 ">
               <Button
                 className={`${
-                  path === "/contact-us" ? "active-link" : "text-primary-color2"
+                  path === "/contact-us" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
                 href="/contact-us"
@@ -197,10 +211,10 @@ const Header = () => {
                 Contact Us
               </Button>
             </li>
-            <li className="py-2 bg-white">
+            <li className="py-2 ">
               <Button
                 className={`${
-                  path === "/about-us" ? "active-link" : "text-primary-color2"
+                  path === "/about-us" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
                 href="/about-us"
@@ -209,7 +223,7 @@ const Header = () => {
                 About Us
               </Button>
             </li>
-            <li className="mx-auto my-9 bg-white">
+            <li className="mx-auto my-9">
               <Button
                 className=" px-6 py-3 bg-primary-color1 text-white rounded-full transition duration-200"
                 type="link"

@@ -77,7 +77,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 container overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}
     >
@@ -91,7 +91,7 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <li
-            className="relative flex flex-col items-center justify-center max-w-full w-56 md:w-[300px] rounded-2xl border border-b-0 border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]  dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
+            className="relative flex flex-col items-center max-w-full w-[200px] h-[150px] md:w-[350px] md:h-[250px] rounded-2xl border border-b-0 border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]  dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
             key={item.id}
           >
           
@@ -100,9 +100,9 @@ export const InfiniteMovingCards = ({
                 width={130} // Fixed width
                 height={100} // Fixed height
                 alt={`image${item.id}`}
-                className="object-contain" // Ensure consistent size
+                className="object-contain w-[70%] h-[60%] max-xs:top-1 top-2" // Ensure consistent size
               />
-              <h1 className="py-4">{item.title}</h1>
+              <h1 className="py-4 absolute max-xs:bottom-1 font-semibold dark:text-gray-300 text-gray-600 bottom-2 text-sm md:text-xl">{item.title}</h1>
     
           </li>
         ))}

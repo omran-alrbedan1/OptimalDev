@@ -6,7 +6,7 @@ import Loader from "@/components/Loader";
 import { Suspense } from "react";
 import Image from "next/image";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
-import { MdErrorOutline } from "react-icons/md";import { BiError } from "react-icons/bi";
+import { BiError } from "react-icons/bi";
 
 const CategoryDetails = async ({ id }: { id: number }) => {
   // Simulate loading (optional)
@@ -37,7 +37,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
 
   return (
     <div className="min-h-screen py-20">
-      <div className=" relative h-[40vh] md:h-[70vh] w-full">
+      <div className=" relative h-[60vh] md:h-[70vh] w-full">
 
         <img src={category.image} alt="backgroundImage" className="absolute w-full h-full object-contain md:object-fill "/>
         <div className="absolute w-full h-full bg-primary-color2 opacity-70"/>

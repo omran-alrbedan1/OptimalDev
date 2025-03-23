@@ -2,15 +2,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Header = ({ title, paragragh,className }: { title: string; paragragh?: string;className?:string }) => {
+const Header = ({ title, paragragh,className, classH }: { title: string; paragragh?: string;className?:string, classH?:string }) => {
   return (
     <div className={className}>
       <motion.h1
-        className="text-2xl sm:text-3xl text-primary-color2 text-center font-semibold"
+        className={`text-2xl sm:text-3xl text-center font-semibold ${classH}`}
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        style={{letterSpacing:"3px"}}
+        style={{letterSpacing:"4px"}}
       >
         {title}
       </motion.h1>
@@ -21,7 +21,7 @@ const Header = ({ title, paragragh,className }: { title: string; paragragh?: str
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        {paragragh &&<p className=" text-lg text-gray-500 text-center mt-4">{paragragh}</p>}
+        {paragragh &&<p className=" text-lg text-gray-600 dark:text-gray-300 text-center mt-4">{paragragh}</p>}
         <span className="block text-center w-36 h-[3px] bg-primary-color1 mt-8"/>
       </motion.div>
     </div>

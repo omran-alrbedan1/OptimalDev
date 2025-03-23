@@ -16,10 +16,10 @@ const ServiceCard = ({service, index}:{service:ServiceProps; index:number}) => {
     whileInView={{ opacity: 1, y: 0, scale: "100%" }}
     transition={{ delay: index * 0.2, duration: 0.9 }}
   >
-    <div className="flex flex-col justify-between h-full rounded-2xl bg-gray-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
+    <div className="flex flex-col justify-between h-full rounded-2xl bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
       <Link href={`/services/${service.id}`} className="relative cursor-pointer h-4/5">
 
-          <div className="absolute w-full rounded-t-2xl rounded-b-lg h-full bg-primary-color2 opacity-0 hover:opacity-30" />
+          <div className="absolute w-full rounded-t-2xl rounded-b-lg h-full bg-primary-color2 dark:bg-darkMod-400 opacity-0 hover:opacity-30" />
           <Image
             src={`https://main.hivetech.space/storage/${service.image}`}
             alt={`image${service.id}`}
@@ -29,7 +29,7 @@ const ServiceCard = ({service, index}:{service:ServiceProps; index:number}) => {
           />
       </Link>
       <div className="py-7 text-center mx-2">
-        <h2 className="text-primary-color2 text-[16px] sm:text-lg font-medium">
+        <h2 className=" text-lg md:text-xl font-medium md:font-semibold tracking-wider md:tracking-widest">
           {service.title}
         </h2>
       </div>

@@ -14,7 +14,7 @@ export default async function Services() {
   const services =response.data.data.slice(0, 3);
 
   return (
-    <section className=" flex flex-col items-center pt-20 bg-gray-50 py-10 px-5 sm:px-10 sm:pb-40 overflow-hidden">
+    <section className=" flex flex-col items-center py-10 bg-gray-50 dark:bg-darkMod-300 mt-0 mb-0  px-5 sm:px-10  overflow-hidden">
   
       <Header title=" Our Services" paragragh=" We are ready to scale up your business with our great service." className="mx-auto"/>
 
@@ -30,9 +30,9 @@ export default async function Services() {
       </div>
       <button
         type="button"
-        className=" mt-10 sm:mt-16 w-40 h-14 rounded-[30px] text-primary-color1 
+        className=" mt-14 sm:mt-16 w-36 h-12 md:w-40 md:h-14 rounded-[30px] text-primary-color1 
         border-primary-color1 border hover:bg-primary-color1
-         hover:border-none font-semibold hover:opacity-75 hover:text-primary-color3
+         hover:border-none font-semibold hover:opacity-75 hover:text-darkMod-300
          transition-all duration-500"
       >
         <Link href={"/services"}>see more &gt;&gt;</Link>

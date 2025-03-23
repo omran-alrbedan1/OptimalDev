@@ -22,11 +22,16 @@ const config: Config = {
                     color1:'#FFB400',
                     color2:'#000000',
                     color3:'#FFFFFF',
-                    color4:'#005AFF',
-                    color5:'#FF6B00',
-                    color6:'#FFD100 ',
-                    color7:'#00FFB4',
-                    color8:'#B400FF'
+                },
+                darkMod:{
+                  DEFAULT: "#343535",
+                  100: "#2a2a2aff",
+                  200: "#1f2020",
+                  300: "#1f1f1f",
+                  400: "#393939",
+                  500: "#161818",
+                  600: "#303030",
+                  700: "#131314",
                 },
                 secondary: "#FBE843",
                 black: {
