@@ -101,7 +101,7 @@ const ContactUsPage = async () => {
               </div>
             </div>
           </div>
-          <div className="w-full overflow-hidden xl:w-1/2 lg:mt-20 xl:mt-14">
+          <div className="w-[98%] overflow-hidden xl:w-1/2 lg:mt-20 xl:mt-14">
             <ContactForm />
           </div>
         </div>

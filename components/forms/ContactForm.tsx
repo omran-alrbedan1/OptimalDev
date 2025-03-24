@@ -129,9 +129,9 @@ const ContactForm = () => {
     >
       {/* First Name */}
       <div className="flex max-sm:flex-col gap-4">
-        <div className="flex-1 relative">
+        <div className="flex-1 relative overflow-hidden">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
               errors.first_name
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -155,9 +155,9 @@ const ContactForm = () => {
         </div>
 
         {/* Last Name */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative overflow-hidden">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
               errors.last_name
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -183,9 +183,9 @@ const ContactForm = () => {
 
       {/* Email */}
       <div className="flex max-sm:flex-col gap-3">
-        <div className="flex-1 relative">
+        <div className="flex-1 relative overflow-hidden">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
               errors.email
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -209,9 +209,9 @@ const ContactForm = () => {
         </div>
 
         {/* Phone Number */}
-        <div className=" flex-1 relative">
+        <div className=" flex-1 relative overflow-hidden">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
               errors.phone
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
