@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -7,7 +8,7 @@ import { MdEmail } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 
 const ContactForm = () => {
-  const [phoneNumber, setPhoneNumber] = useState(""); // Phone number state
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState({
     first_name: "",
     last_name: "",
@@ -16,110 +17,62 @@ const ContactForm = () => {
     message: "",
   });
 
-  // Regular expressions for validation
   const regex = {
-    name: /^[a-zA-Z\s]+$/, // Only letters and spaces
-    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Valid email format
-    phone: /^\+?[1-9]\d{1,14}$/, // International phone number format
-    message: /.+/, // At least one character
+    name: /^[a-zA-Z\s]+$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    phone: /^\+?[1-9]\d{1,14}$/,
+    message: /.+/,
   };
 
-  const handleChange = (value: any) => {
-    setPhoneNumber(value);
+  const validateForm = (formData: any) => {
+    const newErrors = {
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      message: "",
+    };
 
-    // Validate phone number
-    if (!regex.phone.test(value)) {
-      setErrors((prev) => ({ ...prev, phone: "Invalid phone number" }));
-    } else {
-      setErrors((prev) => ({ ...prev, phone: "" }));
+    if (!regex.name.test(formData.first_name)) {
+      newErrors.first_name = "First name must contain only letters";
     }
-  };
 
-  const handleBlur = (
-    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-
-    // Validate based on input name
-    switch (name) {
-      case "first_name":
-        if (!regex.name.test(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            first_name: "First name must contain only letters",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, first_name: "" }));
-        }
-        break;
-      case "last_name":
-        if (!regex.name.test(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            last_name: "Last name must contain only letters",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, last_name: "" }));
-        }
-        break;
-      case "email":
-        if (!regex.email.test(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            email: "Invalid email format",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, email: "" }));
-        }
-        break;
-      case "message":
-        if (!regex.message.test(value)) {
-          setErrors((prev) => ({
-            ...prev,
-            message: "Message cannot be empty",
-          }));
-        } else {
-          setErrors((prev) => ({ ...prev, message: "" }));
-        }
-        break;
-      default:
-        break;
+    if (!regex.name.test(formData.last_name)) {
+      newErrors.last_name = "Last name must contain only letters";
     }
+
+    if (!regex.email.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!regex.phone.test(phoneNumber)) {
+      newErrors.phone = "Invalid phone number";
+    }
+
+    if (!regex.message.test(formData.message)) {
+      newErrors.message = "Message cannot be empty";
+    }
+
+    return newErrors;
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Get form data
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    
+    const validationErrors = validateForm(data);
+    setErrors(validationErrors);
 
-    // Add phone number to form data
-    data.phone = phoneNumber;
-
-    // Log all form values
-    console.log("Form Data:", data);
-
-    // Validate required fields
-    if (
-      !data.first_name ||
-      !data.last_name ||
-      !data.email ||
-      !data.phone ||
-      !data.message
-    ) {
-      console.error("All fields are required!");
-      return;
+    // Check if there are any errors
+    const hasErrors = Object.values(validationErrors).some(error => error !== "");
+    
+    if (!hasErrors) {
+      // Submit the form if no errors
+      data.phone = phoneNumber;
+      console.log("Form Data:", data);
+      console.log("Form is valid. Submitting...");
     }
-
-    // Additional validation (e.g., email format)
-    if (!regex.email.test(data.email as string)) {
-      console.error("Invalid email format!");
-      return;
-    }
-
-    // If everything is valid, proceed with form submission
-    console.log("Form is valid. Submitting...");
   };
 
   return (
@@ -129,9 +82,9 @@ const ContactForm = () => {
     >
       {/* First Name */}
       <div className="flex max-sm:flex-col gap-4">
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400  h-12 border ${
               errors.first_name
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -145,8 +98,7 @@ const ContactForm = () => {
               type="text"
               name="first_name"
               placeholder="First Name"
-              onBlur={handleBlur}
-              className="dark:text-white outline-none "
+              className="dark:text-white outline-none overflow-hidden dark:bg-darkMod-400"
             />
           </div>
           {errors.first_name && (
@@ -155,9 +107,9 @@ const ContactForm = () => {
         </div>
 
         {/* Last Name */}
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400  h-12 border ${
               errors.last_name
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -171,8 +123,7 @@ const ContactForm = () => {
               type="text"
               name="last_name"
               placeholder="Last Name"
-              onBlur={handleBlur}
-              className=" dark:text-white outline-none "
+              className=" dark:text-white outline-none dark:bg-darkMod-400 overflow-hidden"
             />
           </div>
           {errors.last_name && (
@@ -183,9 +134,9 @@ const ContactForm = () => {
 
       {/* Email */}
       <div className="flex max-sm:flex-col gap-3">
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400  h-12 border ${
               errors.email
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -199,8 +150,7 @@ const ContactForm = () => {
               type="email"
               name="email"
               placeholder="Email"
-              onBlur={handleBlur}
-              className="dark:text-white outline-none "
+              className="dark:text-white outline-none dark:bg-darkMod-400 overflow-hidden "
             />
           </div>
           {errors.email && (
@@ -209,9 +159,9 @@ const ContactForm = () => {
         </div>
 
         {/* Phone Number */}
-        <div className=" flex-1 relative overflow-hidden">
+        <div className=" flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 max-xs:h-10 h-12 border ${
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400  h-12 border ${
               errors.phone
                 ? "border-red-500"
                 : "border-gray-300 focus-within:border-primary-color1"
@@ -220,10 +170,14 @@ const ContactForm = () => {
             <PhoneInput
               international
               defaultCountry="SY"
-              value={phoneNumber} // Controlled value
-              onChange={handleChange} // Let TypeScript infer the type
+              value={phoneNumber}
+              onChange={setPhoneNumber}
               placeholder="Enter phone number"
-              className="dark:text-white outline-none text-gray-400"
+              className="dark:text-white outline-none overflow-hidden"
+              numberInputProps={{
+                className: "dark:bg-darkMod-400 focus:border-none focus:outline-none",
+                style: { outline: "none", border: "none" } // Fallback for stubborn styles
+              }}
             />
           </div>
           {errors.phone && (
@@ -233,24 +187,17 @@ const ContactForm = () => {
       </div>
 
       {/* Message */}
-      <div
-        className={`flex-1 max-md:flex-col relative ${
-          errors.message
-            ? ""
-            : "border-gray-300 focus-within:border-primary-color1"
-        }`}
-      >
+      <div className="flex-1 max-md:flex-col relative">
         <textarea
           rows={3}
           required
-          className={`w-full outline-none px-4 py-2  dark:text-white rounded-[8px] border ${
+          className={`w-full outline-none px-4 py-2  dark:text-white dark:bg-darkMod-400 rounded-[8px] border ${
             errors.message
               ? "border-red-500"
               : "border-gray-300 focus-within:border-primary-color1"
           }`}
           placeholder="Your message here"
           name="message"
-          onBlur={handleBlur}
         ></textarea>
         {errors.message && (
           <p className="text-red-500 text-sm mt-1">{errors.message}</p>

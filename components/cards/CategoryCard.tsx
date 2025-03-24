@@ -2,8 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Category } from "@/types";
-import Image from "next/image";
-import { MdModelTraining } from "react-icons/md";
+
 import Link from "next/link";
 
 const CategoryCard = ({
@@ -18,10 +17,7 @@ const CategoryCard = ({
       key={index}
       initial={{ opacity: 0, x: "-100%" }}
       whileInView={{ opacity: 1, x: 0 }}
-      transition={{
-        delay: index * 0.2,
-        duration: 0.8,
-      }}
+      transition={{ duration: 0.8, delay: index * 0.2 }}
       className="h-40 sm:h-44 relative flex flex-1 bg-zinc-100 border-zinc-300 border-[1px] shadow-lg dark:shadow-gray-600 dark:border-dotted  dark:border-primary-color1 dark:bg-darkMod-600 rounded-xl"
     >
       {/* <span className="absolute left-1/2 bg-zinc-100 dark:bg-darkMod-600 rounded-full -translate-x-1/2 -translate-y-1/2 top-0 flex justify-center items-center w-16 h-16">

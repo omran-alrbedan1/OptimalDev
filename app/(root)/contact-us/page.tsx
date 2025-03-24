@@ -34,7 +34,7 @@ const ContactUsPage = async () => {
 
   return (
     
-    <div className="min-h-[150vh] lg:min-h-[110vh] relative">
+    <div className="min-h-[100vh] overflow-y-auto relative">
       {/* Background Overlay */}
       <img
         src="/images/building.jpg"
@@ -44,7 +44,7 @@ const ContactUsPage = async () => {
       <div className="absolute w-full h-full bg-darkMod-700 opacity-70" />
 
       {/* Content Section */}
-      <div className="absolute inset-0 max-md:pt-20 md:pt-24 flex justify-center items-center flex-col pb-10">
+      <div className="relative w-full h-full z-10 max-md:pt-20 md:pt-24 flex justify-center items-center flex-col pb-10">
         <div className="flex flex-col items-center justify-center text-center p-6 md:mb-10">
           <h1
             className="text-2xl sm:text-3xl md:text-4xl text-white mb-6 font-bold"
