@@ -52,30 +52,53 @@ const Section = ({ sections }: { sections: SectionArray }) => {
         <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-8 mx-0" />
       </motion.p>
 
-      <div className="relative min-h-[100vh] sm:min-h-[60vh] w-full overflow-hidden box-border">
+      <div className="relative h-[90vh] sm:h-[70vh] w-full overflow-hidden box-border">
         <img
           src={`https://main.hivetech.space/assets/banners/about-banner1.jpg`}
           alt="image"
-          className="bg-cover w-full h-full absolute object-cover"
+          className="w-full h-full absolute object-fill"
         />
         <div className="absolute w-full h-full bg-primary-color2 opacity-80" />
-        <div
-          className="absolute flex w-full h-full flex-col lg:flex-row py-10
-  justify-between items-center px-5 md:px-10 gap-10 top-0"
-        ><div className="w-1/3 flex items-center justify-center">
-
-          <Image
-            src={"/logos/logo with text dark.png"}
-            width={windowWidth > 900 ? 270 : 160}
-            height={windowWidth > 900 ? 270 : 160}
-            alt="Logo"
-       
+        <div className="absolute flex w-full h-full flex-col lg:flex-row py-10 justify-between items-center px-5 md:px-10 gap-10">
+          <div className="w-1/3 max-lg:w-full flex items-center justify-center">
+            <Image
+              src={"/logos/logo with text dark.png"}
+              width={windowWidth > 900 ? 270 : 160}
+              height={windowWidth > 900 ? 270 : 160}
+              alt="Logo"
             />
-            </div>
-          <div
-            className="w-2/3 text-[13px] md:text-[15px] text-gray-300 text-center md:text-start px-4 overflow-y-auto"
-            dangerouslySetInnerHTML={{ __html: sections[0].description }}
-          />
+          </div>
+          {/* Modified scroll container */}
+          <div className="w-2/3 max-lg:w-full h-full flex-1 min-h-0 text-[13px] md:text-[15px] text-gray-300 text-center lg:text-start px-4 overflow-y-auto thin-scrollbar">
+            <div
+              className="min-h-full"
+              dangerouslySetInnerHTML={{ __html: sections[0].description }}
+            />
+          </div>
+
+          <style>
+            {`
+        .thin-scrollbar::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+        .thin-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+        }
+      `}
+          </style>
         </div>
       </div>
     </section>

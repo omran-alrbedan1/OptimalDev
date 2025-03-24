@@ -218,23 +218,23 @@ const teams = [
 
 export default function TeamPage() {
   return (
-    <div className="">
-      <section className="hero h-[80vh] my-auto">
+    <div className="max-lg:pt-32 lg:pt-5">
+      <section className="flex flex-col gap-y-16 xs:gap-y-24 lg:flex-row items-center h-[74vh] px-10 lg:px-32">
         {/* Fade effect with Framer Motion */}
         <motion.div
           initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
           animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
           transition={{ duration: 0.8, ease: "easeOut" }} // Animation duration and easing
-          className="my-auto ml-10"
+          className="lg:w-1/2"
         >
-          <h1 className="text-5xl sm:text-6xl text-primary-color1 font-bold leading-tight mb-6">
+          <h1 className="text-3xl md:text-4xl xl:text-5xl tracking-widest font-bold max-lg:text-center leading-tight mb-6">
             Our Team
           </h1>
           <motion.p
             initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
             animate={{ opacity: 1, y: 0 }} // Animate to fully visible and original position
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }} // Animation duration and easing
-            className=" text-xl text-gray-400"
+            className=" text-xl max-lg:text-center text-gray-400"
           >
             Our team is full of passionate people and ready to make your dream
             software come true.
@@ -243,7 +243,7 @@ export default function TeamPage() {
 
         {/* Fade effect for the image */}
         <motion.div
-          initial={{ opacity: 0, y: -400, x: 600 }}
+          initial={{ opacity: 0, y: -400, x: "100%" }}
           animate={{ opacity: 1, y: 0, x: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
           className="flex pt-5 w-full justify-center items-center order-first md:w-full lg:order-last lg:w-1/2"

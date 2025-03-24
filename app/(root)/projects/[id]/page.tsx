@@ -31,11 +31,11 @@ const ServicesPage = async ({ id }: { id: number }) => {
   console.log(project);
 
   return (
-    <div className="min-h-screen py-20 pt-40 px-4 sm:px-8 lg:px-10">
+    <div className="min-h-screen py-20 pt-36 md:pt-40 px-4 sm:px-8 lg:px-10">
       {/* Project Header */}
       <div className="max-w-7xl mx-auto text-center pb-10">
        
-          <Animation animationVertix={'x'} text={project.title} style={ {letterSpacing: "2.6px" }}  className={"text-3xl md:text-4xl font-semibold mb-4"}/>
+          <Animation animationVertix={'y'} text={project.title} style={ {letterSpacing: "3px" }}  className={"text-3xl md:text-4xl font-semibold mb-4"}/>
          
           {/* <Animation text={project.title}/> */}
         <Animation className="text-lg text-gray-600" animationVertix="y" text={project.sub_title} />
@@ -55,7 +55,7 @@ const ServicesPage = async ({ id }: { id: number }) => {
             laudantium qui officia soluta dolorum adipisci!"
           />
         </div>
-        <div className="flex flex-1 p-4 items-center justify-center">
+        <div className="flex flex-1 px-4 items-center justify-center">
           <Image
             src={`https://main.hivetech.space/storage/${project.image}`}
             alt={project.title}
@@ -66,13 +66,13 @@ const ServicesPage = async ({ id }: { id: number }) => {
         </div>
       </div>
 
-      <div className=" md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto ">
+      <div className="py-24 md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto">
         {" "}
         <Carousel slides={project.files} />
       </div>
 
-      <div className="max-w-6xl mx-auto mt-14 text-center">
-        <Animation animationVertix="x" className="text-2xl font-bold mb-10"
+      <div className="max-w-6xl mx-auto py-14 px-2 text-center">
+        <Animation animationVertix="y" className="text-2xl mb-20 font-bold"
           text="Project Responsibilities"
         />
 

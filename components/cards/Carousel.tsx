@@ -57,7 +57,7 @@ const Slide = ({
     <div className="relative w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden"
      style={{
        backgroundImage: `url(https://main.hivetech.space/storage/${path})`,
-       backgroundSize: "100% 100%", 
+       backgroundSize: "cover", 
        backgroundPosition: "center",
        backgroundRepeat: "no-repeat",
       

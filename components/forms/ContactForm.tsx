@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-input";
@@ -101,7 +101,13 @@ const ContactForm = () => {
     console.log("Form Data:", data);
 
     // Validate required fields
-    if (!data.first_name || !data.last_name || !data.email || !data.phone || !data.message) {
+    if (
+      !data.first_name ||
+      !data.last_name ||
+      !data.email ||
+      !data.phone ||
+      !data.message
+    ) {
       console.error("All fields are required!");
       return;
     }
@@ -117,16 +123,21 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 mx-5 xl:mt-14">
+    <form
+      onSubmit={handleSubmit}
+      className="text-gray-700 flex flex-col gap-6 max-xs:px-6 px-10 xl:pt-10"
+    >
       {/* First Name */}
-      <div className="flex gap-4">
-        <div className="relative">
+      <div className="flex max-sm:flex-col gap-4">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-xl bg-white max-xs:h-9 h-10 border ${
-              errors.first_name ? "border-red-500" : "border-gray-300 focus-within:border-primary-color1"
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+              errors.first_name
+                ? "border-red-500"
+                : "border-gray-300 focus-within:border-primary-color1"
             }`}
           >
-            <span className="text-primary-color1 text-lg">
+            <span className="text-primary-color1 text-xl">
               <IoPerson />
             </span>
             <input
@@ -135,7 +146,7 @@ const ContactForm = () => {
               name="first_name"
               placeholder="First Name"
               onBlur={handleBlur}
-              className="outline-none max-xs:w-28 max-md:w-36"
+              className="dark:text-white outline-none "
             />
           </div>
           {errors.first_name && (
@@ -144,13 +155,15 @@ const ContactForm = () => {
         </div>
 
         {/* Last Name */}
-        <div className="relative">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-xl bg-white max-xs:h-9 h-10 border ${
-              errors.last_name ? "border-red-500" : "border-gray-300 focus-within:border-primary-color1"
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+              errors.last_name
+                ? "border-red-500"
+                : "border-gray-300 focus-within:border-primary-color1"
             }`}
           >
-            <span className="text-primary-color1 text-lg">
+            <span className="text-primary-color1 text-xl">
               <IoPerson />
             </span>
             <input
@@ -159,7 +172,7 @@ const ContactForm = () => {
               name="last_name"
               placeholder="Last Name"
               onBlur={handleBlur}
-              className="outline-none max-xs:w-28 max-md:w-36"
+              className=" dark:text-white outline-none "
             />
           </div>
           {errors.last_name && (
@@ -169,14 +182,16 @@ const ContactForm = () => {
       </div>
 
       {/* Email */}
-      <div className="flex gap-4">
-        <div className="relative">
+      <div className="flex max-sm:flex-col gap-3">
+        <div className="flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-xl bg-white max-xs:h-9 h-10 border ${
-              errors.email ? "border-red-500" : "border-gray-300 focus-within:border-primary-color1"
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+              errors.email
+                ? "border-red-500"
+                : "border-gray-300 focus-within:border-primary-color1"
             }`}
           >
-            <span className="text-primary-color1 text-lg">
+            <span className="text-primary-color1 text-xl">
               <MdEmail />
             </span>
             <input
@@ -185,7 +200,7 @@ const ContactForm = () => {
               name="email"
               placeholder="Email"
               onBlur={handleBlur}
-              className="outline-none max-xs:w-28 max-md:w-36"
+              className="dark:text-white outline-none "
             />
           </div>
           {errors.email && (
@@ -194,10 +209,12 @@ const ContactForm = () => {
         </div>
 
         {/* Phone Number */}
-        <div className="relative">
+        <div className=" flex-1 relative">
           <div
-            className={`flex flex-nowrap items-center gap-2 px-3 rounded-xl bg-white max-xs:h-9 h-10 border ${
-              errors.phone ? "border-red-500" : "border-gray-300 focus-within:border-primary-color1"
+            className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-700 max-xs:h-10 h-12 border ${
+              errors.phone
+                ? "border-red-500"
+                : "border-gray-300 focus-within:border-primary-color1"
             }`}
           >
             <PhoneInput
@@ -206,7 +223,7 @@ const ContactForm = () => {
               value={phoneNumber} // Controlled value
               onChange={handleChange} // Let TypeScript infer the type
               placeholder="Enter phone number"
-              className="outline-none flex-grow max-xs:w-[140px] xl:w-56 max-md:w-[167px]"
+              className="dark:text-white outline-none text-gray-400"
             />
           </div>
           {errors.phone && (
@@ -216,11 +233,20 @@ const ContactForm = () => {
       </div>
 
       {/* Message */}
-      <div className="relative">
+      <div
+        className={`flex-1 max-md:flex-col relative ${
+          errors.message
+            ? ""
+            : "border-gray-300 focus-within:border-primary-color1"
+        }`}
+      >
         <textarea
+          rows={3}
           required
-          className={`w-full outline-none rounded-[8px] pt-2 pl-5 max-xs:w-[320px] border ${
-            errors.message ? "border-red-500" : "border-gray-300 focus-within:border-primary-color1"
+          className={`w-full outline-none px-4 py-2  dark:text-white rounded-[8px] border ${
+            errors.message
+              ? "border-red-500"
+              : "border-gray-300 focus-within:border-primary-color1"
           }`}
           placeholder="Your message here"
           name="message"
@@ -232,12 +258,12 @@ const ContactForm = () => {
       </div>
 
       {/* Submit Button */}
-      <div>
+      <div className="flex-1">
         <button
           type="submit"
-          className="bg-primary-color1 ml-5 w-24 h-11 flex justify-center items-center rounded-xl relative"
+          className="bg-primary-color1 max-sm:w-full w-1/4 h-11 flex justify-center items-center rounded-[8px] relative"
         >
-          <span className="absolute h-full w-full bg-primary-color2 opacity-30 rounded-xl" />
+          <span className="absolute h-full w-full bg-primary-color2 opacity-30 rounded-[8px]" />
           <span className="absolute text-white">Submit</span>
         </button>
       </div>

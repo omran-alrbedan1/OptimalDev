@@ -39,8 +39,8 @@ const Header = () => {
           <Link href={"/home"} className="dark:hidden block">
             <Image
               src={"/Hive Tech.png"}
-              width={windowWidth  > 800 ? 230 : 150}
-              height={windowWidth  > 800 ? 230 : 150}
+              width={windowWidth  > 800 ? 210 : 150}
+              height={windowWidth  > 800 ? 210 : 150}
    
               alt="logo"
             />

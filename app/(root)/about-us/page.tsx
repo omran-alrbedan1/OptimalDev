@@ -19,7 +19,7 @@ const ContactUsPage = async () => {
       <img
         src="/images/about-us.webp"
         alt="building"
-        className="absolute w-full h-full object-cover"
+        className="absolute w-full h-full object-cover md:object-fill"
       />
 
       

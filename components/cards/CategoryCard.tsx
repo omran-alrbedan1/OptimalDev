@@ -22,11 +22,11 @@ const CategoryCard = ({
         delay: index * 0.2,
         duration: 0.8,
       }}
-      className="h-44 relative flex flex-1 bg-zinc-100 border-zinc-300 border-[1px] shadow-lg dark:shadow-gray-600 dark:border-dotted  dark:border-primary-color1 dark:bg-darkMod-600 rounded-xl"
+      className="h-40 sm:h-44 relative flex flex-1 bg-zinc-100 border-zinc-300 border-[1px] shadow-lg dark:shadow-gray-600 dark:border-dotted  dark:border-primary-color1 dark:bg-darkMod-600 rounded-xl"
     >
-      <span className="absolute left-1/2 bg-zinc-100 dark:bg-darkMod-600 rounded-full -translate-x-1/2 -translate-y-1/2 top-0 flex justify-center items-center w-16 h-16">
+      {/* <span className="absolute left-1/2 bg-zinc-100 dark:bg-darkMod-600 rounded-full -translate-x-1/2 -translate-y-1/2 top-0 flex justify-center items-center w-16 h-16">
         <MdModelTraining className="text-6xl" />
-      </span>
+      </span> */}
       <Link
         href={`/services/category/${category.id}`}
         className="absolute cursor-pointer py-4 px-6 w-full drop-shadow-2xl  h-full flex justify-center items-center flex-col "

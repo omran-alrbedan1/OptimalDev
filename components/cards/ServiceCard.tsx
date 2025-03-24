@@ -10,10 +10,11 @@ const ServiceCard = ({service, index}:{service:ServiceProps; index:number}) => {
     key={service.id}
     initial={{
       opacity: 0,
-      y:  150 ,
+      // y:  150 ,
+      x:"100%",
       scale: "90%",
     }}
-    whileInView={{ opacity: 1, y: 0, scale: "100%" }}
+    whileInView={{ opacity: 1,x:0, scale: "100%" }}
     transition={{ delay: index * 0.2, duration: 0.9 }}
   >
     <div className="flex flex-col justify-between h-full rounded-2xl bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">

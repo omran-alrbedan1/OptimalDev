@@ -24,7 +24,7 @@ export default async function Projects() {
     <Header title='Our Projects' paragragh='We are ready to scale up your business with our great work result.'/>
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-10  sm:gap-y-10 justify-items-center mx-auto mt-10 ">
           {projects.map((project:ProjectProps, index:number) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard key={project.id} project={project} index={index} animationVertix="y" />
           ))}
         </div>
         <button
