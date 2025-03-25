@@ -18,12 +18,9 @@ const  ServicesPage = async () =>  {
   const services = response.data.data;
   return (
 
-      <section className="container flex flex-col items-center  pt-40 px-24 mx-auto">
-        <Header
-          title="Services"
-          paragragh="these are all of our Services"
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-x-8 sm:gap-y-10 justify-items-center mx-auto mt-10 ">
+      <section className="w-[99%] flex flex-col items-center pt-32   md:pt-40 xl:px-24 mx-auto overflow-hidden">
+        <Header title="Services"/>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7 sm:gap-x-8 sm:gap-y-10 justify-items-center mx-auto mt-10">
           {services.map((service: ServiceProps, index: number) => (
             <ServiceCard key={service.id} service={service} index={index} />
           ))}

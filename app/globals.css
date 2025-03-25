@@ -132,6 +132,3 @@ section {
 .carousel {
    transform: translateX(3,3,3);
 }
-.react-international-phone-input {
-  @apply dark:bg-darkMod-400;
-}
