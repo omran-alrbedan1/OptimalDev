@@ -2,34 +2,33 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Animation = ({
-  text,
+const AnimateCard = ({
+    children,
   className,
-  style,
   animationVertix,
+  index
 }: {
+    children: React.ReactNode
   animationVertix: "x" | "y";
-  text: string;
   className?: string;
-  style?: object;
+  index:number
 }) => {
   return (
     <div>
-      <motion.h1
+      <motion.div
         className={className}
-        style={style}
         initial={{
           opacity: 0,
           x: animationVertix == "x" ? "-100%" : "0",
           y: animationVertix === "y" ? 100 : 0,
         }}
         whileInView={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.4, ease: "linear" }}
+        transition={{ duration: 0.9, delay: 0.2 * index, once:true }}
       >
-        {text}
-      </motion.h1>
+        {children}
+      </motion.div>
     </div>
   );
 };
 
-export default Animation;
+export default AnimateCard;
