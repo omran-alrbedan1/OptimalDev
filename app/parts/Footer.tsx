@@ -1,95 +1,154 @@
 
-import React from 'react';
-import Image from 'next/image'; // Use Next.js Image component
 
-import Button from '../elements/Button/button';
+import Image from "next/image";
+import React from "react";
 
-export default function Footer() {
-  return (<> 
-    <div className="max-w-full bg-gray-50 border-t border-gray-200 pb-6 mx-auto">
-      <div className=" flex-col">
-        <div className="flex flex-col sm:flex-row mt-8 justify-center">
-          {/* Brand Section */}
-          <div className="sm:w-1/3 flex-col ml-16 mr-8 justify-center items-center md:ml-24">
-            <Image
-              src={"/Hive Tech.png"}
-              width={230}
-              height={230}
-              className="mb-5"
-              alt="logo"
-            />
-            <p className="w-full text-lg text-black-300 font-light ml-4">
-              Growing Your Business
-              {' '}
-              <br />
-              Is Our Calling
-            </p>
-          </div>
+import { FaInstagram } from "react-icons/fa6";
+import { FaFacebookF } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaPhoneAlt } from "react-icons/fa";
+import { MdOutlineMail } from "react-icons/md";
+import { TbArrowBadgeLeftFilled } from "react-icons/tb";
+import Button from "../elements/Button/button";
+import Link from "next/link";
 
-          {/* Office Section */}
-          <div className="w-1/3 mt-0 ml-16 mr-0 sm:ml-0 sm:mr-5">
-            <h1 className="text-lg text-primary-color1 pt-4 pb-2">
-              Office
-            </h1>
-            <div className='ml-5 space-y-2'>
-              <p className="text-lg text-black-300 font-light whitespace-nowrap">
-                info@hivetech.space
-              </p>
-              <p className="text-lg text-black-300 font-light whitespace-nowrap">
-                Damascus, Syria
-              </p>
-              <p className="text-lg text-black-300 font-light">
-                <span className='whitespace-nowrap'>+963937954969 /</span> <span className='whitespace-nowrap'>+963 954 872 922</span> 
-              </p>
+const Footer = () => {
+  return (
+    <div className="relative min-h-[60vh] w-full">
+      <img
+        className="absolute w-full h-full object-fill"
+        src="/assets/footer-bg.png"
+      />
+      <div className="absolute w-full h-full bg-[#1f4d92]/70" />
+      <div className="relative w-full h-full pt-12 md:pt-20 overflow-hidden md:px-2 lg:px-4 xl:px-10 pb-5">
+        <div className="flex flex-wrap items-stretch gap-14">
+          <div className="flex flex-col flex-grow basis-[400px]  items-start gap-6 md:gap-8 px-10 justify-start">
+            <div className="flex items-center justify-center">
+              <Image
+                src={"/logos/logo with text dark.png"}
+                width={230}
+                height={230}
+                className="mb-5"
+                alt="logo"
+              />
             </div>
-          </div>
-
-          {/* Social Section */}
-          <div className="w-1/3 ml-16 sm:ml-0 mt-0">
-            <h1 className="text-lg text-primary-color1 pt-4 pb-2">
-              Social
-            </h1>
-            <div className='ml-5 space-y-2'>
+            <p className="text-[#BBBBBB] text-start ">
+              Growing your business with strategic design and innovative
+              solutions. Let’s elevate your brand together.
+            </p>
+            <div className="flex items-center justify-between gap-5">
               <Button
-                href="https://www.instagram.com/racmathafidz/"
-                type="link"
+                href="https://github.com/racmathafidz"
                 target="_blank"
-                className="flex text-lg text-black-300 font-light hover:underline"
+                type="link"
                 isExternal
+                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
               >
-                Instagram
+                <FaGithub className="text-6xl" />
               </Button>
               <Button
                 href="https://www.linkedin.com/in/racmat-hafidz-89982a156/"
-                type="link"
                 target="_blank"
-                className="flex text-lg text-black-300 font-light hover:underline"
+                type="link"
                 isExternal
+                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
               >
-                LinkedIn
+                <FaLinkedinIn className="text-2xl" />
               </Button>
               <Button
                 href="https://github.com/racmathafidz"
-                type="link"
                 target="_blank"
-                className="flex text-lg text-black-300 font-light hover:underline"
+                type="link"
                 isExternal
+                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
               >
-                Github
+                <FaFacebookF className="text-3xl" />
+              </Button>
+              <Button
+                href="https://www.instagram.com/racmathafidz/"
+                target="_blank"
+                type="link"
+                isExternal
+                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
+              >
+                <FaInstagram className="text-3xl" />
               </Button>
             </div>
           </div>
+          <div className="flex flex-col flex-grow basis-[200px]   items-start px-10 gap-8 md:gap-10 justify-start">
+            <div className="flex flex-col items-start justify-start">
+              <h1 className="text-white font-semibold tracking-wider text-xl xl:text-2xl">
+                Fast Links
+              </h1>
+              <span className="block mt-5 w-8 h-1 bg-primary-color1 rounded-xl" />
+            </div>
+            <div className="flex flex-col justify-between items-start gap-5 md:gap-8">
+              <Link
+                href="/about-us"
+                className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]"
+              >
+                <TbArrowBadgeLeftFilled className="text-[#BBBBBB] text-2xl" />
+                About us
+              </Link>
+              <Link
+                href="/contact-us"
+                className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]"
+              >
+                <TbArrowBadgeLeftFilled className="text-[#BBBBBB] text-2xl" />
+                Contact us
+              </Link>
+              <Link
+                href="/projects"
+                className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]"
+              >
+                <TbArrowBadgeLeftFilled className="text-[#BBBBBB] text-2xl" />
+                Projects
+              </Link>
+              <Link
+                href="/services"
+                className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]"
+              >
+                <TbArrowBadgeLeftFilled className="text-[#BBBBBB] text-2xl" />
+                Services
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-col flex-grow basis-[400px]   items-start px-10 gap-8 md:gap-10 justify-start">
+            <div className="flex flex-col items-start justify-start">
+              <h1 className="text-white font-semibold tracking-wider text-xl xl:text-2xl">
+                Contact Us
+              </h1>
+              <span className="block mt-5 w-8 h-1 bg-primary-color1 rounded-xl" />
+            </div>
+            <div className="flex flex-col justify-between items-start gap-6 md:gap-8">
+              <div className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]">
+                <FaLocationDot className="text-white text-2xl" />
+                Damascus, Syria
+              </div>
+              <div className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]">
+                <MdOutlineMail className="text-white text-2xl" />
+                info@hivetech.space
+              </div>
+              <div className="flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-700 hover:text-white-100 text-[#BBBBBB]">
+                <FaPhoneAlt className="text-white text-2xl" />
+                <span className="whitespace-nowrap">+963937954969 /</span>{" "}
+                <span className="whitespace-nowrap">+963 954 872 922</span>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Copyright Section */}
-        <div className="flex justify-center items-center text-center text-gray-100 mt-10 mb-2">
-          <p className="text-lg text-black-300 font-light">
-          &copy; 2025 Your Company. All rights reserved. by <span className='text-primary-color1 font-medium text-2xl'>Hive<span className='text-black'>Tech</span></span>
+        <div className="flex w-[90%]  items-center justify-center mx-auto mt-14">
+          <span className="basis-[1px] flex-grow h-[1.5px] bg-darkMod-400"/>
+          <p className="text-[#BBBBBB] text-center font-light text-[14px] px-5">
+          &copy; 2025 Your Company. All rights reserved. by <span className='text-[16px] text-primary-color1 font-medium '>Hive<span className='text-black'>Tech</span></span>
           </p>
+          <span className="basis-[1px] flex-grow h-[1.5px] bg-darkMod-400"/>
         </div>
       </div>
     </div>
-    </>
-
   );
-}
+};
+
+export default Footer;

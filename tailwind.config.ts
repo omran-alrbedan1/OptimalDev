@@ -20,6 +20,7 @@ const config: Config = {
                     "100": "#FFE8F0",
                     DEFAULT: "#EE2B69",
                     color1:'#FFB400',
+                    hover:'#d99b37',
                     color2:'#000000',
                     color3:'#FFFFFF',
                 },

@@ -13,7 +13,7 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
-    className="container mx-auto mt-10 mb-0"
+    className=" mx-auto mt-10 px-2 sm:px-10 mb-0"
   >
     <motion.h1
       className="text-3xl md:text-4xl  text-center font-extrabold tracking-widest"
@@ -50,16 +50,16 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: item.id * 0.1 }}
-            className="flex-col w-11/12 sm:w-10/12 rounded-2xl shadow-xl sm:shadow-2xl border px-8 py-6 mx-2 sm:mx-10 mb-6 mt-6 xl:mx-auto sm:mb-12
+            className="flex-col ml-auto mr-auto w-11/12 sm:w-10/12 rounded-2xl shadow-xl sm:shadow-2xl border px-8 py-6  mb-6 mt-6 mx-auto sm:mb-12
              border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]  dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
           >
             <div className="flex items-center mb-5">
               <Image
                 src={`https://main.hivetech.space/storage/${item.image}`}
                 alt={`Testimonial by ${item.id}`}
-                width={80}
-                height={80}
-                className="w-20 h-20 rounded-full"
+                width={100}
+                height={100}
+                className="max-w-36 max-h-36 rounded-full"
               />
               <div className="flex-col pl-5">
                 <h2 className=" font-semibold text-xl">{item.title}</h2>

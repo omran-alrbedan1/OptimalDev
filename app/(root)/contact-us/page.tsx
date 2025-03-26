@@ -67,7 +67,7 @@ const ContactUsPage = async () => {
           <div className="w-1/2 flex flex-col justify-center items-center max-lg:w-full">
             <div className="flex flex-col gap-y-3">
               <div className="flex items-start gap-4">
-                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-3">
+                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
                   <MdLocationOn />
                 </span>
                 {address && (
@@ -78,7 +78,7 @@ const ContactUsPage = async () => {
                 )}
               </div>
               <div className="flex items-start gap-4">
-                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-3 max-xs:mt-1">
+                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
                   <FaPhone />
                 </span>
                 {phone && (

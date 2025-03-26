@@ -15,7 +15,7 @@ export interface Category {
   title: string;
   description: string;
   image: string | null;
-  image_icon: string | null;
+  image_icon: string ;
   created_at: string;
   updated_at: string;
 }

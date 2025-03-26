@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SliderArray } from "@/types";
@@ -19,7 +19,9 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % sliders.length);
     } else if (offset > 100) {
       // Dragged right: go to the previous slide
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + sliders.length) % sliders.length);
+      setCurrentIndex(
+        (prevIndex) => (prevIndex - 1 + sliders.length) % sliders.length
+      );
     }
   };
 
@@ -31,12 +33,14 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
       //   // backgroundSize: "contain",
       //   backgroundRepeat: "no-repeat",
       //   backgroundPosition: "center",
-     
+
       // }}
     >
-    
-  <img src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`} alt="Background" className="absolute object-fill w-full h-full"/>
-
+      <img
+        src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`}
+        alt="Background"
+        className="absolute object-fill w-full h-full"
+      />
 
       {/* Black overlay layer */}
       <div
@@ -69,14 +73,17 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
               </h2>
               <div
                 className="text-gray-100 mb-6 xl:mx-80 max-sm:mb-10"
-                dangerouslySetInnerHTML={{ __html: sliders[currentIndex].description }}
+                dangerouslySetInnerHTML={{
+                  __html: sliders[currentIndex].description,
+                }}
               />
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center gap-4 mt-10
+              ">
                 <motion.a
                   href={sliders[currentIndex].first_btn_url}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="text-[14px] sm:text-sm border-primary-color1 border text-white sm:px-6 w-44 sm:w-auto flex justify-center items-center py-2 sm:py-3 rounded-xl transition-colors"
+                  className="text-[14px] sm:text-sm border-primary-color1 border text-white sm:px-8 w-44 sm:w-fit flex justify-center items-center py-3 sm:py-4  rounded-[8px] transition-colors"
                 >
                   {sliders[currentIndex].first_btn_text}
                 </motion.a>
@@ -84,7 +91,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
                   href={sliders[currentIndex].second_btn_url}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="text-[14px] sm:text-sm bg-primary-color1 text-white sm:px-6 w-40 sm:w-auto flex justify-center items-center sm:py-3 rounded-xl transition-colors"
+                  className="text-[14px] sm:text-sm bg-primary-color1 text-white sm:px-8 w-40 sm:w-fit  flex justify-center items-center py-3 sm:py-4 hover:bg-primary-hover rounded-[8px] transition-colors"
                 >
                   {sliders[currentIndex].second_btn_text}
                 </motion.a>

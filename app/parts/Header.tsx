@@ -39,8 +39,8 @@ const Header = () => {
           <Link href={"/home"} className="dark:hidden block">
             <Image
               src={"/Hive Tech.png"}
-              width={windowWidth  > 800 ? 210 : 150}
-              height={windowWidth  > 800 ? 210 : 150}
+              width={windowWidth>768 ? 170 : windowWidth  > 1024 ? 210 : 150}
+              height={windowWidth>768 ? 170 : windowWidth  > 1024 ? 210 : 150}
    
               alt="logo"
             />
@@ -48,8 +48,8 @@ const Header = () => {
           <Link href={"/home"} className="hidden dark:block">
             <Image
               src={"/logos/logo with text dark.png"}
-              width={windowWidth  > 800 ? 210 : 150}
-              height={windowWidth  > 800 ? 210 : 150}
+              width={windowWidth>768 ? 170 : windowWidth  > 1024 ? 210 : 150}
+              height={windowWidth>768 ? 170 : windowWidth  > 1024 ? 210 : 150}
            
               alt="logo"
             />
@@ -169,7 +169,7 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-[400px] sm:h-[400px] top-[80px] md:top-[96px] py-8 dark:bg-darkMod-300 bg-white-100 max-xs:w-[80%] xs:w-[70%] md:w-[60%] lg:hidden">
+          <ul className="z-50 flex flex-col items-start fixed  tracking-widest right-0 h-full  top-[78px] md:top-[84px] py-8 dark:bg-darkMod-300 bg-white-100 w-full sm:w-[60%] lg:hidden">
             <li className="py-2 ">
               <Button
                 className={`${

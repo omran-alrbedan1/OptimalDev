@@ -185,10 +185,10 @@ const CategoryDetails = async ({ id }: { id: number }) => {
         />
         <div className="absolute w-full h-full bg-primary-color2 opacity-70" />
         <div className="relative top-20 sm:top-40 w-full h-full flex flex-col items-center justify-start px-5">
-          <h1 className="text-4xl md:text-5xl text-white font-bold mb-4 tracking-widest">
+          <h1 className="text-3xl sm:text-4xl  text-center lg:text-5xl text-white font-bold mb-4 tracking-widest">
             {category.title}
           </h1>
-          <p className="text:lg md:text-xl text-gray-300 max-w-2xl text-center">
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl text-center">
             {category.description}
           </p>
         </div>
@@ -263,13 +263,13 @@ const CategoryDetails = async ({ id }: { id: number }) => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center h-[30vh]">
-          <h1 className="text-4xl text-gray-600 font-bold">
+        <div className="flex max-xs:flex-col max-xs:gap-5 justify-center items-center  h-[30vh]">
+          <h1 className="text-2xl md:text-4xl text-center text-gray-600 font-bold">
             No services Found for this Category
           </h1>
 
           <span>
-            <BiError className="ml-5 text-red-500 text-6xl" />
+            <BiError className="xs:ml-5 text-red-500 text-4xl md:text-5xl" />
           </span>
         </div>
       )}

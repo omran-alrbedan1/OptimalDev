@@ -4,29 +4,26 @@ import { ServiceProps } from "@/types";
 import axios from "axios";
 import Link from "next/link";
 
-
 export default async function Services() {
-  const response = await axios.get('https://main.hivetech.space/api/services', {
+  const response = await axios.get("https://main.hivetech.space/api/services", {
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   });
-  const services =response.data.data.slice(0, 3);
+  const services = response.data.data.slice(0, 5);
 
   return (
     <section className=" flex flex-col items-center py-10 bg-gray-50 dark:bg-darkMod-300 mt-0 mb-0  px-5 sm:px-10  overflow-hidden">
-  
-      <Header title=" Our Services" paragragh=" We are ready to scale up your business with our great service." className="mx-auto"/>
+      <Header
+        title=" Our Services"
+        paragragh=" We are ready to scale up your business with our great service."
+        className="mx-auto"
+      />
 
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mx-auto">
-        {services.map((service: ServiceProps, index: number) => {
-        
-
-          return (
-          <ServiceCard service={service} index={index} key={service.id} />
-          );
-        })}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7 sm:gap-x-8 sm:gap-y-10 justify-items-center mx-auto mt-10 w-full">
+        {services.map((service: ServiceProps, index: number) => (
+          <ServiceCard key={service.id} service={service} index={index} />
+        ))}
       </div>
       <button
         type="button"
