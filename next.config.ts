@@ -7,11 +7,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  images:{
-    domains: [
-      "main.hivetech.space",
-    ]
-    
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'main.hivetech.space',
+        port: '',
+        pathname: '/storage/**',
+      },
+    ],
   },
   async redirects() {
     return [
