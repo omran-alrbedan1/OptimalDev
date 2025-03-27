@@ -31,21 +31,29 @@ const ServicesPage = async ({ id }: { id: number }) => {
   console.log(project);
 
   return (
-    <div className="min-h-screen py-20 pt-36 md:pt-40 px-4 sm:px-8 lg:px-10">
+    <div className="min-h-screen py-20 pt-36 md:pt-40  sm:px-8 lg:px-10">
       {/* Project Header */}
-      <div className="max-w-7xl mx-auto text-center pb-10">
-       
-          <Animation animationVertix={'y'} text={project.title} style={ {letterSpacing: "3px" }}  className={"text-3xl md:text-4xl font-semibold mb-4"}/>
-         
-          {/* <Animation text={project.title}/> */}
-        <Animation className="text-lg text-gray-600" animationVertix="y" text={project.sub_title} />
+      <div className="max-w-7xl mx-auto text-center pb-10 px-4">
+        <Animation
+          animationVertix={"y"}
+          text={project.title}
+          style={{ letterSpacing: "3px" }}
+          className={"text-3xl md:text-4xl font-semibold mb-4"}
+        />
+
+        {/* <Animation text={project.title}/> */}
+        <Animation
+          className="text-lg text-gray-600"
+          animationVertix="y"
+          text={project.sub_title}
+        />
       </div>
-      <div className="flex w-full max-lg:flex-col-reverse justify-center">
+      <div className="flex w-full max-lg:flex-col-reverse justify-center px-4">
         <div className="flex justify-center flex-1 p-4 pt-10 md:pl-10">
           <Animation
             className="lg:text-lg"
             style={{ letterSpacing: "1.7px", lineHeight: "2.4rem" }}
-          animationVertix="x"
+            animationVertix="x"
             text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam
             dolore voluptas eaque eum perferendis consectetur vero blanditiis
             ipsum illo adipisci voluptates soluta a velit cum impedit,
@@ -66,19 +74,22 @@ const ServicesPage = async ({ id }: { id: number }) => {
         </div>
       </div>
 
-      <div className="py-24 md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto">
+      {/* <div className="py-24 md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto"> */}
+      <div className="py-24 md:py-32 w-full   max-w-5xl lg:max-w-6xl mx-auto overflow-hidden md:[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
         {" "}
         <Carousel slides={project.files} />
       </div>
 
-      <div className="max-w-6xl mx-auto py-14 px-2 text-center">
-        <Animation animationVertix="y" className="text-2xl mb-20 font-bold"
+      <div className="max-w-6xl mx-auto py-14 px-4 text-center">
+        <Animation
+          animationVertix="y"
+          className="text-2xl mb-20 font-bold"
           text="Project Responsibilities"
         />
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {project.categories.map((category: Category, index: number) => (
-        <CategoryCard key={category.id} category={category} index={index}/>
+            <CategoryCard key={category.id} category={category} index={index} />
           ))}
         </ul>
       </div>

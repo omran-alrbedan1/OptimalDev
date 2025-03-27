@@ -2,6 +2,7 @@
 
 import { useState, useId } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Import Dialog components
 
 interface SlideData {
   id: number;
@@ -29,11 +30,11 @@ const Slide = ({
 }: SlideProps) => {
   const { id, name, path } = slide;
 
-  const translateXFactor = window.innerWidth < 400 ? 15 : 25;
+  const translateXFactor =  17 ;
 
   return (
     <li
-      className="absolute w-full h-full transition-all duration-500 ease-in-out"
+      className="absolute w-full h-full transition-all duration-500 ease-in-out cursor-pointer"
       style={{
         transform:
           index === current
@@ -54,21 +55,23 @@ const Slide = ({
       }}
       onClick={() => handleSlideClick(index)}
     >
-    <div className="relative w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden"
-     style={{
-       backgroundImage: `url(https://main.hivetech.space/storage/${path})`,
-       backgroundSize: "cover", 
-       backgroundPosition: "center",
-       backgroundRepeat: "no-repeat",
-      
-     }}
->
-
+      <div
+        className="relative w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden"
+        style={{
+          backgroundImage: `url(https://main.hivetech.space/storage/${path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div
           className={`absolute inset-0 rounded-[5%] ${
-            current !== index ? "bg-black/30" : "bg-black/10"
+            current !== index ? "bg-black/50" : "bg-black/10"
           } transition-all duration-1000`}
         />
+        <p className="relative w-full flex hover:flex h-full z-10  justify-center items-start tracking-[5px] pt-3 lg:pt-4 text-darkMod-600">
+          Click to extand
+          </p>
       </div>
     </li>
   );
@@ -106,8 +109,10 @@ interface CarouselProps {
 }
 
 export function Carousel({ slides }: CarouselProps) {
-  // Initialize current to the middle slide
   const [current, setCurrent] = useState(Math.floor(slides.length / 2));
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
 
   const handlePreviousClick = () => {
     const previous = current - 1;
@@ -123,41 +128,88 @@ export function Carousel({ slides }: CarouselProps) {
     if (current !== index) {
       setCurrent(index);
     }
+    if (index === current) {
+      setIsDialogOpen(true); // Open dialog only if the clicked slide is active
+    }
+  };
+
+  // Handle touch start event
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  // Handle touch move event
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  // Handle touch end event
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50) {
+      // Swipe left -> Next slide
+      handleNextClick();
+    } else if (touchEndX - touchStartX > 50) {
+      // Swipe right -> Previous slide
+      handlePreviousClick();
+    }
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false); // Close the dialog
   };
 
   const id = useId();
 
   return (
-    <div
-      className="relative w-[35vh] h-[35vh] sm:w-[50vh] sm:h-[40vh] lg:w-[55vh] lg:h-[45vh] mx-auto"
-      aria-labelledby={`carousel-heading-${id}`}
-    >
-      <ul className="relative w-full h-full">
-        {slides.map((slide, index) => (
-          <Slide
-            key={index}
-            slide={slide}
-            index={index}
-            current={current}
-            handleSlideClick={handleSlideClick}
-            totalSlides={slides.length}
+    <>
+      <div
+        className="relative w-[35vh] h-[30vh] sm:w-[50vh] sm:h-[43vh] lg:w-[55vh] lg:h-[42vh] mx-auto"
+        aria-labelledby={`carousel-heading-${id}`}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <ul className="relative w-full h-full">
+          {slides.map((slide, index) => (
+            <Slide
+              key={index}
+              slide={slide}
+              index={index}
+              current={current}
+              handleSlideClick={handleSlideClick}
+              totalSlides={slides.length}
+            />
+          ))}
+        </ul>
+
+        <div className="absolute flex justify-center w-full top-[calc(120%)]">
+          <CarouselControl
+            type="previous"
+            title="Go to previous slide"
+            handleClick={handlePreviousClick}
           />
-        ))}
-      </ul>
 
-      <div className="absolute flex justify-center w-full top-[calc(120%)]">
-        <CarouselControl
-          type="previous"
-          title="Go to previous slide"
-          handleClick={handlePreviousClick}
-        />
-
-        <CarouselControl
-          type="next"
-          title="Go to next slide"
-          handleClick={handleNextClick}
-        />
+          <CarouselControl
+            type="next"
+            title="Go to next slide"
+            handleClick={handleNextClick}
+          />
+        </div>
       </div>
+
+      {/* Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTitle></DialogTitle>
+  <DialogContent className="w-full  max-w-screen-sm lg:max-w-screen-md aspect-[16/13] lg:aspect-[16/11] bg-white dark:bg-neutral-900 rounded-[4px] shadow-lg p-4">
+    <div className="w-full h-full absolute">
+      <img
+        src={`https://main.hivetech.space/storage/${slides[current].path}`}
+        alt={slides[current].name || "Slide"}
+        className="w-full h-full object-fill rounded-lg"
+      />
     </div>
+  </DialogContent>
+</Dialog>
+    </>
   );
 }

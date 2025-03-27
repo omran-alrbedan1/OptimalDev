@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Category } from "@/types";
 
 import Link from "next/link";
-import { MdModelTraining } from "react-icons/md";
+
 import Image from "next/image";
 
 const CategoryCard = ({
@@ -38,12 +38,12 @@ const CategoryCard = ({
               />
             </div>
           )}{" "}
-          <h3 className=" pl-5 pr-2 font-semibold text-xl xl:text-[22px] py-1">
+          <h3 className=" pl-5 pr-2 font-semibold  xl:text-[19px] py-1">
             {category.title}
           </h3>
  
 
-        <p className="mt-0 text-gray-600 pl-5 pr-2 dark:text-gray-300 text-[16px]">
+        <p className="mt-0 text-start text-gray-600 pl-5 pr-2 dark:text-gray-300 text-[15px]">
           {category.description}
         </p>
       </Link>

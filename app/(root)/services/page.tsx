@@ -4,7 +4,6 @@ import { ServiceProps } from "@/types";
 import Header from "@/components/Header";
 import Loader from "@/components/Loader";
 import { Suspense } from "react";
-import ServiceCard from "@/components/cards/ServiceCard";
 import Link from "next/link";
 import Image from "next/image";
 import AnimateCard from "@/components/animation/AnimateCard";

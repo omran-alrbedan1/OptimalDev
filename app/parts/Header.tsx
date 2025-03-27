@@ -169,7 +169,7 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col items-start fixed  tracking-widest right-0 h-full  top-[78px] md:top-[84px] py-8 dark:bg-darkMod-300 bg-white-100 w-full sm:w-[60%] lg:hidden">
+          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-full  top-[78px] md:top-[84px] py-8 dark:bg-darkMod-300 bg-white-100 w-full sm:w-[60%] lg:hidden">
             <li className="py-2 ">
               <Button
                 className={`${

@@ -9,16 +9,9 @@ const nextConfig: NextConfig = {
   },
   images:{
     domains: [
-      "Main.hivetech.space",
-
-    ],
-    dangerouslyAllowSVG:true,
-    remotePatterns:[  
-      {
-        protocol:'https',
-        hostname:'*'
-      }
+      "main.hivetech.space",
     ]
+    
   },
   async redirects() {
     return [
@@ -30,9 +23,6 @@ const nextConfig: NextConfig = {
     ];
   },
   
-
-
-
 };
 
 export default nextConfig;
