@@ -36,12 +36,28 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
     <span className="block text-center w-32 h-[3px] bg-primary-color1 mt-10"/>
     </motion.p>
 
+    <style>
+        {`
+          @media (max-width: 768px) {
+            .splide__arrow {
+              display: none;
+            }
+          }
+          @media (min-width: 768px) {
+            .splide__pagination {
+              display: none;
+            }
+          }
+        `}
+      </style>
+
     <Splide
       options={{
         type: "loop",
         autoplay: true,
         perPage: 1,
-        pagination: false,
+        pagination: true,
+        arrows: true
       }}
     >
       {testimonials.map((item) => (
@@ -50,7 +66,7 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: item.id * 0.1 }}
-            className="flex-col ml-auto mr-auto w-11/12 sm:w-10/12 rounded-2xl shadow-xl sm:shadow-2xl border px-8 py-6  mb-6 mt-6 mx-auto sm:mb-12
+            className="flex-col ml-auto mr-auto w-11/12 sm:w-10/12 rounded-2xl shadow-xl sm:shadow-2xl border px-8 py-6  mb-8 mt-6 mx-auto sm:mb-12
              border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]  dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
           >
             <div className="flex items-center mb-5">

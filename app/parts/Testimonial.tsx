@@ -11,7 +11,7 @@ export default async function Testimonial() {
   });
   const testimonials = response.data.data; // Assuming the array is nested under `data`
   console.log(testimonials); // Verify the structure
-  return (<div className=" mt-8 sm:mt-40">
+  return (<div className=" mt-8 sm:mt-40 mb-10">
 
     <Testimonials testimonials={testimonials}/>
   </div>
