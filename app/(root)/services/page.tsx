@@ -35,7 +35,7 @@ const ServicesPage = async () => {
             >
               <Link href={`/services/${service.id}`} className=" w-full h-[80%] ">
                 <Image
-                  src={ `${new URL(`${process.env.NEXT_PUBLIC_STORAGE_URL}/${service.image}`)}`}
+                  src={ `${new URL(`https://main.hivetech.space/storage/${service.image}`)}`}
                   width={400}
                   height={400}
                   alt={`Image ${service.id}`}
