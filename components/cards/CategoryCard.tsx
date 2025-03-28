@@ -30,7 +30,7 @@ const CategoryCard = ({
           {category.image_icon && (
             <div className="">
               <Image
-                src={`${new URL(`${category.image_icon}`)}`}
+                src={`${category.image_icon}`}
                 width={60}
                 height={60}
                 alt="Image icone"
