@@ -34,6 +34,7 @@ const config: Config = {
                   600: "#303030",
                   700: "#131314",
                 },
+                tertiary: "#151030",
                 secondary: "#FBE843",
                 black: {
                     "100": "#333333",
@@ -82,6 +83,9 @@ const config: Config = {
                       transform: "translate(calc(-50% - 0.5rem))",
                     },
                   },
+            },
+            backgroundImage: {
+              "hero-pattern": "url('/images/herobg.png')",
             },
         },
     },
