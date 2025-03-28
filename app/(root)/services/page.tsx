@@ -20,7 +20,10 @@ const ServicesPage = async () => {
     <section className="w-[99%]  pt-32 px-8 md:px-12 md:pt-40 xl:px-24 mx-auto overflow-hidden">
       <Header title="Services" />
       <div className="flex justify-evenly items-center flex-wrap mx-auto gap-10">
-        {services.map((service: ServiceProps, index: number) => (
+        {services.map((service: ServiceProps, index: number) =>{
+        
+
+        return  (
           <div
             className="flex flex-grow basis-[400px] max-w-[400px] aspect-square  flex-col"
             key={service.id}
@@ -32,7 +35,7 @@ const ServicesPage = async () => {
             >
               <Link href={`/services/${service.id}`} className=" w-full h-[80%] ">
                 <Image
-                  src={`https://main.hivetech.space/storage/${service.image}`}
+                  src={ `${new URL(`${process.env.NEXT_PUBLIC_STORAGE_URL}/${service.image}`)}`}
                   width={400}
                   height={400}
                   alt={`Image ${service.id}`}
@@ -44,7 +47,7 @@ const ServicesPage = async () => {
               </p>
             </AnimateCard>
           </div>
-        ))}
+        )})}
       </div>
     </section>
   );
