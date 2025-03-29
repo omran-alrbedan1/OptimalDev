@@ -1,6 +1,6 @@
 "use client";
 import { Category, CategoryArray } from "@/types";
-import { fadeIn } from "@/utils/motion";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Tilt } from "react-tilt";
@@ -13,7 +13,7 @@ const About = ({
   categories: CategoryArray;
 }) => {
   return (
-    <section className="mx-auto max-w-7xl pb-20 transition-all duration-300">
+    <section className="mx-auto max-w-7xl pb-16 transition-all duration-300">
       <div className="sm:px-10 px-6">
         <motion.div
           initial={{ opacity: 0, y: -50 }}
@@ -64,13 +64,22 @@ const About = ({
                   ease: "easeOut",
                   once: true,
                 }}
-                className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
+                className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] "
               >
+                <div className="hidden hover:block  absolute w-full h-full z-10 rounded-[20px] p-1">
+                <Image
+                    src={category.image}
+                    alt="web-development"
+                    width={105}
+                    height={105}
+                    className="w-full h-full rounded-[30px]"
+                  />
+                </div>
                 <div
-                  className="bg-white-100 dark:bg-tertiary shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
+                  className="bg-white-100  dark:bg-tertiary shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
                 >
                   <Image
-                    src={category.image_icon}
+                    src={`${new URL(`${category.image_icon}`)}`}
                     alt="web-development"
                     width={105}
                     height={105}

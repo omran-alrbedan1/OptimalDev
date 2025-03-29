@@ -60,6 +60,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+        <head>
+   
+    <link rel="icon" type="image/svg+xml" href={`/Hive Tech Logo.svg`} />
+    {/* <meta name="viewport" content="width=device-width, initial-scale=1.0" /> */}
+    {/* <title>Adrian | JavaScript Mastery Portfolio</title> */}
+  </head>
       <body className={workSans.variable}>
         {" "}
         <ThemeProvider

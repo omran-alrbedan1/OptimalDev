@@ -1,5 +1,6 @@
 import About from "@/app/parts/portfolio/About";
 import Hero from "@/app/parts/portfolio/Hero";
+import Works from "@/app/parts/portfolio/Works";
 import Loader from "@/components/Loader";
 import axios from "axios";
 import React, { Suspense } from "react";
@@ -34,6 +35,7 @@ const PortfolioPage = async ({ id }: { id: number }) => {
       <Hero  name={portfolio.name} bio={portfolio.bio} image={portfolio.image} position={portfolio.position}/>
       </div>
       <About content={portfolio.content} categories={portfolio.categories}/>
+      <Works projects={portfolio.projects}/>
     </div>
   );
 };

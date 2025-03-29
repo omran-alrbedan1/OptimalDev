@@ -14,7 +14,7 @@ export interface Category {
   id: number;
   title: string;
   description: string;
-  image: string | null;
+  image: string ;
   image_icon: string ;
   created_at: string;
   updated_at: string;
