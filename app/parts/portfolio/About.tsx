@@ -78,8 +78,8 @@ const About = ({
                 <div
                   className="bg-white-100  dark:bg-tertiary shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
                 >
-                  <Image
-                    src={`${new URL(`${category.image_icon}`)}`}
+                  <img
+                    src={category.image_icon}
                     alt="web-development"
                     width={105}
                     height={105}
