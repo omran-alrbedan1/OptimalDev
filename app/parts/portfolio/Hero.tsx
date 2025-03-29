@@ -13,7 +13,7 @@ const Hero = ({
   image: string;
   position: string;
 }) => {
-  const imageURL = new URL(`https://main.hivetech.space/storage/${image}`);
+  
   return (
     <section className={`relative w-full h-screen  mx-auto pt-20 sm:pt-40`}>
       <div
@@ -54,8 +54,8 @@ const Hero = ({
         </div>
         <div className="w-1/2 max-xs:w-full max-xs:p-10">
           <div className="flex flex-col items-center justify-center gap-8">
-            <Image
-              src={`${imageURL}`}
+            <img
+              src={image}
               alt="profilePhoto"
               width={350}
               height={350}
