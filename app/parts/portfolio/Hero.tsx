@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
+
 
 const Hero = ({
   name,
@@ -55,7 +55,7 @@ const Hero = ({
         <div className="w-1/2 max-xs:w-full max-xs:p-10">
           <div className="flex flex-col items-center justify-center gap-8">
             <img
-              src={image}
+              src={`https://main.hivetech.space/storage/${image}`}
               alt="profilePhoto"
               width={350}
               height={350}
