@@ -38,17 +38,19 @@ const ServicesPage = async ({ id }: { id: number }) => {
           animationVertix={"y"}
           text={project.title}
           style={{ letterSpacing: "3px" }}
-          className={"text-3xl md:text-4xl font-semibold mb-4"}
+          className={
+            "text-2xl md:text-3xl lg:text-4xl text-primary-color1 hover:text-primary-hover font-semibold mb-4"
+          }
         />
 
-        {/* <Animation text={project.title}/> */}
         <Animation
           className="text-lg text-gray-600"
           animationVertix="y"
           text={project.sub_title}
         />
       </div>
-      <div className="flex w-full max-lg:flex-col-reverse justify-center px-4">
+
+      {/* <div className="flex w-full max-lg:flex-col-reverse justify-center px-4">
         <div className="flex justify-center flex-1 p-4 pt-10 md:pl-10">
           <Animation
             className="lg:text-lg"
@@ -72,20 +74,56 @@ const ServicesPage = async ({ id }: { id: number }) => {
             className="rounded-xl h-full xl:w-[80%] aspect-auto" // Ensure the image scales properly
           />
         </div>
-      </div>
+      </div> */}
+      <div className="mx-auto max-w-7xl py-12 sm:px-10 px-6">
+        <Animation animationVertix="y">
+          <p className="sm:text-[18px] text-[14px] dark:text-gray-300 uppercase tracking-wider text-gray-500">
+            Introduction
+          </p>
+          <h2 className="font-bold md:text-[35px] sm:text-[30px] text-[25px] tracking-wider">
+            Project Overview.
+          </h2>
+        </Animation>
 
-      {/* <div className="py-24 md:py-32 overflow-hidden max-w-5xl lg:max-w-6xl mx-auto"> */}
+        <Animation
+          delay={0.6}
+          duration={1}
+          className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+        >
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
+            doloremque dicta, nulla quas quia ratione harum necessitatibus
+            quaerat suscipit, sapiente iusto aspernatur? Eius dolor cupiditate
+            error, excepturi vero quo voluptate.
+          </p>
+        </Animation>
+      </div>
       <div className="py-24 md:py-32 w-full   max-w-5xl lg:max-w-6xl mx-auto overflow-hidden md:[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
         {" "}
         <Carousel slides={project.files} />
       </div>
 
-      <div className="max-w-6xl mx-auto py-14 px-4 text-center">
+      <div className="max-w-7xl mx-auto py-14 sm:px-10 px-6">
+        <div className="pb-16">
+
+        <Animation animationVertix="y" className="py-3">
+          <h2 className="font-bold md:text-[35px] sm:text-[30px] text-[25px] tracking-wider">
+            Project Responsibilities
+          </h2>
+        </Animation>
         <Animation
-          animationVertix="y"
-          className="text-2xl mb-20 font-bold"
-          text="Project Responsibilities"
-        />
+          delay={0.6}
+          duration={1}
+          className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+          >
+          <p>
+            The responsibilities outlined here represent the structured approach
+            taken to execute the project. Each responsibility corresponds to a
+            specific phase or domain, ensuring that all aspects of the project
+            are addressed systematically and efficiently.
+          </p>
+        </Animation>
+          </div>
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {project.categories.map((category: Category, index: number) => (
@@ -94,28 +132,8 @@ const ServicesPage = async ({ id }: { id: number }) => {
         </ul>
       </div>
 
-      {/* <div className="mt-6">
-        {project.project_link && (
-          <a
-            href={project.project_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-primary-color2 text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition duration-300"
-          >
-            View Project
-          </a>
-        )}
-        {project.demo_link && (
-          <a
-            href={project.demo_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-primary-color2 text-white px-4 py-2 rounded-md ml-4 hover:bg-opacity-90 transition duration-300"
-          >
-            Demo Link
-          </a>
-        )}
-      </div> */}
+
+
     </div>
   );
 };

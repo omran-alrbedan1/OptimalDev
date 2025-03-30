@@ -2,7 +2,7 @@
 import { Category, CategoryArray } from "@/types";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+
 import { Tilt } from "react-tilt";
 
 const About = ({
@@ -64,19 +64,21 @@ const About = ({
                   ease: "easeOut",
                   once: true,
                 }}
-                className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] "
+                className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] overflow-hidden group"
               >
-                <div className="hidden hover:block  absolute w-full h-full z-10 rounded-[20px] p-1">
-                <Image
+                <div className="absolute w-full h-full z-10 rounded-[20px] p-[0.5px] translate-y-[-100%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                <img
                     src={category.image}
                     alt="web-development"
                     width={105}
                     height={105}
                     className="w-full h-full rounded-[30px]"
                   />
+                  <div  className="w-full h-full absolute z-10 bg-darkMod-700/30 rounded-[20px]"/>
+              
                 </div>
                 <div
-                  className="bg-white-100  dark:bg-tertiary shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
+                  className="bg-white-100  dark:bg-darkMod-200 shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
                 >
                   <img
                     src={category.image_icon}

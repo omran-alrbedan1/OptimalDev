@@ -5,7 +5,6 @@ import Loader from "@/components/Loader";
 import axios from "axios";
 import React, { Suspense } from "react";
 
-
 interface Props {
   params: {
     id: number;
@@ -31,11 +30,22 @@ const PortfolioPage = async ({ id }: { id: number }) => {
   return (
     <div className="relative z-0">
       <div className="bg-hero-patternn bg-cover bg-no-repeat bg-center">
-
-      <Hero  name={portfolio.name} bio={portfolio.bio} image={portfolio.image} position={portfolio.position}/>
+        <Hero
+          whatsapp={portfolio.whatsapp}
+          email={portfolio.email}
+          github={portfolio.github}
+          instagram={portfolio.instagram}
+          facebook={portfolio.facebook}
+          phone={portfolio.phone}
+          linkedin={portfolio.linkedin}
+          name={portfolio.name}
+          bio={portfolio.bio}
+          image={portfolio.image}
+          position={portfolio.position}
+        />
       </div>
-      <About content={portfolio.content} categories={portfolio.categories}/>
-      <Works projects={portfolio.projects}/>
+      <About content={portfolio.content} categories={portfolio.categories} />
+      <Works projects={portfolio.projects} />
     </div>
   );
 };

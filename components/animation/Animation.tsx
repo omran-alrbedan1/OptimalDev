@@ -7,27 +7,34 @@ const Animation = ({
   className,
   style,
   animationVertix,
+  delay,
+  duration,
+  children
 }: {
-  animationVertix: "x" | "y";
-  text: string;
+  animationVertix?: "x" | "y";
+  text?: string;
   className?: string;
   style?: object;
+  delay?: number;
+  duration?: number;
+  children?:React.ReactNode
 }) => {
   return (
     <div>
-      <motion.h1
+      <motion.div
         className={className}
         style={style}
         initial={{
           opacity: 0,
-          x: animationVertix == "x" ? "-100%" : "0",
+          x: animationVertix == "x" ? "-100%" : 0,
           y: animationVertix === "y" ? 100 : 0,
         }}
         whileInView={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.4, ease: "linear" }}
+        transition={{ duration: duration?duration :0.9, delay: delay?delay : 0.4, ease: "easeOut", type: 'spring', once: true }}
       >
         {text}
-      </motion.h1>
+        {children}
+      </motion.div>
     </div>
   );
 };
