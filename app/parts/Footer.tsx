@@ -40,8 +40,8 @@ const Footer = () => {
             </p>
             <div className="flex items-center justify-between gap-5">
               <Button
-                href="https://github.com/racmathafidz"
-                target="_blank"
+                // href="https://github.com/racmathafidz"
+                // target="_blank"
                 type="link"
                 isExternal
                 className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
@@ -49,8 +49,8 @@ const Footer = () => {
                 <FaGithub className="text-6xl" />
               </Button>
               <Button
-                href="https://www.linkedin.com/in/racmat-hafidz-89982a156/"
-                target="_blank"
+                // href="https://www.linkedin.com/in/racmat-hafidz-89982a156/"
+                // target="_blank"
                 type="link"
                 isExternal
                 className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
@@ -58,8 +58,8 @@ const Footer = () => {
                 <FaLinkedinIn className="text-2xl" />
               </Button>
               <Button
-                href="https://github.com/racmathafidz"
-                target="_blank"
+                // href="https://github.com/racmathafidz"
+                // target="_blank"
                 type="link"
                 isExternal
                 className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"
@@ -67,8 +67,8 @@ const Footer = () => {
                 <FaFacebookF className="text-3xl" />
               </Button>
               <Button
-                href="https://www.instagram.com/racmathafidz/"
-                target="_blank"
+                // href="https://www.instagram.com/racmathafidz/"
+                // target="_blank"
                 type="link"
                 isExternal
                 className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white rounded-[6px]"

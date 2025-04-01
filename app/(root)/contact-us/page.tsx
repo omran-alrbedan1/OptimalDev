@@ -8,7 +8,7 @@ import ContactForm from "@/components/forms/ContactForm";
 import { ContactUsProps } from "@/types";
 
 const ContactUsPage = async () => {
-  // Fetch data from the backend
+  await new Promise((resolve) => setTimeout(resolve, 500));
   const response = await axios.get(
     "https://main.hivetech.space/api/contact-us",
     {

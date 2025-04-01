@@ -44,7 +44,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
 
       {/* Black overlay layer */}
       <div
-        className="absolute inset-0 bg-black opacity-60"
+        className="absolute inset-0 bg-black opacity-40"
         style={{
           zIndex: 1, // Ensure the overlay is above the image but below the content
         }}

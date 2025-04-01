@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useId } from "react";
+import { useState, useId, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Import Dialog components
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface SlideData {
   id: number;
@@ -110,9 +110,11 @@ interface CarouselProps {
 
 export function Carousel({ slides }: CarouselProps) {
   const [current, setCurrent] = useState(Math.floor(slides.length / 2));
-  const [isDialogOpen, setIsDialogOpen] = useState(false); 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
+  const touchTimer = useRef<NodeJS.Timeout | null>(null);
+  const [isSwiping, setIsSwiping] = useState(false);
 
   const handlePreviousClick = () => {
     const previous = current - 1;
@@ -125,37 +127,55 @@ export function Carousel({ slides }: CarouselProps) {
   };
 
   const handleSlideClick = (index: number) => {
+    if (isSwiping) return; 
+    
     if (current !== index) {
       setCurrent(index);
-    }
-    if (index === current) {
-      setIsDialogOpen(true); // Open dialog only if the clicked slide is active
+    } else {
+      setIsDialogOpen(true);
     }
   };
 
-  // Handle touch start event
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setTouchStartX(e.touches[0].clientX);
-  };
-
-  // Handle touch move event
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    setTouchEndX(e.touches[0].clientX);
-  };
-
-  // Handle touch end event
-  const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 50) {
-      // Swipe left -> Next slide
-      handleNextClick();
-    } else if (touchEndX - touchStartX > 50) {
-      // Swipe right -> Previous slide
-      handlePreviousClick();
+    setIsSwiping(false);
+    if (touchTimer.current) {
+      clearTimeout(touchTimer.current);
     }
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEndX(e.touches[0].clientX);
+    if (Math.abs(e.touches[0].clientX - touchStartX) > 10) {
+      setIsSwiping(true);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isSwiping) {
+      if (touchStartX - touchEndX > 50) {
+        handleNextClick();
+      } else if (touchEndX - touchStartX > 50) {
+        handlePreviousClick();
+      }
+    }
+    
+   
+    touchTimer.current = setTimeout(() => {
+      setIsSwiping(false);
+    }, 100);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (touchTimer.current) {
+        clearTimeout(touchTimer.current);
+      }
+    };
+  }, []);
+
   const closeDialog = () => {
-    setIsDialogOpen(false); // Close the dialog
+    setIsDialogOpen(false);
   };
 
   const id = useId();
@@ -197,19 +217,18 @@ export function Carousel({ slides }: CarouselProps) {
         </div>
       </div>
 
-      {/* Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTitle></DialogTitle>
-  <DialogContent className="w-full  max-w-screen-sm lg:max-w-screen-md aspect-[16/13] lg:aspect-[16/11] bg-white dark:bg-neutral-900 rounded-[4px] shadow-lg p-4">
-    <div className="w-full h-full absolute">
-      <img
-        src={`https://main.hivetech.space/storage/${slides[current].path}`}
-        alt={slides[current].name || "Slide"}
-        className="w-full h-full object-fill rounded-lg"
-      />
-    </div>
-  </DialogContent>
-</Dialog>
+        <DialogContent className="w-full max-w-screen-sm lg:max-w-screen-lg z-50 aspect-[16/14] lg:aspect-[16/11] bg-white dark:bg-neutral-900 rounded-[4px] shadow-lg p-4">
+          <div className="w-full h-full absolute">
+            <img
+              src={`https://main.hivetech.space/storage/${slides[current].path}`}
+              alt={slides[current].name || "Slide"}
+              className="w-full h-full object-contain rounded-lg"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

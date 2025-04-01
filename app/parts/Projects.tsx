@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default async function Projects() {
 
-
+  await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await axios.get('https://main.hivetech.space/api/projects', {
       headers: {
         "Content-Type": "application/json",

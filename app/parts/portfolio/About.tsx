@@ -23,7 +23,7 @@ const About = ({
           <p className="sm:text-[18px] text-[14px] dark:text-gray-300 uppercase tracking-wider text-gray-500">
             Introduction
           </p>
-          <h2 className="font-bold md:text-[50px] sm:text-[40px] xs:text-[30px] text-[25px] tracking-wider">
+          <h2 className="font-bold md:text-[40px] sm:text-[30px] xs:text-[30px] text-[25px] tracking-wider">
             Overview.
           </h2>
         </motion.div>
@@ -43,7 +43,38 @@ const About = ({
           {content}
         </motion.p>
 
-        <div className="mt-20 flex flex-wrap gap-10">
+
+        <div className="mt-20">
+
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.25, delay: 0.2, type: "spring" }}
+          >
+       
+          <h2 className="font-semibold md:text-[25px]  tracking-wider">
+          Skills and Qualifications
+          </h2>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{
+            duration: 1,
+            delay: 0.5,
+            type: "spring",
+            ease: "easeOut",
+            once: true,
+          }}
+          className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+          >
+          These skills represent the culmination of the experiences and capabilities I have acquired over time, reflecting my
+           ability to achieve tangible results and add real value to any project or team.
+        </motion.p>
+          </div>
+
+        <div className="mt-16 flex flex-wrap gap-10">
           {categories.map((category: Category, index: number) => (
             <Tilt
               options={{
@@ -66,32 +97,32 @@ const About = ({
                 }}
                 className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] overflow-hidden group"
               >
-                <div className="absolute w-full h-full z-10 rounded-[20px] p-[0.5px] translate-y-[-100%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                <div className="absolute w-full h-full z-10 rounded-[20px]  translate-y-[-101%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
                 <img
                     src={category.image}
                     alt="web-development"
                     width={105}
                     height={105}
-                    className="w-full h-full rounded-[30px]"
+                    className="w-full h-full rounded-[20px]"
                   />
                   <div  className="w-full h-full absolute z-10 bg-darkMod-700/30 rounded-[20px]"/>
               
                 </div>
                 <div
-                  className="bg-white-100  dark:bg-darkMod-200 shadow-2xl rounded-[20px]  px-8 min-h-[300px] flex justify-evenly items-center flex-col"
+                  className="bg-white-100  dark:bg-darkMod-200 shadow-2xl rounded-[20px]  px-4 min-h-[240px] flex justify-evenly items-start flex-col"
                 >
                   <img
                     src={category.image_icon}
                     alt="web-development"
-                    width={105}
-                    height={105}
+                    width={80}
+                    height={80}
                     className="object-contain"
                   />
 
-                  <h3 className=" text-[20px] font-bold text-center">
+                  <h3 className=" text-[20px] font-bold text-start">
                     {category.title}
                   </h3>
-                  <p className="text-center dark:text-gray-300">
+                  <p className="text-start dark:text-gray-300">
                     {category.description}
                   </p>
                 </div>

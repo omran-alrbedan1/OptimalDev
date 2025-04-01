@@ -1,4 +1,4 @@
-import Hero from "@/app/parts/Hero";
+
 import React, { Suspense } from "react";
 
 

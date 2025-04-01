@@ -4,7 +4,9 @@ import { Suspense } from "react";
 import Loader from "@/components/Loader";
 
 const ContactUsPage = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
   const response = await axios.get("https://main.hivetech.space/api/about-us", {
+    
     headers: {
       "Content-Type": "application/json",
     },

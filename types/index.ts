@@ -102,6 +102,13 @@ export interface AboutUsProps {
   title: string;
   description: string;
 }
+export interface PersonalProjectsProps {
+  id: number;
+  title: string;
+  team_id: number;
+  repository_link: string;
+}
+
 
 export type ProjectsArray = ProjectProps[];
 export type ServicesArray = ServiceProps[];
@@ -109,3 +116,4 @@ export type TestimoniArray = TestimoniProps[];
 export type SliderArray = SliderProps[];
 export type CategoryArray = CategoryProps[];
 export type SectionArray = SectionProps[];
+export type PersonalProjectsArray = PersonalProjectsProps[];

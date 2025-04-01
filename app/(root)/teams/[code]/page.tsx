@@ -1,5 +1,6 @@
 import About from "@/app/parts/portfolio/About";
 import Hero from "@/app/parts/portfolio/Hero";
+import PersonalProjects from "@/app/parts/portfolio/PersonalProjects";
 import Works from "@/app/parts/portfolio/Works";
 import Loader from "@/components/Loader";
 import axios from "axios";
@@ -7,16 +8,16 @@ import React, { Suspense } from "react";
 
 interface Props {
   params: {
-    id: number;
+    code: string;
   };
 }
 
-const PortfolioPage = async ({ id }: { id: number }) => {
+const PortfolioPage = async ({ code }: { code: string }) => {
   await new Promise((resolve) => setTimeout(resolve, 200));
 
   // Fetch project data
   const response = await axios.get(
-    `https://main.hivetech.space/api/teams/${id}`,
+    `https://main.hivetech.space/api/teams/code/${code}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -46,16 +47,17 @@ const PortfolioPage = async ({ id }: { id: number }) => {
       </div>
       <About content={portfolio.content} categories={portfolio.categories} />
       <Works projects={portfolio.projects} />
+      <PersonalProjects personal_projects={portfolio.personal_projects} />
     </div>
   );
 };
 
 export default async function Page({ params }: Props) {
-  const { id } = await params;
+  const { code } = await params;
 
   return (
     <Suspense fallback={<Loader />}>
-      <PortfolioPage id={id} />
+      <PortfolioPage code={code} />
     </Suspense>
   );
 }

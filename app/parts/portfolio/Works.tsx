@@ -23,7 +23,7 @@ const ProjectCard = ({
         ease: "easeOut",
         once: true,
       }}
-      className="basis-[350px] flex-grow"
+      className="basis-[350px] "
     >
       <Tilt
         options={{
@@ -67,7 +67,7 @@ const Works = ({ projects }: { projects: ProjectsArray }) => {
         className=""
       >
         <p className="sm:text-[18px] text-[14px]  uppercase tracking-wider text-gray-600 dark:text-gray-300">
-          My work
+        Works in Collaboration
         </p>
         <h2 className="font-black md:text-[40px] sm:text-[35px] xs:text-[30px] text-[25px]">
           Projects.
