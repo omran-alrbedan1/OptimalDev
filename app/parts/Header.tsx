@@ -35,7 +35,7 @@ const Header = () => {
       <header
         className={`header fixed top-0 lg:-top-[20px] py-3 dark:bg-darkMod-100 bg-white z-50 min-w-full lg:h-[14vh] shadow-xl transition-all duration-900 ease-linear`}
       >
-        <div className={`flex justify-between sm:justify-around  px-6 lg:px-0 border-none lg:ml-20`}>
+        <div className={`flex justify-between  px-6 lg:px-0 border-none lg:ml-10`}>
           <Link href={"/home"} className="dark:hidden block">
             <Image
               src={"/Hive Tech.png"}
@@ -127,12 +127,23 @@ const Header = () => {
           <li className="py-2 lg:py-0">
             <Button
               className={`${
-                path === "/team" ? "active-link" : ""
+                path === "/teams" ? "active-link" : ""
               } text-[16px] font-semibold  px-5 no-underline hover:underline`}
               type="link"
-              href="/team"
+              href="/teams"
             >
               Team
+            </Button>
+          </li>
+          <li className="py-2 lg:py-0">
+            <Button
+              className={`${
+                path === "/services" ? "active-link" : ""
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
+              type="link"
+              href="/services"
+            >
+              Services
             </Button>
           </li>
           <li className="py-2 lg:py-0">
@@ -185,27 +196,16 @@ const Header = () => {
             <li className="py-2">
               <Button
                 className={`${
-                  path === "/team" ? "active-link" : ""
+                  path === "/teams" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
-                href="/team"
+                href="/teams"
                 onClick={() => setIsCollapse(false)}
               >
                 Team
               </Button>
             </li>
-            <li className="py-2">
-              <Button
-                className={`${
-                  path === "/projects" ? "active-link" : ""
-                } px-10 no-underline hover:underline`}
-                type="link"
-                href="/projects"
-                onClick={() => setIsCollapse(false)}
-              >
-                Projects
-              </Button>
-            </li>
+        
             <li className="py-2 ">
               <Button
                 className={`${
@@ -228,6 +228,30 @@ const Header = () => {
                 onClick={() => setIsCollapse(false)}
               >
                 About Us
+              </Button>
+            </li>
+            <li className="py-2">
+              <Button
+                className={`${
+                  path === "/services" ? "active-link" : ""
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/services"
+                onClick={() => setIsCollapse(false)}
+              >
+                Services
+              </Button>
+            </li>
+            <li className="py-2">
+              <Button
+                className={`${
+                  path === "/projects" ? "active-link" : ""
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/projects"
+                onClick={() => setIsCollapse(false)}
+              >
+                Projects
               </Button>
             </li>
             <li className="mx-auto my-9">

@@ -21,6 +21,7 @@ const Hero = ({
   facebook,
   phone,
   github,
+  cv,
 }: {
   name: string;
   bio: string;
@@ -33,9 +34,11 @@ const Hero = ({
   facebook: string;
   phone: string;
   github: string;
+  cv: string;
 }) => {
+
   return (
-    <section className={`relative w-full min-h-screen  mx-auto pt-20 sm:pt-40`}>
+    <section className={`relative w-full min-h-screen mx-auto pt-20 sm:pt-40`}>
       <div
         className={`max-w-7xl mx-auto sm:px-10 px-6 flex flex-row max-xs:flex-col-reverse items-start gap-5`}
       >
@@ -56,25 +59,32 @@ const Hero = ({
             </h1>
             <p
               className={`text-gray-500 dark:text-gray-300 font-medium lg:text-[21px] sm:text-[19px] xs:text-[17px] text-[15px] lg:leading-[40px] mt-2`}
-            >
-              {bio}
-            </p>
+               dangerouslySetInnerHTML={{
+                __html: bio
+              }}
+            
+              />
             <div className="flex flex-col sm:flex-row gap-5 mt-10">
-              <Button className="bg-primary-color1 rounded-[8px] h-12 gap-3 py-2 px-5 text-base flex justify-center items-center hover:bg-primary-hover">
+              <Button    href={whatsapp}
+                target="_blank"
+                type="link"
+                isExternal className="bg-primary-color1 rounded-[8px] h-12 gap-3 py-2 px-5 text-base flex justify-center items-center hover:bg-primary-hover">
                 <span>Contact me</span>{" "}
                 <span>
                   <Send size={18} />
                 </span>
               </Button>
-              <Button
-                className=" rounded-[8px] h-12 gap-3 py-2 px-5 text-base flex justify-center items-center 
-              border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
+              <a
+                href={`https://main.hivetech.space/storage/${cv}`}
+                target="_blank"
+                className="rounded-[8px] h-12 gap-3 py-2 px-5 text-base flex justify-center items-center 
+                border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               >
-                <span>Download CV</span>{" "}
+                <span>Download CV</span>
                 <span>
                   <Download size={18} />
                 </span>
-              </Button>
+              </a>
             </div>
             <div className="flex items-center justify-start mt-10 gap-7">
               <Button

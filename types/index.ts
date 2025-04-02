@@ -109,6 +109,19 @@ export interface PersonalProjectsProps {
   repository_link: string;
 }
 
+export interface Teams{
+  id: number;
+  name: string;
+  bio: string;
+  image: string;
+  code: string;
+  cv: string;
+  position: string;
+  whatsapp: string;
+  phone: string;
+  email: string;
+  linkedin: string;
+}
 
 export type ProjectsArray = ProjectProps[];
 export type ServicesArray = ServiceProps[];

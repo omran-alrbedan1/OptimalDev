@@ -39,9 +39,11 @@ const About = ({
             once: true,
           }}
           className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
-        >
-          {content}
-        </motion.p>
+        
+           dangerouslySetInnerHTML={{
+                __html: content
+              }}
+        />
 
 
         <div className="mt-20">
@@ -52,7 +54,7 @@ const About = ({
           transition={{ duration: 1.25, delay: 0.2, type: "spring" }}
           >
        
-          <h2 className="font-semibold md:text-[25px]  tracking-wider">
+          <h2 className="font-semibold md:text-[25px] text-[20px]  tracking-wider">
           Skills and Qualifications
           </h2>
         </motion.div>

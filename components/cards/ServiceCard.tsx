@@ -21,10 +21,10 @@ const ServiceCard = ({
         scale: "90%",
       }}
       whileInView={{ opacity: 1, x: 0, scale: "100%" }}
-      transition={{ delay: index * 0.2, duration: 0.9 }}
+      transition={{ delay: index * 0.5, duration: 0.9, type: 'spring', ease: 'easeOut' }}
       className="w-full"
     >
-      <div className="flex flex-col justify-between rounded-2xl aspect-square bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
+      <div className="flex flex-col justify-between aspect-[10/9] rounded-2xl  bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
         <Link
           href={`/services/${service.id}`}
           className="relative cursor-pointer h-4/5"

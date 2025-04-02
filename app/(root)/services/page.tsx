@@ -25,24 +25,24 @@ const ServicesPage = async () => {
 
         return  (
           <div
-            className="flex flex-grow basis-[400px] max-w-[400px] aspect-square  flex-col"
+            className=" flex flex-grow basis-[400px] max-w-[400px] aspect-[10/8]  flex-col"
             key={service.id}
           >
             <AnimateCard
               index={index}
               animationVertix="x"
-              className=" h-full w-full flex flex-col max-h-full overflow-hidden bg-white-100 dark:bg-darkMod-600  rounded-xl"
+              className=" flex flex-col max-h-full overflow-hidden bg-white-100 dark:bg-darkMod-600  rounded-xl"
             >
-              <Link href={`/services/${service.id}`} className=" w-full h-[80%] ">
+              <Link href={`/services/${service.id}`} className=" w-full  ">
                 <Image
-                  src={ `${new URL(`https://main.hivetech.space/storage/${service.image}`)}`}
+                  src={ `https://main.hivetech.space/storage/${service.image}`}
                   width={400}
                   height={400}
                   alt={`Image ${service.id}`}
-                  className=" w-full h-full object-cover rounded-b-[5px] rounded-t-xl"
+                  className=" w-full aspect-[10/7] object-cover rounded-b-[5px] rounded-t-xl"
                 />
               </Link>
-              <p className="w-full h-[20%] flex items-center justify-center px-2 text-center text-lg overflow-x-hidden">
+              <p className="w-full py-1 aspect-[10/2] flex items-center justify-center px-2 text-center text-lg overflow-auto">
                 {service.title}
               </p>
             </AnimateCard>

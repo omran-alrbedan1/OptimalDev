@@ -43,6 +43,7 @@ const PortfolioPage = async ({ code }: { code: string }) => {
           bio={portfolio.bio}
           image={portfolio.image}
           position={portfolio.position}
+          cv={portfolio.cv}
         />
       </div>
       <About content={portfolio.content} categories={portfolio.categories} />
