@@ -230,8 +230,8 @@ import Link from "next/link";
     console.log( teams);
 
   return (
-    <div className="max-lg:pt-32 lg:pt-16 overflow-hidden">
-      <section className="flex flex-col gap-y-16 xs:gap-y-24 lg:flex-row items-center min-h-[60vh]  px-10 lg:px-32">
+    <div className="max-lg:pt-32 lg:pt-32 overflow-hidden">
+      <section className="flex flex-col gap-y-16 xs:gap-y-24 lg:flex-row items-center min-h-[40vh]  px-10 lg:px-32">
      
         <div
           className="lg:w-1/2"
@@ -290,6 +290,7 @@ import Link from "next/link";
           ))}
         </div>
       </section> 
+
     </div>
   );
 }

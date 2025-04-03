@@ -27,6 +27,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/registration',
+        destination: 'https://main.hivetech.space/api/registration',
+      },
+    ];
+  },
   
 };
 

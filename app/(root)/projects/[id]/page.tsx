@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-const ServicesPage = async ({ id }: { id: number }) => {
+const ProjectPage = async ({ id }: { id: number }) => {
   // Simulate loading delay
   await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -44,9 +44,9 @@ const ServicesPage = async ({ id }: { id: number }) => {
         />
 
         <Animation
-          className="text-lg text-gray-600"
+          className="text-lg text-gray-600 dark:text-gray-300"
           animationVertix="y"
-          text={project.sub_title}
+          text={project.subtitle}
         />
       </div>
 
@@ -90,12 +90,15 @@ const ServicesPage = async ({ id }: { id: number }) => {
           duration={1}
           className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
         >
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-            doloremque dicta, nulla quas quia ratione harum necessitatibus
-            quaerat suscipit, sapiente iusto aspernatur? Eius dolor cupiditate
-            error, excepturi vero quo voluptate.
-          </p>
+          <p 
+          dangerouslySetInnerHTML={{
+            __html:project.description 
+          }}
+
+          />
+         <p dangerouslySetInnerHTML={{
+          __html: project.content
+         }}/>
         </Animation>
       </div>
       <div className="py-24 md:py-32 w-full   max-w-5xl lg:max-w-6xl mx-auto overflow-hidden md:[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
@@ -143,7 +146,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <Suspense fallback={<Loader />}>
-      <ServicesPage id={id} />
+      <ProjectPage id={id} />
     </Suspense>
   );
 }
