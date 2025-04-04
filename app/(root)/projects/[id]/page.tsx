@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ProjectPage = async ({ id }: { id: number }) => {
- 
+
   await new Promise((resolve) => setTimeout(resolve, 200));
 
   // Fetch project data
@@ -50,7 +50,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
           text={project.subtitle}
         />
       </div>
-      <div className="mx-auto max-w-7xl py-12 sm:px-10 px-6">
+      {project.content || project.description && <div className="mx-auto max-w-7xl py-12 sm:px-10 px-6">
         <Animation animationVertix="y">
           <p className="sm:text-[18px] text-[14px] dark:text-gray-300 uppercase tracking-wider text-gray-500">
             Introduction
@@ -65,45 +65,45 @@ const ProjectPage = async ({ id }: { id: number }) => {
           duration={1}
           className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
         >
-          <p 
-          dangerouslySetInnerHTML={{
-            __html:project.description 
+          <p
+            dangerouslySetInnerHTML={{
+              __html: project.description
+            }}
+
+          />
+          <p dangerouslySetInnerHTML={{
+            __html: project.content
           }}
 
           />
-         <p dangerouslySetInnerHTML={{
-          __html: project.content
-         }}
-         
-         />
         </Animation>
-      </div>
+      </div>}
       <div className="py-24 md:py-32 w-full   max-w-5xl lg:max-w-6xl mx-auto overflow-hidden md:[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
         {" "}
         <Carousel slides={project.files} />
       </div>
 
-      <div className="max-w-7xl mx-auto py-14 sm:px-10 px-6">
+      {project.categories.length > 0 && <div className="max-w-7xl mx-auto py-14 sm:px-10 px-6">
         <div className="pb-16">
 
-        <Animation animationVertix="y" className="py-3">
-          <h2 className="font-bold md:text-[35px] sm:text-[30px] text-[25px] tracking-wider">
-            Project Responsibilities
-          </h2>
-        </Animation>
-        <Animation
-          delay={0.6}
-          duration={1}
-          className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+          <Animation animationVertix="y" className="py-3">
+            <h2 className="font-bold md:text-[35px] sm:text-[30px] text-[25px] tracking-wider">
+              Project Responsibilities
+            </h2>
+          </Animation>
+          <Animation
+            delay={0.6}
+            duration={1}
+            className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
           >
-          <p>
-            The responsibilities outlined here represent the structured approach
-            taken to execute the project. Each responsibility corresponds to a
-            specific phase or domain, ensuring that all aspects of the project
-            are addressed systematically and efficiently.
-          </p>
-        </Animation>
-          </div>
+            <p>
+              The responsibilities outlined here represent the structured approach
+              taken to execute the project. Each responsibility corresponds to a
+              specific phase or domain, ensuring that all aspects of the project
+              are addressed systematically and efficiently.
+            </p>
+          </Animation>
+        </div>
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {project.categories.map((category: Category, index: number) => (
@@ -112,10 +112,10 @@ const ProjectPage = async ({ id }: { id: number }) => {
         </ul>
 
 
-      </div>
-        {project.project_link && (<HrefCard url={project.project_link ? 
-  (project.project_link.startsWith('http') ? project.project_link : `https://${project.project_link}`) 
-  : ''} />)}
+      </div>}
+      {project.project_link && (<HrefCard url={project.project_link ?
+        (project.project_link.startsWith('http') ? project.project_link : `https://${project.project_link}`)
+        : ''} />)}
 
 
 

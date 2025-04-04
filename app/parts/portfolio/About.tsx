@@ -15,7 +15,7 @@ const About = ({
   return (
     <section className="mx-auto max-w-7xl pb-16 transition-all duration-300">
       <div className="sm:px-10 px-6">
-        <motion.div
+        {content && <div><motion.div
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.25, delay: 0.2, type: "spring" }}
@@ -28,55 +28,57 @@ const About = ({
           </h2>
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{
-            duration: 1,
-            delay: 0.5,
-            type: "spring",
-            ease: "easeOut",
-            once: true,
-          }}
-          className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
-        
-           dangerouslySetInnerHTML={{
-                __html: content
-              }}
-        />
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 0.5,
+              type: "spring",
+              ease: "easeOut",
+              once: true,
+            }}
+            className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+
+            dangerouslySetInnerHTML={{
+              __html: content
+            }}
+          />
+        </div>
+        }
 
 
-        <div className="mt-20">
+        {categories.length>0 && <div className="mt-20">
 
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.25, delay: 0.2, type: "spring" }}
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.25, delay: 0.2, type: "spring" }}
           >
-       
-          <h2 className="font-semibold md:text-[25px] text-[20px]  tracking-wider">
-          Skills and Qualifications
-          </h2>
-        </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{
-            duration: 1,
-            delay: 0.5,
-            type: "spring",
-            ease: "easeOut",
-            once: true,
-          }}
-          className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+            <h2 className="font-semibold md:text-[25px] text-[20px]  tracking-wider">
+              Skills and Qualifications
+            </h2>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 0.5,
+              type: "spring",
+              ease: "easeOut",
+              once: true,
+            }}
+            className="mt-4 text-[17px] max-w-4xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
           >
-          These skills represent the culmination of the experiences and capabilities I have acquired over time, reflecting my
-           ability to achieve tangible results and add real value to any project or team.
-        </motion.p>
-          </div>
+            These skills represent the culmination of the experiences and capabilities I have acquired over time, reflecting my
+            ability to achieve tangible results and add real value to any project or team.
+          </motion.p>
+        </div>}
 
-        <div className="mt-16 flex flex-wrap gap-10">
+        {categories.length>0 &&<div className="mt-16 flex flex-wrap gap-10">
           {categories.map((category: Category, index: number) => (
             <Tilt
               options={{
@@ -100,15 +102,15 @@ const About = ({
                 className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] overflow-hidden group"
               >
                 <div className="absolute w-full h-full z-10 rounded-[20px]  translate-y-[-101%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
-                <img
+                  <img
                     src={category.image}
                     alt="web-development"
                     width={105}
                     height={105}
                     className="w-full h-full rounded-[20px]"
                   />
-                  <div  className="w-full h-full absolute z-10 bg-darkMod-700/30 rounded-[20px]"/>
-              
+                  <div className="w-full h-full absolute z-10 bg-darkMod-700/30 rounded-[20px]" />
+
                 </div>
                 <div
                   className="bg-white-100  dark:bg-darkMod-200 shadow-2xl rounded-[20px]  px-4 min-h-[240px] flex justify-evenly items-start flex-col"
@@ -131,7 +133,7 @@ const About = ({
               </motion.div>
             </Tilt>
           ))}
-        </div>
+        </div>}
       </div>
     </section>
   );

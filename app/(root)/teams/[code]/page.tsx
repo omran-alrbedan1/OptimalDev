@@ -47,8 +47,8 @@ const PortfolioPage = async ({ code }: { code: string }) => {
         />
       </div>
       <About content={portfolio.content} categories={portfolio.categories} />
-      <Works projects={portfolio.projects} />
-      <PersonalProjects personal_projects={portfolio.personal_projects} />
+      {portfolio.projects.length> 0 &&<Works projects={portfolio.projects} />}
+      {portfolio.personal_projects.length> 0 && <PersonalProjects personal_projects={portfolio.personal_projects} />}
     </div>
   );
 };

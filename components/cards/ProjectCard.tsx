@@ -15,9 +15,9 @@ export default function ProjectCard({
   return (
     <motion.div
       key={project.id}
-      initial={{ opacity: 0, x: (animationVertix == 'x'? "-100%": '0'), y:(animationVertix === 'y'? 50: 0) }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.4, duration: 0.9, ease: 'easeOut' , type: 'spring' }}
+      initial={{ opacity: 0, x: (animationVertix == 'x'? "-100%": '0'), y:(animationVertix === 'y'? 200: 0) }}
+      whileInView={{ opacity: 1, y: 0, x:0 }}
+      transition={{ delay: index>5?index * 0.1: index*0.3, duration: 1.3 , type: 'spring', once:true }}
       className="w-full"
     >
       <div className="rounded-xl flex flex-col justify-between w-full  drop-shadow-2xl bg-gray-100 dark:bg-darkMod-100 transition duration-500 hover:scale-110">

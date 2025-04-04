@@ -19,7 +19,7 @@ const Clients = async () => {
   console.log(clients); // Verify the structure
   return (
 
-    <div className=" rounded-md flex flex-col pb-20 antialiased bg-white dark:bg-darkMod-700 pt-10  dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+    <div className=" rounded-md flex flex-col pb-10 antialiased bg-white dark:bg-darkMod-700 pt-10  dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
       <Header 
    title="Clients" 
   paragragh="Empowering businesses through trusted partnerships and innovative solutions." 
