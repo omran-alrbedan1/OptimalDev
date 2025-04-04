@@ -19,7 +19,7 @@ export default async function Projects() {
 
 
   return (
-    <section className=" flex flex-col items-center mt-10 px-5 md:px-12 mx-auto mb-16 md:mb-20">
+    <section className=" flex flex-col items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20">
     
     <Header title='Our Projects' paragragh='We are ready to scale up your business with our great work result.'/>
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-10  sm:gap-y-10 justify-items-center mx-auto mt-10 ">

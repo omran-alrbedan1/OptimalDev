@@ -235,11 +235,11 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                       />
                       <div className="flex items-center justify-center gap-4">
                         <span className="text-2xl text-primary-color1">
-                        <IoLanguageSharp />
+                          <IoLanguageSharp />
                         </span>
-                      <p className="md:text-lg text-gray-600 dark:text-gray-400">
-                        Language: {service.language}
-                      </p>{" "}
+                        <p className="md:text-lg text-gray-600 dark:text-gray-400">
+                          Language: {service.language}
+                        </p>{" "}
                       </div>
                     </div>
                   </div>{" "}
@@ -252,7 +252,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                           alt={service.title}
                           fill
                           className=" aspect-[9/5] rounded-xl"
-                          // object-contain rounded-xl h-full w-full
+                        // object-contain rounded-xl h-full w-full
                         />
                       </div>
                     )}

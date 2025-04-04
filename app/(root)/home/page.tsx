@@ -15,6 +15,7 @@ import Clients from "@/app/parts/Clients";
 import Sliders from "@/app/parts/Sliders";
 import Sections from "@/app/parts/Sections";
 import Loader from "@/components/Loader";
+import { DiscussProject } from "@/components/DiscussProject";
 
 
 
@@ -115,6 +116,7 @@ const Page = async () => {
  <Categories />
  <Testimonial />
  <Clients />
+ <DiscussProject />
     </div></Suspense>
   );
 };

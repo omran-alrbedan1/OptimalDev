@@ -20,7 +20,7 @@ const  ProjectsPage = async () =>  {
           title="All Projects"
           paragragh="this is the all of our projects"
         /> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-x-8 sm:gap-y-10 justify-items-center mx-auto mt-10 ">
+        <div className="sm:px-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-x-10 sm:gap-y-10 justify-items-center mx-auto mt-10 ">
           {projects.map((project: ProjectProps, index: number) => (
             <ProjectCard key={project.id} project={project} index={index} animationVertix="y" />
           ))}

@@ -160,7 +160,7 @@ const Header = () => {
           {/* <li className="hidden xl:block">
             <Button
               type="link"
-              className="text-[16px] font-semibold w-80 h-80 px-8 py-3 bg-primary-color1 rounded-full text-white-100"
+              className="text-[16px] font-semibold w-80 h-80 px-2 py-3 bg-primary-color1 rounded-full text-white-100"
               href="/discuss-project"
             >
               Discuss Project

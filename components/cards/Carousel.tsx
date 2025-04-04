@@ -30,7 +30,7 @@ const Slide = ({
 }: SlideProps) => {
   const { id, name, path } = slide;
 
-  const translateXFactor =  17 ;
+  const translateXFactor =  window.innerWidth> 700?21:17 ;
 
   return (
     <li
