@@ -2,7 +2,7 @@
 import { SectionArray } from "@/types";
 import { useState, useEffect } from "react";
 import React from "react";
-import { motion } from "framer-motion";
+import { easeOut, motion } from "framer-motion";
 import Image from "next/image";
 const Section = ({ sections }: { sections: SectionArray }) => {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -59,21 +59,32 @@ const Section = ({ sections }: { sections: SectionArray }) => {
           className="w-full h-full absolute object-fill"
         />
         <div className="absolute w-full h-full bg-primary-color2 opacity-80" />
-        <div className="absolute flex w-full h-full flex-col lg:flex-row py-10 justify-between items-center px-5 md:px-10 gap-10">
-          <div className="w-1/3 max-lg:w-full flex items-center justify-center">
+        <div className="relative  flex w-full h-full flex-col lg:flex-row py-10 justify-between items-center px-5 md:px-10 gap-10">
+          <motion.div 
+                     initial={{opacity: 0, x:200}}
+                     whileInView={{opacity: 1, x:0}}
+                     transition={{delay: 0.5, duration: 1.2, type: 'spring', once: true , ease: easeOut}}
+
+          className="w-1/3 max-lg:w-full flex items-center justify-center">
             <Image
               src={"/logos/logo with text dark.png"}
               width={windowWidth > 900 ? 270 : 160}
               height={windowWidth > 900 ? 270 : 160}
               alt="Logo"
             />
-          </div>
+          </motion.div>
           {/* Modified scroll container */}
-          <div className="w-2/3 max-lg:w-full h-full flex-1 min-h-0 text-[13px] md:text-[15px] text-gray-300 text-center lg:text-start px-4 overflow-y-auto thin-scrollbar">
-            <div
-              className="min-h-full"
-              dangerouslySetInnerHTML={{ __html: sections[0].description }}
-            />
+          <div className="w-2/3 max-lg:w-full h-full lg:mt-10 flex-1 min-h-0 text-[13px] md:text-[16px] text-gray-300 text-center lg:text-start px-4 overflow-y-auto thin-scrollbar items-center justify-center">
+              
+
+                  <motion.div
+                  initial={{opacity: 0, y:200}}
+                  whileInView={{opacity: 1, y:0}}
+                  transition={{delay: 1, duration: 1.4, type: 'spring', once: true , ease: easeOut}}
+                  className=""
+                  dangerouslySetInnerHTML={{ __html: sections[0].description }}
+                  />
+               
           </div>
 
           <style>

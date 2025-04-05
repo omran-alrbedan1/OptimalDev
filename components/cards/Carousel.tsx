@@ -56,7 +56,7 @@ const Slide = ({
       onClick={() => handleSlideClick(index)}
     >
       <div
-        className="relative w-full h-full bg-[#1D1F2F] rounded-[5%] overflow-hidden"
+        className="relative w-full h-full bg-gray-500 rounded-[5%] overflow-hidden"
         style={{
           backgroundImage: `url(https://main.hivetech.space/storage/${path})`,
           backgroundSize: "cover",
@@ -66,12 +66,10 @@ const Slide = ({
       >
         <div
           className={`absolute inset-0 rounded-[5%] ${
-            current !== index ? "bg-black/50" : "bg-black/10"
+            current !== index ? "bg-black/30" : "bg-black/10"
           } transition-all duration-1000`}
         />
-        <p className="relative w-full flex hover:flex h-full z-10  justify-center items-start tracking-[5px] pt-3 lg:pt-4 text-darkMod-600">
-          Click to extand
-          </p>
+      
       </div>
     </li>
   );

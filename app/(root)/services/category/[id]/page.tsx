@@ -146,6 +146,10 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import { BiError } from "react-icons/bi";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+// import Button from "@/app/elements/Button/button";
+import FormForRegisteration from "@/components/forms/FormForRegisteration";
+import { Button } from "@/components/ui/button";
 
 const CategoryDetails = async ({ id }: { id: number }) => {
   // Simulate loading (optional)
@@ -181,7 +185,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
         <img
           src={category.image}
           alt="backgroundImage"
-          className="absolute w-full h-full object-cover md:object-fill "
+          className="absolute w-full h-full object-cover md:object-cover"
         />
         <div className="absolute w-full h-full bg-primary-color2 opacity-70" />
         <div className="relative top-20 sm:top-40 w-full h-full flex flex-col items-center justify-start px-5">
@@ -201,12 +205,12 @@ const CategoryDetails = async ({ id }: { id: number }) => {
       </div>
 
       {services.length > 0 ? (
-        <div className=" mx-auto px-1 md:px-8 mt-20">
+        <div className=" mx-auto px-2 md:px-8 mt-20">
           <div className="grid grid-cols-1 gap-8">
             {services.map((service: ServiceProps) => (
               <div
                 key={service.id}
-                className="dark:bg-darkMod-100 border border-dotted  border-primary-color1 rounded-xl p-2 md:px-10 py-5 pt-10 shadow-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300"
+                className="dark:bg-darkMod-100 border-[0.02px]   border-gray-200 dark:border-gray-500 dark:shadow-darkMod-400 rounded-[8px] p-2 md:px-10 py-5 pt-10 shadow-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300"
               >
                 <div className="text-center">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-wider">
@@ -241,6 +245,8 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                           Language: {service.language}
                         </p>{" "}
                       </div>
+
+
                     </div>
                   </div>{" "}
                   <div className="flex h-[80%] flex-1">
@@ -257,6 +263,24 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                       </div>
                     )}
                   </div>
+                </div>
+                <div className="flex justify-center items-center">
+
+                <Dialog >
+                  <DialogTrigger asChild>
+                    <Button className="mt-6 bg-primary-color1 hover:bg-primary-hover max-xs:w-[230px] max-xs:mt-8 w-[200px] h-[50px] rounded-[8px] text-lg tracking-wider ">
+                      Register Now
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-[93%] sm:max-w-[1200px] ">
+                    <DialogHeader>
+                      <DialogTitle>Register for {service.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <FormForRegisteration service_id={service.id} />
+                    </div>
+                  </DialogContent>
+                </Dialog>
                 </div>
               </div>
             ))}

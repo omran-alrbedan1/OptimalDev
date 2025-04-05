@@ -48,6 +48,10 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
               display: none;
             }
           }
+              .splide__pagination__page.is-active {
+            background: var(--primary-color1);
+            transform: scale(1.4);
+          }
         `}
       </style>
 
@@ -63,7 +67,7 @@ const Testimonials = ({testimonials}:{testimonials:TestimoniArray}) => {
       {testimonials.map((item) => (
         <SplideSlide key={item.id}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: item.id * 0.1 }}
             className="flex-col ml-auto mr-auto w-11/12 sm:w-10/12 rounded-2xl shadow-xl sm:shadow-2xl border px-8 py-6  mb-8 mt-6 mx-auto sm:mb-12

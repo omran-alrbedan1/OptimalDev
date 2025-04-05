@@ -86,7 +86,7 @@ const About = ({
                 scale: 1,
                 speed: 450,
               }}
-              className="xs:w-[250px] w-full"
+              className="basis-[360px] flex-grow max-w-[420px]"
               key={category.id}
             >
               <motion.div
@@ -99,21 +99,21 @@ const About = ({
                   ease: "easeOut",
                   once: true,
                 }}
-                className="w-full relative  green-pink-gradient p-[1px] rounded-[20px] overflow-hidden group"
+                className="w-full relative  p-[1px] rounded-[12px] overflow-hidden group"
               >
-                <div className="absolute w-full h-full z-10 rounded-[20px]  translate-y-[-101%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                <div className="absolute w-full h-full z-10 rounded-[12px]  translate-y-[-101%] flex  group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
                   <img
                     src={category.image}
                     alt="web-development"
                     width={105}
                     height={105}
-                    className="w-full h-full rounded-[20px]"
+                    className="w-full h-full rounded-[12px] object-fill"
                   />
                   <div className="w-full h-full absolute z-10 bg-darkMod-700/30 rounded-[20px]" />
 
                 </div>
                 <div
-                  className="bg-white-100  dark:bg-darkMod-200 shadow-2xl rounded-[20px]  px-4 min-h-[240px] flex justify-evenly items-start flex-col"
+                  className="bg-white-100  dark:bg-darkMod-200  rounded-[12px] xs:min-h-[220px] min-h-[210px] pt-1 pb-3 pr-3  flex justify-start gap-1 items-start flex-col"
                 >
                   <img
                     src={category.image_icon}
@@ -123,10 +123,10 @@ const About = ({
                     className="object-contain"
                   />
 
-                  <h3 className=" text-[20px] font-bold text-start">
+                  <h3 className="pl-4 text-[20px] font-bold text-start">
                     {category.title}
                   </h3>
-                  <p className="text-start dark:text-gray-300">
+                  <p className="pl-4 text-start dark:text-gray-300">
                     {category.description}
                   </p>
                 </div>

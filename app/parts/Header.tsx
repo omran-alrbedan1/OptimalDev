@@ -35,7 +35,7 @@ const Header = () => {
       <header
         className={`header fixed top-0 lg:-top-[20px] py-3 dark:bg-darkMod-100 bg-white z-50 min-w-full lg:h-[14vh] shadow-xl transition-all duration-900 ease-linear`}
       >
-        <div className={`flex justify-between  px-6 lg:px-0 border-none lg:ml-10`}>
+        <div className={`flex justify-between  px-6 lg:px-0 border-none `}>
           <Link href={"/home"} className="dark:hidden block">
             <Image
               src={"/Hive Tech.png"}
@@ -90,7 +90,7 @@ const Header = () => {
           </div>
         </div>
 
-        <ul className="hidden text-theme-blue tracking-widest items-center lg:flex flex-row mt-0">
+        <ul className="hidden  tracking-widest items-center lg:flex flex-row mt-0">
           <li>
             <Button
               className={`${
@@ -100,6 +100,40 @@ const Header = () => {
               href="/home"
             >
               Home 
+            </Button>
+          </li>
+          <li className="py-2 lg:py-0">
+            <Button
+              className={`${
+                path === "/projects" ? "active-link" : ""
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
+              type="link"
+              href="/projects"
+            >
+              Projects
+            </Button>
+          </li>
+       
+          <li className="py-2 lg:py-0">
+            <Button
+              className={`${
+                path === "/services" ? "active-link" : ""
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
+              type="link"
+              href="/services"
+            >
+              Services
+            </Button>
+          </li>
+          <li className="py-2 lg:py-0">
+            <Button
+              className={`${
+                path === "/teams" ? "active-link" : ""
+              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
+              type="link"
+              href="/teams"
+            >
+              Team
             </Button>
           </li>
           <li>
@@ -122,39 +156,6 @@ const Header = () => {
               href="/contact-us"
             >
               Contact Us
-            </Button>
-          </li>
-          <li className="py-2 lg:py-0">
-            <Button
-              className={`${
-                path === "/teams" ? "active-link" : ""
-              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
-              type="link"
-              href="/teams"
-            >
-              Team
-            </Button>
-          </li>
-          <li className="py-2 lg:py-0">
-            <Button
-              className={`${
-                path === "/services" ? "active-link" : ""
-              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
-              type="link"
-              href="/services"
-            >
-              Services
-            </Button>
-          </li>
-          <li className="py-2 lg:py-0">
-            <Button
-              className={`${
-                path === "/projects" ? "active-link" : ""
-              } text-[16px] font-semibold  px-5 no-underline hover:underline`}
-              type="link"
-              href="/projects"
-            >
-              Projects
             </Button>
           </li>
           {/* <li className="hidden xl:block">
@@ -180,7 +181,7 @@ const Header = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-full  top-[78px] md:top-[84px] py-8 dark:bg-darkMod-300 bg-white-100 w-full sm:w-[60%] lg:hidden">
+          <ul className="z-50 flex flex-col items-center fixed  tracking-widest right-0 h-full  top-[78px] md:top-[83px] py-8 dark:bg-darkMod-300 bg-white-100 w-full xs:w-[80%] md:w-[60%] lg:hidden">
             <li className="py-2 ">
               <Button
                 className={`${
@@ -193,41 +194,19 @@ const Header = () => {
                 Home
               </Button>
             </li>
+         
+        
+      
             <li className="py-2">
               <Button
                 className={`${
-                  path === "/teams" ? "active-link" : ""
+                  path === "/projects" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
-                href="/teams"
+                href="/projects"
                 onClick={() => setIsCollapse(false)}
               >
-                Team
-              </Button>
-            </li>
-        
-            <li className="py-2 ">
-              <Button
-                className={`${
-                  path === "/contact-us" ? "active-link" : ""
-                } px-10 no-underline hover:underline`}
-                type="link"
-                href="/contact-us"
-                onClick={() => setIsCollapse(false)}
-              >
-                Contact Us
-              </Button>
-            </li>
-            <li className="py-2 ">
-              <Button
-                className={`${
-                  path === "/about-us" ? "active-link" : ""
-                } px-10 no-underline hover:underline`}
-                type="link"
-                href="/about-us"
-                onClick={() => setIsCollapse(false)}
-              >
-                About Us
+                Projects
               </Button>
             </li>
             <li className="py-2">
@@ -242,18 +221,44 @@ const Header = () => {
                 Services
               </Button>
             </li>
+          
             <li className="py-2">
               <Button
                 className={`${
-                  path === "/projects" ? "active-link" : ""
+                  path === "/teams" ? "active-link" : ""
                 } px-10 no-underline hover:underline`}
                 type="link"
-                href="/projects"
+                href="/teams"
                 onClick={() => setIsCollapse(false)}
               >
-                Projects
+                Team
               </Button>
             </li>
+            <li className="py-2 ">
+              <Button
+                className={`${
+                  path === "/about-us" ? "active-link" : ""
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/about-us"
+                onClick={() => setIsCollapse(false)}
+              >
+                About Us
+              </Button>
+            </li>
+            <li className="py-2 ">
+              <Button
+                className={`${
+                  path === "/contact-us" ? "active-link" : ""
+                } px-10 no-underline hover:underline`}
+                type="link"
+                href="/contact-us"
+                onClick={() => setIsCollapse(false)}
+              >
+                Contact Us
+              </Button>
+            </li>
+          
             <li className="mx-auto my-9">
               <Button
                 className=" px-6 py-3 bg-primary-color1 text-white rounded-full transition duration-200"
