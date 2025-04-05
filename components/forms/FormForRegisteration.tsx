@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-const FormForRegisteration = () => {
+const FormForRegisteration = ({service_id, containerStyle}: {service_id?: number; containerStyle?:string}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState({
     full_name: "",
@@ -97,6 +97,7 @@ const FormForRegisteration = () => {
         const payload = {
           ...data,
           phone: phoneNumber,
+          ...(service_id && { service_id }) 
         };
         console.log(payload);
 
@@ -139,7 +140,8 @@ const FormForRegisteration = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="text-gray-700 flex flex-col gap-6 max-xs:px-6 px-10 xl:pt-10"
+        
+        className={`text-gray-700 flex flex-col gap-6 ${containerStyle}`}
       >
         <div className="flex max-sm:flex-col gap-4">
           <div className="flex-1 relative">
@@ -306,20 +308,20 @@ const FormForRegisteration = () => {
         </div>
       </form>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className={dialogContent.isSuccess ? "bg-green-50" : "bg-red-50"}>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
+        <DialogContent className={`dark:bg-darkMod-600 ${dialogContent.isSuccess ? "dark:bg-darkMod-600 bg-green-50" : "bg-red-50"}`}>
           <DialogHeader>
             <DialogTitle className={dialogContent.isSuccess ? "text-green-600" : "text-red-600"}>
               {dialogContent.title}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="pt-5 text-gray-600 dark:text-gray-300">
               {dialogContent.description}
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end">
             <Button
               onClick={() => setDialogOpen(false)}
-              className={dialogContent.isSuccess ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}
+              className={`rounded-[8px] text-[16px] bg-red-600 ${dialogContent.isSuccess ? " bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
             >
               Close
             </Button>

@@ -50,7 +50,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
           text={project.subtitle}
         />
       </div>
-      {project.content || project.description && <div className="mx-auto max-w-7xl py-12 sm:px-10 px-6">
+      {(project.content || project.description) && <div className="mx-auto max-w-7xl py-12 sm:px-10 px-6">
         <Animation animationVertix="y">
           <p className="sm:text-[18px] text-[14px] dark:text-gray-300 uppercase tracking-wider text-gray-500">
             Introduction

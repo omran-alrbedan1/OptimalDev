@@ -38,7 +38,7 @@ const DiscussProject =  () => {
    
          
           <div className="w-full max-w-6xl overflow-hidden pt-10 md:px-5">
-            <FormForRegisteration />
+            <FormForRegisteration containerStyle="max-xs:px-6 px-10 xl:pt-10"/>
     
         </div>
       </div>
