@@ -21,7 +21,7 @@ export const DiscussProject = () =>   {
           <Button 
             href="/discuss-project" 
             type="link" 
-            className="flex  bg-yellow-300 text-blue-800 text-xl lg:text-2xl xl:text-xl tracking-wider items-center justify-center w-52 sm:w-72 lg:w-80 lg:h-[85px] h-[70px] p-5 border-2  shadow-xl rounded-full mt-6 sm:mt-0 sm:ml-4 lg:ml-0 xl:ml-12 transform transition duration-600 hover:scale-105"
+            className="flex  bg-yellow-300 text-gray-600 text-xl lg:text-2xl xl:text-xl tracking-wider items-center justify-center w-52 sm:w-72 lg:w-80 lg:h-[85px] h-[70px] p-5 border-2  shadow-xl rounded-full mt-6 sm:mt-0 sm:ml-4 lg:ml-0 xl:ml-12 transform transition duration-600 hover:scale-105"
           >
             Lets Discuss!
           </Button>

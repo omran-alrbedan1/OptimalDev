@@ -78,7 +78,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="text-gray-700 flex flex-col gap-6 max-xs:px-6 px-10 xl:pt-10"
+      className="text-gray-700 flex flex-col gap-6   xl:pt-10"
     >
       {/* First Name */}
       <div className="flex max-sm:flex-col gap-4">

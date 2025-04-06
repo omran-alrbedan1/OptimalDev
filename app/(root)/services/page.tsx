@@ -30,7 +30,7 @@ const ServicesPage = async () => {
           >
             <AnimateCard
               index={index}
-              animationVertix="x"
+              animationVertix="y"
               className=" flex flex-col max-h-full overflow-hidden bg-white-100 dark:bg-darkMod-600  rounded-xl"
             >
               <Link href={`/services/${service.id}`} className=" w-full  ">

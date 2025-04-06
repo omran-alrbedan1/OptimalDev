@@ -44,8 +44,8 @@ const ContactUsPage = async () => {
       <div className="absolute w-full h-full bg-darkMod-700 opacity-70" />
 
       {/* Content Section */}
-      <div className="relative w-full h-full z-10 max-md:pt-20 md:pt-24 flex justify-center items-center flex-col pb-10">
-        <div className="flex flex-col items-center justify-center text-center p-6 md:mb-10">
+      <div className="relative w-full h-full z-10 max-md:pt-28 md:pt-32 flex justify-center items-center flex-col pb-10">
+        <div className="flex flex-col items-center justify-center text-center p-3 sm:p-6">
           <h1
             className="text-2xl sm:text-3xl md:text-4xl text-white mb-6 font-bold"
             style={{ letterSpacing: "4px" }}
@@ -56,16 +56,16 @@ const ContactUsPage = async () => {
           {/* Text Content */}
           {text && (
             <div
-              className="text-gray-200 text-[14px] md:text-lg mb-6 max-w-4xl max-sm:font-light"
+              className="text-gray-200 text-[15px] md:text-lg mb-6 max-w-4xl max-sm:font-light"
               dangerouslySetInnerHTML={{ __html: text.content }}
             />
           )}
         </div>
 
         {/* Address */}
-        <div className="flex mx-auto max-w-full justify-evenly items-center w-full max-lg:flex-col max-xl:gap-14">
-          <div className="w-1/2 flex flex-col justify-center items-center max-lg:w-full">
-            <div className="flex flex-col gap-y-3">
+        <div className="px-5 sm:pl-10 lg:pl-0 mt-10 max-lg:gap-10  flex mx-auto max-w-full justify-start items-start lg:justify-evenly lg:items-center w-full max-lg:flex-col ">
+          <div className="flex flex-col justify-start lg:justify-center items-start lg:items-center max-lg:w-full  lg:basis-[470px]">
+            <div className="flex flex-col gap-y-3 lg:gap-y-5">
               <div className="flex items-start gap-4">
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
                   <MdLocationOn />
@@ -101,7 +101,7 @@ const ContactUsPage = async () => {
               </div>
             </div>
           </div>
-          <div className="w-[98%] overflow-hidden xl:w-1/2 lg:mt-20 xl:mt-14">
+          <div className="w-full overflow-hidden lg:w-1/2 xl:pt-8 lg:pt-16">
             <ContactForm />
           </div>
         </div>
