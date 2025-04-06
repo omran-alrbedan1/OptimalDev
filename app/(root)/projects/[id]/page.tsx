@@ -105,7 +105,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
           </Animation>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-14 lg:gap-y-16">
           {project.categories.map((category: Category, index: number) => (
             <CategoryCard key={category.id} category={category} index={index} />
           ))}
