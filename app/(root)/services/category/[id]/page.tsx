@@ -272,11 +272,11 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                       Register Now
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="w-[93%] sm:max-w-[1200px] ">
-                    <DialogHeader>
-                      <DialogTitle>Register for {service.title}</DialogTitle>
+                  <DialogContent className="w-[97%] sm:max-w-[1200px] max-h-[100vh] my-10 overflow-y-auto ">
+                     <DialogHeader className="text-start">
+                     <DialogTitle  className="tracking-widest  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
                     </DialogHeader>
-                    <div className="py-4">
+                    <div className="py-4 pt-6">
                       <FormForRegisteration service_id={service.id} />
                     </div>
                   </DialogContent>
