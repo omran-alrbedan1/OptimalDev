@@ -26,7 +26,7 @@ const ProjectCard = ({
     >
       <div className="flex flex-col justify-between rounded-[12px]  bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
         <Link
-          href={`/services/${project.id}`}
+          href={`/projects/${project.id}`}
           className="relative cursor-pointer aspect-[10/6]"
         >
           <div className="absolute w-full rounded-[12px] rounded-b-[5px] h-full bg-primary-color2 dark:bg-darkMod-400 opacity-0 hover:opacity-30" />
