@@ -35,7 +35,8 @@ const Footer = () => {
               Growing your business with strategic design and innovative
               solutions. Let’s elevate your brand together.
             </p>
-            <div className="flex items-center justify-between gap-5 md:mt-8">
+            <div className="flex items-center justify-start
+             gap-5 md:mt-8 flex-wrap max-xs:mt-4">
               <Button
                 href="https://x.com/hive_tech1?t=GkzX41fLdfkY0a5puQRpRw&s=09"
                 target="_blank"
@@ -156,10 +157,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-[90%]  items-center justify-center absolute bottom-[12px] left-1/2 -translate-x-1/2">
+      <div className="flex w-[90%] textgray  items-center justify-center absolute bottom-[12px] left-1/2 -translate-x-1/2">
         <span className="basis-[1px] flex-grow h-[1.5px] bg-gray-400" />
-        <p className="text-center font-light text-[14px] px-5">
-          &copy; 2025 Your Company. All rights reserved. by <span className='text-[16px] text-primary-color1 font-medium '>Hive<span className='text-black'>Tech</span></span>
+        <p className="text-center  font-light text-[14px] px-5 text-gray-600">
+        <span className="text-xl mt-2">  &copy;</span> 2025 Your Company. All rights reserved. by <span className='text-[16px] text-primary-color1 font-medium '>Hive<span className='text-black'>Tech</span></span>
         </p>
         <span className="basis-[1px] flex-grow h-[1.5px] bg-gray-400" />
       </div>
