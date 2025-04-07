@@ -232,12 +232,7 @@ const About = ({
 
         {categories.length > 0 && <div className="mt-16 flex flex-wrap gap-10 gap-y-16 ">
           {categories.map((category: Category, index: number) => (
-            <Tilt
-              options={{
-                max: 45,
-                scale: 1,
-                speed: 450,
-              }}
+            <div
               className="basis-[360px] flex-grow  max-w-[420px] "
               key={category.id}
             >
@@ -293,7 +288,7 @@ const About = ({
                 </div>
 
               </motion.div>
-            </Tilt>
+            </div>
           ))}
         </div>}
       </div>

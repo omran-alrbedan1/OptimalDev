@@ -34,7 +34,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
   return (
     <div className="min-h-screen py-20 pt-36 md:pt-40  sm:px-8 lg:px-10">
       {/* Project Header */}
-      <div className="max-w-7xl mx-auto text-center pb-10 px-4">
+      <div className="max-w-7xl mx-auto text-center pb-4 md:pb-10 px-4">
         <Animation
           animationVertix={"y"}
           text={project.title}
@@ -63,7 +63,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
         <Animation
           delay={0.6}
           duration={1}
-          className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider text-gray-600 dark:text-gray-300"
+          className="mt-4 text-[17px] max-w-3xl leading-[30px] tracking-wider overflow-hidden text-gray-600 dark:text-gray-300"
         >
           <p
             dangerouslySetInnerHTML={{

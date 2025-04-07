@@ -267,20 +267,44 @@ const CategoryDetails = async ({ id }: { id: number }) => {
                 <div className="flex justify-center items-center">
 
                 <Dialog >
-                  <DialogTrigger asChild>
-                    <Button className="mt-6 bg-primary-color1 hover:bg-primary-hover max-xs:w-[230px] max-xs:mt-8 w-[200px] h-[50px] rounded-[8px] text-lg tracking-wider ">
-                      Register Now
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="w-[97%] sm:max-w-[1200px] max-h-[100vh] my-10 overflow-y-auto ">
-                     <DialogHeader className="text-start">
-                     <DialogTitle  className="tracking-widest  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
-                    </DialogHeader>
-                    <div className="py-4 pt-6">
-                      <FormForRegisteration service_id={service.id} />
-                    </div>
-                  </DialogContent>
-                </Dialog>
+  <DialogTrigger asChild>
+    <Button className="mt-6 bg-primary-color1 hover:bg-primary-hover max-xs:w-[230px] max-xs:mt-8 w-[200px] h-[50px] rounded-[8px] text-lg tracking-wider ">
+      Register Now
+    </Button>
+  </DialogTrigger>
+  <DialogContent className="w-[97%] sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar">
+  <style>
+            {`
+        .thin-scrollbar::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+        .thin-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+        }
+      `}
+          </style>
+    <DialogHeader className="text-start">
+      <DialogTitle  className="tracking-widest  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
+    
+    </DialogHeader>
+    <div className="py-4 pt-6">
+      <FormForRegisteration service_id={service.id} />
+    </div>
+  </DialogContent>
+</Dialog>
                 </div>
               </div>
             ))}

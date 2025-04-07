@@ -18,19 +18,15 @@ const ProjectCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
         duration: 0.75,
-        delay: 0.5 * index,
+        delay: 0.3 * index,
         type: "spring",
         ease: "easeOut",
         once: true,
       }}
       className="basis-[350px] "
     >
-      <Tilt
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
+      <div
+     
         className="dark:bg-darkMod-100 shadow-2xl bg-white-100 p-5 pb-2 rounded-2xl  w-full aspect-[14/9]"
       >
         <Link href={`/projects/${project.id}`} className="relative w-full h-[70%] ">
@@ -46,7 +42,7 @@ const ProjectCard = ({
             {project.title}
           </h3>
         </div>
-      </Tilt>
+      </div>
     </motion.div>
   );
 };

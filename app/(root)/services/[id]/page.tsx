@@ -213,7 +213,30 @@ const ServicePage = async ({ id }: { id: number }) => {
       Register Now
     </Button>
   </DialogTrigger>
-  <DialogContent className="w-[97%] sm:max-w-[1200px] max-h-[100vh] my-10 overflow-y-auto">
+  <DialogContent className="w-[97%] sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar">
+  <style>
+            {`
+        .thin-scrollbar::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 2px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+        .thin-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+        }
+      `}
+          </style>
     <DialogHeader className="text-start">
       <DialogTitle  className="tracking-widest  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
     

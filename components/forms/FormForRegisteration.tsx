@@ -3,10 +3,13 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { MdEmail, MdBusiness, MdLocationOn, MdNotes } from "react-icons/md";
+import { MdEmail, MdBusiness, MdLocationOn, MdNotes, MdReportProblem } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
+import { MdOutlineReportProblem } from "react-icons/md";
+
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -14,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { CheckCircleIcon, X, XIcon } from "lucide-react";
 
 const FormForRegisteration = ({service_id, containerStyle}: {service_id?: number; containerStyle?:string}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -296,7 +300,7 @@ const FormForRegisteration = ({service_id, containerStyle}: {service_id?: number
         <div className="flex justify-start items-center flex-1">
           <Button
             type="submit"
-            className="text-lg tracking-widest bg-primary-color1 hover:bg-primary-hover w-full md:w-1/4 max-sm:w-full  h-[50px] md:h-14 flex justify-center items-center rounded-[8px] relative"
+            className="text-lg tracking-wider bg-primary-color1 hover:bg-primary-hover w-full md:w-1/4 max-sm:w-full  h-[50px] md:h-14 flex justify-center items-center rounded-[8px] relative"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -308,26 +312,45 @@ const FormForRegisteration = ({service_id, containerStyle}: {service_id?: number
         </div>
       </form>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
-        <DialogContent className={`dark:bg-darkMod-600 ${dialogContent.isSuccess ? "dark:bg-darkMod-600 bg-green-50" : "bg-red-50"}`}>
-          <DialogHeader>
-            <DialogTitle className={dialogContent.isSuccess ? "text-green-600" : "text-red-600"}>
-              {dialogContent.title}
-            </DialogTitle>
-            <DialogDescription className="pt-5 text-gray-600 dark:text-gray-300">
-              {dialogContent.description}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end">
-            <Button
-              onClick={() => setDialogOpen(false)}
-              className={`rounded-[8px] text-[16px] bg-red-600 ${dialogContent.isSuccess ? " bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
-            >
-              Close
-            </Button>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogContent
+        className={`dark:bg-darkMod-600 bg-white  rounded-[20px] sm:rounded-xl lg:rounded-[10px] p-8 shadow-lg w-[350px] sm:w-[400px] lg:w-[450px]`}
+      >
+             <button
+          onClick={() => setDialogOpen(false)}
+          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 dark:text-gray-300 hover:dark:text-gray-400 transition-colors"
+        >
+          <XIcon className="w-6 h-6" />
+        </button>
+        <div className="flex flex-col items-center justify-center space-y-4">
+          {/* Checkmark Icon */}
+          <div
+            className={`w-16 h-16 rounded-full flex items-center justify-center ${
+              dialogContent.isSuccess ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            }`}
+          >
+            {dialogContent.isSuccess?<CheckCircleIcon className="w-8 h-8" />: <MdReportProblem className="w-8 h-8" />}
           </div>
-        </DialogContent>
-      </Dialog>
+
+    
+          <DialogTitle
+            className={`text-xl font-semibold ${
+              dialogContent.isSuccess ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {dialogContent.title}
+
+          </DialogTitle>
+
+          {/* Description */}
+          <DialogDescription className="text-gray-600 dark:text-gray-300 text-center">
+            {dialogContent.description}
+          </DialogDescription>
+        </div>
+
+      
+      </DialogContent>
+    </Dialog>
     </>
   );
 };
