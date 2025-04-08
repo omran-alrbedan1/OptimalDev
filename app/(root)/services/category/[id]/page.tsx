@@ -272,7 +272,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
       Register Now
     </Button>
   </DialogTrigger>
-  <DialogContent className="w-[97%] max-sm:my-12 sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar rounded-[5px] sm:rounded-xl lg:rounded-xl">
+  <DialogContent className="w-[97%] max-sm:my-12 max-xs:pb-20 sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar rounded-[5px] sm:rounded-xl lg:rounded-xl">
   <style>
             {`
         .thin-scrollbar::-webkit-scrollbar {

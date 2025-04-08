@@ -267,7 +267,7 @@ import Link from "next/link";
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
           {teams.map((item: Teams , index: number) => (
             <Animate
-            x="-100%" y="0" delay={0.7} duration={2} key={item.id} index={index}
+            x="-100%" y="0" delay={0.4} duration={2} key={item.id} index={index}
              
               className="w-full max-w-[400px] mx-auto" 
             >
