@@ -42,7 +42,7 @@ const ServicesPage = async () => {
                   className=" w-full aspect-[10/7] object-cover rounded-b-[5px] rounded-t-xl"
                 />
               </Link>
-              <p className="w-full py-1 aspect-[10/2] flex items-center justify-center px-2 text-center text-lg overflow-auto">
+              <p className="w-full py-1 aspect-[10/2] flex items-center justify-center px-2 text-center text-lg font-semibold sm:text-xl overflow-auto">
                 {service.title}
               </p>
             </AnimateCard>

@@ -49,7 +49,7 @@ const DialogContent = React.forwardRef<
       */}
       <DialogPrimitive.Close  className="absolute right-4 top-4 ">
         <X className="h-6 w-6 text-white " />
-        <span className="sr-only">Close</span>
+        {/* <span className="sr-only">Close</span> */}
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>

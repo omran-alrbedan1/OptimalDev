@@ -155,7 +155,6 @@ import { Category, CategoryArray } from "@/types";
 
 import { motion } from "framer-motion";
 
-import { Tilt } from "react-tilt";
 
 const About = ({
   content,
@@ -165,7 +164,7 @@ const About = ({
   categories: CategoryArray;
 }) => {
   return (
-    <section className="mx-auto max-w-7xl pb-16 transition-all duration-300">
+    <section className="mx-auto max-w-7xl mb-10 sm:mb-16  transition-all duration-300">
       <div className="sm:px-10 px-6">
         {content && <div><motion.div
           initial={{ opacity: 0, y: -50 }}

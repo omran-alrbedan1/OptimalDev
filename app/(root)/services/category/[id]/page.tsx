@@ -272,7 +272,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
       Register Now
     </Button>
   </DialogTrigger>
-  <DialogContent className="w-[97%] sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar">
+  <DialogContent className="w-[97%] max-sm:my-12 sm:max-w-[700px] lg:max-w-[900px] max-h-[100vh]  overflow-y-auto thin-scrollbar rounded-[5px] sm:rounded-xl lg:rounded-xl">
   <style>
             {`
         .thin-scrollbar::-webkit-scrollbar {
@@ -297,7 +297,7 @@ const CategoryDetails = async ({ id }: { id: number }) => {
       `}
           </style>
     <DialogHeader className="text-start">
-      <DialogTitle  className="tracking-widest  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
+      <DialogTitle  className="tracking-widest max-sm:tracking-wide  text-white" style={{lineHeight: "30px"}}>Register for {service.title}</DialogTitle>
     
     </DialogHeader>
     <div className="py-4 pt-6">

@@ -217,12 +217,12 @@ export function Carousel({ slides }: CarouselProps) {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTitle></DialogTitle>
-        <DialogContent className="w-full max-w-screen-sm lg:max-w-screen-lg z-50 aspect-[16/14] lg:aspect-[16/11] bg-white dark:bg-neutral-900 rounded-[4px] shadow-lg p-4">
-          <div className="w-full h-full absolute">
+        <DialogContent className="w-full max-w-screen-sm lg:max-w-screen-lg z-50 aspect-[14/14] lg:aspect-[16/10] bg-neutral-900  rounded-[5px] sm:rounded-xl lg:rounded-xl shadow-lg p-4">
+          <div className="w-full h-full absolute rounded-xl">
             <img
               src={`https://main.hivetech.space/storage/${slides[current].path}`}
               alt={slides[current].name || "Slide"}
-              className="w-full h-full object-contain rounded-lg"
+              className="h-full w-full object-contain rounded-xl"
             />
           </div>
         </DialogContent>

@@ -64,7 +64,7 @@ const PersonalProjects = ({
           once: true,
         }}
       >
-        <h2 className="font-black md:text-[30px] sm:text-[27px] text-[22px] mb-8">
+        <h2 className="font-bold tracking-widest md:text-[30px] sm:text-[27px] text-[22px] mb-8">
           Personal Projects
         </h2>
       </motion.div>

@@ -93,9 +93,9 @@ const Hero = ({
                 type="link"
                 isExternal
                 className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center
-                 bg-darkMod-400 text-6xl text-white hover:text-black-200 transition-all duration-500  rounded-[6px]"
+                 bg-darkMod-400 text-6xl text-white hover:text-black-200 hover:dark:text-white transition-all duration-500  rounded-[6px]"
               >
-                <FaGithub className="text-6xl" />
+                <FaGithub className="text-6xl hover:scale-110 transition-all duration-500" />
               </Button>
               <Button
                 href={linkedin}
@@ -103,9 +103,9 @@ const Hero = ({
                 type="link"
                 isExternal
                 className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center
-                 bg-darkMod-400 text-6xl text-white hover:text-black-200 transition-all duration-500 rounded-[6px]"
+                 bg-darkMod-400 text-6xl text-white hover:text-black-200 hover:dark:text-white transition-all duration-500 rounded-[6px]"
               >
-                <FaLinkedinIn className="text-2xl" />
+                <FaLinkedinIn className="text-2xl hover:scale-110 transition-all duration-500" />
               </Button>
               <Button
                 href={facebook}
@@ -113,9 +113,9 @@ const Hero = ({
                 type="link"
                 isExternal
                 className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center
-                 bg-darkMod-400 text-6xl text-white hover:text-black-200 transition-all duration-500 rounded-[6px]"
+                 bg-darkMod-400 text-6xl text-white hover:text-black-200 hover:dark:text-white transition-all duration-500 rounded-[6px]"
               >
-                <FaFacebookF className="text-3xl" />
+                <FaFacebookF className="text-3xl hover:scale-110 transition-all duration-500" />
               </Button>
               <Button
                 href={instagram}
@@ -123,9 +123,9 @@ const Hero = ({
                 type="link"
                 isExternal
                 className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center
-                 bg-darkMod-400 text-6xl text-white hover:text-black-200 transition-all duration-500 rounded-[6px]"
+                 bg-darkMod-400 text-6xl text-white hover:text-black-200 hover:dark:text-white transition-all duration-500 rounded-[6px]"
               >
-                <FaInstagram className="text-3xl" />
+                <FaInstagram className="text-3xl hover:scale-110 transition-all duration-500" />
               </Button>
             </div>
           </div>

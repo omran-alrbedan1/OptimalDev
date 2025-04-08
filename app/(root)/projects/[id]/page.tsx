@@ -55,7 +55,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
           text={project.subtitle}
         />
       </div>
-      {(project.content || project.description) && <div className="mx-auto max-w-7xl pt-12 pb-5 md:py-12 sm:px-10 px-6">
+      {(project.content || project.description) && <div className="mx-auto max-w-7xl overflow-hidden pt-12 pb-5 md:py-12 sm:px-10 px-6">
         <Animation animationVertix="right"
           duration={1} delay={0.8}
         >
@@ -107,7 +107,7 @@ const ProjectPage = async ({ id }: { id: number }) => {
       </div>
 
       {project.categories.length > 0 && <div className="max-w-7xl mx-auto py-14 sm:px-10 px-6">
-        <div className="pb-16">
+        <div className="pb-16  overflow-hidden">
 
           <Animation animationVertix="right" className="py-3"
            duration={1} delay={0.3}>
