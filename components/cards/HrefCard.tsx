@@ -51,7 +51,7 @@ const HrefCard = ({ url }: { url: string }) => {
         once: true,
       }}
     >
-      <h2 className="font-black md:text-[30px] sm:text-[27px] text-[22px] mb-8">
+      <h2 className="font-bold md:text-[30px] sm:text-[27px] text-[22px] mb-8">
         See Our Project Online
       </h2>
     </motion.div>

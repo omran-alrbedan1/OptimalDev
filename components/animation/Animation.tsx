@@ -11,12 +11,12 @@ const Animation = ({
   duration,
   children
 }: {
-  animationVertix?: "x" | "y";
+  animationVertix?: "x" | "y"|"right";
   text?: string;
   className?: string;
   style?: object;
-  delay?: number;
-  duration?: number;
+  delay: number;
+  duration: number;
   children?:React.ReactNode
 }) => {
   return (
@@ -26,11 +26,11 @@ const Animation = ({
         style={style}
         initial={{
           opacity: 0,
-          x: animationVertix == "x" ? "-100%" : 0,
+          x: animationVertix == "x" ?  "-100%" : animationVertix=='right'?'200px': 0,
           y: animationVertix === "y" ? 100 : 0,
         }}
         whileInView={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: duration?duration :0.9, delay: delay?delay : 0.4, ease: "easeOut", type: 'spring', once: true }}
+        transition={{ duration: duration, delay: delay, ease: "easeOut", type: 'spring', once: true }}
       >
         {text}
         {children}

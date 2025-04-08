@@ -27,7 +27,7 @@ const ProjectCard = ({
     >
       <div
      
-        className="dark:bg-darkMod-100 shadow-2xl bg-white-100 p-5 pb-2 rounded-2xl  w-full aspect-[14/9]"
+        className="dark:bg-darkMod-100 shadow-2xl bg-white-100 p-2 pb-2 rounded-2xl  w-full aspect-[15/9]"
       >
         <Link href={`/projects/${project.id}`} className="relative w-full h-[70%] ">
           <img

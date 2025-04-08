@@ -5,8 +5,7 @@ import React, { Suspense } from "react";
 import '@fontsource/poppins/300.css'; // Light weight (300)
 import '@fontsource/poppins/500.css'; // Medium weight (500)
 import '@fontsource/poppins/600.css'; // Semi-bold weight (600)
-// import Image from "next/image";
-// import { motion } from "framer-motion"; // Import Framer Motion
+
 import Projects from "@/app/parts/Projects";
 import Services from "@/app/parts/Services";
 import Testimonial from "@/app/parts/Testimonial";
@@ -91,33 +90,19 @@ const Page = async () => {
 
   return (
     <Suspense fallback={<Loader />}>
-    <div className="relative duration-500">
-      <Sliders />
-      <Sections />
-   
-{/* 
-      Display Site Details
-      <div className="p-8">
-        <h2 className="text-2xl font-bold mb-4 text-black-100">Site Details</h2>
-        <ul>
-          {site_details.map((detail) => (
-            <li key={detail.id} className="mb-2 text-black-100">
-              <strong>{detail.title}</strong>: {detail.content}
-            </li>
-          ))}
-        </ul>
-      </div> */}
+      <div className="relative duration-500">
+        <Sliders />
+        <Sections />
 
-      {/* Display Projects */}
- {/* <Experience/> */}
 
-      <Projects />
-     <Services />
- <Categories />
- <Testimonial />
- <Clients />
- <DiscussProject />
-    </div></Suspense>
+
+        <Projects />
+        <Services />
+        <Categories />
+        <Testimonial />
+        <Clients />
+        <DiscussProject />
+      </div></Suspense>
   );
 };
 

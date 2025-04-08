@@ -30,7 +30,7 @@ const PortfolioPage = async ({ code }: { code: string }) => {
 
   return (
     <div className="relative z-0">
-      <div className="bg-hero-patternn bg-cover bg-no-repeat bg-center">
+      <div className="">
         <Hero
           whatsapp={portfolio.whatsapp}
           email={portfolio.email}

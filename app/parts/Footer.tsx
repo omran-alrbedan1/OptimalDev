@@ -36,13 +36,13 @@ const Footer = () => {
               solutions. Let’s elevate your brand together.
             </p>
             <div className="flex items-center justify-start
-             gap-5 md:mt-8 flex-wrap max-xs:mt-4">
+             gap-4 sm:gap-5 md:mt-8 flex-wrap max-xs:mt-4">
               <Button
                 href="https://x.com/hive_tech1?t=GkzX41fLdfkY0a5puQRpRw&s=09"
                 target="_blank"
                 type="link"
                 isExternal
-                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -61,7 +61,7 @@ const Footer = () => {
                 target="_blank"
                 type="link"
                 isExternal
-                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
               >
                 <RiTelegram2Fill className="text-6xl" />
               </Button>
@@ -70,7 +70,7 @@ const Footer = () => {
                 target="_blank"
                 type="link"
                 isExternal
-                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
               >
                 <FaLinkedinIn className="text-2xl" />
               </Button>
@@ -79,7 +79,7 @@ const Footer = () => {
                 target="_blank"
                 type="link"
                 isExternal
-                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
               >
                 <FaFacebookF className="text-3xl" />
               </Button>
@@ -88,7 +88,7 @@ const Footer = () => {
                 target="_blank"
                 type="link"
                 isExternal
-                className="w-11 h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-gray-600 rounded-[6px]"
               >
                 <FaInstagram className="text-3xl" />
               </Button>
