@@ -26,37 +26,15 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
   };
 
   return (
-    <div
-      className="relative h-screen w-full overflow-hidden transition-all duration-1000 shadow-2xl"
-      // style={{
-      //   backgroundImage: `url(https://main.hivetech.space/storage/${sliders[currentIndex].image})`,
-      //   // backgroundSize: "contain",
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundPosition: "center",
-
-      // }}
-    >
-      <img
-        src={`https://main.hivetech.space/storage/${sliders[currentIndex].image}`}
-        alt="Background"
-        className="absolute object-fill w-full h-full"
-      />
-
+    <div className="relative h-screen w-full home-bg overflow-hidden transition-all duration-1000 shadow-2xl">
       {/* Black overlay layer */}
-      <div
-        className="absolute inset-0 bg-black opacity-40"
-        style={{
-          zIndex: 1, // Ensure the overlay is above the image but below the content
-        }}
-      ></div>
 
-      {/* Slides Container with Dragging Logic */}
       <motion.div
         className="w-full h-full flex justify-center items-center relative z-10"
-        drag="x" // Enable horizontal dragging
-        dragConstraints={{ left: 0, right: 0 }} // Restrict dragging within bounds
-        onDragEnd={handleDragEnd} // Handle drag end event
-        dragElastic={0.5} // Add elasticity for smooth dragging
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        onDragEnd={handleDragEnd}
+        dragElastic={0.5}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -77,8 +55,10 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
                   __html: sliders[currentIndex].description,
                 }}
               />
-              <div className="flex justify-center gap-4 mt-10
-              ">
+              <div
+                className="flex justify-center gap-4 mt-10
+              "
+              >
                 <motion.a
                   href={sliders[currentIndex].first_btn_url}
                   whileHover={{ scale: 1.05 }}
@@ -89,9 +69,9 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
                 </motion.a>
                 <motion.a
                   href={sliders[currentIndex].second_btn_url}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.95 }}
-                  className="text-[14px] sm:text-sm bg-primary-color1 text-white sm:px-8 w-40 sm:w-fit  flex justify-center items-center py-3 sm:py-4 hover:bg-primary-hover rounded-[8px] transition-colors"
+                  className="text-[14px] sm:text-sm bg-primary-color1 text-white sm:px-8 w-40 sm:w-fit  flex justify-center items-center py-3 sm:py-4 hover:bg-primary-color1/65 rounded-[8px] transition-colors"
                 >
                   {sliders[currentIndex].second_btn_text}
                 </motion.a>

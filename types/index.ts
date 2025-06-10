@@ -14,10 +14,16 @@ export interface Category {
   id: number;
   title: string;
   description: string;
-  image: string ;
-  image_icon: string ;
+  image: string;
+  image_icon: string;
   created_at: string;
   updated_at: string;
+}
+export interface Partner {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
 }
 
 export interface ServiceProps {
@@ -37,7 +43,6 @@ export interface ServiceProps {
   venue: string | null;
   category: Category;
 }
-
 
 export interface TestimoniProps {
   id: number;
@@ -62,7 +67,6 @@ export interface Projects {
 }
 export interface SliderProps {
   id: number;
-  image: string;
   title: string;
   description: string;
   first_btn_text: string;
@@ -109,7 +113,7 @@ export interface PersonalProjectsProps {
   repository_link: string;
 }
 
-export interface Teams{
+export interface Teams {
   id: number;
   name: string;
   bio: string;

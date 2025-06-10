@@ -3,54 +3,43 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const workSans = localFont({
+const zain = localFont({
   src: [
     {
-      path: "./fonts/WorkSans-Black.ttf",
+      path: "./fonts/Zain-Black.ttf",
       weight: "900",
       style: "normal",
     },
     {
-      path: "./fonts/WorkSans-ExtraBold.ttf",
+      path: "./fonts/Zain-ExtraBold.ttf",
       weight: "800",
       style: "normal",
     },
     {
-      path: "./fonts/WorkSans-Bold.ttf",
+      path: "./fonts/Zain-Bold.ttf",
       weight: "700",
       style: "normal",
     },
+
     {
-      path: "./fonts/WorkSans-SemiBold.ttf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "./fonts/WorkSans-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/WorkSans-Regular.ttf",
+      path: "./fonts/Zain-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/WorkSans-Thin.ttf",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "./fonts/WorkSans-ExtraLight.ttf",
-      weight: "100",
+      path: "./fonts/Zain-Light.ttf",
+      weight: "300",
       style: "normal",
     },
   ],
-  variable: "--font-work-sans",
+  variable: "--font-zain",
 });
 export const metadata: Metadata = {
-  title: "Hive Tech",
+  title: "Optimal Path",
   description: "Pitch , Vote and Grow",
+  icons: {
+    icon: "/images/small_logo.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -60,24 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <head>
-   
-        <link
-      rel="icon"
-      href="/Hive Tech Logo.svg"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      href="/logos/logo dark.png"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    {/* <link rel="icon" type="image/svg+xml" href={`/logos/logo dark.png`} /> */}
-    {/* <meta name="viewport" content="width=device-width, initial-scale=1.0" /> */}
-    {/* <title>Adrian | JavaScript Mastery Portfolio</title> */}
-  </head>
-      <body className={workSans.variable}>
+      <body className={zain.variable}>
         {" "}
         <ThemeProvider
           attribute="class"

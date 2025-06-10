@@ -1,48 +1,67 @@
 "use client";
-import { ServiceProps } from "@/types";
-import Image from "next/image";
-import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
+
+type Service = {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+};
+
 const ServiceCard = ({
   service,
   index,
 }: {
-  service: ServiceProps;
+  service: Service;
   index: number;
 }) => {
   return (
     <motion.div
-      key={service.id}
       initial={{
         opacity: 0,
-        // y:  150 ,
-        x: "100%",
-        scale: "90%",
+        y: 100,
+        scale: 0.95,
       }}
-      whileInView={{ opacity: 1, x: 0, scale: "100%" }}
-      transition={{ delay: index * 0.5, duration: 0.9, type: 'spring', ease: 'easeOut' }}
-      className="w-full"
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }}
+      viewport={{ once: true }}
+      transition={{
+        delay: index * 0.1,
+        duration: 0.7,
+        type: "spring",
+        ease: "easeOut",
+      }}
+      className="w-full max-w-sm"
     >
-      <div className="flex flex-col justify-between aspect-[10/9] rounded-2xl  bg-gray-100 dark:bg-darkMod-100 shadow-xl m-3 transform transition duration-500 hover:scale-110">
-        <Link
-          href={`/services/${service.id}`}
-          className="relative cursor-pointer h-4/5"
-        >
-          <div className="absolute w-full rounded-t-2xl rounded-b-lg h-full bg-primary-color2 dark:bg-darkMod-400 opacity-0 hover:opacity-30" />
-          <Image
-            src={`https://main.hivetech.space/storage/${service.image}`}
-            alt={`image${service.id}`}
-            width={400}
-            height={300}
-            className="rounded-t-2xl rounded-b-[5px] object-fill bg-cover w-full h-full"
-          />
-        </Link>
-        <div className="py-7 text-center mx-2">
-          <h2 className=" text-lg  font-medium md:font-semibold tracking-wider md:tracking-widest">
+      <div className="flex flex-col h-full rounded-xl bg-white dark:bg-darkMod-100 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-darkMod-200">
+        <div className="p-6 flex flex-col items-center text-center">
+          <div className="mb-4 p-3 bg-primary-color1/20 dark:bg-primary-color2/10 rounded-full">
+            <Image
+              src={service.icon}
+              height={52}
+              width={52}
+              alt={service.title}
+              className="w-16 h-16   object-contain"
+            />
+          </div>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
             {service.title}
-          </h2>
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            {service.description}
+          </p>
         </div>
+        <Link
+          href={`/`}
+          className="mt-auto p-4 text-center text-primary-color1 dark:text-primary-color2 font-medium hover:underline"
+        >
+          Learn more
+        </Link>
       </div>
     </motion.div>
   );

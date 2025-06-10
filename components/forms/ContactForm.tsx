@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -60,13 +59,15 @@ const ContactForm = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    
+
     const validationErrors = validateForm(data);
     setErrors(validationErrors);
 
     // Check if there are any errors
-    const hasErrors = Object.values(validationErrors).some(error => error !== "");
-    
+    const hasErrors = Object.values(validationErrors).some(
+      (error) => error !== ""
+    );
+
     if (!hasErrors) {
       // Submit the form if no errors
       data.phone = phoneNumber;
@@ -169,14 +170,16 @@ const ContactForm = () => {
           >
             <PhoneInput
               international
-              defaultCountry="SY"
+              defaultCountry="JO"
               value={phoneNumber}
+              //@ts-ignore
               onChange={setPhoneNumber}
               placeholder="Enter phone number"
               className="dark:text-white outline-none overflow-hidden"
               numberInputProps={{
-                className: "dark:bg-darkMod-400 focus:border-none focus:outline-none",
-                style: { outline: "none", border: "none" } // Fallback for stubborn styles
+                className:
+                  "dark:bg-darkMod-400 focus:border-none focus:outline-none",
+                style: { outline: "none", border: "none" }, // Fallback for stubborn styles
               }}
             />
           </div>

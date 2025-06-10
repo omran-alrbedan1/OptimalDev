@@ -10,7 +10,16 @@
     --primary-color1: #ffb400;
     --primary-color2: #000000;
     --primary-color3: #ffffff;
-   
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
   }
 
   .dark {
@@ -28,30 +37,36 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
-body{
-  @apply text-black-100
+
+body {
+  @apply text-black-100;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  scroll-behavior: smooth;
+}
 
-        /* Hide scrollbar for the entire page */
-        html, body {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          scroll-behavior: smooth;
-      }
+html {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE and Edge */
+}
 
-      /* Optional: Hide scrollbar but allow scrolling */
-      html {
-          scrollbar-width: none; /* For Firefox */
-          -ms-overflow-style: none; /* For IE and Edge */
-      }
-
-      html::-webkit-scrollbar {
-          display: none; /* For Chrome, Safari, and Opera */
-      }
+html::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
 
 @layer utilities {
   .flex-between {
@@ -99,15 +114,56 @@ section {
   @apply mb-28;
 }
 
-.active-link{
-  @apply font-bold text-primary-color1
+.home-bg,
+.section-bg,
+.about-us-bg,
+.training-plan-bg,
+.contact-us-bg,
+.certificates-bg {
+  @apply bg-cover bg-center relative shadow-lg;
 }
+
+.home-bg {
+  background-image: url("/images/work-space.jpg");
+}
+
+.section-bg {
+  background-image: url("/images/section.jpg");
+}
+
+.about-us-bg {
+  background-image: url("/images/about-us.jpg");
+}
+
+.home-bg::before,
+.section-bg::before,
+.home-landing-bg::before,
+.about-us-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #13181ecb;
+  opacity: 0.95;
+}
+
+.custom-title {
+  @apply text-white font-bold text-4xl md:text-[100px];
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.active-link {
+  @apply font-bold text-primary-color1;
+}
+
 .header {
-  @apply flex flex-col py-5  justify-between ;
+  @apply  flex-col py-5 justify-between ;
 }
 
 .hero {
-  @apply  px-5 flex flex-col mx-auto;
+  @apply px-5 flex flex-col mx-auto;
 }
 
 .portofolio-card:hover .img-hover {
@@ -116,22 +172,23 @@ section {
 
 @media (min-width: 1024px) {
   .header {
-    @apply  w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center ;
+    @apply w-full flex-row py-8 px-10 mt-2 mb-4 mx-auto items-center content-center;
   }
-
 
   .hero {
     @apply container flex-row mt-8;
   }
 }
+
 .responsive_image {
   width: 100%;
-  height: auto; /* Maintains aspect ratio */
+  height: auto;
   object-fit: cover;
   background-size: cover;
 }
+
 .carousel {
-   transform: translateX(3,3,3);
+  transform: translateX(3, 3, 3);
 }
 
 .violet-gradient {
@@ -144,7 +201,14 @@ section {
   );
 }
 
-
+@layer base {
+  * {
+    @apply border-border ;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
 
 .green-pink-gradient {
   background: var(--primary-color2);
@@ -152,24 +216,46 @@ section {
   background: -webkit-linear-gradient(-90.13deg, var(--primary-color1) 1.9%, #ebeacc 97.5%);
 }
 
-
-.loader {
-  width: 25px;
-  height: 25px;
-  border: 5px solid #FFF;
-  border-bottom-color: transparent;
-  border-right-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+@layer components {
+  .loader {
+    @apply w-16 h-16 relative;
   }
 
-  @keyframes rotation {
-  0% {
-      transform: rotate(0deg);
+  .loader:before {
+    @apply content-[''] w-12 h-1 bg-blue-100 absolute top-[80px] left-0 rounded-full;
+    animation: shadow 0.5s linear infinite;
   }
-  100% {
-      transform: rotate(360deg);
+
+  .loader:after {
+    @apply content-[''] w-full h-full bg-gradient-to-b from-[#22ace3] to-[#2be7ff] absolute top-0 left-0 rounded;
+    animation: jump 0.5s linear infinite;
   }
-  } 
+
+  @keyframes jump {
+    15% {
+      border-bottom-right-radius: 3px;
+    }
+    25% {
+      transform: translateY(9px) rotate(22.5deg);
+    }
+    50% {
+      transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+      border-bottom-right-radius: 40px;
+    }
+    75% {
+      transform: translateY(9px) rotate(67.5deg);
+    }
+    100% {
+      transform: translateY(0) rotate(90deg);
+    }
+  }
+
+  @keyframes shadow {
+    0%, 100% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.2, 1);
+    }
+  }
+}
