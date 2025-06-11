@@ -47,7 +47,7 @@ const Clients = async () => {
   return (
     <div className="rounded-md flex flex-col pb-10 antialiased bg-white dark:bg-darkMod-700 pt-10 dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
       <Header
-        title="Clients"
+        title="Our Clients"
         paragraph="Empowering businesses through trusted partnerships and innovative solutions."
       />
       <InfiniteMovingCards items={clients} direction="right" speed="fast" />

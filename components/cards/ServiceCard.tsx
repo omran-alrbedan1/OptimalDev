@@ -1,69 +1,68 @@
+// components/cards/ServiceCard.tsx
 "use client";
-import { motion } from "framer-motion";
+
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-type Service = {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-};
-
 const ServiceCard = ({
   service,
-  index,
+  isActive,
+  direction,
 }: {
-  service: Service;
-  index: number;
+  service: {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    link: string;
+  };
+  isActive: boolean;
+  direction: "left" | "right";
 }) => {
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 100,
-        scale: 0.95,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      }}
-      viewport={{ once: true }}
-      transition={{
-        delay: index * 0.1,
-        duration: 0.7,
-        type: "spring",
-        ease: "easeOut",
-      }}
-      className="w-full max-w-sm"
-    >
-      <div className="flex flex-col h-full rounded-xl bg-white dark:bg-darkMod-100 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-darkMod-200">
-        <div className="p-6 flex flex-col items-center text-center">
-          <div className="mb-4 p-3 bg-primary-color1/20 dark:bg-primary-color2/10 rounded-full">
-            <Image
-              src={service.icon}
-              height={52}
-              width={52}
-              alt={service.title}
-              className="w-16 h-16   object-contain"
-            />
-          </div>
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            {service.title}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            {service.description}
-          </p>
-        </div>
-        <Link
-          href={`/`}
-          className="mt-auto p-4 text-center text-primary-color1 dark:text-primary-color2 font-medium hover:underline"
+    <AnimatePresence custom={direction} mode="wait">
+      {isActive && (
+        <motion.div
+          key={service.id}
+          custom={direction}
+          initial={{ opacity: 0, x: direction === "right" ? 100 : -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: direction === "right" ? -100 : 100 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="absolute inset-0 flex flex-col md:flex-row items-center gap-8 p-6"
         >
-          Learn more
-        </Link>
-      </div>
-    </motion.div>
+          <div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden ">
+            <div className="relative w-fit ">
+              <Image
+                src={service.image}
+                alt={service.title}
+                width={500}
+                height={300}
+                className="object-contain w-fit"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  width: "auto",
+                  height: "auto",
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="w-full md:w-1/2">
+            <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+            <p className="text-gray-600 mb-6">{service.description}</p>
+            <Link
+              href={service.link}
+              className="inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition"
+            >
+              Learn More
+            </Link>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

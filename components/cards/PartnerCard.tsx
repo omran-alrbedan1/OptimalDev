@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import {  Partner } from "@/types";
-
+import { Partner } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,42 +15,44 @@ const PartnerCard = ({
   return (
     <motion.div
       key={index}
-      initial={{ opacity: 0, x: -100 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
       transition={{
-        duration: 0.8,
-        delay: index * 0.4,
-        once: true,
+        duration: 0.5,
+        delay: index * 0.1,
         type: "spring",
-        ease: "easeOut",
+        stiffness: 100,
       }}
-      className="px-5 flex flex-1 h-[220px]  border border-zinc-300 dark:border-gray-600  rounded-xl"
+      className="px-5 flex flex-1 h-[300px] border border-zinc-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
     >
       <Link
         href={`/`}
-        className="relative cursor-pointer w-full h-full pt-16 pb-5 flex flex-col gap-2 justify-start items-start"
+        className="relative cursor-pointer w-full h-full py-8 flex flex-col items-center gap-4 group"
       >
-        <span className="absolute w-32 flex justify-center rounded-3xl items-center left-1/2 -top-[45px] bg-white dark:bg-darkMod-500  transform -translate-x-1/2">
-          {partner.image && (
-            <div className="">
-              <Image
-                src={`${partner.image}`}
-                width={90}
-                height={90}
-                alt="Image icone"
-                className=" rounded-full"
-              />
-            </div>
-          )}{" "}
-        </span>
+        {/* Image with elegant frame */}
+        {partner.image && (
+          <div className="relative w-24 h-24 group-hover:scale-110 transition-transform duration-300">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 blur-sm group-hover:blur-md transition-all duration-300"></div>
+            <Image
+              src={partner.image}
+              width={96}
+              height={96}
+              alt={partner.title}
+              className="rounded-full relative z-10 border-4 border-white dark:border-gray-800 object-cover"
+            />
+          </div>
+        )}
 
-        <h3 className="  font-semibold  xl:text-[19px] py-1">
-          {partner.title}
-        </h3>
-
-        <p className="text-start text-gray-600  dark:text-gray-300 text-[15px]">
-          {partner.description}
-        </p>
+        {/* Content */}
+        <div className="text-center space-y-3 px-2">
+          <h3 className="font-bold text-xl text-gray-800 dark:text-white group-hover:text-primary-color1 dark:group-hover:text-blue-400 transition-colors">
+            {partner.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
+            {partner.description}
+          </p>
+        </div>
       </Link>
     </motion.div>
   );

@@ -1,80 +1,144 @@
+// app/services/page.tsx
+"use client";
+
 import ServiceCard from "@/components/cards/ServiceCard";
 import Header from "@/components/Header";
-import { icons } from "@/constants/icons";
-import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 type Service = {
   id: number;
   title: string;
   description: string;
-  icon: string;
+  image: string;
+  link: string;
 };
 
 const services: Service[] = [
   {
     id: 1,
-    title: "Talent Acquisition",
-    description:
-      "We find the perfect talent that aligns with your company's vision and culture.",
-    icon: icons.questions,
+    title: "Service 1",
+    description: "Description for service 1 goes here. This is a sample text.",
+    image: "/images/section.jpg",
+    link: "/images/section.jpg",
   },
   {
     id: 2,
-    title: "HR Consulting",
-    description:
-      "Strategic HR solutions to optimize your workforce and drive business growth.",
-    icon: icons.briefcase,
+    title: "Service 2",
+    description: "Description for service 2 goes here. This is a sample text.",
+    image: "/images/work-space.jpg",
+    link: "/services/2",
   },
   {
     id: 3,
-    title: "Employee Development",
-    description:
-      "Transform your team's potential with customized training programs.",
-    icon: icons.training,
-  },
-  {
-    id: 4,
-    title: "Skills Assessment",
-    description:
-      "Data-driven evaluations to ensure candidates meet your needs.",
-    icon: icons.skills,
-  },
-  {
-    id: 5,
-    title: "Staff Outsourcing",
-    description: "Flexible staffing solutions without long-term commitments.",
-    icon: icons.team,
-  },
-  {
-    id: 6,
-    title: "Employer Branding",
-    description: "Build a magnetic employer brand that attracts top talent.",
-    icon: icons.star,
+    title: "Service 3",
+    description: "Description for service 3 goes here. This is a sample text.",
+    image: "/images/about-us.jpg",
+    link: "/services/3",
   },
 ];
 
-export default async function Services() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export default function Services() {
+  const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout>();
+
+  // Auto-rotate services with pause on hover
+  useEffect(() => {
+    const startAutoPlay = () => {
+      intervalRef.current = setInterval(() => {
+        if (!isPaused) {
+          setDirection("right");
+          setCurrentServiceIndex((prev) => (prev + 1) % services.length);
+        }
+      }, 3500);
+    };
+
+    startAutoPlay();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPaused]);
+
+  const goToNext = () => {
+    setDirection("right");
+    setCurrentServiceIndex((prev) => (prev + 1) % services.length);
+    resetTimer();
+  };
+
+  const goToPrev = () => {
+    setDirection("left");
+    setCurrentServiceIndex(
+      (prev) => (prev - 1 + services.length) % services.length
+    );
+    resetTimer();
+  };
+
+  const goToSlide = (index: number) => {
+    setDirection(index > currentServiceIndex ? "right" : "left");
+    setCurrentServiceIndex(index);
+    resetTimer();
+  };
+
+  const resetTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentServiceIndex((prev) => (prev + 1) % services.length);
+    }, 3500);
+  };
 
   return (
-    <section className="flex flex-col items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20">
+    <section className="flex flex-col w-full items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20">
       <Header
         title="Our Services"
         paragraph="Optimal Path connects the right talent with the right opportunities."
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-10 sm:gap-y-10 justify-items-center mx-auto mt-10 w-full">
-        {services.map((service, index) => (
-          <ServiceCard key={service.id} service={service} index={index} />
+
+      <div
+        className="relative w-full max-w-7xl h-96 mt-10"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <ServiceCard
+          service={services[currentServiceIndex]}
+          isActive={true}
+          direction={direction}
+        />
+
+        {/* Navigation arrows */}
+        <button
+          onClick={goToPrev}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
+          aria-label="Previous service"
+        >
+          <FaChevronLeft className="text-gray-700" />
+        </button>
+
+        <button
+          onClick={goToNext}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
+          aria-label="Next service"
+        >
+          <FaChevronRight className="text-gray-700" />
+        </button>
+      </div>
+
+      {/* Dots indicator */}
+      <div className="flex gap-2 mt-6">
+        {services.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              currentServiceIndex === index
+                ? "bg-primary-color1 w-6"
+                : "bg-gray-300"
+            }`}
+            aria-label={`Go to service ${index + 1}`}
+          />
         ))}
       </div>
-      <button
-        type="button"
-        className="mt-14 sm:mt-16 w-36 h-12 md:w-40 md:h-14 text-lg rounded-[30px] text-primary-color1 
-        border-primary-color1 border hover:bg-primary-color1 hover:border-none hover:text-white 
-        font-semibold hover:opacity-75  transition-all duration-500"
-      >
-        <Link href="/">See more &gt;&gt;</Link>
-      </button>
     </section>
   );
 }

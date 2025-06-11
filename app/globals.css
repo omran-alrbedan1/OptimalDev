@@ -191,6 +191,14 @@ section {
   transform: translateX(3, 3, 3);
 }
 
+/* Remove underline from Ant Design Menu */
+.no-underline-menu .ant-menu-item::after,
+.no-underline-menu .ant-menu-submenu::after {
+  border-bottom: none !important;
+}
+
+
+
 .violet-gradient {
   background: var(--primary-color1);
   background: linear-gradient(-90deg, var(--primary-color1) 0%, rgba(60, 51, 80, 0) 100%);

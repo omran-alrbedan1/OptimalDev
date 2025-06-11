@@ -14,7 +14,7 @@ const Page = async () => {
     <Suspense fallback={<Loader />}>
       <div className="relative duration-500">
         <Sliders />
-        <Section />
+        {/* <Section /> */}
         <Services />
         <Partners />
         <Clients />

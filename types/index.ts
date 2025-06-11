@@ -73,6 +73,7 @@ export interface SliderProps {
   first_btn_url: string;
   second_btn_text: string;
   second_btn_url: string;
+  backgroundImage?: string;
 }
 export interface CategoryProps {
   id: number;

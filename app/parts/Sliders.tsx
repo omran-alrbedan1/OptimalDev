@@ -13,6 +13,7 @@ const Sliders = async () => {
       first_btn_url: "/",
       second_btn_text: "Upload CV",
       second_btn_url: "/",
+      backgroundImage: "/images/section.jpg",
     },
     {
       id: 2,
@@ -23,6 +24,7 @@ const Sliders = async () => {
       first_btn_url: "/",
       second_btn_text: "Learn More",
       second_btn_url: "/",
+      backgroundImage: "/images/work-space.jpg",
     },
     {
       id: 3,
@@ -33,6 +35,7 @@ const Sliders = async () => {
       first_btn_url: "/",
       second_btn_text: "Career Advice",
       second_btn_url: "/",
+      backgroundImage: "/images/about-us.jpg",
     },
     {
       id: 4,
@@ -43,10 +46,11 @@ const Sliders = async () => {
       first_btn_url: "/",
       second_btn_text: "See Participating Companies",
       second_btn_url: "/",
+      backgroundImage: "/images/work-space.jpg",
     },
   ];
   return (
-    <div className=" mb-20 min-h-screen">
+    <div className=" mb-20 h-[80vh]">
       <Slider sliders={sliders} />
     </div>
   );
