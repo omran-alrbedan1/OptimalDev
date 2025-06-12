@@ -1,69 +1,81 @@
-// components/cards/ServiceCard.tsx
+// components/ServiceCard.tsx
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
+import { motion } from "framer-motion";
 
-const ServiceCard = ({
-  service,
-  isActive,
-  direction,
-}: {
-  service: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    link: string;
-  };
-  isActive: boolean;
-  direction: "left" | "right";
-}) => {
-  return (
-    <AnimatePresence custom={direction} mode="wait">
-      {isActive && (
-        <motion.div
-          key={service.id}
-          custom={direction}
-          initial={{ opacity: 0, x: direction === "right" ? 100 : -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction === "right" ? -100 : 100 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 flex flex-col md:flex-row items-center gap-8 p-6"
-        >
-          <div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden ">
-            <div className="relative w-fit ">
-              <Image
-                src={service.image}
-                alt={service.title}
-                width={500}
-                height={300}
-                className="object-contain w-fit"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  width: "auto",
-                  height: "auto",
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="w-full md:w-1/2">
-            <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-            <p className="text-gray-600 mb-6">{service.description}</p>
-            <Link
-              href={service.link}
-              className="inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition"
-            >
-              Learn More
-            </Link>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
 };
 
-export default ServiceCard;
+const buttonVariants = {
+  rest: { scale: 1 },
+  hover: { scale: 1.05 },
+  pressed: { scale: 0.95 },
+};
+
+export default function ServiceCard({
+  service,
+  index,
+}: {
+  service: Service;
+  index: number;
+}) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="flex flex-col md:flex-row items-center gap-8 p-6"
+    >
+      <motion.div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
+        <motion.div className="relative w-fit">
+          <img
+            src={service.image}
+            alt={service.title}
+            className="object-contain w-fit"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "400px",
+              width: "auto",
+              height: "auto",
+            }}
+          />
+        </motion.div>
+      </motion.div>
+
+      <div className="w-full md:w-1/2">
+        <motion.h3
+          className="text-2xl font-bold mb-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: index * 0.1 + 0.3 }}
+        >
+          {service.title}
+        </motion.h3>
+        <motion.p
+          className="text-gray-600 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: index * 0.1 + 0.4 }}
+        >
+          {service.description}
+        </motion.p>
+        <motion.a
+          href={service.link}
+          className="inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition"
+          variants={buttonVariants}
+          initial="rest"
+          whileHover="hover"
+          whileTap="pressed"
+        >
+          Learn More
+        </motion.a>
+      </div>
+    </motion.div>
+  );
+}

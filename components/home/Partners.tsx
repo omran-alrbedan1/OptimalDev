@@ -17,27 +17,27 @@ const partners = [
     image: "/images/FUTURE X.jpg",
   },
   {
-    id: 1,
+    id: 2,
     title: "FUTURE X",
     description:
       "A software development company specializing in advanced technological solutions",
     image: "/images/FUTURE X.jpg",
   },
   {
-    id: 1,
+    id: 3,
     title: "FUTURE X2",
     description:
       "A software development company specializing in advanced technological solutions",
     image: "/images/FUTURE X.jpg",
   },
   {
-    id: 2,
+    id: 4,
     title: "Partner 3",
     description: "Another company providing excellent services",
     image: "/images/FUTURE X.jpg",
   },
   {
-    id: 3,
+    id: 5,
     title: "Partner 4",
     description: "Innovative solutions provider",
     image: "/images/FUTURE X.jpg",

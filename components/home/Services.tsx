@@ -1,18 +1,11 @@
 // app/services/page.tsx
 "use client";
 
-import ServiceCard from "@/components/cards/ServiceCard";
+import { Carousel } from "antd";
 import Header from "@/components/Header";
-import { useState, useEffect, useRef } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
-type Service = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-};
+import { motion } from "framer-motion";
+import ServiceCard from "../cards/ServiceCard";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // أو أي أيقونات أخرى تفضلها
 
 const services: Service[] = [
   {
@@ -38,107 +31,74 @@ const services: Service[] = [
   },
 ];
 
-export default function Services() {
-  const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
-  const [direction, setDirection] = useState<"left" | "right">("right");
-  const [isPaused, setIsPaused] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
-  // Auto-rotate services with pause on hover
-  useEffect(() => {
-    const startAutoPlay = () => {
-      intervalRef.current = setInterval(() => {
-        if (!isPaused) {
-          setDirection("right");
-          setCurrentServiceIndex((prev) => (prev + 1) % services.length);
-        }
-      }, 3500);
-    };
-
-    startAutoPlay();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [isPaused]);
-
-  const goToNext = () => {
-    setDirection("right");
-    setCurrentServiceIndex((prev) => (prev + 1) % services.length);
-    resetTimer();
-  };
-
-  const goToPrev = () => {
-    setDirection("left");
-    setCurrentServiceIndex(
-      (prev) => (prev - 1 + services.length) % services.length
-    );
-    resetTimer();
-  };
-
-  const goToSlide = (index: number) => {
-    setDirection(index > currentServiceIndex ? "right" : "left");
-    setCurrentServiceIndex(index);
-    resetTimer();
-  };
-
-  const resetTimer = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setCurrentServiceIndex((prev) => (prev + 1) % services.length);
-    }, 3500);
-  };
-
+const CustomArrow = ({
+  type,
+  onClick,
+}: {
+  type: "prev" | "next";
+  onClick?: () => void;
+}) => {
+  const Icon = type === "prev" ? ChevronLeft : ChevronRight;
   return (
-    <section className="flex flex-col w-full items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20">
+    <button
+      onClick={onClick}
+      className={`
+  absolute z-10 top-1/2 -translate-y-1/2
+  ${type === "prev" ? "-left-12" : "-right-12"}
+  bg-white/80 hover:bg-white hover:text-primary-color1 hover:scale-125 hover:shadow-xl dark:bg-gray-600 text-gray-800
+  p-2 rounded-full shadow-md transition-all
+   items-center justify-center
+  w-10 h-10
+  hidden md:flex
+`}
+      aria-label={type === "prev" ? "Previous" : "Next"}
+    >
+      <Icon className="w-6 h-6" />
+    </button>
+  );
+};
+export default function Services() {
+  return (
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="flex flex-col w-full items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
+    >
       <Header
         title="Our Services"
         paragraph="Optimal Path connects the right talent with the right opportunities."
       />
 
-      <div
-        className="relative w-full max-w-7xl h-96 mt-10"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+      <motion.div
+        className="w-full max-w-7xl mt-10 relative"
+        transition={{ type: "spring", stiffness: 300 }}
       >
-        <ServiceCard
-          service={services[currentServiceIndex]}
-          isActive={true}
-          direction={direction}
-        />
-
-        {/* Navigation arrows */}
-        <button
-          onClick={goToPrev}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-          aria-label="Previous service"
+        <Carousel
+          autoplay
+          arrows
+          prevArrow={<CustomArrow type="prev" />}
+          nextArrow={<CustomArrow type="next" />}
+          dots={{ className: "custom-dots" }}
+          className="hover:cursor-pointer [&_.slick-dots]:bottom-[-30px] [&_.slick-dots_li_button]:bg-gray-300 [&_.slick-dots_li.slick-active_button]:bg-primary-color1"
         >
-          <FaChevronLeft className="text-gray-700" />
-        </button>
-
-        <button
-          onClick={goToNext}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-          aria-label="Next service"
-        >
-          <FaChevronRight className="text-gray-700" />
-        </button>
-      </div>
-
-      {/* Dots indicator */}
-      <div className="flex gap-2 mt-6">
-        {services.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              currentServiceIndex === index
-                ? "bg-primary-color1 w-6"
-                : "bg-gray-300"
-            }`}
-            aria-label={`Go to service ${index + 1}`}
-          />
-        ))}
-      </div>
-    </section>
+          {services.map((service, index) => (
+            <div key={service.id} className="px-2">
+              <ServiceCard service={service} index={index} />
+            </div>
+          ))}
+        </Carousel>
+      </motion.div>
+    </motion.section>
   );
 }
