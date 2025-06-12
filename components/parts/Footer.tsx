@@ -1,159 +1,149 @@
+"use client";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { FormFieldType } from "@/enum";
+import CustomFormField from "../inputs/CustomFormField";
+import { icons } from "@/constants/icons";
 import Image from "next/image";
-import React from "react";
-
-import { FaInstagram } from "react-icons/fa6";
-import { FaFacebookF } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-
-import { FaLocationDot } from "react-icons/fa6";
-import { FaPhoneAlt } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaPhoneAlt,
+} from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
-import { TbArrowBadgeLeftFilled, TbX } from "react-icons/tb";
 import { RiTelegram2Fill } from "react-icons/ri";
 import Link from "next/link";
-import Button from "@/app/elements/Button/button";
 import { images } from "@/constants/images";
+import { FaLocationDot } from "react-icons/fa6";
+import SubscribeForm from "../form/SubscribeForm";
 
 const Footer = () => {
+  const socialLinks = [
+    {
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          aria-label="X"
+          role="img"
+          className="w-5 h-5"
+          fill="currentColor"
+        >
+          <g>
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+          </g>
+        </svg>
+      ),
+      href: "/",
+    },
+    { icon: <RiTelegram2Fill className="text-xl" />, href: "/" },
+    { icon: <FaFacebookF className="text-lg" />, href: "/" },
+    { icon: <FaInstagram className="text-lg" />, href: "/" },
+    { icon: <FaLinkedinIn className="text-lg" />, href: "/" },
+  ];
+
+  const contactItems = [
+    { icon: <FaLocationDot className="text-xl" />, text: "Jordan" },
+    {
+      icon: <MdOutlineMail className="text-xl" />,
+      text: "info@optimalpathmc.com",
+    },
+    { icon: <FaPhoneAlt className="text-xl" />, text: "+962 797 701 545" },
+  ];
+
   return (
-    <div className="relative min-h-[60vh] w-full bg-[#f7f7f8] dark:bg-darkMod-200 dark:text-white ">
-      <div className="relative w-full h-full pt-12 md:pt-20 overflow-hidden md:px-2 lg:px-4 xl:px-10 max-xs:pb-28 max-xl:pb-20 xl:pb-20">
-        <div className="flex flex-wrap items-stretch gap-14 text-darkMod-100">
-          <div className="flex flex-col flex-grow basis-[400px]  items-start gap-6 md:gap-8 px-10 justify-start">
-            <div className="flex items-center justify-center">
+    <footer className="relative  bg-[#f7f7f8]  dark:bg-darkMod-200  dark:text-white pt-12 md:pt-16 pb-16 md:pb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-10">
+          <div className="space-y-4 md:mr-8 md:space-y-6">
+            <div className="flex items-center justify-center md:justify-start">
               <Image
                 src={images.logo}
-                width={130}
-                height={130}
-                className=""
-                alt="logo"
+                width={120}
+                height={120}
+                className="size-10 md:size-12 lg:size-14"
+                alt="Optimal Path Logo"
               />
+              <p className="ml-3 text-lg md:text-xl font-semibold  text-primary-color1 ">
+                Optimal
+                <span className="text-blue-950 ml-2 dark:text-white-100">
+                  Path
+                </span>
+              </p>
             </div>
-            <p className=" text-start text-gray-600 dark:text-gray-200">
-              Growing your business with strategic design and innovative
-              solutions. Let’s elevate your brand together.
+            <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm leading-relaxed text-center md:text-left">
+              Optimal Path bridges the gap between top talent and exceptional
+              opportunities. We provide strategic recruitment solutions to grow
+              businesses and careers.
             </p>
-            <div
-              className="flex items-center justify-start
-             gap-4 sm:gap-5 md:mt-8 flex-wrap max-xs:mt-4"
-            >
-              <Button
-                href="/"
-                target="_blank"
-                type="link"
-                isExternal
-                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-primary-color1 rounded-[6px]"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-label="X"
-                  role="img"
-                  className="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-1nao33i r-16y2uox r-lwhw9o hover:text-gray-600"
-                  fill="currentColor"
-                >
-                  <g>
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                  </g>
-                </svg>
-              </Button>
-              <Button
-                href="/"
-                target="_blank"
-                type="link"
-                isExternal
-                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-primary-color1 rounded-[6px]"
-              >
-                <RiTelegram2Fill className="text-6xl" />
-              </Button>
 
-              <Button
-                href="/"
-                target="_blank"
-                type="link"
-                isExternal
-                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-primary-color1 rounded-[6px]"
-              >
-                <FaFacebookF className="text-3xl" />
-              </Button>
-              <Button
-                href="/"
-                target="_blank"
-                type="link"
-                isExternal
-                className="w-10 h-10 sm:w-11 sm:h-11 p-2 flex justify-center hover:bg-transparent items-center bg-darkMod-400 text-6xl text-white hover:text-primary-color1 rounded-[6px]"
-              >
-                <FaInstagram className="text-3xl" />
-              </Button>
+            {/* Social links - centered on mobile */}
+            <div className="flex justify-center md:justify-start space-x-3 md:space-x-4">
+              {socialLinks.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.href}
+                  target="_blank"
+                  className="p-1.5 md:p-2 rounded-full bg-white dark:bg-darkMod-400 text-gray-700 dark:text-gray-200 hover:bg-primary-color1 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
+                >
+                  {item.icon}
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="flex flex-col flex-grow basis-[200px]   items-start px-10 gap-8 md:gap-10 justify-start">
-            <div className="flex flex-col items-start justify-start">
-              <h1 className=" font-semibold dark:text-gray-300 tracking-wider text-xl xl:text-2xl">
-                Fast Links
-              </h1>
-              <span className="block mt-5 w-8 h-1 bg-primary-color1 rounded-xl" />
-            </div>
-            <div className="flex flex-col justify-between items-start gap-5 md:gap-8">
-              <Link
-                href="/about-us"
-                className="text-gray-600 dark:text-white-100 flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500  "
-              >
-                <TbArrowBadgeLeftFilled className=" text-2xl" />
-                About us
-              </Link>
-              <Link
-                href="/contact-us"
-                className="text-gray-600 dark:text-white-100 flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500  "
-              >
-                <TbArrowBadgeLeftFilled className=" text-2xl" />
-                Contact us
-              </Link>
-              <Link
-                href="/projects"
-                className="text-gray-600 dark:text-white-100 flex items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500  "
-              >
-                <TbArrowBadgeLeftFilled className=" text-2xl" />
-                Career
-              </Link>
-            </div>
-          </div>
-          <div className="flex flex-col flex-grow dark:text-gray-300  basis-[400px]   items-start px-10 gap-8 md:gap-10 justify-start">
-            <div className="flex flex-col items-start justify-start">
-              <h1 className=" font-semibold tracking-wider text-xl xl:text-2xl">
-                Contact Us
-              </h1>
-              <span className="block mt-5 w-8 h-1 bg-primary-color1 rounded-xl" />
-            </div>
-            <div className="text-gray-600 flex flex-col justify-between items-start gap-6 md:gap-8">
-              <div className="flex dark:text-white-100 items-center gap-2 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500 ">
-                <FaLocationDot className="text-2xl" />
-                Jordan
+
+          <div className="space-y-4 md:space-y-6 col-span-1 md:col-span-1 lg:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              <div>
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left">
+                  Contact Us
+                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
+                </h3>
+                <ul className="mt-6 md:mt-6 space-y-2 md:space-y-4">
+                  {contactItems.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start justify-start mt-4 md:justify-start"
+                    >
+                      <span className="text-primary-color1 dark:text-primary-color2 mt-0.5 mr-2 md:mr-3">
+                        {item.icon}
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-300 text-xs md:text-sm break-all">
+                        {item.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="flex items-center gap-2 dark:text-white-100 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500 ">
-                <MdOutlineMail className=" text-2xl" />
-                info@optimalpathmc.com
-              </div>
-              <div className="flex items-center gap-2 dark:text-white-100 transform hover:translate-x-[10px] hover:scale-105 transition-all duration-500 ">
-                <FaPhoneAlt className=" text-2xl" />
-                <span className="whitespace-nowrap">+962797701545 </span>{" "}
+
+              <div>
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left mb-3 md:mb-4">
+                  Subscribe
+                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
+                </h3>
+                <SubscribeForm />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex w-[90%] textgray  items-center justify-center absolute bottom-[12px] left-1/2 -translate-x-1/2">
-        <span className="basis-[1px] flex-grow h-[1.5px] bg-gray-400" />
-        <p className="text-center  font-light text-[14px] px-5 text-gray-600 dark:text-gray-200">
-          <span className="text-xl mt-2"> &copy;</span> 2025 Your Company. All
-          rights reserved. by{" "}
-          <span className="text-[16px] text-primary-color1 font-medium ">
+      <div className="flex w-[90%] textgray items-center justify-center absolute bottom-[8px] md:bottom-[12px] left-1/2 -translate-x-1/2">
+        <span className="basis-[1px] flex-grow h-[1px] md:h-[1.5px] bg-gray-400" />
+        <p className="text-center font-light text-xs md:text-[14px] px-3 md:px-5 text-gray-600 dark:text-gray-200">
+          <span className="text-lg md:text-xl mt-1 md:mt-2"> &copy;</span> 2025
+          Your Company. All rights reserved. by{" "}
+          <span className="text-sm md:text-[16px] text-primary-color1 font-medium">
             Optimal
             <span className="text-black ml-1 dark:text-gray-200">Path</span>
           </span>
         </p>
-        <span className="basis-[1px] flex-grow h-[1.5px] bg-gray-400" />
+        <span className="basis-[1px] flex-grow h-[1px] md:h-[1.5px] bg-gray-400" />
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -1,8 +1,5 @@
 import Footer from "@/components/parts/Footer";
 import Header from "../../components/parts/Header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import MobileNav from "@/components/parts/MobileNav";
 
 export default function Layout({
   children,

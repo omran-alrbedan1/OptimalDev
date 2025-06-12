@@ -21,10 +21,10 @@ const config: Config = {
         foreground: "hsl(var(--foreground))",
         border: "hsl(var(--border))",
         primary: {
-          "100": "#FFE8F0",
-          DEFAULT: "#EE2B69",
+          "100": "#e6f4fc",
+          DEFAULT: "#22ace3",
           color1: "#22ace3",
-          hover: "#d99b37",
+          hover: "#1e9bcc",
           color2: "#e0e0e0",
           color3: "#ffffff",
         },

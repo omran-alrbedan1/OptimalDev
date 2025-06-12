@@ -58,7 +58,7 @@ export default function ServiceCard({
           {service.title}
         </motion.h3>
         <motion.p
-          className="text-gray-600 mb-6"
+          className="text-gray-600 mb-6 dark:text-gray-200"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.4 }}

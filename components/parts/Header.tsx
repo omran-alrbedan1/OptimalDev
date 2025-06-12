@@ -15,6 +15,7 @@ import { SlInfo } from "react-icons/sl";
 import { MdOutlineMiscellaneousServices } from "react-icons/md";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoBriefcaseOutline } from "react-icons/io5";
+import Switcher from "../elements/Switcher";
 const Header = () => {
   const [open, setOpen] = useState(false);
   const path = usePathname();
@@ -226,7 +227,7 @@ const Header = () => {
       <Drawer
         title={
           <div className="flex justify-between items-center">
-            <Link href="/home" className="dark:hidden block">
+            <Link href="/home" className=" items-center gap-1 flex">
               <Image
                 src={images.logo}
                 width={50}
@@ -234,15 +235,12 @@ const Header = () => {
                 alt="logo"
                 priority
               />
-            </Link>
-            <Link href="/home" className="hidden dark:block">
-              <Image
-                src={images.dark_logo}
-                width={140}
-                height={40}
-                alt="dark logo"
-                priority
-              />
+              <p className="ml-3 text-lg md:text-xl font-bold  text-primary-color1 ">
+                Optimal
+                <span className="text-blue-950 ml-1 dark:text-white-100">
+                  Path
+                </span>
+              </p>
             </Link>
             <button onClick={onClose}>
               <X className="text-primary-color1" />

@@ -7,7 +7,12 @@
 @layer base {
   :root {
     /* Additional Colors */
-    --primary-color1: #ffb400;
+--primary: #22ace3; 
+     --primary: #22ace3; 
+    --primary-foreground: #ffffff;
+    --primary-hover: #1c9bd3;
+    --primary-active: #168ac3;
+    
     --primary-color2: #000000;
     --primary-color3: #ffffff;
     --sidebar-background: 0 0% 98%;
@@ -36,7 +41,7 @@
     --ring: 180 100% 41.6%;
 
     --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    /* --input: 240 3.7% 15.9%; */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
