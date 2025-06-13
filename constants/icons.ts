@@ -6,6 +6,7 @@ import team from "@/public/icons/team.svg";
 import training from "@/public/icons/training.svg";
 import clients from "@/public/icons/client.svg";
 import email from "@/public/icons/email.svg";
+import job from "@/public/icons/job.svg";
 
 export const icons = {
   star,
@@ -16,4 +17,5 @@ export const icons = {
   training,
   clients,
   email,
+  job,
 };
