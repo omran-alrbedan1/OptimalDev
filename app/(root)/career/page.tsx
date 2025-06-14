@@ -22,6 +22,7 @@ const Page = () => {
 
   const recommendedJobs = [
     {
+      id: 1,
       title: "Product Designer",
       company: "Metaxiout",
       industry: 35,
@@ -37,6 +38,7 @@ const Page = () => {
       posted: "Posted 12 days ago",
     },
     {
+      id: 2,
       title: "Frontend Developer",
       company: "TechCorp",
       industry: 42,
@@ -52,6 +54,8 @@ const Page = () => {
       posted: "Posted 8 days ago",
     },
     {
+      id: 3,
+
       title: "Data Scientist",
       company: "AnalyticsPro",
       industry: 28,
@@ -67,6 +71,8 @@ const Page = () => {
       posted: "Posted 16 days ago",
     },
     {
+      id: 4,
+
       title: "UX Researcher",
       company: "DesignHub",
       industry: 35,
@@ -82,6 +88,8 @@ const Page = () => {
       posted: "Posted 3 days ago",
     },
     {
+      id: 5,
+
       title: "DevOps Engineer",
       company: "CloudSystems",
       industry: 42,
@@ -97,6 +105,7 @@ const Page = () => {
       posted: "Posted 23 days ago",
     },
     {
+      id: 6,
       title: "Marketing Manager",
       company: "BrandVision",
       industry: 19,
