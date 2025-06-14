@@ -9,22 +9,17 @@ import { Form } from "@/components/ui/form";
 import { FormFieldType } from "@/enum";
 import CustomFormField from "../inputs/CustomFormField";
 import { icons } from "@/constants/icons";
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-});
+import { subscribeFormShema } from "@/lib/validation/userValidation";
 
 export default function SubscribeForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof subscribeFormShema>>({
+    resolver: zodResolver(subscribeFormShema),
     defaultValues: {
       email: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof subscribeFormShema>) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Subscription successful!", {

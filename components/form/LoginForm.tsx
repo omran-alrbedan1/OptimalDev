@@ -10,17 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-const loginFormSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  password: z
-    .string()
-    .min(1, { message: "Password is required" })
-    .min(6, { message: "Password must be at least 6 characters" }),
-});
+import { loginFormSchema } from "@/lib/validation/userValidation";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -121,7 +111,7 @@ export default function LoginForm() {
         <div className="text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link
-            href={`/signUp?jobId=${jobId}`}
+            href={`/register?jobId=${jobId}`}
             className="underline underline-offset-4 text-primary-color1"
           >
             Sign up

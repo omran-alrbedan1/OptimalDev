@@ -5,9 +5,10 @@ import Image from "next/image";
 import Animate from "@/components/animation/Animate";
 import LoginForm from "@/components/form/LoginForm";
 import { useEffect, useState } from "react";
+import RegisterForm from "@/components/form/RegisterForm";
 
 export const dynamic = "force-dynamic";
-export default function LoginPage() {
+export default function RegisterPage() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -15,12 +16,11 @@ export default function LoginPage() {
     return () => setIsMounted(false);
   }, []);
   return (
-    <div className="grid  lg:grid-cols-2 min-h-[80vh] mt-16">
-      {/* Left Column - Form Section */}
+    <div className="flex mx-auto w-fit  lg:grid-cols-2 min-h-[80vh] mt-20">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         {isMounted && (
           <Animate
-            key={`login-animate-${Math.random()}`}
+            key={`register-animate-${Math.random()}`}
             y="50px"
             x="0"
             delay={0.1}
@@ -28,15 +28,15 @@ export default function LoginPage() {
             duration={1}
             className="flex flex-1 items-center justify-center"
           >
-            <div className="w-full max-w-xs">
-              <LoginForm />
+            <div className="w-full max-w-2xl">
+              <RegisterForm />
             </div>
           </Animate>
         )}
       </div>
 
       {/* Right Column - Image Section */}
-      <div className="relative items-center hidden bg-muted md:flex">
+      <div className="relative items-center  hidden bg-muted md:flex">
         <Animate
           key={`login-animate-${Math.random()}`}
           y="0"
@@ -48,10 +48,10 @@ export default function LoginPage() {
           className="w-full h-full flex items-center justify-center"
         >
           <Image
-            src={images.signIn}
+            src={images.signUp}
             alt="Login illustration"
-            height={430}
-            width={430}
+            height={480}
+            width={480}
             className="relative"
             priority
           />

@@ -1,35 +1,33 @@
 "use client";
-import { GalleryVerticalEnd } from "lucide-react";
 import { images } from "@/constants/images";
 import Image from "next/image";
 import Animate from "@/components/animation/Animate";
-import LoginForm from "@/components/form/LoginForm";
+import ForgotPasswordForm from "@/components/form/ForgetPasswordForm";
 import { useEffect, useState } from "react";
 
-export const dynamic = "force-dynamic";
-export default function LoginPage() {
+export default function ForgetPassword() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
   }, []);
+
   return (
-    <div className="grid  lg:grid-cols-2 min-h-[80vh] mt-16">
-      {/* Left Column - Form Section */}
+    <div className="grid max-w-7xl mx-auto min-h-[80vh] mt-16 lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         {isMounted && (
           <Animate
-            key={`login-animate-${Math.random()}`}
-            y="50px"
+            key={"forget-password-animate"}
+            y="30px"
             x="0"
-            delay={0.1}
+            delay={0.2}
             index={1}
-            duration={1}
+            duration={0.7}
             className="flex flex-1 items-center justify-center"
           >
             <div className="w-full max-w-xs">
-              <LoginForm />
+              <ForgotPasswordForm />
             </div>
           </Animate>
         )}
@@ -38,17 +36,16 @@ export default function LoginPage() {
       {/* Right Column - Image Section */}
       <div className="relative items-center hidden bg-muted md:flex">
         <Animate
-          key={`login-animate-${Math.random()}`}
-          y="0"
-          x="120px"
-          delay={0.3}
+          key={"forget-password-animate"}
+          y="30px"
+          x="-30px"
+          delay={0.2}
           index={1}
-          duration={0.8}
-          opacity={0}
-          className="w-full h-full flex items-center justify-center"
+          duration={0.7}
+          className="flex flex-1 items-center justify-center"
         >
           <Image
-            src={images.signIn}
+            src={images.forgetPassword}
             alt="Login illustration"
             height={430}
             width={430}

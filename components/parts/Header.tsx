@@ -136,7 +136,10 @@ const Header = () => {
   return (
     <header className="fixed top-0 w-full dark:bg-darkMod-200 bg-white z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center h-16 lg:h-24 px-4 lg:px-8">
-        <Link href="/home" className="flex items-center">
+        <Link
+          href="/home"
+          className="flex items-center focus:!border-none border-none"
+        >
           <Image
             src={images.logo}
             width={windowWidth > 1024 ? 80 : 50}

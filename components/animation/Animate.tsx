@@ -33,7 +33,6 @@ const Animate = ({
       transition={{
         duration: duration,
         delay: delay * index,
-        once: true,
         type: "spring",
         ease: "easeOut",
       }}
