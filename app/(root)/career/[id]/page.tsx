@@ -1,3 +1,4 @@
+"use client";
 import CustomButton from "@/components/buttons/CustomButton";
 import { images } from "@/constants/images";
 import Image from "next/image";
@@ -7,11 +8,23 @@ import { HiAcademicCap } from "react-icons/hi2";
 import { BiSolidCertification } from "react-icons/bi";
 import { RiContractFill } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
-import { MdWork, MdCastForEducation } from "react-icons/md";
+import { MdWork } from "react-icons/md";
 import { GiSkills } from "react-icons/gi";
+import { useAppSelector } from "@/hooks/hook";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const JobDetailsPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    setIsLoggedIn(isAuthenticated);
+  }, [isAuthenticated]);
+
+  const router = useRouter();
   const job = {
+    id: 1,
     title: "Front End Developer",
     company: "FUTUREX ",
     industry: "Software Development",
@@ -148,12 +161,18 @@ const JobDetailsPage = () => {
             </div>
           </div>
 
-          {/* Apply Button - Now positioned better on mobile */}
           <div className="w-full xs:w-auto mt-4 xs:mt-0 flex justify-center xs:block">
-            <CustomButton
-              content={job.status}
-              onClick={() => console.log("Apply button clicked")}
-            />
+            {isAuthenticated ? (
+              <CustomButton
+                content="Apply Nows "
+                onClick={() => console.log("apply")}
+              />
+            ) : (
+              <CustomButton
+                content="Login to Apply"
+                onClick={() => router.push(`/login?jobId=${job.id}`)}
+              />
+            )}
           </div>
         </div>
       </div>

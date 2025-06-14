@@ -10,7 +10,7 @@ const Animate = ({
   delay,
   duration,
   opacity,
-  index
+  index,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -18,24 +18,28 @@ const Animate = ({
   x: string;
   delay: number;
   duration: number;
-  opacity?:number
-  index:number
+  opacity?: number;
+  index: number;
 }) => {
   return (
-    
-      <motion.div
-        className={className}
-        initial={{
-          opacity: 0,
-          x:x,
-          y:y
-        }}
-        whileInView={{ opacity: opacity?opacity:1, x: 0, y: 0 }}
-        transition={{ duration: duration, delay: delay*index ,once:true, type:'spring', ease: 'easeOut' }}
-      >
-        {children}
-      </motion.div>
-    
+    <motion.div
+      className={className}
+      initial={{
+        opacity: 0,
+        x: x,
+        y: y,
+      }}
+      whileInView={{ opacity: opacity ? opacity : 1, x: 0, y: 0 }}
+      transition={{
+        duration: duration,
+        delay: delay * index,
+        once: true,
+        type: "spring",
+        ease: "easeOut",
+      }}
+    >
+      {children}
+    </motion.div>
   );
 };
 
