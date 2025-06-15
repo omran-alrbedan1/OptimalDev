@@ -1,90 +1,88 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import ReactCountryFlag from "react-country-flag";
-import { usePathname, useRouter } from "@/i18n/routing";
-import Cookies from "js-cookie";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { useParams } from "next/navigation";
+import { Select } from "antd";
 
-type Props = {};
-
-const Switcher = (props: Props) => {
+export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
-  const { locale } = useParams();
+  const [currentLang, setCurrentLang] = useState("en");
 
-  const Languages = [
-    { name: "English", countryCode: "US", value: "en" },
-    { name: "العربية", countryCode: "SA", value: "ar" },
+  const languages = [
+    {
+      code: "en",
+      name: "English",
+      countryCode: "US",
+    },
+    {
+      code: "ar",
+      name: "العربية",
+      countryCode: "JO",
+    },
   ];
 
-  const [selectedLanguage, setSelectedLanguage] = useState(locale);
+  useEffect(() => {
+    const pathParts = pathname.split("/").filter(Boolean);
+    const langFromPath = pathParts[0];
 
-  const handleLanguageChange = (newLocale: string) => {
-    Cookies.set("language", newLocale, { expires: 7 });
-    setSelectedLanguage(newLocale);
+    if (languages.some((lang) => lang.code === langFromPath)) {
+      setCurrentLang(langFromPath);
+    } else {
+      setCurrentLang("en");
+    }
+  }, [pathname]);
 
-    // Remove the current locale from the pathname
-    const pathnameWithoutLocale =
-      pathname
-        .replace(new RegExp(`^/(en|ar)`), "") // Replace only the current locale
-        .replace(/^\/+/, "/") || "/";
+  const changeLanguage = (langCode: string) => {
+    setCurrentLang(langCode);
 
-    router.replace(
-      {
-        pathname: pathnameWithoutLocale,
-      },
-      { locale: newLocale }
+    const pathParts = pathname.split("/").filter(Boolean);
+    const isCurrentPathLang = languages.some(
+      (lang) => lang.code === pathParts[0]
     );
+    const remainingPath = isCurrentPathLang ? pathParts.slice(1) : pathParts;
+
+    // Construct new path
+    const newPath = `/${langCode}/${remainingPath.join("/")}`;
+    router.push(newPath);
   };
 
-  useEffect(() => {
-    const languageFromCookie = Cookies.get("language");
-    if (languageFromCookie && languageFromCookie !== selectedLanguage) {
-      setSelectedLanguage(languageFromCookie);
-    }
-  }, [selectedLanguage]);
+  const currentLanguage =
+    languages.find((lang) => lang.code === currentLang) || languages[0];
 
   return (
-    <div>
-      <Select
-        //@ts-expect-error
-        value={selectedLanguage}
-        onValueChange={(value) => handleLanguageChange(value)}
-      >
-        <SelectTrigger className=" w-12 md:w-[108px] bg-gray-200 text-black">
-          <SelectValue placeholder="Select Language" />
-        </SelectTrigger>
-        <SelectContent
-          className={cn(
-            "absolute   md:left-0 z-[1000]",
-            locale == "ar" ? "left-4" : "right-0"
-          )}
+    <Select
+      value={currentLang}
+      onChange={changeLanguage}
+      style={{ width: 140 }}
+      optionLabelProp="label"
+    >
+      {languages.map((lang) => (
+        <Select.Option
+          key={lang.code}
+          value={lang.code}
+          label={
+            <div className="flex items-center gap-2">
+              <ReactCountryFlag
+                countryCode={lang.countryCode}
+                svg
+                style={{ width: "1.2em", height: "1.2em" }}
+              />
+              <span>{lang.name}</span>
+            </div>
+          }
         >
-          {Languages.map((language) => (
-            <SelectItem key={language.value} value={language.value}>
-              <div className="flex items-center gap-2">
-                <ReactCountryFlag
-                  countryCode={language.countryCode}
-                  svg
-                  style={{ width: "1.2em", height: "1.2em" }}
-                />
-                <span className="text-sm">{language.name}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+          <div className="flex items-center gap-2">
+            <ReactCountryFlag
+              countryCode={lang.countryCode}
+              svg
+              style={{ width: "1.2em", height: "1.2em" }}
+            />
+            <span>{lang.name}</span>
+          </div>
+        </Select.Option>
+      ))}
+    </Select>
   );
-};
-
-export default Switcher;
+}

@@ -2,12 +2,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SliderArray } from "@/types";
+import { useTranslations } from "next-intl";
 
 const Slider = ({ sliders }: { sliders: SliderArray }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
+  const t = useTranslations("ourServices");
 
   // Auto-play with pause on hover
   useEffect(() => {

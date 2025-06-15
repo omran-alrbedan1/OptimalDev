@@ -1,13 +1,4 @@
 "use client";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { FormFieldType } from "@/enum";
-import CustomFormField from "../inputs/CustomFormField";
-import { icons } from "@/constants/icons";
 import Image from "next/image";
 import {
   FaInstagram,
@@ -20,9 +11,11 @@ import { RiTelegram2Fill } from "react-icons/ri";
 import Link from "next/link";
 import { images } from "@/constants/images";
 import { FaLocationDot } from "react-icons/fa6";
-import SubscribeForm from "../form/SubscribeForm";
+import SubscribeForm from "../forms/SubscribeForm";
+import { useTranslations } from "next-intl";
 
 const Footer = () => {
+  const t = useTranslations("footer");
   const socialLinks = [
     {
       icon: (
@@ -75,10 +68,8 @@ const Footer = () => {
                 </span>
               </p>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm leading-relaxed text-center md:text-left">
-              Optimal Path bridges the gap between top talent and exceptional
-              opportunities. We provide strategic recruitment solutions to grow
-              businesses and careers.
+            <p className="text-gray-600  dark:text-gray-300 text-xs md:text-sm leading-relaxed  md:text-center">
+              {t("companyDescription")}
             </p>
 
             {/* Social links - centered on mobile */}
@@ -100,7 +91,7 @@ const Footer = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left">
-                  Contact Us
+                  {t("contactUs")}
                   <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
                 </h3>
                 <ul className="mt-6 md:mt-6 space-y-2 md:space-y-4">
@@ -122,7 +113,7 @@ const Footer = () => {
 
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left mb-3 md:mb-4">
-                  Subscribe
+                  {t("subscribe")}
                   <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
                 </h3>
                 <SubscribeForm />
@@ -134,8 +125,8 @@ const Footer = () => {
       <div className="flex w-[90%] textgray items-center justify-center absolute bottom-[8px] md:bottom-[12px] left-1/2 -translate-x-1/2">
         <span className="basis-[1px] flex-grow h-[1px] md:h-[1.5px] bg-gray-400" />
         <p className="text-center font-light text-xs md:text-[14px] px-3 md:px-5 text-gray-600 dark:text-gray-200">
-          <span className="text-lg md:text-xl mt-1 md:mt-2"> &copy;</span> 2025
-          Your Company. All rights reserved. by{" "}
+          <span className="text-lg md:text-xl mt-1 md:mt-2"></span>
+          {t("copyright")}{" "}
           <span className="text-sm md:text-[16px] text-primary-color1 font-medium">
             Optimal
             <span className="text-black ml-1 dark:text-gray-200">Path</span>

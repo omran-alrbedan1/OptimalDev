@@ -6,31 +6,17 @@ import { MdEmail, MdLocationOn } from "react-icons/md";
 import Loader from "@/components/Loader";
 import ContactForm from "@/components/forms/ContactForm";
 import { ContactUsProps } from "@/types";
+import { getTranslations } from "next-intl/server";
 
 const ContactUsPage = async () => {
+  const t = await getTranslations("contactUs");
   await new Promise((resolve) => setTimeout(resolve, 500));
-  const response = await axios.get(
-    "https://main.hivetech.space/api/contact-us",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  const contact_us = response.data.data;
 
   // Filter data by type
-  const text = contact_us.find((item: ContactUsProps) => item.type === "text");
-  const email = contact_us.find(
-    (item: ContactUsProps) => item.type === "email"
-  );
-  const phone = contact_us.find(
-    (item: ContactUsProps) => item.type === "phone"
-  );
-  const address = contact_us.find(
-    (item: ContactUsProps) => item.type === "address"
-  );
+  const text = "text";
+  const email = "email";
+  const phone = "phone";
+  const address = "address";
 
   return (
     <div className="min-h-[100vh] overflow-y-auto relative">
@@ -49,7 +35,7 @@ const ContactUsPage = async () => {
             className="text-2xl sm:text-3xl md:text-4xl text-white mb-6 font-bold"
             style={{ letterSpacing: "4px" }}
           >
-            Contact Us
+            {t("title")}
           </h1>
 
           {/* Text Content */}
@@ -74,7 +60,7 @@ const ContactUsPage = async () => {
                 </span>
                 {address && (
                   <p className="text-white text-sm sm:text-lg mb-4 flex flex-col">
-                    <span className="font-bold">Address:</span>
+                    <span className="font-bold">{t("address")} :</span>
                     <span>Jordan</span>
                   </p>
                 )}
@@ -85,7 +71,7 @@ const ContactUsPage = async () => {
                 </span>
                 {phone && (
                   <p className="text-white text-sm sm:text-lg mb-4 flex flex-col">
-                    <span className="font-bold">Phone:</span>
+                    <span className="font-bold">{t("phone")} :</span>
                     <span>+962797701545</span>
                   </p>
                 )}
@@ -96,7 +82,7 @@ const ContactUsPage = async () => {
                 </span>
                 {email && (
                   <p className="text-white text-sm sm:text-lg flex flex-col">
-                    <span className="font-bold">Email:</span>
+                    <span className="font-bold">{t("email")} :</span>
                     <span> info@optimalpathmc.com</span>
                   </p>
                 )}

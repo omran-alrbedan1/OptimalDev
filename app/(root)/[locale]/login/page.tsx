@@ -2,9 +2,9 @@
 import { GalleryVerticalEnd } from "lucide-react";
 import { images } from "@/constants/images";
 import Image from "next/image";
-import Animate from "@/components/animation/Animate";
-import LoginForm from "@/components/form/LoginForm";
+import LoginForm from "@/components/forms/LoginForm";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export const dynamic = "force-dynamic";
 export default function LoginPage() {
@@ -14,37 +14,28 @@ export default function LoginPage() {
     setIsMounted(true);
     return () => setIsMounted(false);
   }, []);
+
   return (
-    <div className="grid  lg:grid-cols-2 min-h-[80vh] mt-16">
+    <div className="grid lg:grid-cols-2 min-h-[80vh] mt-16">
       {/* Left Column - Form Section */}
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        {isMounted && (
-          <Animate
-            key={`login-animate-${Math.random()}`}
-            y="50px"
-            x="0"
-            delay={0.1}
-            index={1}
-            duration={1}
-            className="flex flex-1 items-center justify-center"
-          >
-            <div className="w-full max-w-xs">
-              <LoginForm />
-            </div>
-          </Animate>
-        )}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="flex flex-1 items-center justify-center w-full"
+        >
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
+        </motion.div>
       </div>
 
-      {/* Right Column - Image Section */}
       <div className="relative items-center hidden bg-muted md:flex">
-        <Animate
-          key={`login-animate-${Math.random()}`}
-          y="0"
-          x="120px"
-          delay={0.3}
-          index={1}
-          duration={0.8}
-          opacity={0}
+        <motion.div
+          initial={{ x: 120, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="w-full h-full flex items-center justify-center"
         >
           <Image
@@ -55,7 +46,7 @@ export default function LoginPage() {
             className="relative"
             priority
           />
-        </Animate>
+        </motion.div>
       </div>
     </div>
   );

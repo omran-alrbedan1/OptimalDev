@@ -1,182 +1,103 @@
 {
-  "Home": {
-    "hell":"lvpfh",
-    "upComingCoursesAds":{
-      "title":"تعلم مهارات جديدة في وقت فراغك",
-      "paragraph":"ابحث عن أكثر من 2420 دورة تدريبية عبر الإنترنت",
-      "placeholder":"ابحث حسب عنوان الدورة أو الرمز",
-      "buttonSearch":"بحث"
-    },
-    "section":{
-      "title":"اخبار يورك",
-      "desc":"تابع أحدث منشوراتنا"
-    },
-    "titles": {
-      "categories": "الفئات",
-      "venues": "المدن",
-      "frequently qestions": "الأسئلة الشائعة",
-      "regional offices": "المكاتب الإقليمية",
-      "accredited agencies": "الوكالات المعتمدة"
-}
-  } ,
-  
-  "AboutUs":{
-    "title":"معلومات عنا",
-    "subTitle":"من نحن"
+  "header": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+     "services": "خدماتنا",
+    "career": "وظائف",
+    "contact": "اتصل بنا",
+    "businessDev": "تطوير الأعمال",
+    "personalDev": "تطوير شخصي",
+    "training": "تدريب",
+    "employment": "توظيف",
+    "hr": "موارد بشرية",
+    "webManagement": "إدارة المواقع",
+    "marketing": "حلول تسويقية",
+    "coaching": "تدريب حياتي",
+    "careerPath": "مسار وظيفي",
+    "internship": "تدريب عملي"
   },
-  
-  "Certificates":{
-    "title":"البحث عن شهادات معتمدة",
-    "placeholder":"ادخل معرف الشهادة",
-    "card": {
-       "title": "تفاصيل الشهادة",
-        "valid from": "صالح من",
-        "valid to": "صالح حتى",
-        "desc": "متوافق مع المعايير الدولية الصادرة من أكاديمية يورك البريطانية للاعتماد. شهادتك معتمدة تحت الرقم الدولي للشهادة."
+  "ourServices": {
+  "title": "خدماتنا",
+  "paragraph": "يوفر مسار الأمثل الربط بين المواهب المناسبة والفرص المناسبة."
 },
-"notFound":{
-  "title":"الشهادة غير موجودة. قد تكون صادرة عن جهة غير رسمية. يرجى استشارة الأكاديمية للتحقق من صحة الشهادة",
-  "subTitle":"الشهادة غير موجودة"
-
+    "ourPartners":{
+    "title":"شركاؤنا "
+  },
+"ourClients": {
+  "title": "عملاؤنا",
+  "paragraph": "نمكن الأعمال من خلال شراكات موثوقة وحلول مبتكرة."
 },
-"Form":{
-  "firstname":"الاسم الاول ",
-  "lastname":"الاسم الاخير ",
-  "email":"الايميل",
-  "code":"رمز الشهادة",
-  "message":"اكتب رسالة هنا ",
-  "send":"ارسال"
-
-}
-  },
-
-  "TrainingPlan":{
-    "register":"تسجيل",
-    "Form":{
-      "full_name_label":"الاسم الكامل",
-      "full_name_placeholder":"John Doe",
-      "email_label":"الايميل",
-      "email_placeholder":"John@gmail.com",
-      "phone_lable":"رقم الهاتف"
-    },
-      "Dialog":{
-      "question":"كيف تود مشاهدة الملف؟",
-      "book_button":"كتاب",
-      "browser_button":"متصفح"
-    },
-    "file":{
-      "title":"التسجيل تم بنجاح يمكنك الان مشاهدة او تحميل الملف",
-      "download_file":"تحميل الملف",
-      "view_file":"مشاهدة الملف"
-    }
-
-},
-"ContactUs": {
-  "title": "تواصل معنا",
-  "location": "موقعنا"
-} ,
-"Courses":{
-  "courseCard":{
-    "code":"الكود",
-    "venue":"المدينة",
-    "category":"الفئة",
-    "startDate":"تاريخ البدأ",
-    "endDate":"ناريخ الانتهاء",
-    "language":"اللغة",
-    "fee":"السعر",
-    "view":"المشاهدات"
-  },
-
-  "registeration": {
-    "title":"التسجيل على الكورس ",
-
-"personalInfo": {
-    "title": "المعلومات الشخصية :",
-    "first_name": "الاسم الأول :",
-    "last_name": "الاسم الأخير :",
-    "phone_number": "رقم الهاتف :",
-    "country": "الدولة :",
-    "city": "المدينة :",
-    "company_name": "اسم الشركة :",
-    "email": "البريد الإلكتروني :",
-    "job_title": "المسمى الوظيفي :",
-    "entity_type": "نوع الكيان :"
-  },
-  "CourseInfo": {
-    "question": "هل ترغب في تخصيص الدورة؟",
-    "main_title": "معلومات الدورة :",
-    "title": "العنوان :",
-    "start_date": "تاريخ البدء :",
-    "end_date": "تاريخ الانتهاء :",
-    "hours": "الساعات :",
-    "language": "اللغة :",
-    "venue": "المكان :",
-    "category": "الفئة :",
-    "fee_range": "نطاق الرسوم :",
-    "description": "الوصف :",
-    "code": "الكود :"
-  },
-  "TrainerInfo": {
-    "question": "هل لديك مدرب محدد؟",
-    "title": "معلومات المدرب :",
-    "trainer_name": "اسم المدرب :",
-    "trainer_email": "بريد المدرب الإلكتروني :",
-    "functional": "التخصص الوظيفي :",
-    "phone_number": "رقم الهاتف :"
-  },
-    "additionalInfo": {
-      "title": " معلومات إضافية :",
-      "number_of_people": " عدد الأشخاص :"
-    },
-    "discount_code": {
-      "question":"هل تملك كود خصم؟ ",
-      "code": "  رمز الخصم :"
-    }
+"footer": {
+  "companyDescription": "يوفر مسار الأمثل الربط بين أفضل الكفاءات والفرص الاستثنائية. نقدم حلول توظيف استراتيجية لتنمية الأعمال والمهن.",
+  "contactUs": "اتصل بنا",
+  "subscribe": "اشترك معنا",
+  "copyright": "© 2025 جميع الحقوق محفوظة لشركة",
+  "companyName": "مسار الأمثل",
+  "contactItems": {
+    "location": "الأردن",
+    "email": "info@optimalpathmc.com",
+    "phone": "٩٦٢٧٩٧٧٠١٥٤٥+"
   }
 },
-  "Footer": {
-    "title": "العنوان",
-    "paragraph": "أكاديمية يورك البريطانية هي شركة ذات مسؤولية محدودة مقرها في المملكة المتحدة.",
-    "icons": {
-      "office": "  المكتب:",
-      "email": " البريد الإلكتروني:",
-      "phone": " الهاتف :",
-      "website": "الموقع الإلكتروني :"
+"contactUs":{
+  "title":"اتصل بنا",
+  "address":"العنوان",
+  "phone":"الهاتف",
+  "email":"الايميل"
+},
+"forms":{
+  "contactForm": {
+  "fields": {
+    "firstName": {
+      "label": "الاسم الأول",
+      "placeholder": "الاسم الأول",
+      "error": "يجب أن يحتوي الاسم الأول على أحرف فقط"
+    },
+    "lastName": {
+      "label": "الاسم الأخير",
+      "placeholder": "الاسم الأخير",
+      "error": "يجب أن يحتوي الاسم الأخير على أحرف فقط"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "البريد الإلكتروني",
+      "error": "صيغة البريد الإلكتروني غير صالحة"
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم الهاتف",
+      "error": "رقم الهاتف غير صالح"
+    },
+    "subject": {
+      "label": "الموضوع",
+      "placeholder": "الموضوع",
+      "error": "لا يمكن ترك الموضوع فارغًا"
+    },
+    "message": {
+      "label": "الرسالة",
+      "placeholder": "اكتب رسالتك هنا",
+      "error": "لا يمكن ترك الرسالة فارغة"
     }
   },
-  "Validation": {
-    "required": "هذا الحقل مطلوب.",
-    "minLength": "يجب أن يكون على الأقل {min} أحرف.",
-    "maxLength": "يجب أن يكون على الأكثر {max} أحرف.",
-    "invalidEmail": "بريد إلكتروني غير صالح.",
-    "invalidPhone": "رقم هاتف غير صالح. التنسيق: +1234567890",
-    "invalidPhoneDigits": "تنسيق رقم الهاتف غير صالح. يجب أن يكون من 10 إلى 15 رقمًا.",
-    "invalidNumber": "يجب أن يكون رقمًا صالحًا.",
-    "invalidDate": "تنسيق التاريخ غير صالح.",
-    "invalidUrl": "رابط غير صالح.",
-    "invalidFile": "تنسيق الملف غير صالح."
-  },
-  "Toast":{
-    "contactUsForm":{
-      "success":"تم إرسال الرسالة بنجاح!",
-      "error":"فشل إرسال الرسالة. يرجى المحاولة مرة أخرى."
-    },
-    "certificateForm":{
-      "success":"تم إرسال الرسالة بنجاح!",
-      "error":"فشل إرسال الرسالة. يرجى المحاولة مرة أخرى."
-    },
-    "planRegisterForm":{
-      "success": "تم التسجيل بنجاح",
-      "error": "فشل التسجيل. يرجى المحاولة مرة أخرى."
-    },
-    "discount": {
-  "success": "تم تطبيق الخصم",
-  "error": "كود الخصم غير صحيح"
-},
-"courseRegisterForm":{
-  "success":"تم التسجيل بنجاح",
-  "error":"فشل التسجيل. يرجى المحاولة مرة أخرى"
-}
+  "submit": "إرسال",
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidFormat": "صيغة غير صالحة"
   }
-
+},
+"subscribeForm": {
+  "description": "ابق على اطلاع بآخر أخبارنا وعروضنا",
+  "emailPlaceholder": "بريدك@الإلكتروني",
+  "subscribe": "اشترك",
+  "submitting": "جاري الاشتراك...",
+  "success": {
+    "title": "تم الاشتراك بنجاح!",
+    "description": "شكراً لك على اشتراكك في نشرتنا البريدية."
+  },
+  "error": {
+    "title": "فشل الاشتراك",
+    "description": "الرجاء المحاولة مرة أخرى لاحقاً."
+  }
+}
+}
 }

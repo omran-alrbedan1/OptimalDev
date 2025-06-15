@@ -1,0 +1,103 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Our Services",
+    "career": "Career",
+    "contact": "Contact Us",
+    "businessDev": "Business Development",
+    "personalDev": "Personal Development",
+    "training": "Training",
+    "employment": "Employment",
+    "hr": "Human Resources",
+    "webManagement": "Website Management",
+    "marketing": "Marketing Solutions",
+    "coaching": "Life Coaching",
+    "careerPath": "Career Path",
+    "internship": "Internship"
+  },
+    "ourServices":{
+    "title":"Our Services",
+    "paragraph":"Optimal Path connects the right talent with the right opportunities."
+  },
+    "ourPartners":{
+    "title":"Our Partners"
+  },
+  "ourClients":{
+    "title":"Our Clients",
+    "paragraph":"Empowering businesses through trusted partnerships and innovative solutions."
+  },
+  "footer": {
+  "companyDescription": "Optimal Path bridges the gap between top talent and exceptional opportunities. We provide strategic recruitment solutions to grow businesses and careers.",
+  "contactUs": "Contact Us",
+  "subscribe": "Subscribe",
+  "copyright": "© 2025 Your Company. All rights reserved. by",
+  "companyName": "Optimal Path",
+  "contactItems": {
+    "location": "Jordan",
+    "email": "info@optimalpathmc.com",
+    "phone": "+962 797 701 545"
+  }
+},
+"contactUs":{
+  "title":"Contact Us",
+  "address":"Address",
+  "phone":"Phone",
+  "email":"Email"
+},
+"forms":{
+  "contactForm": {
+  "fields": {
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "First Name",
+      "error": "First name must contain only letters"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Last Name",
+      "error": "Last name must contain only letters"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email",
+      "error": "Invalid email format"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number",
+      "error": "Invalid phone number"
+    },
+    "subject": {
+      "label": "Subject",
+      "placeholder": "Subject",
+      "error": "Subject cannot be empty"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "Your message here",
+      "error": "Message cannot be empty"
+    }
+  },
+  "submit": "Submit",
+  "validation": {
+    "required": "This field is required",
+    "invalidFormat": "Invalid format"
+  }
+},
+"subscribeForm": {
+  "description": "Stay updated with our latest news and offers",
+  "emailPlaceholder": "your@email.com",
+  "subscribe": "Subscribe",
+  "submitting": "Subscribing...",
+  "success": {
+    "title": "Subscription successful!",
+    "description": "Thank you for subscribing to our newsletter."
+  },
+  "error": {
+    "title": "Subscription failed",
+    "description": "Please try again later."
+  }
+}
+}
+}

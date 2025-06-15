@@ -5,8 +5,14 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { MdEmail, MdSubject } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 
 const ContactForm = () => {
+  const t = useTranslations("forms.contactForm");
+  const pathname = usePathname();
+  const isArabic = pathname.includes("/ar");
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState({
     first_name: "",
@@ -18,7 +24,7 @@ const ContactForm = () => {
   });
 
   const regex = {
-    name: /^[a-zA-Z\s]+$/,
+    name: /^[a-zA-Z\u0600-\u06FF\s]+$/,
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     phone: /^\+?[1-9]\d{1,14}$/,
     subject: /.+/,
@@ -27,37 +33,29 @@ const ContactForm = () => {
 
   const validateForm = (formData: any) => {
     const newErrors = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
+      first_name: !formData.first_name
+        ? t("validation.required")
+        : !regex.name.test(formData.first_name)
+        ? t("fields.firstName.error")
+        : "",
+      last_name: !formData.last_name
+        ? t("validation.required")
+        : !regex.name.test(formData.last_name)
+        ? t("fields.lastName.error")
+        : "",
+      email: !formData.email
+        ? t("validation.required")
+        : !regex.email.test(formData.email)
+        ? t("fields.email.error")
+        : "",
+      phone: !phoneNumber
+        ? t("validation.required")
+        : !regex.phone.test(phoneNumber)
+        ? t("fields.phone.error")
+        : "",
+      subject: !formData.subject ? t("validation.required") : "",
+      message: !formData.message ? t("validation.required") : "",
     };
-
-    if (!regex.name.test(formData.first_name)) {
-      newErrors.first_name = "First name must contain only letters";
-    }
-
-    if (!regex.name.test(formData.last_name)) {
-      newErrors.last_name = "Last name must contain only letters";
-    }
-
-    if (!regex.email.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!regex.phone.test(phoneNumber)) {
-      newErrors.phone = "Invalid phone number";
-    }
-
-    if (!regex.subject.test(formData.subject)) {
-      newErrors.subject = "Subject cannot be empty";
-    }
-
-    if (!regex.message.test(formData.message)) {
-      newErrors.message = "Message cannot be empty";
-    }
 
     return newErrors;
   };
@@ -70,26 +68,24 @@ const ContactForm = () => {
     const validationErrors = validateForm(data);
     setErrors(validationErrors);
 
-    // Check if there are any errors
-    const hasErrors = Object.values(validationErrors).some(
-      (error) => error !== ""
-    );
-
-    if (!hasErrors) {
-      // Submit the form if no errors
+    if (!Object.values(validationErrors).some((error) => error)) {
       data.phone = phoneNumber;
       console.log("Form Data:", data);
-      console.log("Form is valid. Submitting...");
+      // Add your form submission logic here
     }
   };
 
   return (
     <form
+      dir={isArabic ? "rtl" : "ltr"}
       onSubmit={handleSubmit}
-      className="text-gray-700 flex flex-col gap-6 xl:pt-10"
+      className={`text-gray-700 flex flex-col gap-6 xl:pt-10 ${
+        isArabic ? "text-right" : "text-left"
+      }`}
     >
-      {/* First Name */}
+      {/* Name Row */}
       <div className="flex max-sm:flex-col gap-4">
+        {/* First Name */}
         <div className="flex-1 relative">
           <div
             className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 h-12 border ${
@@ -105,8 +101,9 @@ const ContactForm = () => {
               required
               type="text"
               name="first_name"
-              placeholder="First Name"
+              placeholder={t("fields.firstName.placeholder")}
               className="dark:text-white outline-none overflow-hidden dark:bg-darkMod-400 w-full"
+              dir={isArabic ? "rtl" : "ltr"}
             />
           </div>
           {errors.first_name && (
@@ -130,8 +127,9 @@ const ContactForm = () => {
               required
               type="text"
               name="last_name"
-              placeholder="Last Name"
+              placeholder={t("fields.lastName.placeholder")}
               className="dark:text-white outline-none dark:bg-darkMod-400 overflow-hidden w-full"
+              dir={isArabic ? "rtl" : "ltr"}
             />
           </div>
           {errors.last_name && (
@@ -140,8 +138,9 @@ const ContactForm = () => {
         </div>
       </div>
 
-      {/* Email */}
+      {/* Contact Row */}
       <div className="flex max-sm:flex-col gap-3">
+        {/* Email */}
         <div className="flex-1 relative">
           <div
             className={`flex flex-nowrap items-center gap-2 px-3 rounded-[8px] bg-white dark:bg-darkMod-400 h-12 border ${
@@ -157,8 +156,9 @@ const ContactForm = () => {
               required
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder={t("fields.email.placeholder")}
               className="dark:text-white outline-none dark:bg-darkMod-400 overflow-hidden w-full"
+              dir={isArabic ? "rtl" : "ltr"}
             />
           </div>
           {errors.email && (
@@ -177,16 +177,17 @@ const ContactForm = () => {
           >
             <PhoneInput
               international
-              defaultCountry="JO"
+              defaultCountry={isArabic ? "JO" : "US"}
               value={phoneNumber}
               //@ts-ignore
               onChange={setPhoneNumber}
-              placeholder="Enter phone number"
+              placeholder={t("fields.phone.placeholder")}
               className="dark:text-white outline-none overflow-hidden w-full"
               numberInputProps={{
                 className:
                   "dark:bg-darkMod-400 focus:border-none focus:outline-none w-full",
                 style: { outline: "none", border: "none" },
+                dir: isArabic ? "rtl" : "ltr",
               }}
             />
           </div>
@@ -212,8 +213,9 @@ const ContactForm = () => {
             required
             type="text"
             name="subject"
-            placeholder="Subject"
+            placeholder={t("fields.subject.placeholder")}
             className="dark:text-white outline-none dark:bg-darkMod-400 overflow-hidden w-full"
+            dir={isArabic ? "rtl" : "ltr"}
           />
         </div>
         {errors.subject && (
@@ -231,8 +233,9 @@ const ContactForm = () => {
               ? "border-red-500"
               : "border-gray-300 focus-within:border-primary-color1"
           }`}
-          placeholder="Your message here"
+          placeholder={t("fields.message.placeholder")}
           name="message"
+          dir={isArabic ? "rtl" : "ltr"}
         ></textarea>
         {errors.message && (
           <p className="text-red-500 text-sm mt-1">{errors.message}</p>
@@ -243,10 +246,12 @@ const ContactForm = () => {
       <div className="flex-1">
         <button
           type="submit"
-          className="bg-primary-color1 max-sm:w-full w-1/4 h-11 flex justify-center items-center rounded-[8px] text-white relative overflow-hidden hover:bg-primary-color1-dark transition-colors"
+          className={`bg-primary-color1 ${
+            isArabic ? "ml-auto" : "mr-auto"
+          } max-sm:w-full w-1/4 h-11 flex justify-center items-center rounded-[8px] text-white relative overflow-hidden hover:bg-primary-color1-dark transition-colors`}
         >
           <span className="absolute inset-0 bg-primary-color2 opacity-30 rounded-[8px] hover:opacity-40 transition-opacity" />
-          <span className="relative z-10">Submit</span>
+          <span className="relative z-10">{t("submit")}</span>
         </button>
       </div>
     </form>

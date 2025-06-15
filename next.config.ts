@@ -1,8 +1,9 @@
-import type { NextConfig } from "next";
+import { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   eslint: {
-    ignoreDuringBuilds: true, // Disable ESLint during production builds
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -11,19 +12,19 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'main.hivetech.space',
-        port: '',
-        pathname: '/storage/**',
+        protocol: "https",
+        hostname: "main.hivetech.space",
+        port: "",
+        pathname: "/storage/**",
       },
     ],
   },
   async redirects() {
     return [
       {
-        source: '/', // The path you want to redirect from
-        destination: '/home', // The path you want to redirect to
-        permanent: true, // Set to true for permanent redirect (301) or false for temporary (302)
+        source: "/",
+        destination: "/home",
+        permanent: true,
       },
     ];
   },
@@ -31,12 +32,11 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/registration',
-        destination: 'https://main.hivetech.space/api/registration',
+        source: "/api/registration",
+        destination: "https://main.hivetech.space/api/registration",
       },
     ];
   },
-  
 };
-
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);

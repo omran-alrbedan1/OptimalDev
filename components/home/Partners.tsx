@@ -7,6 +7,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "../ui/carousel";
+import { getTranslations } from "next-intl/server";
 
 const partners = [
   {
@@ -44,10 +45,11 @@ const partners = [
   },
 ];
 
-const Partners = () => {
+const Partners = async () => {
+  const t = await getTranslations("ourPartners");
   return (
     <section className="px-5 md:px-10 lg:px-20 flex flex-col  items-center mt-12 md:mt-20">
-      <Header title="Our Partners" className="pb-11" />
+      <Header title={t("title")} className="pb-11" />
 
       <div className="w-full max-w-7xl mt-16 relative">
         <Carousel
@@ -55,7 +57,8 @@ const Partners = () => {
             align: "start",
             loop: true,
           }}
-          className="w-full"
+          className="w-full "
+          dir="ltr"
         >
           <div className="relative">
             <CarouselContent className=" -mr-8 relative ">

@@ -1,11 +1,12 @@
-// app/services/page.tsx
 "use client";
 
 import { Carousel } from "antd";
 import Header from "@/components/Header";
 import { motion } from "framer-motion";
 import ServiceCard from "../cards/ServiceCard";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // أو أي أيقونات أخرى تفضلها
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Service } from "@/app";
 
 const services: Service[] = [
   {
@@ -68,6 +69,8 @@ const CustomArrow = ({
   );
 };
 export default function Services() {
+  const t = useTranslations("ourServices");
+
   return (
     <motion.section
       initial="hidden"
@@ -75,10 +78,7 @@ export default function Services() {
       variants={containerVariants}
       className="flex flex-col w-full items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
     >
-      <Header
-        title="Our Services"
-        paragraph="Optimal Path connects the right talent with the right opportunities."
-      />
+      <Header title={t("title")} paragraph={t("paragraph")} />
 
       <motion.div
         className="w-full max-w-7xl mt-10 relative"

@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import React from "react";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
 const AboutPage = async () => {
+  const t = await getTranslations("header");
   const sections = [
     {
       title: "Who We Are",
@@ -52,9 +53,9 @@ const AboutPage = async () => {
   ];
 
   return (
-    <main className="h-full relative">
+    <main className="min-h-[100vh] overflow-y-auto relative">
       <div className="about-us-bg h-[80vh] flex items-center justify-center">
-        <h1 className="custom-title relative">About Us</h1>
+        <h1 className="custom-title relative">{t("about")}</h1>
       </div>
 
       <section className="container mx-auto px-4">
@@ -67,7 +68,6 @@ const AboutPage = async () => {
                   key={index}
                   className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 sm:p-8"
                 >
-     
                   <Animate
                     x="0"
                     y="20px"
@@ -80,14 +80,13 @@ const AboutPage = async () => {
                     </h2>
                   </Animate>
 
-
                   <div className="space-y-4">
                     {section.content.map((paragraph, pIndex) => (
                       <Animate
                         key={pIndex}
                         x="0"
                         y="20px"
-                        delay={0.4 + index * 0.2 + pIndex * 0.1} 
+                        delay={0.4 + index * 0.2 + pIndex * 0.1}
                         duration={0.8}
                         once={true}
                       >
