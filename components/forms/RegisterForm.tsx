@@ -23,6 +23,7 @@ import { Country, City } from "country-state-city";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const { Dragger } = Upload;
 
@@ -46,6 +47,9 @@ const registerFormSchema = z
     }),
     password: z.string().min(8, {
       message: "Password must be at least 8 characters.",
+    }),
+    acceptTerms: z.literal<boolean>(true, {
+      errorMap: () => ({ message: "You must accept the terms and policies" }),
     }),
     confirmPassword: z.string(),
     cv: z
@@ -81,6 +85,7 @@ export default function RegisterForm() {
       city: "",
       password: "",
       confirmPassword: "",
+      acceptTerms: false,
     },
   });
 
@@ -313,7 +318,7 @@ export default function RegisterForm() {
           />
 
           {/* CV Field */}
-          <div className="grid gap-2 md:col-span-2">
+          <div className="grid gap-2 md:col-span-2 relative h-fit mb-8">
             <FormField
               control={form.control}
               name="cv"
@@ -341,6 +346,43 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+          </div>
+          {/* Terms and Conditions Checkbox */}
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="acceptTerms"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="border-gray-300 dark:border-gray-400"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 mt-32 leading-none">
+                    <FormLabel>
+                      I accept the{" "}
+                      <Link
+                        href="/terms"
+                        className="underline text-primary-color1"
+                      >
+                        Terms and Conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/privacy"
+                        className="underline text-primary-color1"
+                      >
+                        Privacy Policy
+                      </Link>
+                    </FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormMessage className="shad-error text-red-400" />
           </div>
 
           {/* Submit Button */}
