@@ -166,12 +166,12 @@ export default function RegisterForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel className="dark:text-gray-300">First Name</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="John"
                     {...field}
-                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
                 <FormMessage className="shad-error text-red-400" />
@@ -185,12 +185,12 @@ export default function RegisterForm() {
             name="surname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Surname</FormLabel>
+                <FormLabel className="dark:text-gray-300">Surname</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Doe"
                     {...field}
-                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
                 <FormMessage className="shad-error text-red-400" />
@@ -205,13 +205,15 @@ export default function RegisterForm() {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel className="dark:text-gray-300">
+                    Phone Number
+                  </FormLabel>
                   <FormControl>
                     <PhoneInput
                       country={"us"}
                       value={field.value}
                       onChange={(phone) => field.onChange(phone)}
-                      inputClass="!w-full rounded-md !border dark:!border-gray-400 !bg-gray-50 dark:!bg-gray-600 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      inputClass="!w-full rounded-md !border dark:!border-gray-500 !bg-gray-50 dark:!bg-gray-600 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:!bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       containerClass="mt-1"
                     />
                   </FormControl>
@@ -227,7 +229,7 @@ export default function RegisterForm() {
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Country</FormLabel>
+                <FormLabel className="dark:text-gray-300">Country</FormLabel>
                 <FormControl>
                   <select
                     {...field}
@@ -235,7 +237,7 @@ export default function RegisterForm() {
                       field.onChange(e);
                       form.resetField("city");
                     }}
-                    className="flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">Select Country</option>
                     {Country.getAllCountries().map((c) => (
@@ -256,12 +258,12 @@ export default function RegisterForm() {
             name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel className="dark:text-gray-300">City</FormLabel>
                 <FormControl>
                   <select
                     {...field}
                     disabled={!selectedCountry}
-                    className="flex h-10 w-full border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">Select City</option>
                     {selectedCountry &&
@@ -283,13 +285,13 @@ export default function RegisterForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="dark:text-gray-300">Password</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
                     placeholder="••••••••"
                     {...field}
-                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
                 <FormMessage className="shad-error text-red-400" />
@@ -303,7 +305,9 @@ export default function RegisterForm() {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  Confirm Password
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="password"
@@ -324,7 +328,9 @@ export default function RegisterForm() {
               name="cv"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Upload CV (PDF or Word)</FormLabel>
+                  <FormLabel className="dark:text-gray-300">
+                    Upload CV (PDF or Word)
+                  </FormLabel>
                   <FormControl>
                     <Dragger
                       {...uploadProps}
@@ -361,7 +367,7 @@ export default function RegisterForm() {
                       className="border-gray-300 dark:border-gray-400"
                     />
                   </FormControl>
-                  <div className="space-y-1 mt-32 leading-none">
+                  <div className="space-y-1 mt-32 leading-none dark:text-gray-300">
                     <FormLabel>
                       I accept the{" "}
                       <Link
@@ -398,7 +404,7 @@ export default function RegisterForm() {
         </div>
 
         {/* Login Link */}
-        <div className="text-center text-sm md:col-span-2">
+        <div className="text-center text-sm md:col-span-2 dark:text-gray-300">
           Already have an account?{" "}
           <Link
             href="/login"

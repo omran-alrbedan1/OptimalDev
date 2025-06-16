@@ -50,7 +50,12 @@ export default function LoginForm() {
         className="flex flex-col gap-6"
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <h1
+            className="text-2xl font-bold dark:text-gray-300
+          "
+          >
+            Login to your account
+          </h1>
           <p className="w-full text-sm text-gray-600 dark:text-gray-300">
             Enter your email below to login to your account
           </p>
@@ -59,12 +64,15 @@ export default function LoginForm() {
         <div className="grid gap-6">
           {/* Email Field */}
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="dark:text-gray-300">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
               placeholder="m@example.com"
               {...form.register("email")}
+              className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
             />
             {form.formState.errors.email && (
               <p className="text-sm text-red-500">
@@ -76,10 +84,12 @@ export default function LoginForm() {
           {/* Password Field */}
           <div className="grid gap-2">
             <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="dark:text-gray-300">
+                Password
+              </Label>
               <Link
                 href="/forget_password"
-                className="ml-auto text-sm hover:text-primary-color1"
+                className="ml-auto text-sm dark:text-gray-300 hover:text-primary-color1"
               >
                 Forgot your password?
               </Link>
@@ -89,6 +99,7 @@ export default function LoginForm() {
               type="password"
               placeholder="••••••"
               {...form.register("password")}
+              className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
             />
             {form.formState.errors.password && (
               <p className="text-sm text-red-500">
@@ -108,7 +119,7 @@ export default function LoginForm() {
         </div>
 
         {/* Sign Up Link */}
-        <div className="text-center text-sm">
+        <div className="text-center text-sm dark:text-gray-300">
           Don&apos;t have an account?{" "}
           <Link
             href={`/register?jobId=${jobId}`}

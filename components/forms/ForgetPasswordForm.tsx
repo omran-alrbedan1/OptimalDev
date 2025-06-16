@@ -42,7 +42,9 @@ export default function ForgotPasswordForm() {
         className="flex flex-col gap-6"
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Forgot your password?</h1>
+          <h1 className="text-2xl font-bold dark:text-gray-200">
+            Forgot your password?
+          </h1>
           <p className="w-full text-sm text-gray-600 dark:text-gray-300">
             Enter your email and we will send you a link to reset your password
           </p>
@@ -51,7 +53,7 @@ export default function ForgotPasswordForm() {
         <div className="grid gap-6">
           {/* Email Field */}
           <div className="grid gap-2">
-            <Label htmlFor="email">
+            <Label htmlFor="email" className="dark:text-gray-200">
               Email
               <span className="text-red-400 text-2xl ml-1">*</span>
             </Label>

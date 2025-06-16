@@ -6,6 +6,7 @@ import jobOpportinuty from "@/public/images/job-opportinuty.png";
 import forgetPassword from "@/public/images/forget-password.png";
 import signIn from "@/public/images/Sign-in.png";
 import signUp from "@/public/images/signUp.png";
+import service from "@/public/images/service.jpg";
 
 export const images = {
   logo,
@@ -16,4 +17,5 @@ export const images = {
   signIn,
   forgetPassword,
   signUp,
+  service,
 };
