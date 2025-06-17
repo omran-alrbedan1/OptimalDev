@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Drawer, Menu } from "antd";
 import type { MenuProps } from "antd";
-import { Menu as MenuIcon, PhoneIcon, X } from "lucide-react";
+import { Menu as MenuIcon, PhoneIcon, X, User } from "lucide-react";
 import { SlInfo } from "react-icons/sl";
 import { MdOutlineMiscellaneousServices } from "react-icons/md";
 import { GrHomeRounded } from "react-icons/gr";
@@ -15,6 +15,8 @@ import { ThemeToggler } from "@/components/ui/ThemeToggler";
 import { images } from "@/constants/images";
 import LanguageSwitcher from "../elements/Switcher";
 import { useTranslations } from "next-intl";
+import { icons } from "@/constants/icons";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -22,6 +24,7 @@ const Header = () => {
   const path = usePathname();
   const [windowWidth, setWindowWidth] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   const isArabic = path.includes("/ar");
 
@@ -343,7 +346,7 @@ const Header = () => {
                   style={{
                     border: "!none",
                   }}
-                  className="-mt-2.5 font-semibold text-gray-600 hover:!text-primary-color1"
+                  className="-mt-2.5 font-semibold !border-none dark:bg-darkMod-200 text-gray-600 hover:!text-primary-color1"
                   mode="vertical"
                   items={services}
                 />
@@ -385,9 +388,53 @@ const Header = () => {
             <ThemeToggler />
             <LanguageSwitcher />
           </div>
+
+          <div className="flex items-center mb-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => router.push("/profile")}
+                  className="p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <Image
+                    src={icons.user}
+                    className="h-6 w-6 rounded-full"
+                    alt="User profile"
+                    width={28}
+                    height={28}
+                  />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" align="end">
+                <p className="text-white">Profile</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
 
-        <div className="flex lg:hidden items-center">
+        <div className="flex lg:hidden items-center gap-4">
+          {/* Mobile Profile Button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => router.push("/profile")}
+                className="p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <Image
+                  src={icons.user}
+                  className="h-6 w-6 rounded-full"
+                  alt="User profile"
+                  width={28}
+                  height={28}
+                />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" align="end">
+              <p className="text-white">Profile</p>
+            </TooltipContent>
+          </Tooltip>
+
+          {/* Mobile Menu Button */}
           <button
             className="text-primary-color1 focus:outline-none"
             onClick={showDrawer}
@@ -518,6 +565,19 @@ const Header = () => {
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("contact")}
+                  </Link>
+                ),
+              },
+              {
+                key: "/profile",
+                icon: <User className="w-5 h-5" />,
+                label: (
+                  <Link
+                    href="/profile"
+                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    style={{ direction: isArabic ? "rtl" : "ltr" }}
+                  >
+                    Profile
                   </Link>
                 ),
               },
