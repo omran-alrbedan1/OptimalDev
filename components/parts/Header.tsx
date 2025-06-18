@@ -458,7 +458,7 @@ const Header = () => {
               />
               <p className="ml-3 text-lg font-bold text-primary-color1">
                 Optimal
-                <span className="text-blue-950 ml-1 dark:text-white-100">
+                <span className="text-[#005078] ml-2 dark:text-white-100">
                   Path
                 </span>
               </p>

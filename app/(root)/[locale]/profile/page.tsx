@@ -114,7 +114,7 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-20 px-8 py-8">
+    <div className="container mx-auto mt-24 px-8 py-8">
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         {/* Profile Image */}

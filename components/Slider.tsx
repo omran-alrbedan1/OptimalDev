@@ -9,7 +9,6 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
-  const t = useTranslations("ourServices");
 
   // Auto-play with pause on hover
   useEffect(() => {
