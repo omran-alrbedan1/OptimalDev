@@ -6,17 +6,36 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Drawer, Menu } from "antd";
 import type { MenuProps } from "antd";
-import { Menu as MenuIcon, PhoneIcon, X, User } from "lucide-react";
+import {
+  Menu as MenuIcon,
+  PhoneIcon,
+  X,
+  User,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import { SlInfo } from "react-icons/sl";
 import { MdOutlineMiscellaneousServices } from "react-icons/md";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { ThemeToggler } from "@/components/ui/ThemeToggler";
 import { images } from "@/constants/images";
-import LanguageSwitcher from "../elements/Switcher";
+// import LanguageSwitcher from "../elements/Switcher";
 import { useTranslations } from "next-intl";
 import { icons } from "@/constants/icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import LanguageSwitcher from "../elements/Switcher";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -292,18 +311,30 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full dark:bg-darkMod-200 bg-white z-50 shadow-md">
-      <div className="container mx-auto flex justify-between items-center h-16 lg:h-24 px-4 lg:px-8">
+      <div className="container mx-auto flex justify-between items-center h-[75px] lg:h-24 px-4 lg:px-8">
         <Link
           href="/home"
-          className="flex items-center focus:!border-none border-none"
+          className="flex items-center gap-2 focus:!border-none border-none"
         >
           <Image
             src={images.logo}
-            width={windowWidth > 1024 ? 80 : 50}
+            width={windowWidth > 1024 ? 70 : 50}
             height={windowWidth > 1024 ? 30 : 30}
             alt="logo"
             priority
           />
+          <article className="flex flex-col">
+            <p className="text-primary-color1 text-[22px] line-clamp-1 md:text-[28px] font-semibold">
+              Optimal
+              <span className="text-primary-color2"> Path</span>
+            </p>
+            <p className="text-primary-color2 dark:text-white text-[12px] md:text-[15px]">
+              Management Consulting
+            </p>
+            <p className="md:text-[12px] text-[10px] text-primary-color1">
+              الطريق الأمثل للاستشارات الإدارية
+            </p>
+          </article>
         </Link>
 
         {/* Desktop Navigation */}
@@ -340,16 +371,89 @@ const Header = () => {
                 </Link>
               </li>
 
-              {/* Services */}
-              <li className=" ">
-                <Menu
-                  style={{
-                    border: "!none",
-                  }}
-                  className="-mt-2.5 font-semibold !border-none dark:bg-darkMod-200 text-gray-600 hover:!text-primary-color1"
-                  mode="vertical"
-                  items={services}
-                />
+              <li className="relative">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={`text-[16px] font-medium px-3   focus:!outline-none rounded-md transition-colors flex items-center gap-1 ${
+                        path.startsWith("/services")
+                          ? "text-primary-color1"
+                          : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                      }`}
+                      style={{ direction: isArabic ? "rtl" : "ltr" }}
+                    >
+                      {t("services")}
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="w-56 min-w-[14rem] bg-white dark:bg-darkMod-200 !shadow-xl !border-none rounded-md p-1.5"
+                    align={isArabic ? "end" : "start"}
+                  >
+                    {/* Business Development Submenu */}
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger className="px-2 py-1.5 text-sm rounded-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200">
+                        {t("businessDev")}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent
+                        className="w-full bg-white dark:bg-darkMod-200 shadow-xl border-none !rounded-lg p-1.5 ml-1"
+                        sideOffset={isArabic ? -4 : 4}
+                      >
+                        {[1, 2, 3, 4, 5].map((item) => (
+                          <DropdownMenuItem
+                            key={`business-${item}`}
+                            className="px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50"
+                            asChild
+                          >
+                            <Link href={`/services/${item}`} className="w-full">
+                              {t(
+                                item === 1
+                                  ? "training"
+                                  : item === 2
+                                  ? "employment"
+                                  : item === 3
+                                  ? "hr"
+                                  : item === 4
+                                  ? "webManagement"
+                                  : "marketing"
+                              )}
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    <div className="h-px bg-gray-200 dark:bg-gray-700/50 my-1 mx-2" />
+
+                    {/* Personal Development Submenu */}
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger className="px-2 py-1.5 text-sm rounded-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200">
+                        {t("personalDev")}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent
+                        className="w-full bg-white dark:bg-darkMod-200 !border-none shadow-lg rounded-md p-1.5 ml-1"
+                        sideOffset={isArabic ? -4 : 4}
+                      >
+                        {[6, 7, 8].map((item) => (
+                          <DropdownMenuItem
+                            key={`personal-${item}`}
+                            className="px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50"
+                            asChild
+                          >
+                            <Link href={`/services/${item}`} className="w-full">
+                              {t(
+                                item === 6
+                                  ? "coaching"
+                                  : item === 7
+                                  ? "careerPath"
+                                  : "internship"
+                              )}
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </li>
 
               {/* Career */}
@@ -458,7 +562,7 @@ const Header = () => {
               />
               <p className="ml-3 text-lg font-bold text-primary-color1">
                 Optimal
-                <span className="text-[#005078] ml-2 dark:text-white-100">
+                <span className="text-primary-color2 ml-2 dark:text-white-100">
                   Path
                 </span>
               </p>
@@ -479,7 +583,7 @@ const Header = () => {
         footer={
           <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700">
             <ThemeToggler />
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
           </div>
         }
       >

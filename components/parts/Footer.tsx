@@ -54,21 +54,32 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-10">
           <div className="space-y-4 md:mr-8 md:space-y-6">
             <div className="flex items-center justify-center md:justify-start">
-              <Image
-                src={images.logo}
-                width={120}
-                height={120}
-                className="size-10 md:size-12 lg:size-14"
-                alt="Optimal Path Logo"
-              />
-              <p className="ml-3 text-lg md:text-xl font-semibold  text-primary-color1 ">
-                Optimal
-                <span className="text-[#005078] ml-2 dark:text-white-100">
-                  Path
-                </span>
-              </p>
+              <Link
+                href="/home"
+                className="flex items-center gap-2 focus:!border-none border-none"
+              >
+                <Image
+                  src={images.logo}
+                  width={130}
+                  height={130}
+                  className="size-12 md:size-14 lg:size-14"
+                  alt="Optimal Path Logo"
+                />
+                <article className="flex flex-col">
+                  <p className="text-primary-color1 text-[25px]  md:text-[28px] font-semibold">
+                    Optimal
+                    <span className="text-primary-color2"> Path</span>
+                  </p>
+                  <p className="text-primary-color2 dark:text-white text-[14px] md:text-[15px]">
+                    Management Consulting
+                  </p>
+                  <p className="md:text-[12px] text-[11px] text-primary-color1">
+                    الطريق الأمثل للاستشارات الإدارية
+                  </p>
+                </article>
+              </Link>
             </div>
-            <p className="text-gray-600  dark:text-gray-300 text-xs md:text-sm leading-relaxed  md:text-center">
+            <p className="text-gray-600  dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed  md:text-center">
               {t("companyDescription")}
             </p>
 

@@ -8,17 +8,22 @@ import {
   FiMapPin,
   FiChevronLeft,
   FiChevronRight,
+  FiFilter,
+  FiLayers,
 } from "react-icons/fi";
 import { useState } from "react";
 import JobCard from "@/components/cards/JobCard";
 import { icons } from "@/constants/icons";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
 
 const recommendedJobs = [
   {
     id: 1,
     title: "Product Designer",
     company: "Metaxiout",
-    industry: 35,
+    industry: "Design",
     city: "New York",
     country: "USA",
     type_of_contract: "Permanent",
@@ -34,7 +39,7 @@ const recommendedJobs = [
     id: 2,
     title: "Frontend Developer",
     company: "TechCorp",
-    industry: 42,
+    industry: "Technology",
     city: "San Francisco",
     country: "USA",
     type_of_contract: "Contract",
@@ -50,7 +55,7 @@ const recommendedJobs = [
     id: 3,
     title: "Data Scientist",
     company: "AnalyticsPro",
-    industry: 28,
+    industry: "Data",
     city: "London",
     country: "UK",
     type_of_contract: "Permanent",
@@ -66,7 +71,7 @@ const recommendedJobs = [
     id: 4,
     title: "UX Researcher",
     company: "DesignHub",
-    industry: 35,
+    industry: "Design",
     city: "Berlin",
     country: "Germany",
     type_of_contract: "Freelance",
@@ -82,7 +87,7 @@ const recommendedJobs = [
     id: 5,
     title: "DevOps Engineer",
     company: "CloudSystems",
-    industry: 42,
+    industry: "Technology",
     city: "Toronto",
     country: "Canada",
     type_of_contract: "Permanent",
@@ -98,7 +103,7 @@ const recommendedJobs = [
     id: 6,
     title: "Marketing Manager",
     company: "BrandVision",
-    industry: 19,
+    industry: "Marketing",
     city: "Sydney",
     country: "Australia",
     type_of_contract: "Permanent",
@@ -112,8 +117,21 @@ const recommendedJobs = [
   },
 ];
 
+const industries = [
+  "Technology",
+  "Design",
+  "Marketing",
+  "Finance",
+  "Education",
+  "Retail",
+];
+
 const JobSearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
+  const [selectedWorkModes, setSelectedWorkModes] = useState<string[]>([]);
   const pageSize = 4;
 
   const paginatedJobs = recommendedJobs.slice(
@@ -121,39 +139,69 @@ const JobSearchPage = () => {
     currentPage * pageSize
   );
 
+  const handleIndustryChange = (industry: string) => {
+    setSelectedIndustries((prev) =>
+      prev.includes(industry)
+        ? prev.filter((item) => item !== industry)
+        : [...prev, industry]
+    );
+  };
+
+  const handleJobTypeChange = (type: string) => {
+    setSelectedJobTypes((prev) =>
+      prev.includes(type)
+        ? prev.filter((item) => item !== type)
+        : [...prev, type]
+    );
+  };
+
+  const handleWorkModeChange = (mode: string) => {
+    setSelectedWorkModes((prev) =>
+      prev.includes(mode)
+        ? prev.filter((item) => item !== mode)
+        : [...prev, mode]
+    );
+  };
+
   return (
     <main className="bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section */}
+      {/* Hero Section - Simplified */}
       <motion.section
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="about-us-bg h-[50vh] md:h-[60vh] mt-16 flex flex-col items-center justify-center relative"
+        className="about-us-bg h-[60vh] mt-16 flex flex-col items-center justify-center relative"
       >
-        <div className="absolute inset-0 bg-black bg-opacity-40 dark:bg-opacity-60 flex flex-col items-center justify-center">
-          <motion.h1
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-            className="text-white text-3xl md:text-5xl font-bold mb-6 text-center px-4"
-          >
-            Find Your Dream Job
-          </motion.h1>
+        <LatestJobsCarousel jobs={recommendedJobs} />
+      </motion.section>
 
-          {/* Search Container */}
-          <motion.div
-            initial={{ scale: 0.98 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-            className="w-full max-w-4xl px-4 md:px-8"
+      {/* Main Content */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-3xl font-bold text-gray-800 dark:text-white"
           >
-            <div className="bg-white dark:bg-gray-800 p-1 md:p-2 rounded-xl shadow-xl flex flex-row gap-2">
-              <div className="flex-1 flex items-center border-r border-gray-200 dark:border-gray-700 pr-2">
-                <FiSearch className="text-gray-400 dark:text-gray-300 text-xl ml-2" />
+            Recommended jobs
+          </motion.h2>
+
+          <motion.div
+            initial={{ scale: 0.98, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+            className="w-full md:w-1/2"
+          >
+            <div className="bg-white dark:bg-gray-800 p-1  justify-center rounded-xl shadow-md flex flex-row gap-2">
+              <div className="flex-1 flex items-center">
+                <FiSearch className="text-gray-400 dark:text-gray-300 text-xl  ml-2" />
                 <Input
-                  placeholder="Job title, keywords, or company"
+                  placeholder="Search jobs..."
                   bordered={false}
-                  className="text-lg h-10 md:h-12 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                  className="text-lg h-8 md:h-10 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
@@ -162,23 +210,11 @@ const JobSearchPage = () => {
                 className="h-10 md:h-12 md:px-4 flex items-center dark:bg-blue-600 dark:hover:bg-blue-700"
                 icon={<FiSearch className="text-lg" />}
               >
-                Search Jobs
+                Search
               </Button>
             </div>
           </motion.div>
         </div>
-      </motion.section>
-
-      {/* Main Content */}
-      <div className="mx-auto -mt-28 px-4 sm:px-6 lg:px-16 py-12">
-        <motion.h2
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-3xl font-bold mb-8 text-gray-800 dark:text-white"
-        >
-          Recommended jobs
-        </motion.h2>
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filter Section */}
@@ -189,7 +225,34 @@ const JobSearchPage = () => {
             className="w-full md:w-1/4"
           >
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm h-fit sticky top-8">
-              <h1 className="font-bold mb-4 dark:text-white">Filters</h1>
+              <div className="flex items-center justify-between mb-4">
+                <h1 className="font-bold dark:text-white">Filters</h1>
+                <FiFilter className="text-gray-500 dark:text-gray-400" />
+              </div>
+
+              {/* Industry Filter */}
+              <div className="mb-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 dark:text-white">
+                  <FiLayers className="text-blue-500" /> Industry
+                </h3>
+                <ul className="space-y-3">
+                  {industries.map((industry) => (
+                    <li key={industry} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`industry-${industry}`}
+                        checked={selectedIndustries.includes(industry)}
+                        onCheckedChange={() => handleIndustryChange(industry)}
+                      />
+                      <Label
+                        htmlFor={`industry-${industry}`}
+                        className="text-gray-700 dark:text-gray-300 cursor-pointer"
+                      >
+                        {industry}
+                      </Label>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               {/* Job Type Filter */}
               <div className="mb-6">
@@ -199,18 +262,18 @@ const JobSearchPage = () => {
                 <ul className="space-y-3">
                   {["Permanent", "Contract", "Freelance", "Internship"].map(
                     (type) => (
-                      <li key={type} className="flex items-center">
-                        <input
-                          type="checkbox"
+                      <li key={type} className="flex items-center space-x-2">
+                        <Checkbox
                           id={`type-${type}`}
-                          className="mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                          checked={selectedJobTypes.includes(type)}
+                          onCheckedChange={() => handleJobTypeChange(type)}
                         />
-                        <label
+                        <Label
                           htmlFor={`type-${type}`}
-                          className="text-gray-700 dark:text-gray-300"
+                          className="text-gray-700 dark:text-gray-300 cursor-pointer"
                         >
                           {type}
-                        </label>
+                        </Label>
                       </li>
                     )
                   )}
@@ -252,18 +315,18 @@ const JobSearchPage = () => {
                 </h3>
                 <ul className="space-y-3">
                   {["Remote", "Hybrid", "On-site"].map((mode) => (
-                    <li key={mode} className="flex items-center">
-                      <input
-                        type="checkbox"
+                    <li key={mode} className="flex items-center space-x-2">
+                      <Checkbox
                         id={`mode-${mode}`}
-                        className="mr-3 h-4 w-4 text-purple-600 rounded border-gray-300 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700"
+                        checked={selectedWorkModes.includes(mode)}
+                        onCheckedChange={() => handleWorkModeChange(mode)}
                       />
-                      <label
+                      <Label
                         htmlFor={`mode-${mode}`}
-                        className="text-gray-700 dark:text-gray-300"
+                        className="text-gray-700 dark:text-gray-300 cursor-pointer"
                       >
                         {mode}
-                      </label>
+                      </Label>
                     </li>
                   ))}
                 </ul>
@@ -272,7 +335,7 @@ const JobSearchPage = () => {
           </motion.aside>
 
           {/* Jobs List */}
-          <div className="w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="w-full md:w-3/4 grid justify-start grid-cols-1 md:grid-cols-2 gap-2 gap-x-2">
             {paginatedJobs.map((job, index) => (
               <motion.article
                 key={job.id}

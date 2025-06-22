@@ -9,6 +9,7 @@ import { Providers as ThemeProvider } from "@/components/providers/ThemeProvider
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/app/globals.css";
+import { Toaster } from "sonner";
 
 const zain = localFont({
   src: [
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
   title: "Optimal Path",
   description: "Pitch , Vote and Grow",
   icons: {
-    icon: "/images/small_logo.jpg",
+    icon: "/images/logo.png",
   },
 };
 export default async function LocaleLayout({
@@ -78,6 +79,7 @@ export default async function LocaleLayout({
                 <Header />
                 {children}
                 <Footer />
+                <Toaster richColors position={"top-right"} />
               </NextIntlClientProvider>
             </Providers>
           </ThemeProvider>

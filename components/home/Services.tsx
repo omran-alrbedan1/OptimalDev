@@ -7,6 +7,7 @@ import ServiceCard from "../cards/ServiceCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Service } from "@/app";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const services: Service[] = [
   {
@@ -81,7 +82,7 @@ export default function Services() {
       <Header title={t("title")} paragraph={t("paragraph")} />
 
       <motion.div
-        className="w-full max-w-7xl mt-10 relative"
+        className="w-full max-w-7xl relative"
         transition={{ type: "spring", stiffness: 300 }}
       >
         <Carousel

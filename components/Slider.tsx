@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SliderArray } from "@/types";
-import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 const Slider = ({ sliders }: { sliders: SliderArray }) => {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -23,6 +24,13 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
     startAutoPlay();
     return () => clearInterval(intervalRef.current);
   }, [sliders.length, isPaused]);
+
+  // Handle slide click
+  const handleSlideClick = () => {
+    if (sliders[currentIndex].url) {
+      router.push(sliders[currentIndex].url);
+    }
+  };
 
   // Handle hover events
   const handleMouseEnter = () => {
@@ -61,15 +69,21 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
   return (
     <div
       ref={sliderRef}
-      style={{
-        backgroundImage: `url(${sliders[currentIndex].backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
       className="relative h-full w-full cursor-pointer overflow-hidden transition-all duration-1000 shadow-2xl"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Background image with click handler */}
+      <div
+        style={{
+          backgroundImage: `url(${sliders[currentIndex].backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className="absolute inset-0 w-full h-full"
+        onClick={handleSlideClick}
+      />
+
       {/* Overlay for better text visibility */}
       <div className="absolute inset-0 bg-black/50 z-0"></div>
 
@@ -97,24 +111,12 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
               <p className="text-gray-100 mb-6 xl:mx-80 max-sm:mb-10">
                 {sliders[currentIndex].description}
               </p>
-              <div className="flex justify-center gap-4 mt-10">
-                <motion.a
-                  href={sliders[currentIndex].first_btn_url}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="text-sm border border-primary-color1 text-white px-8 py-3 rounded-lg transition-colors"
-                >
-                  {sliders[currentIndex].first_btn_text}
-                </motion.a>
-                <motion.a
-                  href={sliders[currentIndex].second_btn_url}
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="text-sm bg-primary-color1 text-white px-8 py-3 rounded-lg hover:bg-primary-color1/80 transition-colors"
-                >
-                  {sliders[currentIndex].second_btn_text}
-                </motion.a>
-              </div>
+              <button
+                className="bg-primary-color1 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition"
+                onClick={handleSlideClick}
+              >
+                Learn More
+              </button>
             </div>
           </motion.div>
         </AnimatePresence>

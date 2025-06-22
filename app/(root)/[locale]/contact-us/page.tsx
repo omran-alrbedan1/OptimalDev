@@ -7,6 +7,7 @@ import Loader from "@/components/Loader";
 import ContactForm from "@/components/forms/ContactForm";
 import { ContactUsProps } from "@/types";
 import { getTranslations } from "next-intl/server";
+import { Phone, Smartphone } from "lucide-react";
 
 const ContactUsPage = async () => {
   const t = await getTranslations("contactUs");
@@ -54,35 +55,32 @@ const ContactUsPage = async () => {
         <div className="px-5 sm:pl-10 lg:pl-0 mt-10 max-lg:gap-10  flex mx-auto max-w-full justify-start items-start lg:justify-evenly lg:items-center w-full max-lg:flex-col ">
           <div className="flex flex-col justify-start lg:justify-center items-start lg:items-center max-lg:w-full  lg:basis-[470px]">
             <div className="flex flex-col gap-y-3 lg:gap-y-5">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
                   <MdLocationOn />
                 </span>
                 {address && (
-                  <p className="text-white text-sm sm:text-lg mb-4 flex flex-col">
-                    <span className="font-bold">{t("address")} :</span>
-                    <span>Jordan</span>
+                  <p className="text-white text-sm sm:text-lg  flex flex-col">
+                    <span>Jordan, Amman</span>
                   </p>
                 )}
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
-                  <FaPhone />
+                  <Smartphone />
                 </span>
                 {phone && (
-                  <p className="text-white text-sm sm:text-lg mb-4 flex flex-col">
-                    <span className="font-bold">{t("phone")} :</span>
+                  <p className="text-white text-sm sm:text-lg  flex flex-col">
                     <span>+962797701545</span>
                   </p>
                 )}
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center mt-3 max-xs:mt-1">
                   <MdEmail />
                 </span>
                 {email && (
                   <p className="text-white text-sm sm:text-lg flex flex-col">
-                    <span className="font-bold">{t("email")} :</span>
                     <span> info@optimalpathmc.com</span>
                   </p>
                 )}

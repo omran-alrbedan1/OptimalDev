@@ -1,56 +1,44 @@
 import Slider from "@/components/Slider";
-import axios from "axios";
 import React from "react";
 
 const Sliders = async () => {
   const sliders = [
     {
       id: 1,
-      title: "Find Your Dream Job Today",
+      title: "Optimal Path - Recruitment & Careers",
       description:
-        "Browse thousands of job listings from top companies and find the perfect match for your skills and aspirations.",
-      first_btn_text: "Search Jobs",
-      first_btn_url: "/",
-      second_btn_text: "Upload CV",
-      second_btn_url: "/",
+        "Discover top career opportunities with Optimal Path, specializing in employment and professional development",
       backgroundImage: "/images/section.jpg",
+      url: "/jobs",
     },
     {
       id: 2,
-      title: "Hiring Top Talent Made Easy",
+      title: "Your Ideal Workspace",
       description:
-        "For employers: Post jobs, find qualified candidates, and streamline your hiring process with our powerful tools.",
-      first_btn_text: "Post a Job",
-      first_btn_url: "/",
-      second_btn_text: "Learn More",
-      second_btn_url: "/",
+        "Join a professional team in a stimulating work environment equipped with the latest technologies",
       backgroundImage: "/images/work-space.jpg",
+      url: "/careers",
     },
     {
       id: 3,
-      title: "Explore Remote Opportunities",
+      title: "About Optimal Path",
       description:
-        "Discover flexible and remote positions that let you work from anywhere in the world.",
-      first_btn_text: "Remote Jobs",
-      first_btn_url: "/",
-      second_btn_text: "Career Advice",
-      second_btn_url: "/",
+        "Learn about our mission to connect talent with the right opportunities in the job market",
       backgroundImage: "/images/about-us.jpg",
+      url: "/about",
     },
     {
       id: 4,
-      title: "Join Our Career Fair",
+      title: "Career Development Programs",
       description:
-        "Connect directly with recruiters from leading companies at our virtual career fair event.",
-      first_btn_text: "Register Now",
-      first_btn_url: "/",
-      second_btn_text: "See Participating Companies",
-      second_btn_url: "/",
+        "Explore our training and development programs to enhance your professional skills",
       backgroundImage: "/images/work-space.jpg",
+      url: "/programs",
     },
   ];
+
   return (
-    <div className=" mb-20 h-[80vh]">
+    <div className="mb-20 h-[80vh]">
       <Slider sliders={sliders} />
     </div>
   );
