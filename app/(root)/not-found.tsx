@@ -1,5 +1,5 @@
 import Image from "next/image";
-import "./globals.css";
+import "../globals.css";
 
 const NotFound = () => {
   return (
