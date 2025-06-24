@@ -54,13 +54,13 @@ const AboutPage = async () => {
 
   return (
     <main className="min-h-[100vh] overflow-y-auto relative">
-      <div className="about-us-bg h-[80vh] flex items-center justify-center">
+      <div className="about-us-bg h-[70vh] flex items-center justify-center">
         <h1 className="custom-title relative">{t("about")}</h1>
       </div>
 
       <section className="container mx-auto px-4">
         <div className="">
-          <div className="relative w-full sm:pt-40 pb-10 px-5 md:px-10 lg:px-20">
+          <div className="relative w-full sm:pt-40 md:pt-20 pb-10 px-5 md:px-10 lg:px-20">
             {/* Content Sections */}
             <div className="max-w-[90rem] mx-auto space-y-8">
               {sections.map((section, index) => (

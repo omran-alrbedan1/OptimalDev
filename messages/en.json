@@ -98,6 +98,138 @@
     "title": "Subscription failed",
     "description": "Please try again later."
   }
+},
+  "loginForm": {
+    "title": "Welcome back",
+    "description": "Enter your email or phone number to sign in",
+    "fields": {
+      "identifier": {
+        "label": "Email or Phone",
+        "placeholder": "john@example.com or +1234567890",
+        "error": "Please enter a valid email or phone number (e.g., +1234567890)"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "••••••",
+        "error": "Password must be at least 6 characters"
+      }
+    },
+    "forgotPassword": "Forgot password?",
+    "submit": "Sign In",
+    "submitting": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "toast": {
+      "success": {
+        "title": "Login successful!",
+        "description": "Redirecting to your dashboard..."
+      },
+      "error": {
+        "title": "Login failed",
+        "description": "Invalid credentials. Please try again."
+      }
+    }
+},
+  "forgotPasswordForm": {
+    "title": "Forgot your password?",
+    "description": "Enter your email and we will send you a link to reset your password",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+        "required": "Email is required",
+        "invalid": "Please enter a valid email address"
+      }
+    },
+    "submit": "Send reset link",
+    "submitting": "Sending...",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Reset link sent",
+        "description": "If an account exists with this email, you'll receive a password reset link."
+      },
+      "error": {
+        "title": "Failed to send reset link",
+        "description": "An error occurred while trying to send the reset link. Please try again."
+      }
+    }
+},
+    "registerForm": {
+      "title": "Create an account",
+      "description": "Enter your details below to create your account",
+      "fields": {
+        "name": {
+          "label": "First Name",
+          "placeholder": "John",
+          "error": "Name must be at least 2 characters"
+        },
+        "surname": {
+          "label": "Surname",
+          "placeholder": "Doe",
+          "error": "Surname must be at least 2 characters"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "example@example.com",
+          "error": "Please enter a valid email address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "error": "Please enter a valid phone number"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Select Country",
+          "error": "Please select a country"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Select City",
+          "error": "Please select a city"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••",
+          "error": "Password must be at least 8 characters"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "••••••••",
+          "error": "Passwords don't match"
+        },
+        "cv": {
+          "label": "Upload CV (PDF or Word)",
+          "dragText": "Click or drag file to this area to upload",
+          "hint": "Support for single upload. Only PDF and Word documents are accepted (max 5MB).",
+          "errorSize": "CV file must be less than 5MB",
+          "errorType": "Only PDF and Word documents are accepted"
+        },
+   "acceptTerms": {
+      "label": "I accept the {terms} and {privacy}",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy",
+      "error": "You must accept the terms and policies"
+    }
+      },
+      "submit": "Create Account",
+      "submitting": "Creating account...",
+        "loginLink": {
+        "prefix": "Already have an account?",
+         "loginText": "login"
+        },
+      "login": "Login",
+      "toast": {
+        "success": {
+          "title": "Registration successful!",
+          "description": "Your account has been created successfully."
+        },
+        "error": {
+          "title": "Registration failed",
+          "description": "An error occurred. Please try again."
+        }
+      }
+    }
 }
 }
-}
+

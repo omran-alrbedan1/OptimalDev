@@ -59,17 +59,7 @@ const JobCard = ({ job }: { job: any }) => {
         </WhatsappShareButton>
       ),
     },
-    {
-      key: "twitter",
-      label: (
-        <TwitterShareButton url={jobUrl} title={shareTitle}>
-          <div className="flex items-center gap-2 px-2 py-1">
-            <TwitterIcon size={24} round />
-            <span>Twitter</span>
-          </div>
-        </TwitterShareButton>
-      ),
-    },
+
     {
       key: "copy",
       label: (
@@ -166,11 +156,11 @@ const JobCard = ({ job }: { job: any }) => {
                   className="!px-3 md:!px-4 !rounded-[5px] !py-2 md:!py-3.5 !text-xs md:!text-sm !font-medium  flex-1 xs:flex-none text-center dark:bg-blue-600 dark:hover:bg-blue-700"
                   onClick={() => {
                     // Handle apply logic here
-                    window.location.href = `/career/${job.id}/apply`;
+                    window.location.href = `/career/${job.id}`;
                     // or use router.push if you prefer
                   }}
                 >
-                  apply
+                  Apply
                 </Button>
                 <Dropdown
                   menu={{ items }}

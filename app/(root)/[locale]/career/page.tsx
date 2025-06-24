@@ -117,6 +117,21 @@ const recommendedJobs = [
   },
 ];
 
+const LatestJobs = [
+  {
+    image: "/images/hero1.jpg",
+    url: "/",
+  },
+  {
+    image: "/images/hero2.jpg",
+    url: "/",
+  },
+  {
+    image: "/images/hero3.jpg",
+    url: "/",
+  },
+];
+
 const industries = [
   "Technology",
   "Design",
@@ -170,13 +185,13 @@ const JobSearchPage = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="about-us-bg h-[60vh] mt-16 flex flex-col items-center justify-center relative"
+        className=" h-[61vh] mt-16 flex flex-col items-center justify-center relative"
       >
-        <LatestJobsCarousel jobs={recommendedJobs} />
+        <LatestJobsCarousel jobs={LatestJobs} />
       </motion.section>
 
       {/* Main Content */}
-      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12">
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 -mt-8 pb-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <motion.h2
             initial={{ y: 20, opacity: 0 }}

@@ -13,6 +13,7 @@ import { images } from "@/constants/images";
 import { FaLocationDot } from "react-icons/fa6";
 import SubscribeForm from "../forms/SubscribeForm";
 import { useTranslations } from "next-intl";
+import { Smartphone } from "lucide-react";
 
 const Footer = () => {
   const t = useTranslations("footer");
@@ -45,7 +46,7 @@ const Footer = () => {
       icon: <MdOutlineMail className="text-xl" />,
       text: "info@optimalpathmc.com",
     },
-    { icon: <FaPhoneAlt className="text-xl" />, text: "+962 797 701 545" },
+    { icon: <Smartphone className="text-xl" />, text: "+962 797 701 545" },
   ];
 
   return (
@@ -56,27 +57,15 @@ const Footer = () => {
             <div className="flex items-center justify-center md:justify-start">
               <Link
                 href="/home"
-                className="flex items-center gap-2 focus:!border-none border-none"
+                className="flex items-center mx-12 gap-2 focus:!border-none border-none"
               >
                 <Image
                   src={images.logo}
-                  width={130}
-                  height={130}
-                  className="size-12 md:size-14 lg:size-14"
+                  width={230}
+                  height={230}
+                  className=" h-64  -my-24"
                   alt="Optimal Path Logo"
                 />
-                <article className="flex flex-col">
-                  <p className="text-primary-color1 text-[25px]  md:text-[28px] font-semibold">
-                    Optimal
-                    <span className="text-primary-color2"> Path</span>
-                  </p>
-                  <p className="text-primary-color2 dark:text-white text-[14px] md:text-[15px]">
-                    Management Consulting
-                  </p>
-                  <p className="md:text-[12px] text-[11px] text-primary-color1">
-                    الطريق الأمثل للاستشارات الإدارية
-                  </p>
-                </article>
               </Link>
             </div>
             <p className="text-gray-600  dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed  md:text-center">
@@ -84,7 +73,7 @@ const Footer = () => {
             </p>
 
             {/* Social links - centered on mobile */}
-            <div className="flex justify-center md:justify-start space-x-3 md:space-x-4">
+            <div className="flex justify-center   relative md:justify-start space-x-3 md:space-x-4">
               {socialLinks.map((item, index) => (
                 <Link
                   key={index}

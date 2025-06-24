@@ -5,18 +5,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Country, City } from "country-state-city";
@@ -24,62 +25,23 @@ import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { registerFormSchema } from "@/lib/validation/userValidation";
 
 const { Dragger } = Upload;
 
-// Define the form schema
-const registerFormSchema = z
-  .object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    surname: z.string().min(2, {
-      message: "Surname must be at least 2 characters.",
-    }),
-    phone: z.string().min(5, {
-      message: "Please enter a valid phone number.",
-    }),
-    country: z.string().min(1, {
-      message: "Please select a country.",
-    }),
-    city: z.string().min(1, {
-      message: "Please select a city.",
-    }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    acceptTerms: z.literal<boolean>(true, {
-      errorMap: () => ({ message: "You must accept the terms and policies" }),
-    }),
-    confirmPassword: z.string(),
-    cv: z
-      .instanceof(File)
-      .refine(
-        (file) => file.size <= 5 * 1024 * 1024, // 5MB
-        { message: "CV file must be less than 5MB" }
-      )
-      .refine(
-        (file) =>
-          [
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ].includes(file.type),
-        { message: "Only PDF and Word documents are accepted" }
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
 export default function RegisterForm() {
   const [fileList, setFileList] = useState([]);
+  const t = useTranslations("forms.registerForm");
+  const locale = useLocale();
+  const isRTL = locale === "ar";
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       name: "",
       surname: "",
+      email: "",
       phone: "",
       country: "",
       city: "",
@@ -105,17 +67,17 @@ export default function RegisterForm() {
       const isLt5M = file.size / 1024 / 1024 < 5;
 
       if (!isAllowedType) {
-        message.error("You can only upload PDF or Word files!");
+        message.error(t("fields.cv.errorType"));
         return Upload.LIST_IGNORE;
       }
       if (!isLt5M) {
-        message.error("File must be smaller than 5MB!");
+        message.error(t("fields.cv.errorSize"));
         return Upload.LIST_IGNORE;
       }
 
       form.setValue("cv", file);
       setFileList([file]);
-      return false; // Prevent automatic upload
+      return false;
     },
     onChange(info: any) {
       if (info.file.status === "removed") {
@@ -127,19 +89,17 @@ export default function RegisterForm() {
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Replace with actual registration logic
       console.log("Registration values:", values);
 
-      toast.success("Registration successful!", {
-        description: "Your account has been created successfully.",
+      toast.success(t("toast.success.title"), {
+        description: t("toast.success.description"),
       });
+      router.push(`/${locale}/login`);
     } catch (error) {
       console.error("Registration error", error);
-      toast.error("Registration failed", {
-        description: "An error occurred. Please try again.",
+      toast.error(t("toast.error.title"), {
+        description: t("toast.error.description"),
       });
     }
   }
@@ -148,33 +108,40 @@ export default function RegisterForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6"
+        className="flex flex-col"
+        dir={isRTL ? "rtl" : "ltr"}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
+        <div className="flex flex-col items-center gap-2 text-center mb-4">
           <h1 className="text-2xl font-bold dark:text-gray-300">
-            Create an account
+            {t("title")}
           </h1>
           <p className="w-full text-sm text-gray-600 dark:text-gray-300">
-            Enter your details below to create your account
+            {t("description")}
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+        <div className="grid gap-6 md:grid-cols-2 md:gap-2 md:gap-x-4">
           {/* Name Field */}
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="dark:text-gray-300">First Name</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  {t("fields.name.label")}
+                </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="John"
+                    placeholder={t("fields.name.placeholder")}
                     {...field}
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.name && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.name.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
@@ -185,18 +152,52 @@ export default function RegisterForm() {
             name="surname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="dark:text-gray-300">Surname</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  {t("fields.surname.label")}
+                </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Doe"
+                    placeholder={t("fields.surname.placeholder")}
                     {...field}
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.surname && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.surname.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
+
+          {/* Email Field */}
+          <div className="grid gap-2 md:col-span-2">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="dark:text-gray-300">
+                    {t("fields.email.label")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder={t("fields.email.placeholder")}
+                      {...field}
+                      className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+                    />
+                  </FormControl>
+                  {form.formState.errors.email && (
+                    <p className="text-sm text-red-500">
+                      {t("fields.email.error")}
+                    </p>
+                  )}
+                </FormItem>
+              )}
+            />
+          </div>
 
           {/* Phone Field */}
           <div className="grid gap-2 md:col-span-2">
@@ -206,18 +207,23 @@ export default function RegisterForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="dark:text-gray-300">
-                    Phone Number
+                    {t("fields.phone.label")}
                   </FormLabel>
                   <FormControl>
                     <PhoneInput
-                      country={"us"}
+                      country={isRTL ? "sa" : "us"}
                       value={field.value}
                       onChange={(phone) => field.onChange(phone)}
                       inputClass="!w-full rounded-md !border dark:!border-gray-500 !bg-gray-50 dark:!bg-gray-600 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:!bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       containerClass="mt-1"
+                      buttonClass="!pr-2"
                     />
                   </FormControl>
-                  <FormMessage className="shad-error text-red-400" />
+                  {form.formState.errors.phone && (
+                    <p className="text-sm text-red-500">
+                      {t("fields.phone.error")}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />
@@ -229,7 +235,9 @@ export default function RegisterForm() {
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="dark:text-gray-300">Country</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  {t("fields.country.label")}
+                </FormLabel>
                 <FormControl>
                   <select
                     {...field}
@@ -239,7 +247,7 @@ export default function RegisterForm() {
                     }}
                     className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="">Select Country</option>
+                    <option value="">{t("fields.country.placeholder")}</option>
                     {Country.getAllCountries().map((c) => (
                       <option key={c.isoCode} value={c.isoCode}>
                         {c.name}
@@ -247,7 +255,11 @@ export default function RegisterForm() {
                     ))}
                   </select>
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.country && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.country.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
@@ -258,14 +270,16 @@ export default function RegisterForm() {
             name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="dark:text-gray-300">City</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  {t("fields.city.label")}
+                </FormLabel>
                 <FormControl>
                   <select
                     {...field}
                     disabled={!selectedCountry}
                     className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="">Select City</option>
+                    <option value="">{t("fields.city.placeholder")}</option>
                     {selectedCountry &&
                       City.getCitiesOfCountry(selectedCountry)?.map((c) => (
                         <option key={c.name} value={c.name}>
@@ -274,7 +288,11 @@ export default function RegisterForm() {
                       ))}
                   </select>
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.city && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.city.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
@@ -285,16 +303,22 @@ export default function RegisterForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="dark:text-gray-300">Password</FormLabel>
+                <FormLabel className="dark:text-gray-300">
+                  {t("fields.password.label")}
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder={t("fields.password.placeholder")}
                     {...field}
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.password && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.password.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
@@ -306,17 +330,21 @@ export default function RegisterForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
-                  Confirm Password
+                  {t("fields.confirmPassword.label")}
                 </FormLabel>
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder={t("fields.confirmPassword.placeholder")}
                     {...field}
                     className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600"
                   />
                 </FormControl>
-                <FormMessage className="shad-error text-red-400" />
+                {form.formState.errors.confirmPassword && (
+                  <p className="text-sm text-red-500">
+                    {t("fields.confirmPassword.error")}
+                  </p>
+                )}
               </FormItem>
             )}
           />
@@ -329,7 +357,7 @@ export default function RegisterForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="dark:text-gray-300">
-                    Upload CV (PDF or Word)
+                    {t("fields.cv.label")}
                   </FormLabel>
                   <FormControl>
                     <Dragger
@@ -340,26 +368,29 @@ export default function RegisterForm() {
                         <InboxOutlined />
                       </p>
                       <p className="ant-upload-text">
-                        Click or drag file to this area to upload
+                        {t("fields.cv.dragText")}
                       </p>
-                      <p className="ant-upload-hint">
-                        Support for single upload. Only PDF and Word documents
-                        are accepted (max 5MB).
-                      </p>
+                      <p className="ant-upload-hint">{t("fields.cv.hint")}</p>
                     </Dragger>
                   </FormControl>
-                  <FormMessage className="shad-error text-red-400" />
+                  {/* <FormMessage className="text-red-400">
+                    {form.formState.errors.cv?.message ===
+                      "fields.cv.errorSize" && t("fields.cv.errorSize")}
+                    {form.formState.errors.cv?.message ===
+                      "fields.cv.errorType" && t("fields.cv.errorType")}
+                  </FormMessage> */}
                 </FormItem>
               )}
             />
           </div>
+
           {/* Terms and Conditions Checkbox */}
           <div className="md:col-span-2">
             <FormField
               control={form.control}
               name="acceptTerms"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rtl:space-x-reverse">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -367,28 +398,52 @@ export default function RegisterForm() {
                       className="border-gray-300 dark:border-gray-400"
                     />
                   </FormControl>
-                  <div className="space-y-1 mt-32 leading-none dark:text-gray-300">
+                  <div className="space-y-1 leading-none dark:text-gray-300 rtl:text-right">
                     <FormLabel>
-                      I accept the{" "}
-                      <Link
-                        href="/terms"
-                        className="underline text-primary-color1"
-                      >
-                        Terms and Conditions
-                      </Link>{" "}
-                      and{" "}
-                      <Link
-                        href="/privacy"
-                        className="underline text-primary-color1"
-                      >
-                        Privacy Policy
-                      </Link>
+                      {isRTL ? (
+                        <>
+                          أوافق على{" "}
+                          <Link
+                            href={`/${locale}/terms`}
+                            className="underline text-primary-color1"
+                          >
+                            الشروط والأحكام
+                          </Link>{" "}
+                          و{" "}
+                          <Link
+                            href={`/${locale}/privacy`}
+                            className="underline text-primary-color1"
+                          >
+                            سياسة الخصوصية
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          I accept the{" "}
+                          <Link
+                            href={`/${locale}/terms`}
+                            className="underline text-primary-color1"
+                          >
+                            Terms and Conditions
+                          </Link>{" "}
+                          and{" "}
+                          <Link
+                            href={`/${locale}/privacy`}
+                            className="underline text-primary-color1"
+                          >
+                            Privacy Policy
+                          </Link>
+                        </>
+                      )}
                     </FormLabel>
                   </div>
                 </FormItem>
               )}
             />
-            <FormMessage className="shad-error text-red-400" />
+            <FormMessage className="text-red-400 rtl:text-right">
+              {form.formState.errors.acceptTerms &&
+                t("fields.acceptTerms.error")}
+            </FormMessage>
           </div>
 
           {/* Submit Button */}
@@ -397,20 +452,18 @@ export default function RegisterForm() {
             className="w-full md:col-span-2 text-white bg-primary-color1 hover:bg-primary-color1/90"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting
-              ? "Creating account..."
-              : "Create Account"}
+            {form.formState.isSubmitting ? t("submitting") : t("submit")}
           </Button>
         </div>
 
         {/* Login Link */}
-        <div className="text-center text-sm md:col-span-2 dark:text-gray-300">
-          Already have an account?{" "}
+        <div className="text-center text-sm mt-3 md:col-span-2 dark:text-gray-300">
+          {t("loginLink.prefix")}{" "}
           <Link
-            href="/login"
+            href={`/${locale}/login`}
             className="underline underline-offset-4 text-primary-color1"
           >
-            Login
+            {t("loginLink.loginText")}
           </Link>
         </div>
       </form>

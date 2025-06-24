@@ -11,34 +11,36 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginFormSchema } from "@/lib/validation/userValidation";
+import { useLocale, useTranslations } from "next-intl";
+
+type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
+  const t = useTranslations("forms.loginForm");
+  const locale = useLocale();
+  const isRTL = locale === "ar";
 
-  const form = useForm<z.infer<typeof loginFormSchema>>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+  async function onSubmit(values: LoginFormValues) {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      console.log("Login attempt with:", values);
 
-      // Replace with actual login logic
-      console.log("Login values:", values);
-
-      toast.success("Login successful!", {
-        description: "You have been logged in successfully.",
+      toast.success(t("toast.success.title"), {
+        description: t("toast.success.description"),
       });
     } catch (error) {
-      console.error("Login error", error);
-      toast.error("Login failed", {
-        description: "Invalid email or password. Please try again.",
+      toast.error(t("toast.error.title"), {
+        description: t("toast.error.description"),
       });
     }
   }
@@ -47,63 +49,59 @@ export default function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6"
+        className="space-y-6"
+        dir={isRTL ? "rtl" : "ltr"}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1
-            className="text-2xl font-bold dark:text-gray-300
-          "
-          >
-            Login to your account
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            {t("title")}
           </h1>
-          <p className="w-full text-sm text-gray-600 dark:text-gray-300">
-            Enter your email below to login to your account
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {t("description")}
           </p>
         </div>
 
-        <div className="grid gap-6">
-          {/* Email Field */}
-          <div className="grid gap-2">
-            <Label htmlFor="email" className="dark:text-gray-300">
-              Email
-            </Label>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="identifier">{t("fields.identifier.label")}</Label>
             <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              {...form.register("email")}
-              className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+              id="identifier"
+              placeholder={t("fields.identifier.placeholder")}
+              {...form.register("identifier")}
+              autoComplete="username"
+              className="dark:bg-gray-800"
             />
-            {form.formState.errors.email && (
+            {form.formState.errors.identifier && (
               <p className="text-sm text-red-500">
-                {form.formState.errors.email.message}
+                {t("fields.identifier.error")}
               </p>
             )}
           </div>
 
           {/* Password Field */}
-          <div className="grid gap-2">
+          <div className="space-y-2">
             <div className="flex items-center">
-              <Label htmlFor="password" className="dark:text-gray-300">
-                Password
-              </Label>
+              <Label htmlFor="password">{t("fields.password.label")}</Label>
               <Link
-                href="/forget_password"
-                className="ml-auto text-sm dark:text-gray-300 hover:text-primary-color1"
+                href="/forgot_password"
+                className={`${
+                  isRTL ? "mr-auto" : "ml-auto"
+                } text-sm text-primary hover:underline`}
               >
-                Forgot your password?
+                {t("forgotPassword")}
               </Link>
             </div>
             <Input
               id="password"
               type="password"
-              placeholder="••••••"
+              placeholder={t("fields.password.placeholder")}
               {...form.register("password")}
-              className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+              autoComplete="current-password"
+              className="dark:bg-gray-800"
             />
             {form.formState.errors.password && (
               <p className="text-sm text-red-500">
-                {form.formState.errors.password.message}
+                {t("fields.password.error")}
               </p>
             )}
           </div>
@@ -111,21 +109,21 @@ export default function LoginForm() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full text-white bg-primary-color1 hover:bg-primary-color1/90"
+            className="w-full text-white"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? "Logging in..." : "Login"}
+            {form.formState.isSubmitting ? t("submitting") : t("submit")}
           </Button>
         </div>
 
         {/* Sign Up Link */}
-        <div className="text-center text-sm dark:text-gray-300">
-          Don&apos;t have an account?{" "}
+        <div className="text-center text-sm">
+          {t("noAccount")}{" "}
           <Link
-            href={`/register?jobId=${jobId}`}
-            className="underline underline-offset-4 text-primary-color1"
+            href={`/${locale}/register${jobId ? `?jobId=${jobId}` : ""}`}
+            className="font-medium text-primary hover:underline"
           >
-            Sign up
+            {t("signUp")}
           </Link>
         </div>
       </form>

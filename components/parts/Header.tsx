@@ -1,26 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Drawer, Menu } from "antd";
 import type { MenuProps } from "antd";
-import {
-  Menu as MenuIcon,
-  PhoneIcon,
-  X,
-  User,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { Menu as MenuIcon, PhoneIcon, X, User } from "lucide-react";
 import { SlInfo } from "react-icons/sl";
-import { MdOutlineMiscellaneousServices } from "react-icons/md";
+import {
+  MdKeyboardArrowDown,
+  MdOutlineMiscellaneousServices,
+} from "react-icons/md";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { ThemeToggler } from "@/components/ui/ThemeToggler";
 import { images } from "@/constants/images";
-// import LanguageSwitcher from "../elements/Switcher";
 import { useTranslations } from "next-intl";
 import { icons } from "@/constants/icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -28,14 +23,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from "../elements/Switcher";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -64,6 +58,14 @@ const Header = () => {
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
 
+  const isActive = (href: string) => {
+    return path === href || path.includes(`${href}`);
+  };
+
+  const activeLink = "text-primary-color1 font-bold";
+  const inActiveLink =
+    "text-gray-700 dark:text-gray-300 hover:text-primary-color1";
+
   // mobile
   const servicesItems: MenuProps["items"] = [
     {
@@ -80,6 +82,11 @@ const Header = () => {
             <Link
               href="/services/1"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/1")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("training")}
             </Link>
@@ -91,6 +98,11 @@ const Header = () => {
             <Link
               href="/services/2"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/2")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("employment")}
             </Link>
@@ -102,6 +114,11 @@ const Header = () => {
             <Link
               href="/services/3"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/3")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("hr")}
             </Link>
@@ -113,6 +130,11 @@ const Header = () => {
             <Link
               href="/services/4"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/4")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("webManagement")}
             </Link>
@@ -124,6 +146,11 @@ const Header = () => {
             <Link
               href="/services/5"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/5")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("marketing")}
             </Link>
@@ -145,6 +172,11 @@ const Header = () => {
             <Link
               href="/services/6"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/6")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("coaching")}
             </Link>
@@ -156,6 +188,11 @@ const Header = () => {
             <Link
               href="/services/7"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/7")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("careerPath")}
             </Link>
@@ -167,132 +204,15 @@ const Header = () => {
             <Link
               href="/services/8"
               style={{ direction: isArabic ? "rtl" : "ltr" }}
+              className={`${
+                isActive("/services/8")
+                  ? "text-primary-color1 shadow-sm"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
               {t("internship")}
             </Link>
           ),
-        },
-      ],
-    },
-  ];
-
-  // medium devices :
-  const services = [
-    {
-      key: "sub",
-      label: (
-        <span className="w-fit" style={{ direction: isArabic ? "rtl" : "ltr" }}>
-          {t("services")}
-        </span>
-      ),
-      children: [
-        {
-          key: "sub1",
-          label: (
-            <span style={{ direction: isArabic ? "rtl" : "ltr" }}>
-              {t("businessDev")}
-            </span>
-          ),
-          children: [
-            {
-              key: "item1",
-              label: (
-                <Link
-                  href="/services/1"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("training")}
-                </Link>
-              ),
-            },
-            {
-              key: "item2",
-              label: (
-                <Link
-                  href="/services/2"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("employment")}
-                </Link>
-              ),
-            },
-            {
-              key: "item3",
-              label: (
-                <Link
-                  href="/services/3"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("hr")}
-                </Link>
-              ),
-            },
-            {
-              key: "item4",
-              label: (
-                <Link
-                  href="/services/4"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("webManagement")}
-                </Link>
-              ),
-            },
-            {
-              key: "item5",
-              label: (
-                <Link
-                  href="/services/5"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("marketing")}
-                </Link>
-              ),
-            },
-          ],
-        },
-        {
-          key: "sub2",
-          label: (
-            <span style={{ direction: isArabic ? "rtl" : "ltr" }}>
-              {t("personalDev")}
-            </span>
-          ),
-          children: [
-            {
-              key: "item6",
-              label: (
-                <Link
-                  href="/services/6"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("coaching")}
-                </Link>
-              ),
-            },
-            {
-              key: "item7",
-              label: (
-                <Link
-                  href="/services/7"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("careerPath")}
-                </Link>
-              ),
-            },
-            {
-              key: "item8",
-              label: (
-                <Link
-                  href="/services/8"
-                  style={{ direction: isArabic ? "rtl" : "ltr" }}
-                >
-                  {t("internship")}
-                </Link>
-              ),
-            },
-          ],
         },
       ],
     },
@@ -318,23 +238,12 @@ const Header = () => {
         >
           <Image
             src={images.logo}
-            width={windowWidth > 1024 ? 70 : 50}
-            height={windowWidth > 1024 ? 30 : 30}
+            width={windowWidth > 1024 ? 300 : 200}
+            height={windowWidth > 1024 ? 100 : 200}
             alt="logo"
             priority
+            className="focus:!border-none"
           />
-          <article className="flex flex-col">
-            <p className="text-primary-color1 text-[22px] line-clamp-1 md:text-[28px] font-semibold">
-              Optimal
-              <span className="text-primary-color2"> Path</span>
-            </p>
-            <p className="text-primary-color2 dark:text-white text-[12px] md:text-[15px]">
-              Management Consulting
-            </p>
-            <p className="md:text-[12px] text-[10px] text-primary-color1">
-              الطريق الأمثل للاستشارات الإدارية
-            </p>
-          </article>
         </Link>
 
         {/* Desktop Navigation */}
@@ -346,9 +255,7 @@ const Header = () => {
                 <Link
                   href="/home"
                   className={`text-[16px] font-medium px-3 py-2 rounded-md transition-colors ${
-                    path === "/home"
-                      ? "text-primary-color1"
-                      : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                    isActive("/home") ? activeLink : inActiveLink
                   }`}
                   style={{ direction: isArabic ? "rtl" : "ltr" }}
                 >
@@ -361,9 +268,7 @@ const Header = () => {
                 <Link
                   href="/about-us"
                   className={`text-[16px] font-medium px-3 py-2 rounded-md transition-colors ${
-                    path === "/about-us"
-                      ? "text-primary-color1"
-                      : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                    isActive("/about-us") ? activeLink : inActiveLink
                   }`}
                   style={{ direction: isArabic ? "rtl" : "ltr" }}
                 >
@@ -375,14 +280,13 @@ const Header = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
-                      className={`text-[16px] font-medium px-3   focus:!outline-none rounded-md transition-colors flex items-center gap-1 ${
-                        path.startsWith("/services")
-                          ? "text-primary-color1"
-                          : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                      className={`text-[16px] font-medium px-3 focus:!outline-none rounded-md transition-colors flex items-center gap-1 ${
+                        isActive("/services") ? activeLink : inActiveLink
                       }`}
                       style={{ direction: isArabic ? "rtl" : "ltr" }}
                     >
-                      {t("services")}
+                      {t("services")}{" "}
+                      <MdKeyboardArrowDown className="mt-1 ml-1" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -401,7 +305,11 @@ const Header = () => {
                         {[1, 2, 3, 4, 5].map((item) => (
                           <DropdownMenuItem
                             key={`business-${item}`}
-                            className="px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50"
+                            className={`px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50 ${
+                              isActive(`/services/${item}`)
+                                ? `${activeLink} bg-blue-100/90`
+                                : ""
+                            }`}
                             asChild
                           >
                             <Link href={`/services/${item}`} className="w-full">
@@ -436,7 +344,11 @@ const Header = () => {
                         {[6, 7, 8].map((item) => (
                           <DropdownMenuItem
                             key={`personal-${item}`}
-                            className="px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50"
+                            className={`px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50 ${
+                              isActive(`/services/${item}`)
+                                ? "text-primary-color1 shadow-sm"
+                                : ""
+                            }`}
                             asChild
                           >
                             <Link href={`/services/${item}`} className="w-full">
@@ -461,9 +373,7 @@ const Header = () => {
                 <Link
                   href="/career"
                   className={`text-[16px] font-medium px-3 py-2 rounded-md transition-colors ${
-                    path === "/career"
-                      ? "text-primary-color1"
-                      : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                    isActive("/career") ? activeLink : inActiveLink
                   }`}
                   style={{ direction: isArabic ? "rtl" : "ltr" }}
                 >
@@ -476,9 +386,7 @@ const Header = () => {
                 <Link
                   href="/contact-us"
                   className={`text-[16px] font-medium px-3 py-2 rounded-md transition-colors ${
-                    path === "/contact-us"
-                      ? "text-primary-color1"
-                      : "text-gray-700 dark:text-gray-300 hover:text-primary-color1"
+                    isActive("/contact-us") ? activeLink : inActiveLink
                   }`}
                   style={{ direction: isArabic ? "rtl" : "ltr" }}
                 >
@@ -498,7 +406,9 @@ const Header = () => {
               <TooltipTrigger asChild>
                 <button
                   onClick={() => router.push("/profile")}
-                  className="p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className={`p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    isActive("/profile") ? "shadow-md" : ""
+                  }`}
                 >
                   <Image
                     src={icons.user}
@@ -522,7 +432,9 @@ const Header = () => {
             <TooltipTrigger asChild>
               <button
                 onClick={() => router.push("/profile")}
-                className="p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className={`p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isActive("/profile") ? "shadow-md" : ""
+                }`}
               >
                 <Image
                   src={icons.user}
@@ -555,17 +467,12 @@ const Header = () => {
             <Link href="/home" className="flex items-center gap-1">
               <Image
                 src={images.logo}
-                width={50}
-                height={40}
+                width={220}
+                height={200}
                 alt="logo"
                 priority
+                className="-my-20 -mt-20 -ml-4"
               />
-              <p className="ml-3 text-lg font-bold text-primary-color1">
-                Optimal
-                <span className="text-primary-color2 ml-2 dark:text-white-100">
-                  Path
-                </span>
-              </p>
             </Link>
             <button onClick={onClose}>
               <X className="text-primary-color1" />
@@ -583,21 +490,32 @@ const Header = () => {
         footer={
           <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700">
             <ThemeToggler />
-            {/* <LanguageSwitcher /> */}
+            <LanguageSwitcher />
           </div>
         }
       >
-        <div className="flex flex-col h-full pt-4">
+        <div className="flex flex-col h-full -ml-4">
           <Menu
             mode="inline"
             items={[
               {
                 key: "/home",
-                icon: <GrHomeRounded className="w-5 h-5" />,
+                icon: (
+                  <GrHomeRounded
+                    className={cn(
+                      "w-6 h-5",
+                      isActive("/home") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <Link
                     href="/home"
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/home")
+                        ? "!text-primary-color1 shadow-sm "
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("home")}
@@ -606,11 +524,22 @@ const Header = () => {
               },
               {
                 key: "/about-us",
-                icon: <SlInfo className="w-5 h-5" />,
+                icon: (
+                  <SlInfo
+                    className={cn(
+                      "w-6 h-5",
+                      isActive("/about-us") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <Link
                     href="/about-us"
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/about-us")
+                        ? "!text-primary-color1 shadow-sm"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("about")}
@@ -619,10 +548,21 @@ const Header = () => {
               },
               {
                 key: "/services",
-                icon: <MdOutlineMiscellaneousServices className="w-5 h-5" />,
+                icon: (
+                  <MdOutlineMiscellaneousServices
+                    className={cn(
+                      "w-5 h-5",
+                      isActive("/services") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <span
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/services")
+                        ? "!text-primary-color1 shadow-sm"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("services")}
@@ -635,7 +575,11 @@ const Header = () => {
                     label: (
                       <Link
                         href={child.label.props.href}
-                        className="flex items-center gap-3 ml-2"
+                        className={`flex items-center gap-3 ml-2 ${
+                          isActive(child.label.props.href)
+                            ? "text-primary-color1 shadow-sm"
+                            : ""
+                        }`}
                         style={{ direction: isArabic ? "rtl" : "ltr" }}
                       >
                         <span className="text-gray-700 dark:text-gray-300">
@@ -648,11 +592,22 @@ const Header = () => {
               },
               {
                 key: "/career",
-                icon: <IoBriefcaseOutline className="w-5 h-5" />,
+                icon: (
+                  <IoBriefcaseOutline
+                    className={cn(
+                      "w-6 h-5",
+                      isActive("/career") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <Link
                     href="/career"
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/career")
+                        ? "!text-primary-color1 shadow-sm"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("career")}
@@ -661,11 +616,22 @@ const Header = () => {
               },
               {
                 key: "/contact-us",
-                icon: <PhoneIcon className="w-5 h-5" />,
+                icon: (
+                  <PhoneIcon
+                    className={cn(
+                      "w-6 h-5",
+                      isActive("/contact-us") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <Link
                     href="/contact-us"
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/contact-us")
+                        ? "!text-primary-color1 shadow-sm"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     {t("contact")}
@@ -674,11 +640,22 @@ const Header = () => {
               },
               {
                 key: "/profile",
-                icon: <User className="w-5 h-5" />,
+                icon: (
+                  <User
+                    className={cn(
+                      "w-6 h-5",
+                      isActive("/profile") ? "!text-primary-color1" : ""
+                    )}
+                  />
+                ),
                 label: (
                   <Link
                     href="/profile"
-                    className="text-[16px] font-medium text-gray-800 dark:text-gray-200"
+                    className={`text-[16px] font-medium ${
+                      isActive("/profile")
+                        ? "!text-primary-color1 shadow-sm"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
                     style={{ direction: isArabic ? "rtl" : "ltr" }}
                   >
                     Profile

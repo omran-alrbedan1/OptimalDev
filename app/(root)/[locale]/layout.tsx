@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   title: "Optimal Path",
   description: "Pitch , Vote and Grow",
   icons: {
-    icon: "/images/logo.png",
+    icon: "/images/favicon.png",
   },
 };
 export default async function LocaleLayout({
