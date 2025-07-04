@@ -58,7 +58,7 @@ const JobSearchPage = () => {
   const [paginationMeta, setPaginationMeta] = useState({
     current_page: 1,
     last_page: 1,
-    per_page: 10,
+    per_page: 15,
     total: 0,
   });
 
@@ -69,12 +69,15 @@ const JobSearchPage = () => {
       try {
         const response = await fetchJobs(currentPage);
 
-        if (Array.isArray(response)) {
-          setJobs(response);
-        } else if (response.data) {
-          setJobs(response.data);
-          setPaginationMeta(response.meta);
-        }
+        setJobs(response.data);
+        setPaginationMeta(
+          response.meta || {
+            current_page: currentPage,
+            total: response.data.length,
+            per_page: 15,
+            last_page: Math.ceil(response.data.length / 15),
+          }
+        );
       } catch (err: any) {
         setError(err.message || "Failed to fetch jobs");
       } finally {
@@ -263,6 +266,7 @@ const JobSearchPage = () => {
                     max={2000}
                     defaultValue={[500, 1500]}
                     value={salaryRange}
+                    // @ts-ignore
                     onChange={handleSalaryChange}
                     marks={{
                       0: "$0",

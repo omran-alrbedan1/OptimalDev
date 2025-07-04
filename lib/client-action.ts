@@ -30,7 +30,7 @@ const fetchApi = async <T>(
 };
 
 export const fetchJobs = async (
-  page = 1
+  page = 2
 ): Promise<{ data: Job[]; meta: any }> => {
   return fetchApi<{ data: Job[]; meta: any }>(`/api/jobs?page=${page}`);
 };

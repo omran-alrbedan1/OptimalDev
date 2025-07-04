@@ -12,12 +12,7 @@ import {
   Slider,
   Clients,
 } from "@/components/home";
-import {
-  fetchClients,
-  fetchJobs,
-  fetchPartners,
-  fetchSliders,
-} from "@/lib/action";
+import { fetchClients, fetchPartners, fetchSliders } from "@/lib/action";
 
 const Page = async () => {
   const sliders = await fetchSliders();
