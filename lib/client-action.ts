@@ -1,5 +1,6 @@
 "use client";
 
+import { setCookie } from "cookies-next";
 import { getLocaleFromUrl } from "./utils";
 
 const fetchApi = async <T>(
@@ -33,4 +34,38 @@ export const fetchJobs = async (
   page = 2
 ): Promise<{ data: Job[]; meta: any }> => {
   return fetchApi<{ data: Job[]; meta: any }>(`/api/jobs?page=${page}`);
+};
+
+export const login = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
+  try {
+    const response = await fetchApi<LoginResponse>("/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+
+    setCookie("authToken", response.access_token, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      httpOnly: false,
+    });
+
+    setCookie(
+      "userData",
+      JSON.stringify({
+        id: response.user.id,
+        email: response.user.email,
+        name: `${response.user.first_name} ${response.user.last_name}`,
+      }),
+      { maxAge: 30 * 24 * 60 * 60, path: "/" }
+    );
+
+    return response;
+  } catch (error: any) {
+    throw error;
+  }
 };

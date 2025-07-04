@@ -12,10 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginFormSchema } from "@/lib/validation/userValidation";
 import { useLocale, useTranslations } from "next-intl";
-import { login } from "@/lib/action";
 import { setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess } from "@/store/slices/authSlice";
+import { login } from "@/lib/client-action";
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
