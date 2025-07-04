@@ -30,7 +30,7 @@ export default function LoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      identifier: "",
+      login: "",
       password: "",
     },
   });
@@ -38,7 +38,7 @@ export default function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     try {
       dispatch(loginStart());
-      const response = await login(values.identifier, values.password);
+      const response = await login(values.login, values.password);
       setCookie("token", response.access_token, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
@@ -78,11 +78,11 @@ export default function LoginForm() {
             <Input
               id="identifier"
               placeholder={t("fields.identifier.placeholder")}
-              {...form.register("identifier")}
+              {...form.register("login")}
               autoComplete="username"
               className="dark:bg-gray-800"
             />
-            {form.formState.errors.identifier && (
+            {form.formState.errors.login && (
               <p className="text-sm text-red-500">
                 {t("fields.identifier.error")}
               </p>

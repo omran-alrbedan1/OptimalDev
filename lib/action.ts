@@ -14,14 +14,11 @@ const fetchApi = async <T>(
   try {
     const response = await fetch(url, {
       ...options,
+      cache: "default",
       headers: {
         "Content-Type": "application/json",
         "Accept-Language": language,
         ...options?.headers,
-      },
-      next: {
-        revalidate: 3600,
-        ...options?.next,
       },
     });
 
@@ -52,41 +49,5 @@ export const fetchClients = async (lang?: string): Promise<Client[]> => {
 export const fetchOrganization = async (
   lang?: string
 ): Promise<Organization> => {
-  return fetchApi("/organization", { lang });
+  return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
 };
-
-// export const login = async (
-//   email: string,
-//   password: string
-// ): Promise<LoginResponse> => {
-//   try {
-//     const response = await fetchApi<LoginResponse>("/login", {
-//       method: "POST",
-//       body: JSON.stringify({ email, password }),
-//     });
-
-//     setCookie("authToken", response.access_token, {
-//       maxAge: 30 * 24 * 60 * 60,
-//       path: "/",
-//       secure: process.env.NODE_ENV === "production",
-//       sameSite: "lax",
-//       httpOnly: false,
-//     });
-
-//     setCookie(
-//       "userData",
-//       JSON.stringify({
-//         id: response.user.id,
-//         email: response.user.email,
-//         name: `${response.user.first_name} ${response.user.last_name}`,
-//       }),
-//       { maxAge: 30 * 24 * 60 * 60, path: "/" }
-//     );
-
-//     return response;
-//   } catch (error: any) {
-//     deleteCookie("authToken");
-//     deleteCookie("userData");
-//     throw error;
-//   }
-// };

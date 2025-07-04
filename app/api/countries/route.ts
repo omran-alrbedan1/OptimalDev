@@ -1,20 +1,17 @@
+// Example for app/api/sliders/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
     const language = request.headers.get("Accept-Language") || "en";
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/organization`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/countries`,
       {
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
-        },
-        params: {
-          lang: language,
         },
       }
     );
@@ -23,7 +20,7 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || "Failed to fetch organization data" },
+      { error: error.message || "Failed to fetch countries" },
       { status: 500 }
     );
   }

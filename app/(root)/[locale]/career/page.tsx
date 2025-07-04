@@ -16,10 +16,11 @@ import JobCard from "@/components/cards/JobCard";
 import { icons } from "@/constants/icons";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { fetchJobs } from "@/lib/client-action";
+import { fetchCities, fetchCountries, fetchJobs } from "@/lib/client-action";
 import Loader from "@/components/Loader";
 import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
 import { formatPostedDate } from "@/lib/utils";
+import { useFetch, useFetchWithId } from "@/hooks/useFetch";
 
 const LatestJobs = [
   {
@@ -98,6 +99,11 @@ const JobSearchPage = () => {
     selectedWorkModes,
     salaryRange,
   ]);
+
+  const { data: countries } = useFetch<Country[]>(fetchCountries);
+  const { data: cities } = useFetchWithId<City[]>(fetchCities, 1);
+
+  console.log(cities);
 
   const handleIndustryChange = (industry: string) => {
     setSelectedIndustries((prev) =>

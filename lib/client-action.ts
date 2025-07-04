@@ -2,10 +2,25 @@
 
 import { setCookie } from "cookies-next";
 import { getLocaleFromUrl } from "./utils";
+import { toast } from "sonner";
+
+interface ApiOptions extends RequestInit {
+  headers?: Record<string, string>;
+}
+
+interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+  };
+}
 
 const fetchApi = async <T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: ApiOptions = {}
 ): Promise<T> => {
   const locale = getLocaleFromUrl();
 
@@ -30,42 +45,68 @@ const fetchApi = async <T>(
   }
 };
 
-export const fetchJobs = async (
-  page = 2
-): Promise<{ data: Job[]; meta: any }> => {
-  return fetchApi<{ data: Job[]; meta: any }>(`/api/jobs?page=${page}`);
+export const fetchJobs = async (page = 2): Promise<PaginatedResponse<Job>> => {
+  return fetchApi<PaginatedResponse<Job>>(`/api/jobs?page=${page}`);
+};
+export const fetchCountries = async (): Promise<Country[]> => {
+  return fetchApi<Country[]>(`/api/countries`);
 };
 
-export const login = async (
-  email: string,
-  password: string
-): Promise<LoginResponse> => {
+export const fetchCities = async (id: number): Promise<City[]> => {
+  return fetchApi<City[]>(`/api/cities/${id}`);
+};
+
+export const login = async (login: string, password: string) => {
   try {
-    const response = await fetchApi<LoginResponse>("/login", {
+    const response = await fetch("/api/login", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ login, password }),
     });
 
-    setCookie("authToken", response.access_token, {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Login failed");
+    }
+
+    const data = await response.json();
+
+    setCookie("token", data.access_token, {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      httpOnly: false,
+      sameSite: "strict",
     });
 
-    setCookie(
-      "userData",
-      JSON.stringify({
-        id: response.user.id,
-        email: response.user.email,
-        name: `${response.user.first_name} ${response.user.last_name}`,
-      }),
-      { maxAge: 30 * 24 * 60 * 60, path: "/" }
-    );
+    return data;
+  } catch (error) {
+    console.error("Login error:", error);
 
-    return response;
-  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const register = async (formData: FormData) => {
+  try {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.details
+          ? Object.values(errorData.details).join("\n")
+          : errorData.error || "Registration failed"
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Registration error:", error);
     throw error;
   }
 };

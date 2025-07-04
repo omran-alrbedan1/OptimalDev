@@ -1,20 +1,21 @@
+// app/api/cities/[id]/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { searchParams } = new URL(request.url);
     const language = request.headers.get("Accept-Language") || "en";
+    const { id } = params;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/organization`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/cities/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
-        },
-        params: {
-          lang: language,
         },
       }
     );
@@ -23,8 +24,11 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || "Failed to fetch organization data" },
-      { status: 500 }
+      {
+        error: error.response?.data?.message || "Failed to fetch city",
+        details: error.response?.data?.errors || {},
+      },
+      { status: error.response?.status || 500 }
     );
   }
 }

@@ -1,20 +1,19 @@
+// app/api/login/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { login, password } = await request.json();
     const language = request.headers.get("Accept-Language") || "en";
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/organization`,
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
+      { login, password },
       {
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
-        },
-        params: {
-          lang: language,
         },
       }
     );
@@ -23,8 +22,11 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || "Failed to fetch organization data" },
-      { status: 500 }
+      {
+        error: error.response?.data?.message || "Failed to login",
+        details: error.response?.data?.errors || {},
+      },
+      { status: error.response?.status || 500 }
     );
   }
 }

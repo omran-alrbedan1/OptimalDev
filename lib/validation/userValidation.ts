@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginFormSchema = z.object({
-  identifier: z
+  login: z
     .string()
     .min(1, "loginForm.fields.identifier.error")
     .refine(
@@ -32,10 +32,10 @@ export const subscribeFormShema = z.object({
 
 export const registerFormSchema = z
   .object({
-    name: z.string().min(2, {
+    first_name: z.string().min(2, {
       message: "registerForm.fields.name.error",
     }),
-    surname: z.string().min(2, {
+    last_name: z.string().min(2, {
       message: "registerForm.fields.surname.error",
     }),
     email: z.string().email({
@@ -44,16 +44,17 @@ export const registerFormSchema = z
     phone: z.string().min(5, {
       message: "registerForm.fields.phone.error",
     }),
-    country: z.string().min(1, {
+    country_id: z.number().min(1, {
       message: "registerForm.fields.country.error",
     }),
-    city: z.string().min(1, {
+    city_id: z.number().min(1, {
       message: "registerForm.fields.city.error",
     }),
+
     password: z.string().min(8, {
       message: "registerForm.fields.password.error",
     }),
-    confirmPassword: z.string(),
+    password_confirmation: z.string(),
     cv: z
       .instanceof(File, {
         message: "registerForm.fields.cv.errorType",
@@ -76,7 +77,7 @@ export const registerFormSchema = z
       }),
     }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "registerForm.fields.confirmPassword.error",
     path: ["confirmPassword"],
   });

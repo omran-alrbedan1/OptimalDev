@@ -26,6 +26,9 @@ import { InboxOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { registerFormSchema } from "@/lib/validation/userValidation";
+import { useFetch, useFetchWithId } from "@/hooks/useFetch";
+import { fetchCities, fetchCountries, register } from "@/lib/client-action";
+import { setCookie } from "cookies-next";
 
 const { Dragger } = Upload;
 
@@ -39,19 +42,21 @@ export default function RegisterForm() {
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      name: "",
-      surname: "",
+      first_name: "",
+      last_name: "",
       email: "",
       phone: "",
-      country: "",
-      city: "",
+      country_id: "",
+      city_id: "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
       acceptTerms: false,
     },
   });
 
-  const selectedCountry = form.watch("country");
+  const { data: countries } = useFetch<Country[]>(fetchCountries);
+  const countryId = form.watch("country_id");
+  const { data: cities } = useFetchWithId<City[]>(fetchCities, countryId);
 
   const uploadProps = {
     name: "cv",
@@ -87,10 +92,45 @@ export default function RegisterForm() {
     },
   };
 
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value ? Number(e.target.value) : undefined;
+    form.setValue("country_id", value);
+    form.resetField("city_id");
+  };
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value ? Number(e.target.value) : undefined;
+    form.setValue("city_id", value);
+  };
+
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Registration values:", values);
+      const formData = new FormData();
+
+      formData.append("first_name", values.first_name);
+      formData.append("last_name", values.last_name);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append("country_id", String(Number(values.country_id)));
+      formData.append("city_id", String(Number(values.city_id)));
+      formData.append("password", values.password);
+      formData.append("password_confirmation", values.password_confirmation);
+      formData.append("accept_terms", values.acceptTerms.toString());
+
+      if (values.cv) {
+        formData.append("cv", values.cv);
+      }
+
+      const response = await register(formData);
+
+      if (response.access_token) {
+        setCookie("token", response.access_token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+        });
+      }
 
       toast.success(t("toast.success.title"), {
         description: t("toast.success.description"),
@@ -99,7 +139,8 @@ export default function RegisterForm() {
     } catch (error) {
       console.error("Registration error", error);
       toast.error(t("toast.error.title"), {
-        description: t("toast.error.description"),
+        description:
+          error instanceof Error ? error.message : t("toast.error.description"),
       });
     }
   }
@@ -124,7 +165,7 @@ export default function RegisterForm() {
           {/* Name Field */}
           <FormField
             control={form.control}
-            name="name"
+            name="first_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
@@ -149,7 +190,7 @@ export default function RegisterForm() {
           {/* Surname Field */}
           <FormField
             control={form.control}
-            name="surname"
+            name="last_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
@@ -229,10 +270,9 @@ export default function RegisterForm() {
             />
           </div>
 
-          {/* Country Field */}
           <FormField
             control={form.control}
-            name="country"
+            name="country_id"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
@@ -240,26 +280,19 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <select
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      form.resetField("city");
-                    }}
+                    value={field.value ?? ""}
+                    onChange={handleCountryChange}
                     className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">{t("fields.country.placeholder")}</option>
-                    {Country.getAllCountries().map((c) => (
-                      <option key={c.isoCode} value={c.isoCode}>
-                        {c.name}
+                    {countries?.map((country) => (
+                      <option key={country.id} value={country.id}>
+                        {country.name}
                       </option>
                     ))}
                   </select>
                 </FormControl>
-                {form.formState.errors.country && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.country.error")}
-                  </p>
-                )}
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -267,7 +300,7 @@ export default function RegisterForm() {
           {/* City Field */}
           <FormField
             control={form.control}
-            name="city"
+            name="city_id"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
@@ -275,28 +308,23 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <select
-                    {...field}
-                    disabled={!selectedCountry}
+                    value={field.value ?? ""}
+                    onChange={handleCityChange}
+                    disabled={!countryId}
                     className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">{t("fields.city.placeholder")}</option>
-                    {selectedCountry &&
-                      City.getCitiesOfCountry(selectedCountry)?.map((c) => (
-                        <option key={c.name} value={c.name}>
-                          {c.name}
-                        </option>
-                      ))}
+                    {cities?.map((city) => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
+                      </option>
+                    ))}
                   </select>
                 </FormControl>
-                {form.formState.errors.city && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.city.error")}
-                  </p>
-                )}
+                <FormMessage />
               </FormItem>
             )}
           />
-
           {/* Password Field */}
           <FormField
             control={form.control}
@@ -326,7 +354,7 @@ export default function RegisterForm() {
           {/* Confirm Password Field */}
           <FormField
             control={form.control}
-            name="confirmPassword"
+            name="password_confirmation"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="dark:text-gray-300">
