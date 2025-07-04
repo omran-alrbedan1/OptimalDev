@@ -44,61 +44,69 @@ interface Organization {
   values: string;
 }
 
+interface Company {
+  id: number;
+  name: string;
+  description: string;
+  address: string;
+  logo: string | null;
+  email: string;
+  phone: string;
+}
+
+interface WorkSector {
+  id: number;
+  name: string;
+  description: string | null;
+  type: {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    is_active: number;
+    created_at: string;
+    updated_at: string;
+  };
+  parent_id: number | null;
+}
+
+interface Country {
+  id: number;
+  name: string;
+  description: string | null;
+  type: {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    is_active: number;
+    created_at: string;
+    updated_at: string;
+  };
+  parent_id: number | null;
+}
+
+interface City {
+  id: number;
+  name: string;
+  description: string | null;
+  type: {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    is_active: number;
+    created_at: string;
+    updated_at: string;
+  };
+  parent_id: number;
+}
+
 interface Job {
   id: number;
   title: string;
   description: string;
-  company: {
-    id: number;
-    name: string;
-    description: string;
-    address: string;
-    logo: string | null;
-    email: string;
-    phone: string;
-  };
-  work_sector: {
-    id: number;
-    name: string;
-    description: string | null;
-    type: {
-      id: number;
-      name_en: string;
-      name_ar: string;
-      is_active: number;
-      created_at: string;
-      updated_at: string;
-    };
-    parent_id: number | null;
-  };
-  country: {
-    id: number;
-    name: string;
-    description: string | null;
-    type: {
-      id: number;
-      name_en: string;
-      name_ar: string;
-      is_active: number;
-      created_at: string;
-      updated_at: string;
-    };
-    parent_id: number | null;
-  };
-  city: {
-    id: number;
-    name: string;
-    description: string | null;
-    type: {
-      id: number;
-      name_en: string;
-      name_ar: string;
-      is_active: number;
-      created_at: string;
-      updated_at: string;
-    };
-    parent_id: number;
-  };
+  company: Company;
+  work_sector: WorkSector;
+  country: Country;
+  city: City;
   salary_min: string;
   salary_max: string;
   published_at: string;
@@ -110,34 +118,6 @@ interface Job {
   years_experience: number;
   other_requirements: string;
   address: string;
-  preferred_candidate: string | null;
+  preferred_candidate: null;
   applicants_count: number;
-}
-
-interface PaginationLinks {
-  first: string | null;
-  last: string | null;
-  prev: string | null;
-  next: string | null;
-}
-
-interface PaginationMeta {
-  current_page: number;
-  from: number;
-  last_page: number;
-  links: Array<{
-    url: string | null;
-    label: string;
-    active: boolean;
-  }>;
-  path: string;
-  per_page: number;
-  to: number;
-  total: number;
-}
-
-interface JobsResponse {
-  data: Job[];
-  links: PaginationLinks;
-  meta: PaginationMeta;
 }

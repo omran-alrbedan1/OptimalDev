@@ -3,13 +3,33 @@
 import { Select } from "antd";
 import ReactCountryFlag from "react-country-flag";
 import { useEffect, useState } from "react";
-import { useLanguage } from "@/hooks/useLanguage";
+import { setCookie } from "cookies-next";
 
 export default function LanguageSwitcher() {
-  const { language, changeLanguage } = useLanguage();
+  const [language, setLanguage] = useState("en");
   const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => setIsMounted(true), []);
+  useEffect(() => {
+    const lang =
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("preferredLanguage="))
+        ?.split("=")[1] || "en";
+
+    setLanguage(lang);
+    setIsMounted(true);
+  }, []);
+
+  const changeLanguage = (lang: string) => {
+    setCookie("preferredLanguage", lang, {
+      maxAge: 365 * 24 * 60 * 60,
+      path: "/",
+    });
+    window.location.href = `/${lang}${window.location.pathname.replace(
+      /^\/(en|ar)/,
+      ""
+    )}`;
+  };
 
   if (!isMounted) return null;
 

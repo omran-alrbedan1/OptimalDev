@@ -1,153 +1,92 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { cookies } from "next/headers";
 
-const apiClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-apiClient.interceptors.request.use((config) => {
-  const cookiesStore = cookies();
-  //@ts-ignore
-  const language = cookiesStore.get("preferredLanguage")?.value;
-  config.headers["Accept-Language"] = language;
-
-  return config;
-});
-
-const get = async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
-  try {
-    const response = await apiClient.get(url, config);
-    return (
-      response.data?.data !== undefined ? response.data.data : response.data
-    ) as T;
-  } catch (error) {
-    throw error;
-  }
-};
-const post = async <T>(
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig
+const fetchApi = async <T>(
+  endpoint: string,
+  options?: RequestInit & { lang?: string }
 ): Promise<T> => {
-  try {
-    const response = await apiClient.post(url, data, config);
-    return (
-      response.data?.data !== undefined ? response.data.data : response.data
-    ) as T;
-  } catch (error) {
-    throw error;
-  }
-};
+  const baseUrl =
+    typeof window === "undefined" ? process.env.NEXT_PUBLIC_SITE_URL : "";
+  const url = `${baseUrl}/api${endpoint}`;
+  const language =
+    //@ts-ignore
+    options?.lang || cookies().get("preferredLanguage")?.value || "en";
 
-export const fetchSliders = async (): Promise<Slider[]> => {
   try {
-    const sliders = await get<Slider[]>("/sliders");
-    console.log(sliders);
-    return sliders;
-  } catch (error: any) {
-    const errorMessage =
-      error.response?.data?.message || error.message || "Failed to sliders ";
-    throw new Error(errorMessage);
-  }
-};
-export const fetchPartners = async (): Promise<Partner[]> => {
-  try {
-    return await get<Partner[]>("/partners");
-  } catch (error: any) {
-    const errorMessage =
-      error.response?.data?.message || error.message || "Failed to partners ";
-    throw new Error(errorMessage);
-  }
-};
-export const fetchClients = async (): Promise<Client[]> => {
-  try {
-    return await get<Client[]>("/clients");
-  } catch (error: any) {
-    const errorMessage =
-      error.response?.data?.message || error.message || "Failed to clients ";
-    throw new Error(errorMessage);
-  }
-};
-
-export const fetchOrganization = async (): Promise<Organization> => {
-  try {
-    return await get<Organization>("/organization");
-  } catch (error: any) {
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Failed to organization ";
-    throw new Error(errorMessage);
-  }
-};
-
-export const login = async (
-  email: string,
-  password: string
-): Promise<LoginResponse> => {
-  try {
-    const response = await post<LoginResponse>(
-      "/login",
-      {
-        email,
-        password,
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+        ...options?.headers,
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
-
-    setCookie("authToken", response.access_token, {
-      maxAge: 30 * 24 * 60 * 60, // 30 days
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      httpOnly: false,
+      next: {
+        revalidate: 3600,
+        ...options?.next,
+      },
     });
 
-    setCookie(
-      "userData",
-      JSON.stringify({
-        id: response.user.id,
-        email: response.user.email,
-        name: `${response.user.first_name} ${response.user.last_name}`,
-      }),
-      {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-      }
-    );
-
-    return response;
-  } catch (error: any) {
-    let errorMessage = "Login failed";
-
-    if (error.response) {
-      errorMessage =
-        error.response.data?.message ||
-        error.response.statusText ||
-        `Server error (${error.response.status})`;
-    } else if (error.request) {
-      errorMessage = "Network error - please check your connection";
-    } else {
-      errorMessage = error.message || errorMessage;
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Failed to fetch ${endpoint}`);
     }
 
-    deleteCookie("authToken");
-    deleteCookie("userData");
-
-    throw new Error(errorMessage);
+    return await response.json();
+  } catch (error: any) {
+    console.error(`API Error (${endpoint}):`, error);
+    throw new Error(error.message || `Failed to fetch ${endpoint}`);
   }
 };
 
-const fetchJobs = async (): Promise<JobsResponse> => {
-  const response = await axios.get("/api/jobs");
-  return response.data;
+export const fetchSliders = async (lang?: string): Promise<Slider[]> => {
+  return fetchApi("/sliders", { next: { revalidate: 3600 }, lang });
 };
+
+export const fetchPartners = async (lang?: string): Promise<Partner[]> => {
+  return fetchApi("/partners", { next: { revalidate: 3600 }, lang });
+};
+
+export const fetchClients = async (lang?: string): Promise<Client[]> => {
+  return fetchApi("/clients", { next: { revalidate: 3600 }, lang });
+};
+
+export const fetchOrganization = async (
+  lang?: string
+): Promise<Organization> => {
+  return fetchApi("/organization", { lang });
+};
+
+// export const login = async (
+//   email: string,
+//   password: string
+// ): Promise<LoginResponse> => {
+//   try {
+//     const response = await fetchApi<LoginResponse>("/login", {
+//       method: "POST",
+//       body: JSON.stringify({ email, password }),
+//     });
+
+//     setCookie("authToken", response.access_token, {
+//       maxAge: 30 * 24 * 60 * 60,
+//       path: "/",
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "lax",
+//       httpOnly: false,
+//     });
+
+//     setCookie(
+//       "userData",
+//       JSON.stringify({
+//         id: response.user.id,
+//         email: response.user.email,
+//         name: `${response.user.first_name} ${response.user.last_name}`,
+//       }),
+//       { maxAge: 30 * 24 * 60 * 60, path: "/" }
+//     );
+
+//     return response;
+//   } catch (error: any) {
+//     deleteCookie("authToken");
+//     deleteCookie("userData");
+//     throw error;
+//   }
+// };
