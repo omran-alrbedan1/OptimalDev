@@ -79,7 +79,10 @@ export default async function LocaleLayout({
                 <Header />
                 {children}
                 <Footer />
-                <Toaster richColors position={"top-right"} />
+                <Toaster
+                  richColors
+                  position={params.locale == "en" ? "top-right" : "top-left"}
+                />
               </NextIntlClientProvider>
             </Providers>
           </ThemeProvider>

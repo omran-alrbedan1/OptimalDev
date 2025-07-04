@@ -9,6 +9,7 @@ import profile from "@/public/images/profile.jpg";
 import messages from "@/public/images/messages.png";
 import applications from "@/public/images/applications.png";
 import exams from "@/public/images/exams.png";
+import anonymous from "@/public/images/anonymous.png";
 
 export const images = {
   logo,
@@ -22,4 +23,5 @@ export const images = {
   messages,
   applications,
   exams,
+  anonymous,
 };

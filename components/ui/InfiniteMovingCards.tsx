@@ -1,5 +1,7 @@
 "use client";
 
+import { icons } from "@/constants/icons";
+import { images } from "@/constants/images";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -11,12 +13,7 @@ export const InfiniteMovingCards = ({
   pauseOnHover = true,
   className,
 }: {
-  items: {
-    id: number;
-    url: string;
-    title: string;
-    image: string;
-  }[];
+  items: Client[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
@@ -93,14 +90,14 @@ export const InfiniteMovingCards = ({
             key={item.id}
           >
             <Image
-              src={item.image}
-              width={130} // Fixed width
-              height={100} // Fixed height
+              src={icons.clients}
+              width={130}
+              height={100}
               alt={`image${item.id}`}
               className="object-contain w-[70%] h-[60%] max-xs:top-1 top-2" // Ensure consistent size
             />
             <h1 className="py-4 absolute max-xs:bottom-1 font-semibold dark:text-gray-300 text-gray-600 bottom-2 text-sm md:text-xl">
-              {item.title}
+              {item.name}
             </h1>
           </li>
         ))}

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Partner } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
+import { images } from "@/constants/images";
 
 const PartnerCard = ({
   partner,
@@ -35,7 +35,7 @@ const PartnerCard = ({
           <div className="relative w-24 h-24 group-hover:scale-110 transition-transform duration-300">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 blur-sm group-hover:blur-md transition-all duration-300"></div>
             <Image
-              src={partner.image}
+              src={"/images/FUTURE X.jpg"}
               width={96}
               height={96}
               alt={partner.title}

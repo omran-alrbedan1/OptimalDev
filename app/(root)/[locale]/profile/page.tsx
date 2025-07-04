@@ -14,18 +14,16 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { images } from "@/constants/images";
 import { Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import {
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from "@/store/selectors/authSelector";
+import { useAuth } from "@/hooks/useAuth";
 
 const ProfilePage = () => {
-  const user = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "0988638009",
-    country: "United States",
-    city: "New York",
-    cvUrl: "/cv/john-doe-cv.pdf",
-    image: images.profile,
-  };
+  const { user, isAuthenticated, isLoading } = useAuth(true);
+  console.log(user);
   const router = useRouter();
 
   const items: TabsProps["items"] = [
@@ -121,8 +119,8 @@ const ProfilePage = () => {
         <div className="w-full md:w-1/3 lg:w-1/4 flex justify-center">
           <div className="relative w-64 h-64 rounded-full overflow-hidden shadow-primary-color1 shadow-md">
             <Image
-              src={user.image}
-              alt={`${user.firstName} ${user.lastName}`}
+              src={user?.profile_image ? user?.profile_image : images.anonymous}
+              alt={`${user?.first_name} ${user?.last_name}`}
               fill
               className="object-cover"
               priority
@@ -134,24 +132,24 @@ const ProfilePage = () => {
         <div className="w-full md:w-2/3 lg:w-3/4 space-y-6">
           <div>
             <h1 className="text-4xl font-bold dark:text-gray-200">
-              {user.firstName} {user.lastName}
+              {user?.first_name} {user?.last_name}
             </h1>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <MailOutlined className="text-blue-500" />
-              <span className="dark:text-gray-300">{user.email}</span>
+              <span className="dark:text-gray-300">{user?.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <EnvironmentOutlined className="text-blue-500" />
               <span className="dark:text-gray-300">
-                {user.city}, {user.country}
+                {user?.city_id}, {user?.country_id}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <FaPhoneAlt className="text-blue-500" />
-              <span className="dark:text-gray-300">{user.phone}</span>
+              <span className="dark:text-gray-300">{user?.phone}</span>
             </div>
           </div>
 

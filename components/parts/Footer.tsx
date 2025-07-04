@@ -1,10 +1,10 @@
-"use client";
 import Image from "next/image";
 import {
   FaInstagram,
   FaFacebookF,
   FaLinkedinIn,
   FaPhoneAlt,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { RiTelegram2Fill } from "react-icons/ri";
@@ -14,39 +14,43 @@ import { FaLocationDot } from "react-icons/fa6";
 import SubscribeForm from "../forms/SubscribeForm";
 import { useTranslations } from "next-intl";
 import { Smartphone } from "lucide-react";
+import { fetchOrganization } from "@/lib/action";
+import { getTranslations } from "next-intl/server";
 
-const Footer = () => {
-  const t = useTranslations("footer");
+const Footer = async () => {
+  const t = await getTranslations("footer");
+  const organization = await fetchOrganization();
+
   const socialLinks = [
     {
-      icon: (
-        <svg
-          viewBox="0 0 24 24"
-          aria-label="X"
-          role="img"
-          className="w-5 h-5"
-          fill="currentColor"
-        >
-          <g>
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-          </g>
-        </svg>
-      ),
-      href: "/",
+      icon: <FaWhatsapp className="text-xl" />,
+      href: organization?.social_links?.facebook,
     },
-    { icon: <RiTelegram2Fill className="text-xl" />, href: "/" },
-    { icon: <FaFacebookF className="text-lg" />, href: "/" },
-    { icon: <FaInstagram className="text-lg" />, href: "/" },
-    { icon: <FaLinkedinIn className="text-lg" />, href: "/" },
+    {
+      icon: <RiTelegram2Fill className="text-xl" />,
+      href: organization?.social_links?.facebook,
+    },
+    {
+      icon: <FaFacebookF className="text-lg" />,
+      href: organization?.social_links?.facebook,
+    },
+    {
+      icon: <FaInstagram className="text-lg" />,
+      href: organization?.social_links?.facebook,
+    },
+    {
+      icon: <FaLinkedinIn className="text-lg" />,
+      href: organization?.social_links?.linkedin,
+    },
   ];
 
   const contactItems = [
-    { icon: <FaLocationDot className="text-xl" />, text: "Jordan" },
+    { icon: <FaLocationDot className="text-xl" />, text: organization.address },
     {
       icon: <MdOutlineMail className="text-xl" />,
-      text: "info@optimalpathmc.com",
+      text: organization.email,
     },
-    { icon: <Smartphone className="text-xl" />, text: "+962 797 701 545" },
+    { icon: <Smartphone className="text-xl" />, text: organization.phone },
   ];
 
   return (
@@ -57,7 +61,7 @@ const Footer = () => {
             <div className="flex items-center justify-center md:justify-start">
               <Link
                 href="/home"
-                className="flex items-center mx-12 gap-2 focus:!border-none border-none"
+                className="flex items-center mx-12   gap-2 focus:!border-none border-none"
               >
                 <Image
                   src={images.logo}
@@ -69,12 +73,12 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-gray-600  dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed  md:text-center">
-              {t("companyDescription")}
+              {organization.description}
             </p>
 
             {/* Social links - centered on mobile */}
             <div className="flex justify-center   relative md:justify-start space-x-3 md:space-x-4">
-              {socialLinks.map((item, index) => (
+              {socialLinks?.map((item, index) => (
                 <Link
                   key={index}
                   href={item.href}
@@ -95,7 +99,7 @@ const Footer = () => {
                   <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
                 </h3>
                 <ul className="mt-6 md:mt-6 space-y-2 md:space-y-4">
-                  {contactItems.map((item, index) => (
+                  {contactItems?.map((item, index) => (
                     <li
                       key={index}
                       className="flex items-start justify-start mt-4 md:justify-start"

@@ -12,11 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginFormSchema } from "@/lib/validation/userValidation";
 import { useLocale, useTranslations } from "next-intl";
+import { login } from "@/lib/action";
+import { setCookie } from "cookies-next";
+import { useDispatch } from "react-redux";
+import { loginStart, loginSuccess } from "@/store/slices/authSlice";
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
   const jobId = searchParams.get("jobId");
   const t = useTranslations("forms.loginForm");
   const locale = useLocale();
@@ -32,12 +37,18 @@ export default function LoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      console.log("Login attempt with:", values);
-
-      toast.success(t("toast.success.title"), {
-        description: t("toast.success.description"),
+      dispatch(loginStart());
+      const response = await login(values.identifier, values.password);
+      setCookie("token", response.access_token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
       });
+
+      dispatch(loginSuccess(response));
+
+      toast.success(t("toast.success.title"));
     } catch (error) {
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),

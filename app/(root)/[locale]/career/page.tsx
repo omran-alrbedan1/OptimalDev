@@ -11,7 +11,7 @@ import {
   FiFilter,
   FiLayers,
 } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JobCard from "@/components/cards/JobCard";
 import { icons } from "@/constants/icons";
 import { Checkbox } from "@/components/ui/checkbox";

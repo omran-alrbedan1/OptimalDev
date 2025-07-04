@@ -27,6 +27,14 @@
     "title":"Our Clients",
     "paragraph":"Empowering businesses through trusted partnerships and innovative solutions."
   },
+    "aboutSection": {
+    "title":"About Us",
+
+    "whoWeAre": "Who We Are",
+    "ourVision": "Our Vision",
+    "ourMission": "Our Mission",
+    "ourValues": "Our Values"
+  },
   "footer": {
   "companyDescription": "Optimal Path bridges the gap between top talent and exceptional opportunities. We provide strategic recruitment solutions to grow businesses and careers.",
   "contactUs": "Contact Us",

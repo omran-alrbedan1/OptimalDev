@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SliderArray } from "@/types";
 import { useRouter } from "next/navigation";
 
-const Slider = ({ sliders }: { sliders: SliderArray }) => {
+const Slider = ({ sliders }: { sliders: Slider[] }) => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -16,19 +15,19 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
     const startAutoPlay = () => {
       intervalRef.current = setInterval(() => {
         if (!isPaused) {
-          setCurrentIndex((prev) => (prev + 1) % sliders.length);
+          setCurrentIndex((prev) => (prev + 1) % sliders?.length);
         }
       }, 3500);
     };
 
     startAutoPlay();
     return () => clearInterval(intervalRef.current);
-  }, [sliders.length, isPaused]);
+  }, [sliders?.length, isPaused]);
 
   // Handle slide click
   const handleSlideClick = () => {
-    if (sliders[currentIndex].url) {
-      router.push(sliders[currentIndex].url);
+    if (sliders[currentIndex].link_url) {
+      router.push(sliders[currentIndex].link_url);
     }
   };
 
@@ -76,7 +75,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
       {/* Background image with click handler */}
       <div
         style={{
-          backgroundImage: `url(${sliders[currentIndex].backgroundImage})`,
+          backgroundImage: `url(${sliders[currentIndex].image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -115,7 +114,7 @@ const Slider = ({ sliders }: { sliders: SliderArray }) => {
                 className="bg-primary-color1 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition"
                 onClick={handleSlideClick}
               >
-                Learn More
+                {sliders[currentIndex].link_text}
               </button>
             </div>
           </motion.div>

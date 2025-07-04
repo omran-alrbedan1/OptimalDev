@@ -11,53 +11,19 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
-const partners = [
-  {
-    id: 1,
-    title: "FUTURE X",
-    description:
-      "A software development company specializing in advanced technological solutions",
-    image: "/images/FUTURE X.jpg",
-  },
-  {
-    id: 2,
-    title: "FUTURE X",
-    description:
-      "A software development company specializing in advanced technological solutions",
-    image: "/images/FUTURE X.jpg",
-  },
-  {
-    id: 3,
-    title: "FUTURE X2",
-    description:
-      "A software development company specializing in advanced technological solutions",
-    image: "/images/FUTURE X.jpg",
-  },
-  {
-    id: 4,
-    title: "Partner 3",
-    description: "Another company providing excellent services",
-    image: "/images/FUTURE X.jpg",
-  },
-  {
-    id: 5,
-    title: "Partner 4",
-    description: "Innovative solutions provider",
-    image: "/images/FUTURE X.jpg",
-  },
-];
-const Partners = () => {
+const Partners = ({ partners }: { partners: Partner[] }) => {
   const t = useTranslations("ourPartners");
+  console.log(partners);
 
   return (
     <section className="px-5 md:px-10 lg:px-20 flex flex-col items-center md:-mt-8">
       <Header title={t("title")} className="pb-11" />
-      <AutoAdvancingCarousel />
+      <AutoAdvancingCarousel partners={partners} />
     </section>
   );
 };
 
-const AutoAdvancingCarousel = () => {
+const AutoAdvancingCarousel = ({ partners }: { partners: Partner[] }) => {
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -100,7 +66,7 @@ const AutoAdvancingCarousel = () => {
       >
         <div className="relative">
           <CarouselContent className="-mr-8 relative">
-            {partners.map((partner, index) => (
+            {partners?.map((partner, index) => (
               <CarouselItem
                 key={partner.id}
                 className="px-8 basis-full relative sm:basis-1/2 lg:basis-1/3"

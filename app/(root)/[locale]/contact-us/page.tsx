@@ -8,9 +8,11 @@ import ContactForm from "@/components/forms/ContactForm";
 import { ContactUsProps } from "@/types";
 import { getTranslations } from "next-intl/server";
 import { Phone, Smartphone } from "lucide-react";
+import { fetchOrganization } from "@/lib/action";
 
 const ContactUsPage = async () => {
   const t = await getTranslations("contactUs");
+  const organization = await fetchOrganization();
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Filter data by type
@@ -61,7 +63,7 @@ const ContactUsPage = async () => {
                 </span>
                 {address && (
                   <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>Jordan, Amman</span>
+                    <span>{organization.address}</span>
                   </p>
                 )}
               </div>
@@ -71,7 +73,7 @@ const ContactUsPage = async () => {
                 </span>
                 {phone && (
                   <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>+962797701545</span>
+                    <span>{organization.phone}</span>
                   </p>
                 )}
               </div>
@@ -81,7 +83,7 @@ const ContactUsPage = async () => {
                 </span>
                 {email && (
                   <p className="text-white text-sm sm:text-lg flex flex-col">
-                    <span> info@optimalpathmc.com</span>
+                    <span> {organization.email}</span>
                   </p>
                 )}
               </div>

@@ -4,46 +4,7 @@ import { icons } from "@/constants/icons";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 
-const Clients = async () => {
-  // Mock clients data
-  const clients = [
-    {
-      id: 1,
-      url: "https://example.com/client1",
-      title: "TechNova Solutions",
-      image: icons.clients,
-    },
-    {
-      id: 2,
-      url: "https://example.com/client2",
-      title: "Global Enterprises",
-      image: icons.clients,
-    },
-    {
-      id: 3,
-      url: "https://example.com/client3",
-      title: "FutureX",
-      image: icons.clients,
-    },
-    {
-      id: 4,
-      url: "https://example.com/client4",
-      title: "OptimaPath",
-      image: icons.clients,
-    },
-    {
-      id: 5,
-      url: "https://example.com/client5",
-      title: "Quantum Innovations",
-      image: icons.clients,
-    },
-    {
-      id: 6,
-      url: "https://example.com/client6",
-      title: "Vertex Systems",
-      image: icons.clients,
-    },
-  ];
+const Clients = async ({ clients }: { clients: Client[] }) => {
   const t = await getTranslations("ourClients");
 
   return (
