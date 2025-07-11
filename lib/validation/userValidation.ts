@@ -81,3 +81,32 @@ export const registerFormSchema = z
     message: "registerForm.fields.confirmPassword.error",
     path: ["confirmPassword"],
   });
+
+export const passwordChangeSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      current_password: z.string().min(1, {
+        message: t("fields.current_password.error"),
+      }),
+      new_password: z.string().min(6, {
+        message: t("fields.new_password.error"),
+      }),
+      new_password_confirmation: z.string().min(1, {
+        message: t("fields.new_password_confirmation.error"),
+      }),
+    })
+    .refine((data) => data.new_password === data.new_password_confirmation, {
+      message: t("fields.new_password_confirmation.mismatch"),
+      path: ["new_password_confirmation"],
+    });
+
+// In your schema definition
+export const editProfileSchema = (t: (key: string) => string) =>
+  z.object({
+    first_name: z.string().min(1, t("form.firstName.required")),
+    last_name: z.string().min(1, t("form.lastName.required")),
+    email: z.string().email(t("form.email.invalid")),
+    phone: z.string().min(1, t("form.phone.required")),
+    country_id: z.string().min(1, t("form.country.required")),
+    city_id: z.string().min(1, t("form.city.required")),
+  });

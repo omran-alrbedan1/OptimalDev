@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from "../elements/Switcher";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -38,6 +39,7 @@ const Header = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+  const { user, isAuthenticated, isLoading } = useAuth(true);
 
   const isArabic = path.includes("/ar");
 
@@ -231,7 +233,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full dark:bg-darkMod-200 bg-white z-50 shadow-md">
-      <div className="container mx-auto flex justify-between items-center h-[75px] lg:h-24 px-4 lg:px-8">
+      <div className=" max-w-[85rem] mx-auto flex justify-between items-center h-[75px] lg:h-24 px-4 lg:px-4">
         <Link
           href="/home"
           className="flex items-center gap-2 focus:!border-none border-none"
@@ -401,7 +403,51 @@ const Header = () => {
             <LanguageSwitcher />
           </div>
 
-          <div className="flex items-center mb-2">
+          {isAuthenticated ? (
+            <div className="flex items-center mb-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => router.push("/profile")}
+                    className={`p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      isActive("/profile") ? "shadow-md" : ""
+                    }`}
+                  >
+                    <Image
+                      src={icons.user}
+                      className="h-6 w-6 rounded-full"
+                      alt="User profile"
+                      width={28}
+                      height={28}
+                    />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="end">
+                  <p className="text-white">Profile</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 ml-4">
+              <Link
+                href="/login"
+                className="px-4 py-2 text-sm font-medium !rounded-[3px] border border-primary-color1  text-primary-color1 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                {t("login")}
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-2 text-sm font-medium !rounded-[3px] text-white bg-primary-color1  hover:bg-primary-color1/90"
+              >
+                {t("register")}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className="flex lg:hidden items-center gap-4">
+          {/* Mobile Profile Button */}
+          {isAuthenticated && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -423,32 +469,7 @@ const Header = () => {
                 <p className="text-white">Profile</p>
               </TooltipContent>
             </Tooltip>
-          </div>
-        </div>
-
-        <div className="flex lg:hidden items-center gap-4">
-          {/* Mobile Profile Button */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => router.push("/profile")}
-                className={`p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  isActive("/profile") ? "shadow-md" : ""
-                }`}
-              >
-                <Image
-                  src={icons.user}
-                  className="h-6 w-6 rounded-full"
-                  alt="User profile"
-                  width={28}
-                  height={28}
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" align="end">
-              <p className="text-white">Profile</p>
-            </TooltipContent>
-          </Tooltip>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -467,7 +488,7 @@ const Header = () => {
             <Link href="/home" className="flex items-center gap-1">
               <Image
                 src={images.logo}
-                width={220}
+                width={200}
                 height={200}
                 alt="logo"
                 priority
@@ -488,9 +509,11 @@ const Header = () => {
           isArabic ? "rtl-drawer" : ""
         }`}
         footer={
-          <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700">
-            <ThemeToggler />
-            <LanguageSwitcher />
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700">
+              <ThemeToggler />
+              <LanguageSwitcher />
+            </div>
           </div>
         }
       >
@@ -670,6 +693,22 @@ const Header = () => {
             }`}
             style={{ direction: isArabic ? "rtl" : "ltr" }}
           />
+          {!isAuthenticated && (
+            <div className="flex items-center w-full justify-evenly mt-24  gap-2">
+              <Link
+                href="/login"
+                className=" py-1.5 text-sm font-medium border border-primary-color1 px-8   rounded-md text-primary-color1 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                {t("login")}
+              </Link>
+              <Link
+                href="/register"
+                className="px-8 py-1.5 text-sm font-medium text-white bg-primary-color1 rounded-md hover:bg-primary-color1/90"
+              >
+                {t("register")}
+              </Link>
+            </div>
+          )}
         </div>
       </Drawer>
     </header>

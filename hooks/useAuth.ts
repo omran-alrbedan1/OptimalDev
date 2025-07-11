@@ -18,12 +18,6 @@ export const useAuth = (requireAuth = false) => {
     dispatch(loadStoredAuth());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (requireAuth && !isAuthenticated) {
-      router.push("/login");
-    }
-  }, [requireAuth, isAuthenticated, router]);
-
   return {
     user,
     isAuthenticated,

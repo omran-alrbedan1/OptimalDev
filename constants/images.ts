@@ -10,6 +10,9 @@ import messages from "@/public/images/messages.png";
 import applications from "@/public/images/applications.png";
 import exams from "@/public/images/exams.png";
 import anonymous from "@/public/images/anonymous.png";
+import noResult from "@/public/images/no-result.svg";
+import resetPassword from "@/public/images/reset-password.svg";
+import favicon from "@/public/images/favicon.png";
 
 export const images = {
   logo,
@@ -24,4 +27,7 @@ export const images = {
   applications,
   exams,
   anonymous,
+  noResult,
+  resetPassword,
+  favicon,
 };

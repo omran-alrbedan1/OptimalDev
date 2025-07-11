@@ -14,7 +14,9 @@
     "marketing": "Marketing Solutions",
     "coaching": "Life Coaching",
     "careerPath": "Career Path",
-    "internship": "Internship"
+    "internship": "Internship",
+    "login":"Login",
+    "register":"Sign Up"
   },
     "ourServices":{
     "title":"Our Services",
@@ -53,7 +55,179 @@
   "phone":"Phone",
   "email":"Email"
 },
-"forms":{
+  "profilePage": {
+    "applications": "Applications",
+    "exams": "Exams",
+    "messages": "Messages",
+    "noApplications": {
+      "title": "No Applications Yet",
+      "description": "You haven't applied to any jobs yet. Start exploring opportunities today!",
+      "button": "Browse Available Jobs"
+    },
+    "noExams": {
+      "title": "No Exams Scheduled",
+      "description": "Your upcoming exams will appear here once scheduled"
+    },
+    "noMessages": {
+      "title": "No Messages",
+      "description": "Your messages and notifications will appear here"
+    },
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "personalInfo": {
+      "title": "Personal Information",
+      "description": "Manage your personal details and contact information"
+    },
+    "email": "Email",
+    "location": "Location",
+    "phone": "Phone",
+    "documents": "Documents",
+    "notProvided": "Not provided",
+    "notSpecified": "Not specified",
+    "viewDocuments": "View Documents",
+    "secureAccount": {
+      "title": "Secure Your Account",
+      "description": "Choose a strong password to protect your personal information"
+    }
+  }, 
+"editProfile": {
+  "title": "Edit Your Profile",
+  "subtitle": "Update your personal information",
+  "photoSection": {
+    "changePhoto": "Change Photo",
+    "cvSection": {
+      "title": "Your CV",
+      "noCV": "No CV uploaded",
+      "changeCV": "Change CV",
+      "uploadNewCV": "Upload New CV",
+      "fileRequirements": "PDF, DOCX (Max. 5MB)",
+      "cvUploaded":"CV is available"
+    }
+  },
+
+  "form": {
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "John",
+      "required": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder":"Doe",
+      "required": "Last name is required"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder":"example@example.com",
+      "invalid": "Please enter a valid email"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "required": "Phone number is required"
+    },
+    "country": {
+      "label": "Country",
+      "required": "Country is required",
+      "select": "Select Country"
+    },
+    "city": {
+      "label": "City",
+      "required": "City is required",
+      "select": "Select City"
+    },
+    "updateButton": "Update Profile",
+    "updating": "Updating..."
+  },
+  "toast": {
+    "success": "Profile updated successfully!",
+    "error": "Failed to update profile"
+  },
+  "messages": {
+    "fileSelected": "file selected",
+    "countriesError": "Failed to load countries",
+    "citiesError": "Failed to load cities"
+  },
+  "actions": {
+    "view": "View"
+  }
+},
+ "careerPage": {
+    "availableJobs": "Available Jobs",
+    "searchPlaceholder": "Search jobs...",
+    "searchButton": "Search",
+    "filters": "Filters",
+    "applyFilters": "Apply Filters",
+    "industry": "Industry",
+    "jobType": "Job Type",
+    "salaryRange": "Salary Range",
+    "salaryMarks": {
+      "0": "$0",
+      "500": "$500",
+      "1000": "$1000",
+      "1500": "$1500",
+      "2000": "$2000+"
+    },
+    "currencySymbol": "$",
+    "minSalary": "Min",
+    "maxSalary": "Max",
+    "workMode": "Work Mode",
+    "experienceLevel": "Experience Level",
+    "educationLevel": "Education Level",
+    "country": "Country",
+    "noJobsFoundAlt": "No jobs found illustration",
+    "noMatchingJobs": "No matching jobs",
+    "noResultsMessage": "Your search didn't return any results. Try different filters.",
+    "clearSearch": "Clear search",
+    "resetAllFilters": "Reset all filters",
+    "fullTime": "Full-time",
+    "onSite": "On-site",
+    "previous": "Previous",
+    "next": "Next",
+    "errorLoadingJobs": "Error loading jobs",
+    "jobCard": {
+      "checkOutJob": "Check out this job",
+      "at": "at",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "whatsapp": "WhatsApp",
+      "copyLink": "Copy Link",
+      "linkCopied": "Link copied to clipboard!",
+      "industry": "Industry",
+      "applyNow": "Apply Now",
+      "loginToApply": "Login to Apply",
+      "applying": "Applying"
+    }
+  },
+
+  "jobDetailsPage": {
+    "loading": "Loading...",
+    "error": "Failed to connect to server",
+    "jobNotFound": "Job not found",
+    "jobDescription": "Job Description",
+    "dutiesResponsibilities": "Duties and Responsibilities",
+    "technicalSkills": "Technical Skills",
+    "jobDetails": "Job Details",
+    "salaryRange": "Salary Range",
+    "publishedDate": "Published Date",
+    "expirationDate": "Expiration Date",
+    "jobType": "Job Type",
+    "requirements": "Requirements",
+    "yearsExperience": "Years of Experience",
+    "preferredCandidate": "Preferred Candidate",
+    "otherRequirements": "Other Requirements",
+    "companyInformation": "Company Information",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "applyNow": "Apply Now",
+    "loginToApply": "Login to Apply"
+  },
+  "applyingModal": {
+    "gotItThanks": "Got it, Thanks!",
+    "viewMyApplications": "View My Applications",
+    "startTest": "Start Test"
+  },
+  "forms":{
   "contactForm": {
   "fields": {
     "firstName": {
@@ -237,7 +411,44 @@
           "description": "An error occurred. Please try again."
         }
       }
+    },
+"passwordChangeForm": {
+  "title": "Change Password",
+  "description": "Enter your current and new password",
+  "fields": {
+    "current_password": {
+      "label": "Current Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters"
+    },
+    "new_password": {
+      "label": "New Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters"
+    },
+    "new_password_confirmation": {
+      "label": "Confirm New Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters",
+      "mismatch": "Passwords do not match"
     }
+  },
+  "submit": "Change Password",
+  "submitting": "Changing password...",
+  "toast": {
+    "success": {
+      "title": "Password changed successfully!",
+      "description": "Your password has been updated"
+    },
+    "error": {
+      "title": "Password change failed",
+      "description": "Please check your current password and try again"
+    }
+  }
 }
+
 }
+ 
+}
+
 

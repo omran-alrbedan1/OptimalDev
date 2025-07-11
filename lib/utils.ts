@@ -1,4 +1,5 @@
 import { ClassValue, clsx } from "clsx";
+import { useLocale } from "next-intl";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -21,5 +22,22 @@ export const formatPostedDate = (dateString: string) => {
   const currentDate = new Date();
   const diffTime = Math.abs(currentDate.getTime() - publishedDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return `Posted ${diffDays} days ago`;
+
+  if (useLocale() === "ar") {
+    const arabicNumerals = diffDays
+      .toString()
+      .replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[parseInt(d)]);
+
+    if (diffDays === 1) {
+      return "نُشر منذ يوم واحد";
+    } else if (diffDays === 2) {
+      return "نُشر منذ يومين";
+    } else if (diffDays >= 3 && diffDays <= 10) {
+      return `نُشر منذ ${arabicNumerals} أيام`;
+    } else {
+      return `نُشر منذ ${arabicNumerals} يومًا`;
+    }
+  } else {
+    return `Posted ${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
+  }
 };

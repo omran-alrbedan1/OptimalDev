@@ -1,14 +1,13 @@
+// Example for app/api/featured-jobs/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const { login, password } = await request.json();
     const language = request.headers.get("Accept-Language") || "en";
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
-      { login, password },
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/featured-jobs`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -21,11 +20,8 @@ export async function POST(request: Request) {
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
-      {
-        error: error.response?.data?.message || "Failed to login",
-        details: error.response?.data?.errors || {},
-      },
-      { status: error.response?.status || 500 }
+      { error: error.message || "Failed to fetch featured-jobs" },
+      { status: 500 }
     );
   }
 }

@@ -14,7 +14,10 @@
     "marketing": "حلول تسويقية",
     "coaching": "تدريب حياتي",
     "careerPath": "مسار وظيفي",
-    "internship": "تدريب عملي"
+    "internship": "تدريب عملي",
+  "login": "تسجيل الدخول",
+  "register": "إنشاء حساب"
+
   },
   "ourServices": {
   "title": "خدماتنا",
@@ -52,6 +55,179 @@
   "phone":"الهاتف",
   "email":"الايميل"
 },
+  "profilePage": {
+    "applications": "التقديمات",
+    "exams": "الاختبارات",
+    "messages": "الرسائل",
+    "noApplications": {
+      "title": "لا توجد طلبات حتى الآن",
+      "description": "لم تتقدم لأي وظائف بعد. ابدأ في استكشاف الفرص اليوم!",
+      "button": "تصفح الوظائف المتاحة"
+    },
+    "noExams": {
+      "title": "لا توجد اختبارات مجدولة",
+      "description": "ستظهر اختباراتك القادمة هنا بمجرد جدولتها"
+    },
+    "noMessages": {
+      "title": "لا توجد رسائل",
+      "description": "ستظهر رسائلك وإشعاراتك هنا"
+    },
+    "editProfile": "تعديل الملف الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "description": "إدارة التفاصيل الشخصية ومعلومات الاتصال الخاصة بك"
+    },
+    "email": "البريد الإلكتروني",
+    "location": "الموقع",
+    "phone": "الهاتف",
+    "documents": "المستندات",
+    "notProvided": "غير متوفر",
+    "notSpecified": "غير محدد",
+    "viewDocuments": "عرض المستندات",
+    "secureAccount": {
+      "title": "أمن حسابك",
+      "description": "اختر كلمة مرور قوية لحماية معلوماتك الشخصية"
+    }
+  }
+,
+"editProfile": {
+  "title": "تعديل الملف الشخصي",
+  "subtitle": "تحديث معلوماتك الشخصية",
+  "photoSection": {
+    "changePhoto": "تغيير الصورة",
+    "cvSection": {
+      "title": "سيرتك الذاتية",
+      "noCV": "لا يوجد سيرة ذاتية",
+      "changeCV": "تغيير السيرة الذاتية",
+      "uploadNewCV": "رفع سيرة ذاتية جديدة",
+      "fileRequirements": "PDF, DOCX (بحد أقصى 5MB)",
+      "cvUploaded":"السيرة الذاتية متاحة"
+
+    }
+  },
+  "form": {
+    "firstName": {
+      "label": "الاسم الأول",
+      "required": "الاسم الأول مطلوب"
+    },
+    "lastName": {
+      "label": "الاسم الأخير",
+      "required": "الاسم الأخير مطلوب"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "invalid": "الرجاء إدخال بريد إلكتروني صالح"
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "required": "رقم الهاتف مطلوب"
+    },
+    "country": {
+      "label": "الدولة",
+      "required": "الدولة مطلوبة",
+      "select": "اختر الدولة"
+    },
+    "city": {
+      "label": "المدينة",
+      "required": "المدينة مطلوبة",
+      "select": "اختر المدينة"
+    },
+    "updateButton": "تحديث الملف الشخصي",
+    "updating": "جاري التحديث..."
+  },
+  "toast": {
+    "success": "تم تحديث الملف الشخصي بنجاح!",
+    "error": "فشل تحديث الملف الشخصي"
+  },
+  "messages": {
+    "fileSelected": "تم اختيار الملف",
+    "countriesError": "فشل تحميل الدول",
+    "citiesError": "فشل تحميل المدن"
+  },
+  "actions": {
+    "view": "عرض"
+  }
+},
+
+  "careerPage": {
+    "availableJobs": "الوظائف المتاحة",
+    "searchPlaceholder": "ابحث عن وظائف...",
+    "searchButton": "بحث",
+    "filters": "الفلاتر",
+    "applyFilters": "تطبيق الفلاتر",
+    "industry": "الصناعة",
+    "jobType": "نوع الوظيفة",
+    "salaryRange": "نطاق الراتب",
+    "salaryMarks": {
+      "0": "٠$",
+      "500": "٥٠٠$ ",
+      "1000": "١٠٠٠$",
+      "1500": "١٥٠٠$",
+      "2000": "٢٠٠٠+$"
+    },
+    "currencySymbol": "$",
+    "minSalary": "الحد الأدنى",
+    "maxSalary": "الحد الأقصى",
+    "workMode": "طريقة العمل",
+    "experienceLevel": "مستوى الخبرة",
+    "educationLevel": "المستوى التعليمي",
+    "country": "البلد",
+    "noJobsFoundAlt": "لا توجد وظائف",
+    "noMatchingJobs": "لا توجد وظائف مطابقة",
+    "noResultsMessage": "لم يعثر بحثك على أي نتائج. جرب فلاتر مختلفة.",
+    "clearSearch": "مسح البحث",
+    "resetAllFilters": "إعادة تعيين جميع الفلاتر",
+    "fullTime": "دوام كامل",
+    "onSite": "حضوري",
+    "previous": "السابق",
+    "next": "التالي",
+    "errorLoadingJobs": "خطأ في تحميل الوظائف",
+
+    "jobCard": {
+      "checkOutJob": "اطلع على هذه الوظيفة",
+      "at": "في",
+      "facebook": "فيسبوك",
+      "linkedin": "لينكدإن",
+      "whatsapp": "واتساب",
+      "copyLink": "نسخ الرابط",
+      "linkCopied": "تم نسخ الرابط إلى الحافظة!",
+      "industry": "الصناعة",
+      "applyNow": "تقدم الآن",
+      "loginToApply": "سجل الدخول للتقديم",
+      "applying": "جاري التقدبم"
+    }
+  },
+
+  "jobDetailsPage": {
+    "loading": "جار التحميل...",
+    "error": "فشل الاتصال بالخادم",
+    "jobNotFound": "الوظيفة غير موجودة",
+    "jobDescription": "وصف الوظيفة",
+    "dutiesResponsibilities": "المهام والمسؤوليات",
+    "technicalSkills": "المهارات التقنية",
+    "jobDetails": "تفاصيل الوظيفة",
+    "salaryRange": "نطاق الراتب",
+    "publishedDate": "تاريخ النشر",
+    "expirationDate": "تاريخ الانتهاء",
+    "jobType": "نوع الوظيفة",
+    "requirements": "المتطلبات",
+    "yearsExperience": "سنوات الخبرة",
+    "preferredCandidate": "المرشح المفضل",
+    "otherRequirements": "متطلبات أخرى",
+    "companyInformation": "معلومات الشركة",
+    "address": "العنوان",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "applyNow": "تقديم الآن",
+    "loginToApply": "تسجيل الدخول للتقديم"
+  },
+
+  "applyingModal": {
+    "gotItThanks": "حسناً، شكراً لك!",
+    "viewMyApplications": "عرض طلباتي",
+    "startTest": "ابدأ الاختبار"
+  },
 "forms":{
   "contactForm": {
   "fields": {
@@ -236,6 +412,40 @@
           "description": "حدث خطأ. الرجاء المحاولة مرة أخرى."
         }
       }
+    },
+"passwordChangeForm": {
+  "title": "تغيير كلمة المرور",
+  "description": "أدخل كلمة المرور الحالية والجديدة",
+  "fields": {
+    "current_password": {
+      "label": "كلمة المرور الحالية",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+    },
+    "new_password": {
+      "label": "كلمة المرور الجديدة",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+    },
+    "new_password_confirmation": {
+      "label": "تأكيد كلمة المرور الجديدة",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+      "mismatch": "كلمات المرور غير متطابقة"
     }
+  },
+  "submit": "تغيير كلمة المرور",
+  "submitting": "جاري تغيير كلمة المرور...",
+  "toast": {
+    "success": {
+      "title": "تم تغيير كلمة المرور بنجاح!",
+      "description": "تم تحديث كلمة المرور الخاصة بك"
+    },
+    "error": {
+      "title": "فشل تغيير كلمة المرور",
+      "description": "الرجاء التحقق من كلمة المرور الحالية والمحاولة مرة أخرى"
+    }
+  }
+}
 }
 }
