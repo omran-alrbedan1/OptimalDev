@@ -36,7 +36,7 @@ const LatestJobsCarousel = (jobs: any) => {
     >
       <div
         style={{
-          backgroundImage: `url(${featuredJobs[currentIndex].image})`,
+          backgroundImage: `url(${featuredJobs[currentIndex]?.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
