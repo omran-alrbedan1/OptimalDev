@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,22 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const dispatch = useDispatch();
   const jobId = searchParams.get("jobId");
   const t = useTranslations("forms.loginForm");
   const locale = useLocale();
   const isRTL = locale === "ar";
+  const router = useRouter();
+
+  const getRegisterUrl = () => {
+    const params = new URLSearchParams();
+    if (jobId) params.append("jobId", jobId);
+    if (callbackUrl) params.append("callbackUrl", callbackUrl);
+    return `/${locale}/register${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+  };
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -49,6 +60,11 @@ export default function LoginForm() {
       dispatch(loginSuccess(response));
 
       toast.success(t("toast.success.title"));
+      const redirectUrl =
+        callbackUrl && callbackUrl.length > 0
+          ? decodeURIComponent(callbackUrl)
+          : `/${locale}/home`;
+      router.push(redirectUrl);
     } catch (error) {
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),
@@ -117,7 +133,6 @@ export default function LoginForm() {
             )}
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full text-white"
@@ -127,11 +142,10 @@ export default function LoginForm() {
           </Button>
         </div>
 
-        {/* Sign Up Link */}
         <div className="text-center text-sm">
           {t("noAccount")}{" "}
           <Link
-            href={`/${locale}/register${jobId ? `?jobId=${jobId}` : ""}`}
+            href={getRegisterUrl()}
             className="font-medium text-primary hover:underline"
           >
             {t("signUp")}

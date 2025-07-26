@@ -9,6 +9,9 @@ import {
   BookOutlined,
   SolutionOutlined,
   LockOutlined,
+  EyeOutlined,
+  LogoutOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import { FaPhoneAlt, FaRegEdit } from "react-icons/fa";
@@ -22,22 +25,47 @@ import PasswordChangeForm from "@/components/forms/RestPasswordForm";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { useDispatch } from "react-redux";
 import { ApplicationsList } from "@/components/parts/ApplicationsList";
+import { logout } from "@/store/slices/authSlice";
 
 const ProfilePage = () => {
-  const t = useTranslations();
-  const { isAuthenticated, isLoading } = useAuth(true);
+  const t = useTranslations("profilePage");
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
   const locale = useLocale();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      dispatch(logout());
+      router.push("/home");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const showLogoutModal = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const hideLogoutModal = () => {
+    setIsLogoutModalOpen(false);
   };
 
   const tabChange = (key: string) => {
@@ -50,7 +78,7 @@ const ProfilePage = () => {
       label: (
         <span className="flex items-center font-medium">
           <SolutionOutlined className="mx-2" />
-          {t("profilePage.applications")}
+          {t("applications")}
         </span>
       ),
       children: <ApplicationsList />,
@@ -60,7 +88,7 @@ const ProfilePage = () => {
       label: (
         <span className="flex items-center font-medium">
           <BookOutlined className="mx-2" />
-          {t("profilePage.exams")}
+          {t("exams")}
         </span>
       ),
       children: (
@@ -76,11 +104,9 @@ const ProfilePage = () => {
               />
             </div>
             <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-              {t("profilePage.noExams.title")}
+              {t("noExams.title")}
             </h2>
-            <p className="text-gray-500">
-              {t("profilePage.noExams.description")}
-            </p>
+            <p className="text-gray-500">{t("noExams.description")}</p>
           </div>
         </div>
       ),
@@ -90,7 +116,7 @@ const ProfilePage = () => {
       label: (
         <span className="flex items-center font-medium">
           <MessageOutlined className="mx-2" />
-          {t("profilePage.messages")}
+          {t("messages")}
         </span>
       ),
       children: (
@@ -106,11 +132,9 @@ const ProfilePage = () => {
               />
             </div>
             <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-              {t("profilePage.noMessages.title")}
+              {t("noMessages.title")}
             </h2>
-            <p className="text-gray-500">
-              {t("profilePage.noMessages.description")}
-            </p>
+            <p className="text-gray-500">{t("noMessages.description")}</p>
           </div>
         </div>
       ),
@@ -130,14 +154,18 @@ const ProfilePage = () => {
         className="flex flex-col lg:flex-row gap-8 mb-8"
       >
         {/* Profile Image Card */}
-        <Card className="w-full lg:w-1/3 p-6 shadow-sm border-0 rounded-xl">
+        <Card className="w-full lg:w-2/5 p-6 shadow-sm border-0 rounded-xl">
           <div className="flex flex-col items-center">
             <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 flex items-center justify-center border-white dark:border-none shadow-lg mb-4">
               {profileLoading ? (
                 <Skeleton.Avatar active size={160} shape="circle" />
               ) : (
                 <Image
-                  src={images.profile}
+                  src={
+                    userData?.profile_image
+                      ? userData.profile_image
+                      : images.anonymous
+                  }
                   alt={`${userData?.first_name} ${userData?.last_name}`}
                   fill={!!userData?.profile_image}
                   className={
@@ -161,7 +189,7 @@ const ProfilePage = () => {
             <div
               className={cn(
                 "w-full flex flex-col md:flex-row items-center gap-4 md:gap-2 ",
-                locale === "en" ? "md:mr-8" : "md:ml-8"
+                locale === "en" ? "md:mr-8" : "md:ml-16"
               )}
             >
               <Button
@@ -171,7 +199,7 @@ const ProfilePage = () => {
                 block
                 size="middle"
               >
-                {t("profilePage.editProfile")}
+                {t("editProfile")}
               </Button>
 
               <Button
@@ -180,7 +208,17 @@ const ProfilePage = () => {
                 block
                 size="middle"
               >
-                {t("profilePage.changePassword")}
+                {t("changePassword")}
+              </Button>
+
+              <Button
+                onClick={showLogoutModal}
+                danger
+                icon={<LogoutOutlined className="mr-2" />}
+                block
+                size="middle"
+              >
+                {t("logout.button")}
               </Button>
             </div>
           </div>
@@ -191,11 +229,9 @@ const ProfilePage = () => {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-                {t("profilePage.personalInfo.title")}
+                {t("personalInfo.title")}
               </h2>
-              <p className="text-gray-500">
-                {t("profilePage.personalInfo.description")}
-              </p>
+              <p className="text-gray-500">{t("personalInfo.description")}</p>
             </div>
 
             <Divider className="my-2" />
@@ -208,13 +244,13 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">
-                      {t("profilePage.email")}
+                      {t("email")}
                     </h3>
                     {profileLoading ? (
                       <Skeleton.Input active className="w-48 h-6" />
                     ) : (
                       <p className="text-gray-800 dark:text-gray-200 font-medium">
-                        {userData?.email || t("profilePage.notProvided")}
+                        {userData?.email || t("notProvided")}
                       </p>
                     )}
                   </div>
@@ -226,7 +262,7 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">
-                      {t("profilePage.location")}
+                      {t("location")}
                     </h3>
                     {profileLoading ? (
                       <Skeleton.Input active className="w-48 h-6" />
@@ -234,7 +270,7 @@ const ProfilePage = () => {
                       <p className="text-gray-800 dark:text-gray-200 font-medium">
                         {userData?.city_name ||
                           userData?.country_name ||
-                          t("profilePage.notSpecified")}
+                          t("notSpecified")}
                       </p>
                     )}
                   </div>
@@ -248,13 +284,13 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">
-                      {t("profilePage.phone")}
+                      {t("phone")}
                     </h3>
                     {profileLoading ? (
                       <Skeleton.Input active className="w-48 h-6" />
                     ) : (
                       <p className="text-gray-800 dark:text-gray-200 font-medium">
-                        {userData?.phone || t("profilePage.notProvided")}
+                        {userData?.phone || t("notProvided")}
                       </p>
                     )}
                   </div>
@@ -266,15 +302,21 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">
-                      {t("profilePage.documents")}
+                      {t("documents")}
                     </h3>
                     <p className="text-gray-800 dark:text-gray-200 font-medium">
                       {profileLoading ? (
                         <Skeleton.Input active className="w-48 h-6" />
                       ) : (
-                        <Tag color="green">
-                          {t("profilePage.viewDocuments")}
-                        </Tag>
+                        <a
+                          href={userData?.cv_path || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary"
+                        >
+                          <EyeOutlined className="mr-1" />
+                          {t("viewDocuments")}
+                        </a>
                       )}
                     </p>
                   </div>
@@ -325,10 +367,10 @@ const ProfilePage = () => {
                 className="mb-6"
               />
               <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-gray-200">
-                {t("profilePage.secureAccount.title")}
+                {t("secureAccount.title")}
               </h3>
               <p className="text-gray-500 text-center mt-2">
-                {t("profilePage.secureAccount.description")}
+                {t("secureAccount.description")}
               </p>
             </div>
           </div>
@@ -336,6 +378,62 @@ const ProfilePage = () => {
             <PasswordChangeForm onSuccess={() => setIsModalOpen(false)} />
           </div>
         </div>
+      </Modal>
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        open={isLogoutModalOpen}
+        onCancel={hideLogoutModal}
+        footer={null}
+        width={480}
+        centered
+        className="logout-modal"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="text-center py-6"
+        >
+          {/* Warning Icon */}
+          <div className="mb-6 flex justify-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 rounded-full flex items-center justify-center shadow-lg">
+              <ExclamationCircleOutlined className="text-4xl text-red-500 dark:text-red-400" />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+              {t("logout.confirmTitle")}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400  leading-relaxed">
+              {t("logout.confirmMessage")}
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4 justify-center">
+            <Button
+              onClick={hideLogoutModal}
+              size="middle"
+              className="min-w-[120px] h-10 text-lg font-medium"
+            >
+              {t("logout.cancel")}
+            </Button>
+            <Button
+              onClick={handleLogout}
+              danger
+              type="primary"
+              size="middle"
+              loading={isLoggingOut}
+              icon={!isLoggingOut ? <LogoutOutlined /> : null}
+              className="min-w-[120px] h-10 text-lg font-medium bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 border-0 shadow-lg"
+            >
+              {isLoggingOut ? t("logout.loggingOut") : t("logout.button")}
+            </Button>
+          </div>
+        </motion.div>
       </Modal>
     </div>
   );

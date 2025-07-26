@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import { useAppSelector } from "@/hooks/hook";
 import { applyForJob } from "@/lib/client-action";
@@ -5,7 +6,7 @@ import { Button, Dropdown, MenuProps } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { FiBriefcase, FiClock, FiMapPin, FiShare2 } from "react-icons/fi";
 import {
@@ -23,6 +24,7 @@ const JobCard = ({ job }: { job: any }) => {
   const t = useTranslations("careerPage.jobCard");
   const locale = useLocale();
   const router = useRouter();
+  const pathname = usePathname();
   const [isApplying, setIsApplying] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState<"success" | "error" | "tests">(
@@ -39,27 +41,28 @@ const JobCard = ({ job }: { job: any }) => {
 
   const applyToJob = async () => {
     if (!isAuthenticated) {
-      router.push(`/login?jobId=${job.id}`);
+      router.push(
+        `/login?jobId=${job.id}&callbackUrl=${encodeURIComponent(pathname)}`
+      );
       return;
     }
     setIsApplying(true);
     try {
       const response = await applyForJob(Number(job.id));
+      console.log(response);
       if (
-        //@ts-ignore
-        response.message === "يرجى إكمال الاختبارات المطلوبة أولاً" ||
-        "Please complete the required tests firsst"
+        typeof response.message === "string" &&
+        (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
+          response.message.includes("Please complete the required tests first"))
       ) {
-        //@ts-ignore
         setModalType("tests");
-        //@ts-ignore
+
         setModalMessage(response.message);
-        //@ts-ignore
+
         setRequiredTests(response.required_tests);
       } else {
         setModalType("success");
         setModalMessage(
-          //@ts-ignore
           response.message || "Application submitted successfully"
         );
       }
@@ -78,7 +81,6 @@ const JobCard = ({ job }: { job: any }) => {
     {
       key: "facebook",
       label: (
-        //@ts-ignore
         <FacebookShareButton url={jobUrl} quote={shareTitle}>
           <div className={`flex items-center gap-2 px-2 py-1 `}>
             <FacebookIcon size={24} round />

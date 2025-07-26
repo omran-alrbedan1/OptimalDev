@@ -1,5 +1,4 @@
 "use client";
-import { useFetch } from "@/hooks/useFetch";
 import { fetchMyApplications } from "@/lib/client-action";
 import {
   Card,
@@ -7,36 +6,47 @@ import {
   Tag,
   Divider,
   Button,
-  Avatar,
   Space,
   Typography,
+  Pagination,
+  Alert,
 } from "antd";
 import {
   CalendarOutlined,
   EnvironmentOutlined,
   DollarOutlined,
   ClockCircleOutlined,
-  BankOutlined,
   UserOutlined,
   FileTextOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { images } from "@/constants/images";
+import { usePagination } from "@/hooks/usePagination";
 
 const { Text, Title } = Typography;
 
 export const ApplicationsList = () => {
-  const t = useTranslations();
+  const t = useTranslations("profilePage.ApplicationList");
   const router = useRouter();
   const locale = useLocale();
-  const { data: applications, isLoading } =
-    useFetch<Application[]>(fetchMyApplications);
+  const pathname = usePathname();
+  const isArabic = pathname.includes("/ar");
 
-  console.log(applications);
+  const {
+    data: applications = [],
+    meta: paginationMeta,
+    isLoading,
+    error,
+    currentPage,
+    goToPage,
+  } =
+    //@ts-ignore
+    usePagination<Application>(fetchMyApplications);
 
   if (isLoading) {
     return (
@@ -51,6 +61,22 @@ export const ApplicationsList = () => {
             </div>
           </Card>
         ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <Alert
+          message={t("error.loading")}
+          description={error.message}
+          type="error"
+          showIcon
+        />
+        <Button onClick={() => window.location.reload()} className="mt-4">
+          {t("error.retry")}
+        </Button>
       </div>
     );
   }
@@ -74,47 +100,30 @@ export const ApplicationsList = () => {
             />
           </div>
           <Title level={3} className="text-gray-800 dark:text-gray-200 mb-2">
-            {t("profilePage.noApplications.title")}
+            {t("noApplications.title")}
           </Title>
           <Text className="text-gray-500 mb-6 block">
-            {t("profilePage.noApplications.description")}
+            {t("noApplications.description")}
           </Text>
           <Button
             onClick={() => router.push("/career")}
             type="primary"
             size="large"
-            className="bg-gradient-to-r from-blue-500 to-purple-600 border-none hover:from-blue-600 hover:to-purple-700"
+            className="bg-gradient-to-r from-primary/80 to-primary border-none hover:from-blue-600 hover:to-purple-700"
           >
-            {t("profilePage.noApplications.button")}
+            {t("noApplications.button")}
           </Button>
         </div>
       </motion.div>
     );
   }
 
-  const getStatusConfig = (status: string) => {
-    const configs = {
-      applied: { color: "blue", text: "Applied", icon: "📝" },
-      pending: { color: "orange", text: "Under Review", icon: "⏳" },
-      reviewed: { color: "cyan", text: "Reviewed", icon: "👀" },
-      shortlisted: { color: "purple", text: "Shortlisted", icon: "⭐" },
-      approved: { color: "green", text: "Approved", icon: "✅" },
-      rejected: { color: "red", text: "Rejected", icon: "❌" },
-      withdrawn: { color: "gray", text: "Withdrawn", icon: "🚫" },
-    };
-    return (
-      configs[status.toLowerCase()] || {
-        color: "default",
-        text: status,
-        icon: "📄",
-      }
-    );
-  };
-
   const formatSalary = (min: string, max: string) => {
     const minNum = parseFloat(min);
     const maxNum = parseFloat(max);
-    return `$${minNum.toLocaleString()} - $${maxNum.toLocaleString()}`;
+    return `$${minNum.toLocaleString(locale)} - $${maxNum.toLocaleString(
+      locale
+    )}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -125,39 +134,23 @@ export const ApplicationsList = () => {
     });
   };
 
-  const getDaysUntilExpiry = (expiryDate: string) => {
-    const expiry = new Date(expiryDate);
-    const today = new Date();
-    const diffTime = expiry.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
   return (
     <div className="space-y-6 px-4 mt-4">
       <div className="flex justify-between items-center mb-6">
         <div>
           <Title level={4} className="mb-0">
-            My Applications
+            {t("header.title")}
           </Title>
-          <Text className="text-gray-500">
-            {applications.length} application
-            {applications.length !== 1 ? "s" : ""} found
-          </Text>
         </div>
       </div>
 
       {applications.map((app, index) => {
-        const statusConfig = getStatusConfig(app.status);
         const job = app.job_opportunity;
         const company = job.company;
-        const daysUntilExpiry = getDaysUntilExpiry(job.expires_at);
-        const isExpiringSoon = daysUntilExpiry <= 7 && daysUntilExpiry > 0;
-        const isExpired = daysUntilExpiry <= 0;
 
         return (
           <motion.div
-            key={app.id}
+            key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -175,6 +168,7 @@ export const ApplicationsList = () => {
                       height={64}
                       width={64}
                       alt="logo"
+                      className="rounded-md object-cover"
                     />
                     <div className="flex-1">
                       <Title
@@ -189,29 +183,9 @@ export const ApplicationsList = () => {
                       <br />
                       <Text className="text-gray-500 text-sm">
                         <EnvironmentOutlined className="mr-1" />
-
                         {company.address}
                       </Text>
                     </div>
-                  </div>
-
-                  <div className="flex flex-col items-end gap-2">
-                    <Tag
-                      color={statusConfig.color}
-                      className="mb-0 px-3 py-1 rounded-full font-medium"
-                    >
-                      {statusConfig.icon} {statusConfig.text}
-                    </Tag>
-                    {isExpiringSoon && (
-                      <Tag color="orange" className="text-xs">
-                        ⚠️ Expires in {daysUntilExpiry} days
-                      </Tag>
-                    )}
-                    {isExpired && (
-                      <Tag color="red" className="text-xs">
-                        ❌ Expired
-                      </Tag>
-                    )}
                   </div>
                 </div>
 
@@ -223,7 +197,7 @@ export const ApplicationsList = () => {
                     </div>
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        Salary
+                        {t("jobDetails.salary")}
                       </Text>
                       <Text className="font-medium text-sm">
                         {formatSalary(job.salary_min, job.salary_max)}
@@ -237,10 +211,10 @@ export const ApplicationsList = () => {
                     </div>
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        Experience
+                        {t("jobDetails.experience")}
                       </Text>
                       <Text className="font-medium text-sm">
-                        {job.years_experience} years
+                        {job.years_experience} {t("jobDetails.years")}
                       </Text>
                     </div>
                   </div>
@@ -251,12 +225,10 @@ export const ApplicationsList = () => {
                     </div>
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        Contract
+                        {t("jobDetails.contract")}
                       </Text>
                       <Text className="font-medium text-sm">
-                        {job.contract_types_items?.[0]
-                          ? job.contract_types_items[0].name
-                          : "N/A"}
+                        {job.contract_types?.[0]?.name || "N/A"}
                       </Text>
                     </div>
                   </div>
@@ -267,12 +239,10 @@ export const ApplicationsList = () => {
                     </div>
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        Work Mode
+                        {t("jobDetails.workMode")}
                       </Text>
                       <Text className="font-medium text-sm">
-                        {job.work_modes_items?.[0]
-                          ? job.work_modes_items[0].name
-                          : "N/A"}
+                        {job.work_modes?.[0]?.name || "N/A"}
                       </Text>
                     </div>
                   </div>
@@ -282,17 +252,19 @@ export const ApplicationsList = () => {
                 {job.technical_skills && (
                   <div className="mb-4">
                     <Text className="text-xs text-gray-500 block mb-2">
-                      Required Skills
+                      {t("jobDetails.skills")}
                     </Text>
                     <div className="flex flex-wrap gap-1">
-                      {job.technical_skills?.split(",").map((skill, idx) => (
-                        <Tag
-                          key={idx}
-                          className="text-xs bg-gray-100 border-gray-200"
-                        >
-                          {skill.trim()}
-                        </Tag>
-                      ))}
+                      {job.technical_skills
+                        .split(",")
+                        .map((skill: string, idx: number) => (
+                          <Tag
+                            key={idx}
+                            className="text-xs bg-gray-100 border-gray-200"
+                          >
+                            {skill.trim()}
+                          </Tag>
+                        ))}
                     </div>
                   </div>
                 )}
@@ -304,13 +276,10 @@ export const ApplicationsList = () => {
                   <Space>
                     <Text className="text-sm text-gray-500">
                       <CalendarOutlined className="mr-1" />
-                      Applied: {formatDate(app.applied_at)}
+                      {t("jobDetails.appliedDate", {
+                        date: formatDate(app?.applied_at || ""),
+                      })}
                     </Text>
-                    {app.final_score && (
-                      <Tag color="gold" className="ml-2">
-                        Score: {app.final_score}%
-                      </Tag>
-                    )}
                   </Space>
 
                   <Space>
@@ -322,7 +291,7 @@ export const ApplicationsList = () => {
                         router.push(`/profile/applications/${app.id}`)
                       }
                     >
-                      Details
+                      {t("actions.details")}
                     </Button>
                     <Button
                       type="primary"
@@ -331,7 +300,7 @@ export const ApplicationsList = () => {
                       onClick={() => router.push(`/career/${job.id}`)}
                       className="bg-gradient-to-r from-primary-color1/80 to-primary border-none"
                     >
-                      View Job
+                      {t("actions.viewJob")}
                     </Button>
                   </Space>
                 </div>
@@ -340,6 +309,74 @@ export const ApplicationsList = () => {
           </motion.div>
         );
       })}
+
+      {applications.length > 0 && (
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex justify-center mt-8 overflow-x-auto hide-scrollbar"
+        >
+          <Pagination
+            current={currentPage}
+            total={paginationMeta.total}
+            pageSize={paginationMeta.per_page}
+            onChange={(page) => {
+              goToPage(page);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            showSizeChanger={false}
+            className="[&_.ant-pagination-item-active]:bg-primary-color1 [&_.ant-pagination-item-active]:border-none [&_.ant-pagination-item-active]:text-white"
+            itemRender={(current, type, originalElement) => {
+              if (type === "prev") {
+                return (
+                  <Button
+                    className="mx-1 border-none flex items-center"
+                    disabled={currentPage === 1}
+                  >
+                    {isArabic ? (
+                      <FiChevronRight className="mr-1" />
+                    ) : (
+                      <FiChevronLeft className="mr-1" />
+                    )}
+                    {t("pagination.previous")}
+                  </Button>
+                );
+              }
+              if (type === "next") {
+                return (
+                  <Button
+                    className="mx-1 border-none flex items-center"
+                    disabled={currentPage === paginationMeta.last_page}
+                  >
+                    {t("pagination.next")}
+                    {isArabic ? (
+                      <FiChevronLeft className="mr-1" />
+                    ) : (
+                      <FiChevronRight className="mr-1" />
+                    )}
+                  </Button>
+                );
+              }
+              if (type === "page") {
+                return (
+                  <Button
+                    type={current === currentPage ? "primary" : "default"}
+                    className={`mx-1 border-none ${
+                      current === currentPage
+                        ? "!bg-primary-color1 !text-white"
+                        : ""
+                    }`}
+                  >
+                    {current}
+                  </Button>
+                );
+              }
+              return originalElement;
+            }}
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

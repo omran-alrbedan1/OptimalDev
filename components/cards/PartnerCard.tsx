@@ -35,11 +35,11 @@ const PartnerCard = ({
           <div className="relative w-24 h-24 group-hover:scale-110 transition-transform duration-300">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 blur-sm group-hover:blur-md transition-all duration-300"></div>
             <Image
-              src={"/images/FUTURE X.jpg"}
+              src={partner.image}
               width={96}
               height={96}
               alt={partner.title}
-              className="rounded-full relative z-10 border-4 border-white dark:border-gray-800 object-cover"
+              className="rounded-full relative h-full border-4 border-white dark:border-gray-800 object-cover"
             />
           </div>
         )}

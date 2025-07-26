@@ -1,32 +1,31 @@
 "use client";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-const LatestJobsCarousel = ({ jobs }: { jobs: any }) => {
+const LatestJobsCarousel = (jobs: any) => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
+  const featuredJobs = jobs.jobs;
 
   useEffect(() => {
     const startAutoPlay = () => {
       intervalRef.current = setInterval(() => {
         if (!isPaused) {
-          setCurrentIndex((prev) => (prev + 1) % jobs.length);
+          setCurrentIndex((prev) => (prev + 1) % featuredJobs.length);
         }
       }, 5000);
     };
 
     startAutoPlay();
     return () => clearInterval(intervalRef.current);
-  }, [jobs.length, isPaused]);
+  }, [featuredJobs.length, isPaused]);
 
   const handleSlideClick = () => {
-    if (jobs[currentIndex].url) {
-      router.push(jobs[currentIndex].url);
+    if (featuredJobs[currentIndex].url) {
+      router.push(`/career/${featuredJobs[currentIndex].id}`);
     }
   };
 
@@ -37,7 +36,7 @@ const LatestJobsCarousel = ({ jobs }: { jobs: any }) => {
     >
       <div
         style={{
-          backgroundImage: `url(${jobs[currentIndex].image})`,
+          backgroundImage: `url(${featuredJobs[currentIndex].image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

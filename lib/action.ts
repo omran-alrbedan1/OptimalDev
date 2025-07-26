@@ -14,7 +14,7 @@ const fetchApi = async <T>(
   try {
     const response = await fetch(url, {
       ...options,
-      cache: "default",
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
         "Accept-Language": language,

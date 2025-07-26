@@ -1,30 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Upload, Avatar, Space, message, Skeleton, Card } from "antd";
-import {
-  UserOutlined,
-  UploadOutlined,
-  FilePdfOutlined,
-  LoadingOutlined,
-  InfoCircleOutlined,
-  SyncOutlined,
-  FileAddOutlined,
-  CheckOutlined,
-  EyeOutlined,
-  EditOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  GlobalOutlined,
-  StarOutlined,
-  CameraOutlined,
-} from "@ant-design/icons";
-import axios from "axios";
-import type { UploadProps } from "antd";
-import { fetchProfileInfo, updateProfile } from "@/lib/client-action";
-import { useFetch } from "@/hooks/useFetch";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -34,16 +9,42 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useFetch } from "@/hooks/useFetch";
+import {
+  fetchCities,
+  fetchCountries,
+  fetchProfileInfo,
+  updateProfile,
+} from "@/lib/client-action";
+import { editProfileSchema } from "@/lib/validation/userValidation";
+import {
+  CameraOutlined,
+  CheckOutlined,
+  EditOutlined,
+  EyeOutlined,
+  FileAddOutlined,
+  FilePdfOutlined,
+  GlobalOutlined,
+  LoadingOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  SyncOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { UploadProps } from "antd";
+import { Avatar, Card, message, Upload } from "antd";
+import { motion } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
-import { editProfileSchema } from "@/lib/validation/userValidation";
-import { motion } from "framer-motion";
-import { ExternalLinkIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import * as z from "zod";
 
 type EditProfileValues = z.infer<ReturnType<typeof editProfileSchema>>;
 
@@ -51,7 +52,7 @@ const EditProfilePage = () => {
   const t = useTranslations("editProfile");
   const locale = useLocale();
   const isRTL = locale === "ar";
-
+  const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [cities, setCities] = useState<City[]>([]);
@@ -62,7 +63,7 @@ const EditProfilePage = () => {
 
   const { data: profileData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);
-
+  console.log(profileData);
   const form = useForm<EditProfileValues>({
     resolver: zodResolver(editProfileSchema(t)),
     defaultValues: {
@@ -85,26 +86,33 @@ const EditProfilePage = () => {
         country_id: profileData.country_id?.toString() || "",
         city_id: profileData.city_id?.toString() || "",
       });
-      fetchCountries();
-      if (profileData.country_id) {
-        fetchCities(profileData.country_id);
-      }
+      getCountries();
     }
-  }, [profileData, form]);
+  }, [profileData]);
 
-  const fetchCountries = async () => {
+  useEffect(() => {
+    if (profileData?.country_id) {
+      getCities(profileData?.country_id);
+    }
+  }, [profileData?.country_id]);
+
+  const getCountries = async () => {
     try {
-      const response = await axios.get<Country[]>("/api/countries");
-      setCountries(response.data);
+      const response = await fetchCountries();
+      //@ts-ignore
+      console.log(response);
+      setCountries(response);
     } catch (error) {
+      console.log(error);
       message.error(t("messages.countriesError"));
     }
   };
 
-  const fetchCities = async (countryId: number) => {
+  const getCities = async (countryId: number) => {
     try {
-      const response = await axios.get<City[]>(`/api/cities/${countryId}`);
-      setCities(response.data);
+      const response = await fetchCities(countryId);
+      //@ts-ignore
+      setCities(response);
     } catch (error) {
       message.error(t("messages.citiesError"));
     }
@@ -129,7 +137,7 @@ const EditProfilePage = () => {
     form.setValue("country_id", value?.toString() || "");
     form.resetField("city_id");
     if (value) {
-      fetchCities(value);
+      getCities(value);
     }
   };
 
@@ -170,7 +178,6 @@ const EditProfilePage = () => {
           transition={{ duration: 0.6 }}
           className="relative"
         >
-          {/* Main Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -184,7 +191,6 @@ const EditProfilePage = () => {
                   className="space-y-8"
                 >
                   <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
-                    {/* Profile Image Section */}
                     <motion.div
                       initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -209,7 +215,7 @@ const EditProfilePage = () => {
                                 icon={<UserOutlined className="text-4xl" />}
                                 className="relative border-4 border-white dark:border-slate-700 shadow-2xl"
                               />
-                              <div className="absolute inset-0 bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <div className="bg-white/90 dark:bg-slate-800/90 p-3 rounded-full shadow-lg">
                                   <CameraOutlined className="text-xl text-slate-700 dark:text-slate-300" />
                                 </div>
@@ -244,7 +250,6 @@ const EditProfilePage = () => {
                         </div>
                       </div>
 
-                      {/* CV Section */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -252,7 +257,7 @@ const EditProfilePage = () => {
                         className="mt-6 dark:from-slate-800 dark:to-cyan-900/20 rounded-2xl p-6 border border-slate-200 dark:border-slate-600/50 shadow-sm"
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center">
+                          <div className="flex items-center gap-x-3">
                             <div className="w-10 h-10 bg-gradient-to-br from-[#22ace3] to-[#1d9bd1] rounded-[4px] flex items-center justify-center mr-3 shadow-lg">
                               <FilePdfOutlined className="text-white text-lg" />
                             </div>
@@ -358,7 +363,6 @@ const EditProfilePage = () => {
                       </motion.div>
                     </motion.div>
 
-                    {/* Form Section */}
                     <motion.div
                       initial={{ opacity: 0, x: 30 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -366,7 +370,7 @@ const EditProfilePage = () => {
                       className="xl:col-span-2"
                     >
                       <div className="dark:from-slate-800 dark:to-primary-color1/20 rounded-2xl p-8 border border-slate-200/50 dark:border-slate-600/50">
-                        <div className="flex items-center mb-8">
+                        <div className="flex items-center mb-8 gap-x-3">
                           <div className="w-12 h-12 bg-primary-color1 rounded-[4px] flex items-center justify-center mr-4 shadow-lg">
                             <UserOutlined className="text-white text-xl" />
                           </div>
@@ -387,7 +391,7 @@ const EditProfilePage = () => {
                               name="first_name"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm">
+                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm gap-x-1">
                                     <EditOutlined className="mr-2 text-primary-color1" />
                                     {t("form.firstName.label")}
                                   </FormLabel>
@@ -400,7 +404,7 @@ const EditProfilePage = () => {
                                       className="h-12 bg-white/50 dark:bg-slate-700/50 border-slate-300 border dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200"
                                     />
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-red-500" />
                                 </FormItem>
                               )}
                             />
@@ -410,7 +414,7 @@ const EditProfilePage = () => {
                               name="last_name"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm">
+                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm gap-x-1">
                                     <EditOutlined className="mr-2 text-primary-color1" />
                                     {t("form.lastName.label")}
                                   </FormLabel>
@@ -423,7 +427,7 @@ const EditProfilePage = () => {
                                       className="h-12 bg-white/50 dark:bg-slate-700/50 border-slate-300 border dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200"
                                     />
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-red-500" />
                                 </FormItem>
                               )}
                             />
@@ -434,7 +438,7 @@ const EditProfilePage = () => {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm">
+                                <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm gap-x-1">
                                   <MailOutlined className="mr-2 text-primary-color1" />
                                   {t("form.email.label")}
                                 </FormLabel>
@@ -445,7 +449,7 @@ const EditProfilePage = () => {
                                     className="h-12 bg-white/50 dark:bg-slate-700/50 border-slate-300 border dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200"
                                   />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-red-500" />
                               </FormItem>
                             )}
                           />
@@ -455,7 +459,7 @@ const EditProfilePage = () => {
                             name="phone"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm">
+                                <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold flex items-center text-sm gap-x-1">
                                   <PhoneOutlined className="mr-2 text-primary-color1" />
                                   {t("form.phone.label")}
                                 </FormLabel>
@@ -467,14 +471,35 @@ const EditProfilePage = () => {
                                       onChange={(phone) =>
                                         field.onChange(phone)
                                       }
-                                      inputClass="!h-12 !w-full !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
                                       containerClass="w-full"
-                                      buttonClass="!h-12 !rounded-l-xl !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50"
-                                      dropdownClass="!bg-white dark:!bg-slate-800 !border-slate-300 dark:!border-slate-600 !shadow-xl !rounded-lg"
+                                      buttonClass=" !h-12 !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50  !rounded-l-[1px] rtl:!rounded-r-[1px] rtl:!rounded-l-none rtl:!pr-2 dark:hover:bg-gray-900"
+                                      dropdownClass="!bg-white dark:!bg-slate-800 !border-slate-300 dark:!border-slate-600 !shadow-xl  !rounded-lg"
+                                      inputClass="!h-12  !w-full  rtl:pr-16 !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
+                                      inputStyle={{
+                                        direction:
+                                          useLocale() === "ar" ? "ltr" : "ltr",
+                                        textAlign:
+                                          useLocale() === "ar"
+                                            ? "right"
+                                            : "left",
+                                      }}
+                                      buttonStyle={{
+                                        direction:
+                                          useLocale() === "ar" ? "ltr" : "ltr",
+                                      }}
+                                      placeholder={
+                                        useLocale() === "ar"
+                                          ? "رقم الهاتف"
+                                          : "Phone Number"
+                                      }
+                                      containerStyle={{
+                                        direction:
+                                          useLocale() === "ar" ? "rtl" : "ltr",
+                                      }}
                                     />
                                   </div>
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-red-500" />
                               </FormItem>
                             )}
                           />
@@ -485,7 +510,7 @@ const EditProfilePage = () => {
                               name="country_id"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-slate-700 mt-1 dark:text-slate-300 font-semibold flex items-center text-sm">
+                                  <FormLabel className="text-slate-700 mt-1 dark:text-slate-300 font-semibold flex items-center text-sm gap-x-1">
                                     <GlobalOutlined className="mr-2 text-primary-color1" />
                                     {t("form.country.label")}
                                   </FormLabel>
@@ -493,7 +518,7 @@ const EditProfilePage = () => {
                                     <select
                                       value={field.value}
                                       onChange={handleCountryChange}
-                                      className="h-12 w-full bg-white/50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200 px-4"
+                                      className="h-12 w-full bg-white/50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200 px-4 focus-within:border-none focus-within:outline-none"
                                     >
                                       <option value="">
                                         {t("form.country.select")}
@@ -508,7 +533,7 @@ const EditProfilePage = () => {
                                       ))}
                                     </select>
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-red-500" />
                                 </FormItem>
                               )}
                             />
@@ -518,7 +543,7 @@ const EditProfilePage = () => {
                               name="city_id"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold text-sm">
+                                  <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold text-sm gap-x-1">
                                     {t("form.city.label")}
                                   </FormLabel>
                                   <FormControl>
@@ -526,7 +551,7 @@ const EditProfilePage = () => {
                                       value={field.value}
                                       onChange={handleCityChange}
                                       disabled={!form.watch("country_id")}
-                                      className="h-12 w-full bg-white/50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200 px-4 disabled:opacity-50"
+                                      className="h-12 w-full bg-white/50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-[4px] shadow-sm focus:ring-2 focus:ring-primary-color1 focus:border-primary-color1 transition-all duration-200 px-4 focus-within:border-none focus-within:outline-none"
                                     >
                                       <option value="">
                                         {t("form.city.select")}
@@ -538,7 +563,7 @@ const EditProfilePage = () => {
                                       ))}
                                     </select>
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-red-500" />
                                 </FormItem>
                               )}
                             />
@@ -584,6 +609,67 @@ const EditProfilePage = () => {
           </motion.div>
         </motion.div>
       </div>
+      {theme === "dark" && (
+        <style>{`
+            select option:checked {
+              background-color: rgb(71 85 105);
+              color: rgb(226 232 240);
+            }
+            .react-tel-input .flag-dropdown {
+              background-color: transparent;
+            }
+            .react-tel-input .country-list {
+              background-color: rgb(30 41 59);
+              color: rgb(226 232 240); 
+            }
+            .react-tel-input .country-list .country:hover {
+              background-color: rgb(51 65 85); 
+            }
+            .react-tel-input .country-list .country.highlight {
+              background-color: rgb(51 65 85); 
+            }
+            select option {
+              background-color: rgb(30 41 59);
+              color: rgb(226 232 240); 
+            }
+            select:focus option:checked {
+              background-color: rgb(51 65 85); 
+            } 
+            .react-tel-input .flag-dropdown {
+              background-color: transparent;
+              border-right: 1px solid rgb(203 213 225);
+            }
+            .dark .react-tel-input .flag-dropdown {
+              border-right-color: rgb(71 85 105);
+            }
+            .react-tel-input .flag-dropdown:hover,
+            .react-tel-input .flag-dropdown:focus-within {
+              background-color: rgba(0, 0, 0, 0.05); 
+            }
+            .dark .react-tel-input .flag-dropdown:hover,
+            .dark .react-tel-input .flag-dropdown:focus-within {
+              background-color: rgba(255, 255, 255, 0.05); 
+            }
+            .react-tel-input .selected-flag {
+              background-color: transparent !important;
+            }
+            .react-tel-input .selected-flag:hover {
+              background-color: transparent !important;
+            }
+            .react-tel-input .selected-flag .arrow {
+              border-top-color: rgb(100 116 139); 
+            }
+            .dark .react-tel-input .selected-flag .arrow {
+              border-top-color: rgb(203 213 225);
+            }
+            .react-tel-input .selected-flag .arrow.up {
+              border-bottom-color: rgb(100 116 139); 
+            }
+            .dark .react-tel-input .selected-flag .arrow.up {
+              border-bottom-color: rgb(203 213 225);
+            }
+        `}</style>
+      )}
     </div>
   );
 };

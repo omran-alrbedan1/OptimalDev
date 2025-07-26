@@ -74,17 +74,70 @@
     },
     "editProfile": "تعديل الملف الشخصي",
     "changePassword": "تغيير كلمة المرور",
+     "logout": {
+    "button": "تسجيل الخروج",
+    "confirmTitle": "تأكيد تسجيل الخروج",
+    "confirmMessage": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حسابك.",
+    "confirm": "تسجيل الخروج",
+    "loggingOut": "جاري تسجيل الخروج...",
+    "cancel": "إلغاء"
+  },
     "personalInfo": {
       "title": "المعلومات الشخصية",
       "description": "إدارة التفاصيل الشخصية ومعلومات الاتصال الخاصة بك"
     },
+    
+  "ApplicationList": {
+    "header": {
+      "title": "طلباتي",
+      "subtitle": "تم العثور على {total} طلب"
+    },
+    "status": {
+      "applied": "تم التقديم",
+      "pending": "قيد المراجعة",
+      "reviewed": "تمت المراجعة",
+      "shortlisted": "في القائمة المختصرة",
+      "approved": "مقبول",
+      "rejected": "مرفوض",
+      "withdrawn": "تم السحب"
+    },
+    "jobDetails": {
+      "salary": "الراتب",
+      "experience": "الخبرة",
+      "contract": "نوع العقد",
+      "workMode": "نمط العمل",
+      "skills": "المهارات المطلوبة",
+      "appliedDate": "تاريخ التقديم: {date}",
+      "expiringSoon": "⚠️ تنتهي خلال {days} أيام",
+      "expired": "❌ منتهية الصلاحية",
+      "years":"سنة"
+
+    },
+    "actions": {
+      "details": "التفاصيل",
+      "viewJob": "عرض الوظيفة"
+    },
+    "noApplications": {
+      "title": "لا توجد طلبات بعد",
+      "description": "لم تتقدم لأي وظائف بعد. ابدأ استكشاف الفرص اليوم!",
+      "button": "تصفح الوظائف المتاحة"
+    },
+    "error": {
+      "loading": "خطأ في تحميل الطلبات",
+      "retry": "إعادة المحاولة"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
     "email": "البريد الإلكتروني",
     "location": "الموقع",
     "phone": "الهاتف",
-    "documents": "المستندات",
+    "documents": "السيرة الذاتية",
     "notProvided": "غير متوفر",
     "notSpecified": "غير محدد",
-    "viewDocuments": "عرض المستندات",
+    "viewDocuments": "عرض السيرة الذاتية",
     "secureAccount": {
       "title": "أمن حسابك",
       "description": "اختر كلمة مرور قوية لحماية معلوماتك الشخصية"
@@ -106,36 +159,40 @@
 
     }
   },
-  "form": {
-    "firstName": {
-      "label": "الاسم الأول",
-      "required": "الاسم الأول مطلوب"
+"form": {
+      "firstName": {
+        "label": "الاسم الأول",
+        "required": "الاسم الأول مطلوب",
+        "placeholder": "أدخل اسمك الأول"
+      },
+      "lastName": {
+        "label": "الاسم الأخير",
+        "required": "الاسم الأخير مطلوب",
+        "placeholder": "أدخل اسمك الأخير"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "invalid": "الرجاء إدخال بريد إلكتروني صالح",
+        "placeholder": "أدخل بريدك الإلكتروني"
+      },
+      "phone": {
+        "label": "رقم الهاتف",
+        "required": "رقم الهاتف مطلوب",
+        "placeholder": "أدخل رقم هاتفك"
+      },
+      "country": {
+        "label": "الدولة",
+        "required": "الدولة مطلوبة",
+        "select": "اختر الدولة"
+      },
+      "city": {
+        "label": "المدينة",
+        "required": "المدينة مطلوبة",
+        "select": "اختر المدينة"
+      },
+      "updateButton": "تحديث الملف الشخصي",
+      "updating": "جاري التحديث..."
     },
-    "lastName": {
-      "label": "الاسم الأخير",
-      "required": "الاسم الأخير مطلوب"
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "invalid": "الرجاء إدخال بريد إلكتروني صالح"
-    },
-    "phone": {
-      "label": "رقم الهاتف",
-      "required": "رقم الهاتف مطلوب"
-    },
-    "country": {
-      "label": "الدولة",
-      "required": "الدولة مطلوبة",
-      "select": "اختر الدولة"
-    },
-    "city": {
-      "label": "المدينة",
-      "required": "المدينة مطلوبة",
-      "select": "اختر المدينة"
-    },
-    "updateButton": "تحديث الملف الشخصي",
-    "updating": "جاري التحديث..."
-  },
   "toast": {
     "success": "تم تحديث الملف الشخصي بنجاح!",
     "error": "فشل تحديث الملف الشخصي"
@@ -222,6 +279,72 @@
     "applyNow": "تقديم الآن",
     "loginToApply": "تسجيل الدخول للتقديم"
   },
+  "ApplicationDetailsPage": {
+    "header": {
+      "remote": "عن بُعد",
+      "contractType": "نوع العقد",
+      "experienceLevel": "مستوى الخبرة"
+    },
+    "testResults": {
+      "title": "اختبارات التقييم",
+      "questions": "الأسئلة",
+      "question": "السؤال",
+      "submittedAt": "تم الإرسال",
+      "correct": "صحيح",
+      "incorrect": "غير صحيح",
+      "score": "النتيجة",
+      "hideQuestions": "إخفاء الأسئلة والإجابات",
+      "viewQuestions": "عرض الأسئلة والإجابات",
+      "questionsAnswers": "مراجعة الأسئلة والإجابات",
+      "yourAnswer": "إجابتك"
+    },
+    "quickStats": {
+      "applied": "تاريخ التقديم",
+      "deadline": "الموعد النهائي",
+      "status": "الحالة",
+      "experience": "الخبرة",
+      "salary": "الراتب",
+      "years": "سنة"
+    },
+    "jobDetails": {
+      "title": "تفاصيل الوظيفة",
+      "responsibilities": "المسؤوليات",
+      "technicalSkills": "المهارات التقنية",
+      "requirements": "المتطلبات"
+    },
+    "applicationProgress": {
+      "title": "تقدم الطلب",
+      "pending": "قيد الانتظار",
+      "submitted": {
+        "title": "تم تقديم الطلب",
+        "description": "تم تقديم طلبك بنجاح"
+      },
+      "review": {
+        "title": "قيد المراجعة",
+        "description": "بانتظار مراجعة صاحب العمل"
+      },
+      "interview": {
+        "title": "مقابلة",
+        "description": "دعوة محتملة للمقابلة"
+      }
+    },
+    "applicationInfo": {
+      "title": "معلومات الطلب",
+      "appId": "معرف الطلب",
+      "jobId": "معرف الوظيفة",
+      "education": "المؤهل التعليمي",
+      "workMode": "نمط العمل"
+    },
+    "location": {
+      "title": "الموقع",
+      "companyAddress": "عنوان الشركة"
+    },
+    "statusCard": {
+      "title": "حالة الطلب",
+      "message": "طلبك قيد المعالجة حالياً. سنبقيك على اطلاع بأي تغييرات."
+    }
+  }
+,
 
   "applyingModal": {
     "gotItThanks": "حسناً، شكراً لك!",
@@ -386,7 +509,8 @@
           "dragText": "انقر أو اسحب الملف إلى هذه المنطقة للرفع",
           "hint": "يدعم رفع ملف واحد فقط. يتم قبول ملفات PDF و Word فقط (بحد أقصى 5MB).",
           "errorSize": "يجب أن يكون حجم ملف السيرة الذاتية أقل من 5MB",
-          "errorType": "يتم قبول ملفات PDF و Word فقط"
+          "errorType": "يتم قبول ملفات PDF و Word فقط",
+           "optional": "اختياري"
         },
         "acceptTerms": {
       "label": "أوافق على {terms} و {privacy}",
@@ -447,5 +571,31 @@
     }
   }
 }
+},
+"testQuestionPage": {
+    "progress": "التقدم",
+    "complete": "مكتمل",
+    "motivation": "أنت تقوم بعمل رائع!",
+    "advice": "خذ وقتك وفكر بعناية",
+    "previous": "السابق",
+    "next": "التالي",
+    "submitTest": "إرسال الاختبار",
+    "submitting": "جاري الإرسال...",
+    "textAnswerPlaceholder": "اكتب إجابتك هنا..."
+},
+"resultModal": {
+  "perfectScore": {
+    "title": "نتيجة ممتازة!",
+    "message": "تم تقديم طلب الوظيفة بنجاح. تابع البحث والتقديم على الوظائف التي تناسبك"
+  },
+  "notAccepted": {
+    "title": "لم يتم قبول الطلب",
+    "message": "شكرا لتقديمك، واحد أو أكثر من إجاباتك لا تستوفي متطلبات عملائنا، تابع التقديم على وظائف أخرى"
+  },
+  "yourScore": "نقاطك",
+  "submissionId": "معرف التقديم",
+  "backToCareerPage": "العودة الى تصفح فرص العمل",
+  "backToApplicationPage": "مراجعة طلباتي",
+  "congratulations": "مبروك! نتيجة ممتازة!"
 }
 }

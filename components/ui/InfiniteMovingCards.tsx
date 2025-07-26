@@ -90,11 +90,11 @@ export const InfiniteMovingCards = ({
             key={item.id}
           >
             <Image
-              src={icons.clients}
+              src={item.logo}
               width={130}
               height={100}
               alt={`image${item.id}`}
-              className="object-contain w-[70%] h-[60%] max-xs:top-1 top-2" // Ensure consistent size
+              className="object-contain w-[70%] h-[60%] max-xs:top-1 top-2"
             />
             <h1 className="py-4 absolute max-xs:bottom-1 font-semibold dark:text-gray-300 text-gray-600 bottom-2 text-sm md:text-xl">
               {item.name}

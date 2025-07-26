@@ -1,8 +1,9 @@
 "use client";
 
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { getLocaleFromUrl } from "./utils";
-import { toast } from "sonner";
+
+import { Job } from "@/app";
 
 interface ApiOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -29,6 +30,7 @@ const get = async <T>(
   try {
     const response = await fetch(endpoint, {
       method: "GET",
+      cache: "no-cache",
       ...options,
       headers: {
         "Accept-Language": locale,
@@ -107,6 +109,7 @@ const put = async <T>(
 
     const response = await fetch(endpoint, {
       method: "PUT",
+
       ...options,
       headers,
       body: isFormData ? body : JSON.stringify(body),
@@ -195,12 +198,48 @@ export const login = async (login: string, password: string): Promise<any> => {
   return response;
 };
 
+export const logout = async (): Promise<void> => {
+  const token = getCookie("token");
+
+  try {
+    await post<void>(
+      "/api/logout",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error during logout:", error);
+  }
+
+  deleteCookie("token");
+  deleteCookie("authData");
+
+  window.dispatchEvent(new Event("authChange"));
+};
+
 export const register = async (formData: FormData): Promise<any> => {
   return post<any>("/api/register", formData, {}, true);
 };
-// Add this to your existing API client file
-export const fetchMyApplications = async (): Promise<Application[]> => {
-  return get<Application[]>(`/api/my-applications`);
+
+export const fetchMyApplications = async (
+  page: number = 1
+): Promise<PaginatedResponse<Application[]>> => {
+  const response = await get<PaginatedResponse<Application[]>>(
+    `/api/my-applications?page=${page}`
+  );
+  return response;
+};
+
+export const fetchApplicationDetails = async (
+  id: number
+): Promise<Application> => {
+  const response = get<Application>(`/api/applications/${id}`);
+  console.log(response);
+  return response;
 };
 
 export const fetchJobTest = async (
@@ -217,19 +256,11 @@ export const submitTestAnswers = async (
 ): Promise<TestSubmissionResponse> => {
   try {
     const endpoint = `/api/jobs/${jobId}/tests/${testId}/submit`;
-    console.log("Submitting to:", endpoint); // Debug log
-
     const response = await post<TestSubmissionResponse>(endpoint, answers);
     return response;
   } catch (error: any) {
-    console.error("Test submission failed:", {
-      jobId,
-      testId,
-      error: error.message,
-    });
-    throw new Error(
-      error.response?.data?.error || error.message || "Test submission failed"
-    );
+    console.error("Test submission failed:", error);
+    throw new Error(error.message || "Test submission failed");
   }
 };
 

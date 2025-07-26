@@ -71,6 +71,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       deleteCookie("authData");
+      deleteCookie("token");
     },
     loadStoredAuth(state) {
       const storedAuth = loadInitialState();

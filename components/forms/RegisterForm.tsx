@@ -1,4 +1,5 @@
 //@ts-nocheck
+
 "use client";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -6,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,9 @@ import { registerFormSchema } from "@/lib/validation/userValidation";
 import { useFetch, useFetchWithId } from "@/hooks/useFetch";
 import { fetchCities, fetchCountries, register } from "@/lib/client-action";
 import { setCookie } from "cookies-next";
+import { Trash } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/store/slices/authSlice";
 
 const { Dragger } = Upload;
 
@@ -38,7 +42,11 @@ export default function RegisterForm() {
   const locale = useLocale();
   const isRTL = locale === "ar";
   const router = useRouter();
+  const dispatch = useDispatch();
 
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+  const jobId = searchParams.get("jobId");
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -53,6 +61,15 @@ export default function RegisterForm() {
       acceptTerms: false,
     },
   });
+
+  const getLoginUrl = () => {
+    const params = new URLSearchParams();
+    if (jobId) params.append("jobId", jobId);
+    if (callbackUrl) params.append("callbackUrl", callbackUrl);
+    return `/${locale}/login${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+  };
 
   const { data: countries } = useFetch<Country[]>(fetchCountries);
   const countryId = form.watch("country_id");
@@ -131,11 +148,15 @@ export default function RegisterForm() {
           sameSite: "strict",
         });
       }
-
+      dispatch(loginSuccess(response));
       toast.success(t("toast.success.title"), {
         description: t("toast.success.description"),
       });
-      router.push(`/${locale}/login`);
+      const redirectUrl =
+        callbackUrl && callbackUrl.length > 0
+          ? decodeURIComponent(callbackUrl)
+          : `/${locale}/home`;
+      router.push(redirectUrl);
     } catch (error) {
       console.error("Registration error", error);
       toast.error(t("toast.error.title"), {
@@ -149,7 +170,7 @@ export default function RegisterForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col"
+        className="flex flex-col w-full"
         dir={isRTL ? "rtl" : "ltr"}
       >
         <div className="flex flex-col items-center gap-2 text-center mb-4">
@@ -162,7 +183,6 @@ export default function RegisterForm() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 md:gap-2 md:gap-x-4">
-          {/* Name Field */}
           <FormField
             control={form.control}
             name="first_name"
@@ -175,7 +195,7 @@ export default function RegisterForm() {
                   <Input
                     placeholder={t("fields.name.placeholder")}
                     {...field}
-                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
                 {form.formState.errors.name && (
@@ -187,7 +207,6 @@ export default function RegisterForm() {
             )}
           />
 
-          {/* Surname Field */}
           <FormField
             control={form.control}
             name="last_name"
@@ -200,7 +219,7 @@ export default function RegisterForm() {
                   <Input
                     placeholder={t("fields.surname.placeholder")}
                     {...field}
-                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
                 {form.formState.errors.surname && (
@@ -212,7 +231,6 @@ export default function RegisterForm() {
             )}
           />
 
-          {/* Email Field */}
           <div className="grid gap-2 md:col-span-2">
             <FormField
               control={form.control}
@@ -227,7 +245,7 @@ export default function RegisterForm() {
                       type="email"
                       placeholder={t("fields.email.placeholder")}
                       {...field}
-                      className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+                      className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                     />
                   </FormControl>
                   {form.formState.errors.email && (
@@ -240,7 +258,6 @@ export default function RegisterForm() {
             />
           </div>
 
-          {/* Phone Field */}
           <div className="grid gap-2 md:col-span-2">
             <FormField
               control={form.control}
@@ -255,9 +272,14 @@ export default function RegisterForm() {
                       country={isRTL ? "sa" : "us"}
                       value={field.value}
                       onChange={(phone) => field.onChange(phone)}
-                      inputClass="!w-full rounded-md !border dark:!border-gray-500 !bg-gray-50 dark:!bg-gray-600 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:!bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      containerClass="mt-1"
-                      buttonClass="!pr-2"
+                      inputClass="!w-full rounded-md !border dark:!border-gray-500
+                       !bg-gray-50 dark:!bg-gray-800 border-input 
+                      bg-background px-3 py-2 text-sm ring-offset-background 
+                      file:border-0 file:!bg-transparent file:text-sm file:font-medium dark:text-gray-300
+                      placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 
+                      focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      containerClass="mt-1 dark:!bg-gray-700"
+                      buttonClass="!pr-2 dark:!bg-gray-800 dark:hover:bg-gray-700 !border-gray-300 dark:!border-gray-500"
                     />
                   </FormControl>
                   {form.formState.errors.phone && (
@@ -282,7 +304,7 @@ export default function RegisterForm() {
                   <select
                     value={field.value ?? ""}
                     onChange={handleCountryChange}
-                    className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">{t("fields.country.placeholder")}</option>
                     {countries?.map((country) => (
@@ -297,7 +319,6 @@ export default function RegisterForm() {
             )}
           />
 
-          {/* City Field */}
           <FormField
             control={form.control}
             name="city_id"
@@ -311,7 +332,7 @@ export default function RegisterForm() {
                     value={field.value ?? ""}
                     onChange={handleCityChange}
                     disabled={!countryId}
-                    className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full border dark:!text-white  dark:border-gray-500 bg-gray-50 dark:bg-gray-800 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 "
                   >
                     <option value="">{t("fields.city.placeholder")}</option>
                     {cities?.map((city) => (
@@ -325,7 +346,6 @@ export default function RegisterForm() {
               </FormItem>
             )}
           />
-          {/* Password Field */}
           <FormField
             control={form.control}
             name="password"
@@ -339,7 +359,7 @@ export default function RegisterForm() {
                     type="password"
                     placeholder={t("fields.password.placeholder")}
                     {...field}
-                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
                 {form.formState.errors.password && (
@@ -351,7 +371,6 @@ export default function RegisterForm() {
             )}
           />
 
-          {/* Confirm Password Field */}
           <FormField
             control={form.control}
             name="password_confirmation"
@@ -365,7 +384,7 @@ export default function RegisterForm() {
                     type="password"
                     placeholder={t("fields.confirmPassword.placeholder")}
                     {...field}
-                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-600"
+                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
                 {form.formState.errors.confirmPassword && (
@@ -377,20 +396,85 @@ export default function RegisterForm() {
             )}
           />
 
-          {/* CV Field */}
-          <div className="grid gap-2 md:col-span-2 relative h-fit mb-8">
+          {/* <div className="grid gap-2 md:col-span-2 relative h-fit !mb-3 mt-4 !w-full">
             <FormField
               control={form.control}
               name="cv"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col items-start justify-start gap-y-1">
                   <FormLabel className="dark:text-gray-300">
-                    {t("fields.cv.label")}
+                    {t("fields.cv.label")}{" "}
+                    <span className="text-gray-400">
+                      ({t("fields.cv.optional")})
+                    </span>
                   </FormLabel>
                   <FormControl>
+                    <div className="relative w-full">
+                      <Dragger
+                        {...uploadProps}
+                        className="mb-2 border-gray-300 rounded-md w-full"
+                        showUploadList={false}
+                      >
+                        {fileList.length > 0 ? (
+                          <div className="p-3 flex flex-col items-center justify-center gap-y-4 relative w-full">
+                            <InboxOutlined className="text-4xl mb-2 text-primary-color1" />
+                            <div className="flex items-center justify-evenly w-full">
+                              <p className="text-sm font-medium">
+                                {fileList[0].name}
+                              </p>
+                              <button
+                                type="button"
+                                className=" top-2 right-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setFileList([]);
+                                  form.setValue("cv", null);
+                                }}
+                              >
+                                <Trash size={16} className="text-red-500" />
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <p className="ant-upload-drag-icon">
+                              <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">
+                              {t("fields.cv.dragText")}
+                            </p>
+                            <p className="ant-upload-hint">
+                              {t("fields.cv.hint")}
+                            </p>
+                          </>
+                        )}
+                      </Dragger>
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-red-400">
+                    {form.formState.errors.cv?.message ===
+                      "fields.cv.errorSize" && t("fields.cv.errorSize")}
+                    {form.formState.errors.cv?.message ===
+                      "fields.cv.errorType" && t("fields.cv.errorType")}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </div> */}
+
+          <div className="grid gap-2 md:col-span-2 relative h-fit  mt-4">
+            <FormField
+              control={form.control}
+              name="cv"
+              render={({ field }) => (
+                <FormItem className="flex flex-col items-start justify-start">
+                  <FormLabel className="dark:text-gray-300 ">
+                    {t("fields.cv.label")}
+                  </FormLabel>
+                  <FormControl className="pt-2">
                     <Dragger
                       {...uploadProps}
-                      className="mb-2 border-gray-300 rounded-md p-4"
+                      className="mb-2 border-gray-300 rounded-md "
                     >
                       <p className="ant-upload-drag-icon">
                         <InboxOutlined />
@@ -412,8 +496,7 @@ export default function RegisterForm() {
             />
           </div>
 
-          {/* Terms and Conditions Checkbox */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 mb-5 mt-10">
             <FormField
               control={form.control}
               name="acceptTerms"
@@ -474,7 +557,6 @@ export default function RegisterForm() {
             </FormMessage>
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full md:col-span-2 text-white bg-primary-color1 hover:bg-primary-color1/90"
@@ -484,11 +566,10 @@ export default function RegisterForm() {
           </Button>
         </div>
 
-        {/* Login Link */}
         <div className="text-center text-sm mt-3 md:col-span-2 dark:text-gray-300">
           {t("loginLink.prefix")}{" "}
           <Link
-            href={`/${locale}/login`}
+            href={getLoginUrl()}
             className="underline underline-offset-4 text-primary-color1"
           >
             {t("loginLink.loginText")}

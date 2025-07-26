@@ -12,9 +12,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "main.hivetech.space",
-        port: "",
+        protocol: "http",
+        hostname: "147.79.118.212",
+        port: "7099",
         pathname: "/storage/**",
       },
     ],

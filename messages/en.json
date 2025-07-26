@@ -74,17 +74,62 @@
     },
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
+        "logout": {
+      "button": "Logout",
+      "confirmTitle": "Confirm Logout",
+      "confirmMessage": "Are you sure you want to logout? You will need to sign in again to access your account.",
+      "confirm": "Logout",
+      "loggingOut": "Logging out...",
+      "cancel":"Cancel"
+    },
     "personalInfo": {
       "title": "Personal Information",
       "description": "Manage your personal details and contact information"
     },
+    
+  "ApplicationList": {
+    "header": {
+      "title": "My Applications",
+      "subtitle": "{total} application found",
+      "subtitle_plural": "{total} applications found"
+    },
+
+    "jobDetails": {
+      "salary": "Salary",
+      "experience": "Experience",
+      "contract": "Contract",
+      "workMode": "Work Mode",
+      "skills": "Required Skills",
+      "appliedDate": "Applied: {date}",
+      "years":"years"
+    },
+    "actions": {
+      "details": "Details",
+      "viewJob": "View Job"
+    },
+    "noApplications": {
+      "title": "No Applications Yet",
+      "description": "You haven't applied to any jobs yet. Start exploring opportunities today!",
+      "button": "Browse Available Jobs"
+    },
+    "error": {
+      "loading": "Error loading applications",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  }
+,
+    
     "email": "Email",
     "location": "Location",
     "phone": "Phone",
-    "documents": "Documents",
+    "documents": "CV",
     "notProvided": "Not provided",
     "notSpecified": "Not specified",
-    "viewDocuments": "View Documents",
+    "viewDocuments": "View CV",
     "secureAccount": {
       "title": "Secure Your Account",
       "description": "Choose a strong password to protect your personal information"
@@ -104,40 +149,42 @@
       "cvUploaded":"CV is available"
     }
   },
+"form": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "Enter your first name",
+        "required": "First name is required"
+      },
+      "lastName": {
+        "label": "Last Name",
 
-  "form": {
-    "firstName": {
-      "label": "First Name",
-      "placeholder": "John",
-      "required": "First name is required"
+        "placeholder": "Enter your last name",
+        "required": "Last name is required"
+      },
+      "email": {
+        "label": "Email",
+
+        "invalid": "Please enter a valid email",
+        "placeholder": "Enter your email"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "required": "Phone number is required",
+        "placeholder": "Enter your phone number"
+      },
+      "country": {
+        "label": "Country",
+        "required": "Country is required",
+        "select": "Select Country"
+      },
+      "city": {
+        "label": "City",
+        "required": "City is required",
+        "select": "Select City"
+      },
+      "updateButton": "Update Profile",
+      "updating": "Updating..."
     },
-    "lastName": {
-      "label": "Last Name",
-      "placeholder":"Doe",
-      "required": "Last name is required"
-    },
-    "email": {
-      "label": "Email",
-      "placeholder":"example@example.com",
-      "invalid": "Please enter a valid email"
-    },
-    "phone": {
-      "label": "Phone Number",
-      "required": "Phone number is required"
-    },
-    "country": {
-      "label": "Country",
-      "required": "Country is required",
-      "select": "Select Country"
-    },
-    "city": {
-      "label": "City",
-      "required": "City is required",
-      "select": "Select City"
-    },
-    "updateButton": "Update Profile",
-    "updating": "Updating..."
-  },
   "toast": {
     "success": "Profile updated successfully!",
     "error": "Failed to update profile"
@@ -222,11 +269,77 @@
     "applyNow": "Apply Now",
     "loginToApply": "Login to Apply"
   },
+  "ApplicationDetailsPage": {
+    "header": {
+      "remote": "Remote",
+      "contractType": "Contract Type",
+      "experienceLevel": "Experience Level"
+    },
+    "testResults": {
+      "title": "Assessment Tests",
+      "questions": "Questions",
+      "question": "Question",
+      "submittedAt": "Submitted",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "score": "Score",
+      "hideQuestions": "Hide Questions & Answers",
+      "viewQuestions": "View Questions & Answers",
+      "questionsAnswers": "Questions & Answers Review",
+      "yourAnswer": "Your Answer"
+    },
+    "quickStats": {
+      "applied": "Applied",
+      "deadline": "Deadline",
+      "status": "Status",
+      "experience": "Experience",
+      "salary": "Salary",
+      "years": "years"
+    },
+    "jobDetails": {
+      "title": "Job Details",
+      "responsibilities": "Responsibilities",
+      "technicalSkills": "Technical Skills",
+      "requirements": "Requirements"
+    },
+    "applicationProgress": {
+      "title": "Application Progress",
+      "pending": "Pending",
+      "submitted": {
+        "title": "Application Submitted",
+        "description": "Your application has been successfully submitted"
+      },
+      "review": {
+        "title": "Under Review",
+        "description": "Waiting for employer review"
+      },
+      "interview": {
+        "title": "Interview",
+        "description": "Potential interview invitation"
+      }
+    },
+    "applicationInfo": {
+      "title": "Application Info",
+      "appId": "Application ID",
+      "jobId": "Job ID",
+      "education": "Education",
+      "workMode": "Work Mode"
+    },
+    "location": {
+      "title": "Location",
+      "companyAddress": "Company Address"
+    },
+    "statusCard": {
+      "title": "Application Status",
+      "message": "Your application is currently being processed. We'll keep you updated on any changes."
+    }
+  },
   "applyingModal": {
     "gotItThanks": "Got it, Thanks!",
     "viewMyApplications": "View My Applications",
     "startTest": "Start Test"
   },
+  
   "forms":{
   "contactForm": {
   "fields": {
@@ -385,7 +498,8 @@
           "dragText": "Click or drag file to this area to upload",
           "hint": "Support for single upload. Only PDF and Word documents are accepted (max 5MB).",
           "errorSize": "CV file must be less than 5MB",
-          "errorType": "Only PDF and Word documents are accepted"
+          "errorType": "Only PDF and Word documents are accepted",
+          "optional": "optional"
         },
    "acceptTerms": {
       "label": "I accept the {terms} and {privacy}",
@@ -447,6 +561,33 @@
   }
 }
 
+},
+"testQuestionPage": {
+    "progress": "Progress",
+    "complete": "Complete",
+    "motivation": "You're doing great!",
+    "advice": "Take your time and think carefully",
+    "previous": "Previous",
+    "next": "Next",
+
+    "submitTest": "Submit Test",
+    "submitting": "Submitting...",
+    "textAnswerPlaceholder": "Type your answer here..."
+},
+"resultModal": {
+  "perfectScore": {
+    "title": "Perfect Score!",
+    "message": "The job application has been successfully submitted. Continue searching and applying for the jobs that suit you"
+  },
+  "notAccepted": {
+    "title": "Application Not Accepted",
+    "message": "Thank you for applying, one or more of your answers does not meet Our Clients requirements, continue to apply for other jobs"
+  },
+  "yourScore": "Your Score",
+  "submissionId": "Submission ID",
+  "backToCareerPage": "Back to Career Page",
+  "backToApplicationPage": "View My Applications",
+  "congratulations": "Congratulations! Perfect Score!"
 }
  
 }

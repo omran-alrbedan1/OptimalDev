@@ -16,6 +16,7 @@ declare interface Partner {
   details: string;
   sort_order: number;
 }
+
 declare interface Client {
   id: number;
   name: string;
@@ -52,6 +53,34 @@ interface Company {
   logo: string | null;
   email: string;
   phone: string;
+}
+
+interface ContractType {
+  id: number;
+  name: string;
+  description: string | null;
+  parent_id: number | null;
+}
+
+interface WorkMode {
+  id: number;
+  name: string;
+  description: string | null;
+  parent_id: number | null;
+}
+
+interface ExperienceLevel {
+  id: number;
+  name: string;
+  description: string | null;
+  parent_id: number | null;
+}
+
+interface EducationLevel {
+  id: number;
+  name: string;
+  description: string | null;
+  parent_id: number | null;
 }
 
 interface WorkSector {
@@ -104,9 +133,9 @@ interface Job {
   title: string;
   description: string;
   company: Company;
-  work_sector: WorkSector;
-  country: Country;
-  city: City;
+  work_sector?: WorkSector;
+  country?: Country;
+  city?: City;
   salary_min: string;
   salary_max: string;
   published_at: string;
@@ -120,6 +149,12 @@ interface Job {
   address: string;
   preferred_candidate: null;
   applicants_count: number;
+  applied?: boolean;
+  contract_types: ContractType[];
+  work_modes: WorkMode[];
+  experience_levels: ExperienceLevel[];
+  education_levels: EducationLevel[];
+  image: string;
 }
 
 interface User {
@@ -150,7 +185,7 @@ interface LoginResponse {
   token_type: "Bearer";
 }
 
-interface JobTest {
+declare interface JobTest {
   id: number;
   job_id: number;
   title: string;
@@ -187,84 +222,61 @@ interface Application {
   job_opportunity_id: number;
   status: string;
   final_score: number | null;
-  applied_at: string;
+  applied_at: string | null;
   created_at: string;
   updated_at: string;
-  job_opportunity: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    salary_min: string;
-    salary_max: string;
-    expires_at: string;
-    years_experience: number;
-    technical_skills: string;
-    contract_types_items: Array<{
-      id: number;
-      name: string;
-    }>;
-    work_modes_items: Array<{
-      id: number;
-      name: string;
-    }>;
-    experience_levels_items: Array<{
-      id: number;
-      name: string;
-    }>;
-    company: {
-      id: number;
-      name: string;
-      description: string;
-      address: string;
-      logo: string | null;
-      email: string;
-      phone: string;
-    };
-  };
+  job_opportunity: Job;
+  tests: any[];
 }
 
 interface TestSubmissionResponse {
   message: string;
   score: number;
-  submissionId: string;
 }
 
 interface TestAnswer {
   [questionId: string]: number[] | string;
 }
 
+interface TestResult {
+  id: number;
+  interview: {
+    id: number;
+    name: string;
+    description: string;
+    type: string;
+    is_active: boolean;
+    email: string | null;
+    retryable: boolean;
+  };
+  submitted_at: string | null;
+  result_score: string | null;
+  status: string;
+  details: {
+    id: number;
+    question: {
+      id: number;
+      question: string;
+      answer_type: string;
+      choices?: {
+        id: number;
+        is_correct: boolean;
+        text: string;
+      }[];
+    };
+    answer: string;
+    answer_texts: string[] | string;
+    question_status: string;
+  }[];
+}
+
 interface FilterOptions {
-  contract_types: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
-  work_modes: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
-  experience_levels: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
-  education_levels: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
-  countries: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
-  work_sectors: {
-    id: number;
-    name: string;
-    description: string | null;
-  }[];
+  contract_types: ContractType[];
+  work_modes: WorkMode[];
+  experience_levels: ExperienceLevel[];
+  education_levels: EducationLevel[];
+  countries: Country[];
+  work_sectors: WorkSector[];
 }
 
 interface FeaturedJobs {
@@ -273,4 +285,29 @@ interface FeaturedJobs {
   description: string;
   image: string;
   url?: string;
+}
+
+interface PaginationMeta {
+  current_page: number;
+  from: number;
+  last_page: number;
+  links: {
+    url: string | null;
+    label: string;
+    active: boolean;
+  }[];
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+}
+interface PaginatedResponse<T> {
+  data: T;
+  links?: {
+    first: string | null;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: PaginationMeta;
 }

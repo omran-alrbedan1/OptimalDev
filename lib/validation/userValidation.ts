@@ -50,27 +50,31 @@ export const registerFormSchema = z
     city_id: z.number().min(1, {
       message: "registerForm.fields.city.error",
     }),
-
     password: z.string().min(8, {
       message: "registerForm.fields.password.error",
     }),
     password_confirmation: z.string(),
     cv: z
-      .instanceof(File, {
-        message: "registerForm.fields.cv.errorType",
-      })
-      .refine((file) => file.size <= 5 * 1024 * 1024, {
-        message: "registerForm.fields.cv.errorSize",
-      })
-      .refine(
-        (file) =>
-          [
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ].includes(file.type),
-        { message: "registerForm.fields.cv.errorType" }
-      ),
+      .union([
+        z
+          .instanceof(File, {
+            message: "registerForm.fields.cv.errorType",
+          })
+          .refine((file) => file.size <= 5 * 1024 * 1024, {
+            message: "registerForm.fields.cv.errorSize",
+          })
+          .refine(
+            (file) =>
+              [
+                "application/pdf",
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              ].includes(file.type),
+            { message: "registerForm.fields.cv.errorType" }
+          ),
+        z.null().or(z.undefined()),
+      ])
+      .optional(),
     acceptTerms: z.literal(true, {
       errorMap: () => ({
         message: "registerForm.fields.acceptTerms.error",

@@ -7,7 +7,7 @@ import { applyForJob, fetchJobDetails } from "@/lib/client-action";
 import { Button } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidCertification } from "react-icons/bi";
 import { FiBriefcase, FiMapPin } from "react-icons/fi";
@@ -28,7 +28,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
   const [requiredTests, setRequiredTests] = useState<any[]>([]);
   const [modalMessage, setModalMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-
+  const pathname = usePathname();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const router = useRouter();
 
@@ -37,7 +37,9 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
 
   const applyToJob = async () => {
     if (!isAuthenticated) {
-      router.push(`/login?jobId=${params.id}`);
+      router.push(
+        `/login?jobId=${params.id}&callbackUrl=${encodeURIComponent(pathname)}`
+      );
       return;
     }
     setIsApplying(true);
@@ -45,8 +47,11 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
       const response = await applyForJob(Number(params.id));
       if (
         //@ts-ignore
-        response.message === "يرجى إكمال الاختبارات المطلوبة أولاً" ||
-        "Please complete the required tests firsst"
+        typeof response.message === "string" &&
+        //@ts-ignore
+        (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
+          //@ts-ignore
+          response.message.includes("Please complete the required tests first"))
       ) {
         //@ts-ignore
         setModalType("tests");
@@ -88,13 +93,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
   }, [params.id, t]);
 
   if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-center items-center h-64">
-          <Loader />
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
@@ -181,12 +180,12 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
 
-          <div className="w-full xs:w-auto mt-4 xs:mt-0 flex justify-center xs:block">
+          <div className="w-full xs:w-auto mt-4 xs:mt-0 flex justify-center xs:block ">
             <Button
               type="primary"
               size="large"
               loading={isApplying}
-              className={`!px-5 !py-4`}
+              className={`!px-5 !py-4 rounded-[4px]`}
               onClick={applyToJob}
             >
               {isApplying ? (
@@ -204,7 +203,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="lg:w-2/3 space-y-8">
+        <div className="lg:w-2/3 space-y-12 max-sm:space-y-8">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <TbFileDescription className="text-primary-color1 dark:text-blue-600 size-6" />
@@ -243,6 +242,32 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
+              <RiContractFill className="text-primary-color1 dark:text-blue-600 size-6" />
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                {t("jobDetails")}
+              </h3>
+            </div>
+            <div className="space-y-3">
+              <DetailItem
+                label={t("salaryRange")}
+                value={`$${job.salary_min} - $${job.salary_max}`}
+              />
+              <DetailItem
+                label={t("publishedDate")}
+                value={new Date(job.published_at).toLocaleDateString()}
+              />
+              <DetailItem
+                label={t("expirationDate")}
+                value={new Date(job.expires_at).toLocaleDateString()}
+              />
+              <DetailItem label={t("jobType")} value={job.type} capitalize />
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:w-1/3 space-y-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
               <GiSkills className="text-primary-color1 dark:text-blue-600 size-6" />
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                 {t("technicalSkills")}
@@ -265,58 +290,6 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="lg:w-1/3 space-y-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <RiContractFill className="text-primary-color1 dark:text-blue-600 size-6" />
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                {t("jobDetails")}
-              </h3>
-            </div>
-            <div
-              className={`space-y-4  border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-3" : "border-l-2 pl-3"
-              }`}
-            >
-              <div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  {t("salaryRange")}
-                </p>
-                <p className="font-medium text-gray-900 dark:text-white">
-                  ${job.salary_min} - ${job.salary_max}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  {t("publishedDate")}
-                </p>
-
-                <p className="font-medium text-gray-900 dark:text-white">
-                  {new Date(job.published_at).toLocaleDateString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  {t("expirationDate")}
-                </p>
-
-                <p className="font-medium text-gray-900 dark:text-white">
-                  {new Date(job.expires_at).toLocaleDateString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  {t("jobType")}
-                </p>
-                <p className="font-medium text-gray-900 dark:text-white capitalize">
-                  {job.type}
-                </p>
-              </div>
-            </div>
-          </div>
-
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <BiSolidCertification className="text-primary-color1 dark:text-blue-600 size-6" />
@@ -418,3 +391,24 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
 };
 
 export default JobDetailsPage;
+
+const DetailItem = ({
+  label,
+  value,
+  capitalize = false,
+}: {
+  label: string;
+  value: string;
+  capitalize?: boolean;
+}) => (
+  <div className="flex gap-4">
+    <p className="text-gray-500 dark:text-gray-400">{label} : </p>
+    <p
+      className={`font-medium text-gray-600 dark:text-gray-200 ${
+        capitalize ? "capitalize" : ""
+      }`}
+    >
+      {value}
+    </p>
+  </div>
+);

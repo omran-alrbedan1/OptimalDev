@@ -210,7 +210,7 @@ const JobSearchPage = () => {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="h-[61vh] mt-16 flex flex-col items-center justify-center relative"
       >
-        {/* <LatestJobsCarousel jobs={featuredJobs} /> */}
+        <LatestJobsCarousel jobs={featuredJobs} />
       </motion.section>
 
       <div className="mx-auto px-4 sm:px-6 lg:px-16 -mt-16 pb-12">
@@ -619,7 +619,11 @@ const JobSearchPage = () => {
                       className="mx-1 border-none flex items-center dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
                       disabled={paginationMeta.current_page === 1}
                     >
-                      <FiChevronLeft className="mr-1" />
+                      {useLocale() === "ar" ? (
+                        <FiChevronRight className="ml-1" />
+                      ) : (
+                        <FiChevronLeft className="ml-1" />
+                      )}
                       {t("previous")}
                     </Button>
                   );
@@ -633,7 +637,11 @@ const JobSearchPage = () => {
                       }
                     >
                       {t("next")}
-                      <FiChevronRight className="ml-1" />
+                      {useLocale() === "ar" ? (
+                        <FiChevronLeft className="ml-1" />
+                      ) : (
+                        <FiChevronRight className="ml-1" />
+                      )}
                     </Button>
                   );
                 }
