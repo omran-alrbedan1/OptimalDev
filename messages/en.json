@@ -64,10 +64,7 @@
       "description": "You haven't applied to any jobs yet. Start exploring opportunities today!",
       "button": "Browse Available Jobs"
     },
-    "noExams": {
-      "title": "No Exams Scheduled",
-      "description": "Your upcoming exams will appear here once scheduled"
-    },
+
     "noMessages": {
       "title": "No Messages",
       "description": "Your messages and notifications will appear here"
@@ -89,9 +86,7 @@
     
   "ApplicationList": {
     "header": {
-      "title": "My Applications",
-      "subtitle": "{total} application found",
-      "subtitle_plural": "{total} applications found"
+      "title": "My Applications"
     },
 
     "jobDetails": {
@@ -120,7 +115,57 @@
       "previous": "Previous",
       "next": "Next"
     }
+  },
+"ExamsList": {
+  "noExams": {
+    "title": "No Exams Available",
+    "description": "You don't have any exams scheduled at this time"
+  },
+  "noTests": {
+    "title": "No Tests Available",
+    "description": "There are currently no tests assigned to you"
+  },
+  "header": {
+    "title": "My Exams"
+  },
+  "status": {
+    "eligible": "Eligible",
+    "notEligible": "Not Eligible",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
+  "testType": {
+    "interview": "Interview",
+    "quiz": "Quiz",
+    "failed": "Failed"
+  },
+  "actions": {
+    "view": "View Details",
+    "ok": "OK",
+    "pending": "Pending Approval",
+    "start": "Start Test",
+    "understand": "I Understand",
+    "appliedOn": "Applied On",
+    "retry": "Retry Test",
+    "retryNow": "Retry Now"
+  },
+  "testNotAvailable": "Test Not Available",
+  "testPendingMessage": "This test is currently pending approval. You will be notified when it becomes available.",
+  "testFailed": "Test Failed",
+  "testFailedMessage": "Unfortunately you did not pass this test. Please review your performance and try again if available.",
+  "retryAvailable": "Retry Available",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "error": {
+    "loading": "Error Loading Exams",
+    "retry": "Try Again"
+  },
+  "test": {
+    "retryable": "Eligible for retry"
   }
+}
 ,
     
     "email": "Email",
@@ -588,7 +633,26 @@
   "backToCareerPage": "Back to Career Page",
   "backToApplicationPage": "View My Applications",
   "congratulations": "Congratulations! Perfect Score!"
-}
+},
+  "examResultModal": {
+    "perfectScore": {
+      "title": "Perfect Score!",
+      "message": "Congratulations! You achieved a perfect score of {score}%!"
+    },
+    "passed": {
+      "title": "Exam Passed!",
+      "message": "You passed with a score of {score}% (passing score: {passingScore}%)"
+    },
+    "failed": {
+      "title": "Exam Failed",
+      "message": "Your score was {score}% (passing score: {passingScore}%)"
+    },
+    "passingScore": "Passing Score: {passingScore}%",
+    "viewMyExams": "View My Exams",
+    "retakeExam": "Retake Exam",
+    "congratulations": "🎉 Congratulations! 🎉",
+    "wellDone": "Well done! You passed!"
+  }
  
 }
 

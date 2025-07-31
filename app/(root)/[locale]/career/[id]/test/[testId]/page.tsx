@@ -144,7 +144,7 @@ const TestPage = () => {
       });
 
       const result = await submitTestAnswers(jobId, testId, formattedAnswers);
-
+      console.log(result);
       setTestResult({
         message: result.message,
         score: result.score,

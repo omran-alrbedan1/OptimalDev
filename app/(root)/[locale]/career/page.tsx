@@ -13,7 +13,6 @@ import {
 } from "@/lib/client-action";
 import { formatPostedDate } from "@/lib/utils";
 import { Button, Input, Pagination, Slider } from "antd";
-import { Console } from "console";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";

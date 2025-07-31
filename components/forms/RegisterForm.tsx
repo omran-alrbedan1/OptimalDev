@@ -269,7 +269,7 @@ export default function RegisterForm() {
                   </FormLabel>
                   <FormControl>
                     <PhoneInput
-                      country={isRTL ? "sa" : "us"}
+                      country={isRTL ? "sa" : "jo"}
                       value={field.value}
                       onChange={(phone) => field.onChange(phone)}
                       inputClass="!w-full rounded-md !border dark:!border-gray-500

@@ -19,7 +19,6 @@ interface PaginatedResponse<T> {
   };
 }
 
-// Base GET function
 const get = async <T>(
   endpoint: string,
   options: ApiOptions = {}
@@ -52,7 +51,6 @@ const get = async <T>(
   }
 };
 
-// Base POST function
 const post = async <T>(
   endpoint: string,
   body: any,
@@ -234,6 +232,15 @@ export const fetchMyApplications = async (
   return response;
 };
 
+export const fetchMyExams = async (
+  page: number = 1
+): Promise<PaginatedResponse<MyExamItem[]>> => {
+  const response = await get<PaginatedResponse<MyExamItem[]>>(
+    `/api/my-exams?page=${page}`
+  );
+  return response;
+};
+
 export const fetchApplicationDetails = async (
   id: number
 ): Promise<Application> => {
@@ -256,6 +263,7 @@ export const submitTestAnswers = async (
 ): Promise<TestSubmissionResponse> => {
   try {
     const endpoint = `/api/jobs/${jobId}/tests/${testId}/submit`;
+    console.log("Submitting answers:", JSON.stringify(answers, null, 2));
     const response = await post<TestSubmissionResponse>(endpoint, answers);
     return response;
   } catch (error: any) {

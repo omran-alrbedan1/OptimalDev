@@ -229,6 +229,92 @@ interface Application {
   tests: any[];
 }
 
+interface ContractType {
+  id: number;
+  name: string;
+  description: null | string;
+  parent_id: null | number;
+}
+
+interface WorkMode {
+  id: number;
+  name: string;
+  description: null | string;
+  parent_id: null | number;
+}
+
+interface ExperienceLevel {
+  id: number;
+  name: string;
+  description: null | string;
+  parent_id: null | number;
+}
+
+interface EducationLevel {
+  id: number;
+  name: string;
+  description: null | string;
+  parent_id: null | number;
+}
+
+interface JobOpportunity {
+  id: number;
+  title: string;
+  description: string;
+  salary_min: string;
+  salary_max: string;
+  contract_types: ContractType[];
+  work_modes: WorkMode[];
+  experience_levels: ExperienceLevel[];
+  education_levels: EducationLevel[];
+  published_at: string;
+  expires_at: string;
+  status: string;
+  type: string;
+  image: string;
+  duties_responsibilities: string;
+  technical_skills: string;
+  years_experience: number;
+  other_requirements: string;
+  address: string;
+  preferred_candidate: null | string;
+  applicants_count: number;
+  applied: boolean;
+}
+
+interface Application {
+  id: number;
+  job_opportunity: JobOpportunity;
+  status: string;
+  final_score: null | number;
+  applied_at: null | string;
+  created_at: string;
+}
+
+interface Test {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  is_active: boolean;
+  email: null | string;
+  retryable: boolean;
+  application_status?: string;
+}
+
+interface MyExamItem {
+  job_opportunity: JobOpportunity;
+  application: {
+    id: number;
+    job_opportunity: JobOpportunity;
+    status: string;
+    final_score: null | number;
+    applied_at: null | string;
+    created_at: string;
+  };
+  tests: Test[];
+}
+
 interface TestSubmissionResponse {
   message: string;
   score: number;

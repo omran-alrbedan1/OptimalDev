@@ -465,7 +465,7 @@ const ApplicationDetailsPage = () => {
               </motion.div>
             </div>
           </motion.div>
-          {/* Test Results Section */}
+          {/* Test Results Section - Simplified Version */}
           {tests && tests.length > 0 && (
             <motion.div
               variants={slideUp}
@@ -483,7 +483,7 @@ const ApplicationDetailsPage = () => {
                     className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4"
                   >
                     {/* Test Header */}
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900 dark:text-white mb-1">
                           {test.interview.name}
@@ -532,183 +532,45 @@ const ApplicationDetailsPage = () => {
                       </div>
                     </div>
 
-                    {test.details && test.details.length > 0 && (
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 sm:p-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                            <Target className="w-4 h-4 mx-2 text-primary" />
-                            <span className="text-sm">
-                              {t("testResults.questions")}
-                            </span>
-                          </h4>
-                          <div className="flex items-center space-x-2 text-xs sm:text-sm">
-                            <TrendingUp className="w-3 mx-2 h-3 sm:w-4 sm:h-4 text-green-500" />
-                            <span className="text-green-600 font-medium">
-                              {
-                                test.details.filter(
-                                  (d) => d.question_status === "correct"
-                                ).length
-                              }
-                              /{test.details.length} {t("testResults.correct")}
-                            </span>
+                    {/* Performance Summary - Simplified */}
+                    {test.result_score && test.details && (
+                      <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-4 text-center">
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded p-2 sm:p-3">
+                          <div className="text-sm sm:text-lg font-bold text-green-600">
+                            {
+                              test.details.filter(
+                                (d) => d.question_status === "correct"
+                              ).length
+                            }
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {t("testResults.correct")}
                           </div>
                         </div>
-
-                        {/* Expand/Collapse Button */}
-                        <div className="mb-3 sm:mb-4">
-                          <button
-                            onClick={() => toggleTestExpansion(test.id)}
-                            className="flex items-center space-x-2 text-primary hover:text-blue-800 dark:hover:text-blue-300 font-medium text-xs sm:text-sm"
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded p-2 sm:p-3">
+                          <div className="text-sm sm:text-lg font-bold text-red-600">
+                            {
+                              test.details.filter(
+                                (d) => d.question_status !== "correct"
+                              ).length
+                            }
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {t("testResults.incorrect")}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded p-2 sm:p-3">
+                          <div
+                            className={`text-sm sm:text-lg font-bold ${getScoreColor(
+                              test.result_score
+                            )}`}
                           >
-                            {expandedTests[test.id] ? (
-                              <>
-                                <ChevronUp className="w-3 mx-2 h-3 sm:w-4 sm:h-4" />
-                                <span>{t("testResults.hideQuestions")}</span>
-                              </>
-                            ) : (
-                              <>
-                                <ChevronDown className="w-3 mx-2 h-3 sm:w-4 sm:h-4" />
-                                <span>{t("testResults.viewQuestions")}</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-
-                        {/* Questions Grid */}
-                        <div className="grid grid-cols-3 md:grid-cols-5 gap-1 sm:gap-2 mb-3 sm:mb-4">
-                          {test.details.map((detail, qIndex) => (
-                            <div
-                              key={detail.id}
-                              className={`p-1 sm:p-2 rounded text-center text-xs font-medium ${
-                                detail.question_status === "correct"
-                                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                  : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                              }`}
-                            >
-                              <div className="flex items-center justify-center space-x-1">
-                                <span>Q{qIndex + 1}</span>
-                                {detail.question_status === "correct" ? (
-                                  <CheckCircle className="w-2 h-2 mx-2 sm:w-3 sm:h-3" />
-                                ) : (
-                                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-current opacity-50" />
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Detailed Questions and Answers */}
-                        {expandedTests[test.id] && (
-                          <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
-                            <div className="flex items-center space-x-2 mb-3 sm:mb-4">
-                              <HelpCircle className="w-4 mx-2 h-4 sm:w-5 sm:h-5 text-primary" />
-                              <h5 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">
-                                {t("testResults.questionsAnswers")}
-                              </h5>
-                            </div>
-
-                            {test.details.map((detail, qIndex) => (
-                              <div
-                                key={detail.id}
-                                className={`border-l-4 ${
-                                  detail.question_status === "correct"
-                                    ? "border-green-400 bg-green-50 dark:bg-green-900/20"
-                                    : "border-red-400 bg-red-50 dark:bg-red-900/20"
-                                } p-3 sm:p-4 rounded-r-lg`}
-                              >
-                                {/* Question Header */}
-                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 sm:mb-3 gap-2">
-                                  <div className="flex items-center space-x-2">
-                                    <span className="font-semibold text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                                      {t("testResults.question")} {qIndex + 1}
-                                    </span>
-                                    <span
-                                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                        detail.question_status === "correct"
-                                          ? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-400"
-                                          : "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-400"
-                                      }`}
-                                    >
-                                      {detail.question_status}
-                                    </span>
-                                  </div>
-                                  {detail.question_status === "correct" ? (
-                                    <CheckCircle className="w-4 mx-2 h-4 sm:w-5 sm:h-5 text-green-500" />
-                                  ) : (
-                                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-500" />
-                                  )}
-                                </div>
-
-                                {/* Question Text */}
-                                <div className="mb-3">
-                                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                    {detail.question.question}
-                                  </p>
-                                </div>
-
-                                {/* Answer Summary */}
-                                <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 border border-gray-200 dark:border-gray-600">
-                                  <div className="grid grid-cols-1 gap-3 text-xs sm:text-sm">
-                                    <div>
-                                      <div className="flex items-center space-x-2 mb-1">
-                                        <MessageSquare className="w-3 mx-2 h-3 sm:w-4 sm:h-4 text-primary" />
-                                        <span className="font-medium text-gray-700 dark:text-gray-300">
-                                          {t("testResults.yourAnswer")}:
-                                        </span>
-                                      </div>
-                                      <span className="text-gray-900 dark:text-white break-words">
-                                        {/* @ts-ignore */}
-                                        {formatAnswer(detail.answer_texts)}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
+                            {test.result_score}%
                           </div>
-                        )}
-
-                        {/* Performance Summary */}
-                        {test.result_score && (
-                          <div className="mt-3 sm:mt-4 grid grid-cols-3 gap-2 sm:gap-4 text-center">
-                            <div className="bg-white dark:bg-gray-800 rounded p-2 sm:p-3">
-                              <div className="text-sm sm:text-lg font-bold text-green-600">
-                                {
-                                  test.details.filter(
-                                    (d) => d.question_status === "correct"
-                                  ).length
-                                }
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {t("testResults.correct")}
-                              </div>
-                            </div>
-                            <div className="bg-white dark:bg-gray-800 rounded p-2 sm:p-3">
-                              <div className="text-sm sm:text-lg font-bold text-red-600">
-                                {
-                                  test.details.filter(
-                                    (d) => d.question_status !== "correct"
-                                  ).length
-                                }
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {t("testResults.incorrect")}
-                              </div>
-                            </div>
-                            <div className="bg-white dark:bg-gray-800 rounded p-2 sm:p-3">
-                              <div
-                                className={`text-sm sm:text-lg font-bold ${getScoreColor(
-                                  test.result_score
-                                )}`}
-                              >
-                                {test.result_score}%
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {t("testResults.score")}
-                              </div>
-                            </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {t("testResults.score")}
                           </div>
-                        )}
+                        </div>
                       </div>
                     )}
                   </div>

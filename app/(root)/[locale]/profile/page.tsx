@@ -28,6 +28,8 @@ import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { ApplicationsList } from "@/components/parts/ApplicationsList";
 import { logout } from "@/store/slices/authSlice";
+import { Loader2 } from "lucide-react";
+import { ExamsList } from "@/components/parts/ExamsList";
 
 const ProfilePage = () => {
   const t = useTranslations("profilePage");
@@ -91,25 +93,7 @@ const ProfilePage = () => {
           {t("exams")}
         </span>
       ),
-      children: (
-        <div className="w-full flex flex-col items-center justify-center p-6 min-h-[400px]">
-          <div className="max-w-md w-full text-center">
-            <div className="flex justify-center mb-4">
-              <Image
-                src="/images/exams.png"
-                alt="Exams"
-                width={200}
-                height={200}
-                className="object-contain"
-              />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-              {t("noExams.title")}
-            </h2>
-            <p className="text-gray-500">{t("noExams.description")}</p>
-          </div>
-        </div>
-      ),
+      children: <ExamsList />,
     },
     {
       key: "3",
@@ -427,7 +411,7 @@ const ProfilePage = () => {
               type="primary"
               size="middle"
               loading={isLoggingOut}
-              icon={!isLoggingOut ? <LogoutOutlined /> : null}
+              icon={!isLoggingOut ? <LogoutOutlined /> : <Loader2 />}
               className="min-w-[120px] h-10 text-lg font-medium bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 border-0 shadow-lg"
             >
               {isLoggingOut ? t("logout.loggingOut") : t("logout.button")}

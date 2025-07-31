@@ -70,7 +70,7 @@ export const JobApplicationModal = ({
                   className="w-full h-10 sm:h-12 text-sm sm:text-base"
                   onClick={() => {
                     onClose();
-                    router.push(`/${locale}/profile/applications`);
+                    router.push(`/${locale}/profile`);
                   }}
                 >
                   {tt("viewMyApplications")}
