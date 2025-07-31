@@ -104,16 +104,6 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           >
             {t("viewMyExams")}
           </Button>
-
-          {!isPassed && (
-            <Button
-              size="large"
-              onClick={() => router.push(`/exams/retake`)} // Optional retake button
-              className="border-primary text-primary hover:bg-primary/10"
-            >
-              {t("retakeExam")}
-            </Button>
-          )}
         </div>
 
         {/* Celebration Message */}
