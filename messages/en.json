@@ -652,6 +652,73 @@
     "retakeExam": "Retake Exam",
     "congratulations": "🎉 Congratulations! 🎉",
     "wellDone": "Well done! You passed!"
+  } , 
+  "serviceRequest": {
+    "title": "Request Service",
+    "description": "Let's get started with your service request. We'll guide you through each step to ensure we have all the information we need.",
+    "progressTitle": "Progress",
+    "steps": {
+      "personalInfo": {
+        "title": "Personal Information",
+        "description": "Tell us about yourself"
+      },
+      "generalInfo": {
+        "title": "General Info",
+        "description": "Company information"
+      },
+      "serviceDetails": {
+        "title": "Service Details",
+        "description": "Your requirements"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "description": "Budget information"
+      }
+    },
+    "form": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "companyName": "Company Name",
+      "jobTitle": "Job Title",
+      "country": "Country",
+      "city": "City",
+      "selectCountry": "Select Country",
+      "selectCity": "Select City",
+      "textPlaceholder": "Enter your answer..."
+    },
+    "success": {
+      "title": "Request Submitted Successfully!",
+      "message": "Thank you for your request. Our team will review it and get back to you shortly.",
+      "responseTime": "We typically respond within 24 hours",
+      "returnHome": "Return to Home"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Request",
+      "submitting": "Submitting..."
+    },
+    "validationErrors": {
+      "title": "Please fix the following errors:",
+      "fullNameRequired": "Full Name is required",
+      "emailRequired": "Valid Email is required",
+      "phoneRequired": "Phone is required",
+      "countryRequired": "Country is required",
+      "cityRequired": "City is required",
+      "questionRequired": "{field} is required",
+      "noOptions": "No options available for this question",
+      "radioConfigError": "Configuration error: This radio question has no options",
+      "submissionFailed": "Failed to submit request. Please try again."
+    }
+  },  "serviceDetails": {
+    "imageAlt": "Service image",
+    "overview": {
+      "title": "Service Overview"
+    },
+    "cta": {
+      "requestService": "Request This Service"
+    }
   }
  
 }

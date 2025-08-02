@@ -397,3 +397,68 @@ interface PaginatedResponse<T> {
   };
   meta: PaginationMeta;
 }
+
+interface SubService {
+  id: number;
+  service_id: number;
+  name: string;
+  description: string;
+  image: string;
+  service?: Service;
+  cost: number;
+  cost_formatted: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+interface Service {
+  id: number;
+  name: string;
+  description: string;
+  service_code: string;
+  is_active: boolean;
+  image: string;
+  sub_services_count: number;
+  sub_services: SubService[];
+  created_at: string;
+}
+
+type Option = {
+  id: number;
+  option: {
+    option: string;
+    current: string;
+  };
+};
+
+type Question = {
+  id: number;
+  title: {
+    title: string;
+    current: string;
+  };
+  type: string;
+  category: string;
+  sort_order: number;
+  is_required: boolean;
+  options: Option[];
+  has_options: boolean;
+};
+
+type QuestionResponse = {
+  general_info: Question[];
+  service_details: Question[];
+  pricing_questions: Question[];
+};
+
+interface ServiceRequestData {
+  sub_service_id: number;
+  full_name: string;
+  email: string;
+  phone: string;
+  company_name?: string;
+  job_title?: string;
+  country_id?: number;
+  city_id?: number;
+  answers: Record<string, string | number>;
+}

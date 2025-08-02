@@ -31,6 +31,8 @@ import {
 import LanguageSwitcher from "../elements/Switcher";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { useFetch } from "@/hooks/useFetch";
+import { fetchServices } from "@/lib/client-action";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -57,6 +59,8 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
 
+  const { data: services } = useFetch<Service[]>(fetchServices);
+
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
 
@@ -69,156 +73,31 @@ const Header = () => {
     "text-gray-700 dark:text-gray-300 hover:text-primary-color1";
 
   // mobile
-  const servicesItems: MenuProps["items"] = [
-    {
-      key: "group1",
+  const servicesItems: MenuProps["items"] =
+    services?.map((service) => ({
+      key: `group-${service.id}`,
       label: (
         <span style={{ direction: isArabic ? "rtl" : "ltr" }}>
-          {t("businessDev")}
+          {service.name}
         </span>
       ),
-      children: [
-        {
-          key: "item1",
-          label: (
-            <Link
-              href="/services/1"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/1")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("training")}
-            </Link>
-          ),
-        },
-        {
-          key: "item2",
-          label: (
-            <Link
-              href="/services/2"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/2")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("employment")}
-            </Link>
-          ),
-        },
-        {
-          key: "item3",
-          label: (
-            <Link
-              href="/services/3"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/3")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("hr")}
-            </Link>
-          ),
-        },
-        {
-          key: "item4",
-          label: (
-            <Link
-              href="/services/4"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/4")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("webManagement")}
-            </Link>
-          ),
-        },
-        {
-          key: "item5",
-          label: (
-            <Link
-              href="/services/5"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/5")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("marketing")}
-            </Link>
-          ),
-        },
-      ],
-    },
-    {
-      key: "group2",
-      label: (
-        <span style={{ direction: isArabic ? "rtl" : "ltr" }}>
-          {t("personalDev")}
-        </span>
-      ),
-      children: [
-        {
-          key: "item6",
-          label: (
-            <Link
-              href="/services/6"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/6")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("coaching")}
-            </Link>
-          ),
-        },
-        {
-          key: "item7",
-          label: (
-            <Link
-              href="/services/7"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/7")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("careerPath")}
-            </Link>
-          ),
-        },
-        {
-          key: "item8",
-          label: (
-            <Link
-              href="/services/8"
-              style={{ direction: isArabic ? "rtl" : "ltr" }}
-              className={`${
-                isActive("/services/8")
-                  ? "text-primary-color1 shadow-sm"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {t("internship")}
-            </Link>
-          ),
-        },
-      ],
-    },
-  ];
+      children: service.sub_services.map((subService) => ({
+        key: `item-${subService.id}`,
+        label: (
+          <Link
+            href={`/services/${subService.id}`}
+            style={{ direction: isArabic ? "rtl" : "ltr" }}
+            className={`${
+              isActive(`/services/${subService.id}`)
+                ? "text-primary-color1 shadow-sm"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
+          >
+            {subService.name}
+          </Link>
+        ),
+      })),
+    })) || [];
 
   if (!isClient) {
     return (
@@ -264,7 +143,6 @@ const Header = () => {
                   {t("home")}
                 </Link>
               </li>
-
               {/* About */}
               <li>
                 <Link
@@ -277,7 +155,6 @@ const Header = () => {
                   {t("about")}
                 </Link>
               </li>
-
               <li className="relative">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -295,81 +172,39 @@ const Header = () => {
                     className="w-56 min-w-[14rem] bg-white dark:bg-darkMod-200 !shadow-xl !border-none rounded-md p-1.5"
                     align={isArabic ? "end" : "start"}
                   >
-                    {/* Business Development Submenu */}
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="px-2 py-1.5 text-sm rounded-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200">
-                        {t("businessDev")}
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent
-                        className="w-full bg-white dark:bg-darkMod-200 shadow-xl border-none !rounded-lg p-1.5 ml-1"
-                        sideOffset={isArabic ? -4 : 4}
-                      >
-                        {[1, 2, 3, 4, 5].map((item) => (
-                          <DropdownMenuItem
-                            key={`business-${item}`}
-                            className={`px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50 ${
-                              isActive(`/services/${item}`)
-                                ? `${activeLink} bg-blue-100/90`
-                                : ""
-                            }`}
-                            asChild
-                          >
-                            <Link href={`/services/${item}`} className="w-full">
-                              {t(
-                                item === 1
-                                  ? "training"
-                                  : item === 2
-                                  ? "employment"
-                                  : item === 3
-                                  ? "hr"
-                                  : item === 4
-                                  ? "webManagement"
-                                  : "marketing"
-                              )}
-                            </Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-
-                    <div className="h-px bg-gray-200 dark:bg-gray-700/50 my-1 mx-2" />
-
-                    {/* Personal Development Submenu */}
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="px-2 py-1.5 text-sm rounded-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200">
-                        {t("personalDev")}
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent
-                        className="w-full bg-white dark:bg-darkMod-200 !border-none shadow-lg rounded-md p-1.5 ml-1"
-                        sideOffset={isArabic ? -4 : 4}
-                      >
-                        {[6, 7, 8].map((item) => (
-                          <DropdownMenuItem
-                            key={`personal-${item}`}
-                            className={`px-2 py-1.5 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50 ${
-                              isActive(`/services/${item}`)
-                                ? "text-primary-color1 shadow-sm"
-                                : ""
-                            }`}
-                            asChild
-                          >
-                            <Link href={`/services/${item}`} className="w-full">
-                              {t(
-                                item === 6
-                                  ? "coaching"
-                                  : item === 7
-                                  ? "careerPath"
-                                  : "internship"
-                              )}
-                            </Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
+                    {services?.map((service) => (
+                      <DropdownMenuSub key={service.id}>
+                        <DropdownMenuSubTrigger className="p-2 text-sm rounded-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200">
+                          {service.name}
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent
+                          className="w-full bg-white dark:bg-darkMod-200 shadow-xl border-none !rounded-lg p-1.5 ml-1"
+                          sideOffset={isArabic ? -4 : 4}
+                        >
+                          {service.sub_services.map((subService) => (
+                            <DropdownMenuItem
+                              key={subService.id}
+                              className={`px-2 p-2 text-sm rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 focus:bg-gray-100 dark:focus:bg-gray-700/50 ${
+                                isActive(`/services/${subService.id}`)
+                                  ? `${activeLink} bg-blue-100/90`
+                                  : ""
+                              }`}
+                              asChild
+                            >
+                              <Link
+                                href={`/services/${subService.id}`}
+                                className="w-full"
+                              >
+                                {subService.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuSubContent>
+                      </DropdownMenuSub>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
-
               {/* Career */}
               <li>
                 <Link
@@ -382,7 +217,6 @@ const Header = () => {
                   {t("career")}
                 </Link>
               </li>
-
               {/* Contact */}
               <li>
                 <Link

@@ -287,6 +287,7 @@ export const fetchJobDetails = async (id: number): Promise<Job> => {
 export const fetchFeaturedJobs = async (): Promise<FeaturedJobs> => {
   return get<FeaturedJobs>(`/api/featured-jobs `);
 };
+
 export const fetchJobs = async (params: {
   page: number;
   search?: string;
@@ -345,4 +346,34 @@ export const fetchJobs = async (params: {
   );
   console.log(response);
   return response;
+};
+
+export const fetchServices = async (): Promise<Service[]> => {
+  return get<Service[]>(`/api/services`);
+};
+export const fetchSubService = async (id: number): Promise<SubService> => {
+  return get<SubService>(`/api/services/subService/${id}`);
+};
+
+export const fetchSubServiceQuestions = async (
+  id: number
+): Promise<QuestionResponse> => {
+  return get<QuestionResponse>(`/api/services/subService/${id}/questions`);
+};
+
+export const requestService = async (
+  requestData: ServiceRequestData
+): Promise<any> => {
+  try {
+    // Use a clean, absolute path
+    const endpoint = "/api/services/service-requests";
+    console.log(requestData);
+
+    const response = await post<any>(endpoint, requestData);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Service request failed:", error);
+    throw error;
+  }
 };
