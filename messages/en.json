@@ -604,8 +604,79 @@
       "description": "Please check your current password and try again"
     }
   }
-}
-
+}, "verifyResetCodeForm": {
+    "title": "Verify Reset Code",
+    "description": "Enter the verification code sent to your email",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+            "required": "Email is required",
+      "invalid": "Please enter a valid email address"
+      },
+      "token": {
+        "label": "Verification Code",
+        "placeholder": "Enter 5-digit code",
+            "required": "Verification code is required",
+      "length": "Code must be 5 digits",
+      "digits": "Code must contain only numbers"
+      }
+    },
+    "submit": "Verify Code",
+    "submitting": "Verifying...",
+    "resendCode": "Resend Code",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Verification successful!",
+        "description": "You can now reset your password"
+      },
+      "error": {
+        "title": "Verification failed",
+        "description": "Invalid or expired verification code"
+      },
+      "resendSuccess": {
+        "title": "Code resent",
+        "description": "A new verification code has been sent to your email"
+      }
+    }
+  },
+    "resetPasswordForm": {
+    "title": "Reset Your Password",
+    "description": "Enter your new password below",
+    "fields": {
+      "password": {
+        "label": "New Password",
+        "placeholder": "••••••••",
+        "error": "Password must be at least 8 characters"
+      },
+      "password_confirmation": {
+        "label": "Confirm New Password",
+        "placeholder": "••••••••",
+        "error": "Please confirm your password",
+        "mismatch": "Passwords do not match"
+      },
+      "email": {
+        "invalid": "Invalid email address"
+      },
+      "token": {
+        "required": "Token is required"
+      }
+    },
+    "submit": "Reset Password",
+    "submitting": "Resetting...",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Password reset successful!",
+        "description": "You can now login with your new password"
+      },
+      "error": {
+        "title": "Password reset failed",
+        "description": "Please try again"
+      }
+    }
+  }
 },
 "testQuestionPage": {
     "progress": "Progress",
@@ -617,7 +688,9 @@
 
     "submitTest": "Submit Test",
     "submitting": "Submitting...",
-    "textAnswerPlaceholder": "Type your answer here..."
+    "textAnswerPlaceholder": "Type your answer here...",
+     "questionsCompleted": "Questions Completed",
+    "questionsRemaining": "Questions Remaining"
 },
 "resultModal": {
   "perfectScore": {
@@ -719,7 +792,17 @@
     "cta": {
       "requestService": "Request This Service"
     }
-  }
+  }, "chat": {
+      "adminDescription": "This is your secure inbox for official communications from our admin team. All messages here are for your reference and cannot be replied to.",
+      "adminSupport": "Admin Support",
+      "usuallyResponds": "Usually responds within 1 hour",
+      "loadingMessages": "Loading your messages...",
+      "noMessages": "No Messages Yet",
+      "noMessagesDescription": "When our admin team sends you important updates, they'll appear in this beautifully designed space.",
+      "readOnly": "Secure messages from admin team",
+      "liveSupport": "Admin Support",
+      "requestHelp": "Request Help"
+    }
  
 }
 

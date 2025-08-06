@@ -11,10 +11,13 @@ import { Form, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { forgotPasswordSchema } from "@/lib/validation/userValidation";
+import { forgetPassword } from "@/lib/client-action";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordForm() {
   const t = useTranslations("forms.forgotPasswordForm");
   const locale = useLocale();
+  const router = useRouter();
   const isRTL = locale === "ar";
 
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
@@ -26,10 +29,12 @@ export default function ForgotPasswordForm() {
 
   async function onSubmit(values: z.infer<typeof forgotPasswordSchema>) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await forgetPassword(values.email);
+
       toast.success(t("toast.success.title"), {
         description: t("toast.success.description"),
       });
+      router.push("/verify_reset_code");
     } catch (error) {
       console.error("Error sending reset link", error);
       toast.error(t("toast.error.title"), {

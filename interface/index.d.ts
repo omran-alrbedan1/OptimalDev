@@ -462,3 +462,17 @@ interface ServiceRequestData {
   city_id?: number;
   answers: Record<string, string | number>;
 }
+
+interface Message {
+  id: number;
+  message: string;
+  created_at: string;
+  sender_id: number;
+  receiver_id: number;
+  sender_name: string;
+  receiver_name: string;
+  sender_type: string;
+  receiver_type: string;
+  direction: string;
+  is_read: number;
+}

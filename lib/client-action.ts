@@ -223,6 +223,33 @@ export const register = async (formData: FormData): Promise<any> => {
   return post<any>("/api/register", formData, {}, true);
 };
 
+export const forgetPassword = async (email: string): Promise<any> => {
+  const response = await post<any>("/api/forgotPassword", { email });
+  return response;
+};
+
+export const verifyResetToken = async (
+  email: string,
+  token: string
+): Promise<any> => {
+  const response = await post<any>("/api/verify-reset-code", { email, token });
+  return response;
+};
+export const resetPassword = async (
+  email: string,
+  token: string,
+  password: string,
+  password_confirmation: string
+): Promise<any> => {
+  const response = await post<any>("/api/reset-password", {
+    email,
+    token,
+    password,
+    password_confirmation,
+  });
+  return response;
+};
+
 export const fetchMyApplications = async (
   page: number = 1
 ): Promise<PaginatedResponse<Application[]>> => {
@@ -351,6 +378,10 @@ export const fetchJobs = async (params: {
 export const fetchServices = async (): Promise<Service[]> => {
   return get<Service[]>(`/api/services`);
 };
+export const fetchSubServices = async (): Promise<SubService[]> => {
+  return get<SubService[]>(`/api/services/sub-services`);
+};
+
 export const fetchSubService = async (id: number): Promise<SubService> => {
   return get<SubService>(`/api/services/subService/${id}`);
 };
@@ -376,4 +407,8 @@ export const requestService = async (
     console.error("Service request failed:", error);
     throw error;
   }
+};
+
+export const fetchConversations = async (): Promise<any> => {
+  return get<any>(`/api/messages?with_id=1`);
 };

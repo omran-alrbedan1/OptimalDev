@@ -58,6 +58,7 @@ const TestPage = () => {
   const [testResult, setTestResult] = useState<{
     message: string;
     score: number;
+    status: "success" | "failed";
   } | null>(null);
 
   useEffect(() => {
@@ -144,20 +145,24 @@ const TestPage = () => {
       });
 
       const result = await submitTestAnswers(jobId, testId, formattedAnswers);
-      console.log(result);
       setTestResult({
         message: result.message,
         score: result.score,
+        status: "success",
       });
       setShowResultsModal(true);
     } catch (error: any) {
       console.error("Submission error:", error);
-      toast.error(error.message || "Test submission failed");
+      setTestResult({
+        message: error.message || "Test submission failed",
+        score: 0,
+        status: "failed",
+      });
+      setShowResultsModal(true);
     } finally {
       setSubmitLoading(false);
     }
   };
-
   const handleResultsModalClose = () => {
     setShowResultsModal(false);
     setTestResult(null);
@@ -462,6 +467,7 @@ const TestPage = () => {
           visible={showResultsModal}
           onClose={handleResultsModalClose}
           score={testResult.score}
+          status={testResult.status}
         />
       )}
     </div>

@@ -5,34 +5,33 @@ import { TrophyOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { shootRelisticConfetti } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-
 interface ResultModalProps {
   visible: boolean;
   score: number;
+  status: "success" | "failed";
   onClose: () => void;
 }
 
 const ResultModal: React.FC<ResultModalProps> = ({
   visible,
   score,
+  status,
   onClose,
 }) => {
   const t = useTranslations("resultModal");
   const router = useRouter();
-  const isPerfectScore = score === 100;
-
-  console.log(score);
+  const isSuccess = status === "success";
 
   useEffect(() => {
-    if (visible && isPerfectScore) {
+    if (visible && isSuccess) {
       const timer = setTimeout(() => {
         shootRelisticConfetti();
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [visible, isPerfectScore]);
+  }, [visible, isSuccess]);
 
-  const resultData = isPerfectScore
+  const resultData = isSuccess
     ? {
         title: t("perfectScore.title"),
         message: t("perfectScore.message"),
@@ -61,7 +60,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
         <div className="mb-6 flex justify-center">
           <div className="relative">
             {resultData.icon}
-            {isPerfectScore && (
+            {isSuccess && (
               <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping opacity-75"></div>
             )}
           </div>
@@ -72,7 +71,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
           {resultData.title}
         </h2>
 
-        {/* English Message */}
+        {/* Message */}
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
           {resultData.message}
         </p>
@@ -87,7 +86,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
           >
             {t("backToCareerPage")}
           </Button>
-          {!isPerfectScore && (
+          {!isSuccess && (
             <Button
               size="large"
               onClick={() => router.push("/profile")}
@@ -98,8 +97,8 @@ const ResultModal: React.FC<ResultModalProps> = ({
           )}
         </div>
 
-        {/* Perfect Score Celebration */}
-        {isPerfectScore && (
+        {/* Success Celebration */}
+        {isSuccess && (
           <div className="mt-6 animate-bounce">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 dark:bg-primary/50 rounded-full">
               <span className="text-primary dark:text-primary font-medium">
@@ -112,5 +111,4 @@ const ResultModal: React.FC<ResultModalProps> = ({
     </Modal>
   );
 };
-
 export default ResultModal;

@@ -1,4 +1,3 @@
-// components/ServiceCard.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -24,7 +23,7 @@ export default function ServiceCard({
   service,
   index,
 }: {
-  service: Service;
+  service: SubService;
   index: number;
 }) {
   return (
@@ -36,7 +35,7 @@ export default function ServiceCard({
         <motion.div className="relative w-fit">
           <img
             src={service.image}
-            alt={service.title}
+            alt={service.name}
             className="object-contain w-fit"
             style={{
               maxWidth: "100%",
@@ -55,7 +54,7 @@ export default function ServiceCard({
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.3 }}
         >
-          {service.title}
+          {service.name}
         </motion.h3>
         <motion.p
           className="text-gray-600 mb-6 dark:text-gray-200"
@@ -66,7 +65,7 @@ export default function ServiceCard({
           {service.description}
         </motion.p>
         <motion.a
-          href={service.link}
+          href={`/services/${service.id}`}
           className="inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition"
           variants={buttonVariants}
           initial="rest"

@@ -66,6 +66,7 @@ const ExamPage = () => {
   const [testResult, setTestResult] = useState<{
     message: string;
     score: number;
+    status: "success" | "failed";
   } | null>(null);
 
   useEffect(() => {
@@ -152,15 +153,20 @@ const ExamPage = () => {
       });
 
       const result = await submitTestAnswers(jobId, testId, formattedAnswers);
-      console.log(result);
       setTestResult({
         message: result.message,
         score: result.score,
+        status: "success",
       });
       setShowResultsModal(true);
     } catch (error: any) {
       console.error("Submission error:", error);
-      toast.error(error.message || "Test submission failed");
+      setTestResult({
+        message: error.message || "Test submission failed",
+        score: 0,
+        status: "failed",
+      });
+      setShowResultsModal(true);
     } finally {
       setSubmitLoading(false);
     }
@@ -197,7 +203,7 @@ const ExamPage = () => {
                 >
                   <div className="p-2 flex items-center space-x-4">
                     <div
-                      className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
+                      className={`flex-shrink-0 w-10 mx-2 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
                         isSelected
                           ? "bg-primary"
                           : "bg-primary/10 text-primary group-hover:bg-primary/20"
@@ -384,7 +390,7 @@ const ExamPage = () => {
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                        Questions Completed
+                        {t("questionsCompleted")}
                       </p>
                       <p className="text-xl font-bold text-gray-800 dark:text-white">
                         {currentQuestionIndex + 1}
@@ -403,7 +409,7 @@ const ExamPage = () => {
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                        Questions Remaining
+                        {t("questionsRemaining")}
                       </p>
                       <p className="text-xl font-bold text-gray-800 dark:text-white">
                         {testData.questions.length - currentQuestionIndex - 1}
@@ -512,10 +518,10 @@ const ExamPage = () => {
 
       {showResultsModal && testResult && (
         <ExamResultModal
-          passingScore={50}
           visible={showResultsModal}
           onClose={handleResultsModalClose}
           score={testResult.score}
+          status={testResult.status}
         />
       )}
     </div>

@@ -30,6 +30,7 @@ import { ApplicationsList } from "@/components/parts/ApplicationsList";
 import { logout } from "@/store/slices/authSlice";
 import { Loader2 } from "lucide-react";
 import { ExamsList } from "@/components/parts/ExamsList";
+import MessageLists from "@/components/parts/MessagesList";
 
 const ProfilePage = () => {
   const t = useTranslations("profilePage");
@@ -103,25 +104,7 @@ const ProfilePage = () => {
           {t("messages")}
         </span>
       ),
-      children: (
-        <div className="w-full flex flex-col items-center justify-center p-6 min-h-[400px]">
-          <div className="max-w-md w-full text-center">
-            <div className="flex justify-center mb-4">
-              <Image
-                src="/images/messages.png"
-                alt="Messages"
-                width={200}
-                height={200}
-                className="object-contain"
-              />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-              {t("noMessages.title")}
-            </h2>
-            <p className="text-gray-500">{t("noMessages.description")}</p>
-          </div>
-        </div>
-      ),
+      children: <MessageLists />,
     },
   ];
 

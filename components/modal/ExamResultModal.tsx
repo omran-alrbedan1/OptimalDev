@@ -13,20 +13,20 @@ import { useTranslations } from "next-intl";
 interface ExamResultModalProps {
   visible: boolean;
   score: number;
-  passingScore: number;
+  status: "success" | "failed";
   onClose: () => void;
 }
 
 const ExamResultModal: React.FC<ExamResultModalProps> = ({
   visible,
   score,
-  passingScore = 50,
+  status,
   onClose,
 }) => {
   const t = useTranslations("examResultModal");
   const router = useRouter();
-  const isPerfectScore = score === 100;
-  const isPassed = score >= passingScore;
+  const isPassed = status === "success";
+  const isPerfectScore = isPassed && score === 100;
 
   useEffect(() => {
     if (visible && isPassed) {
@@ -40,20 +40,17 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
   const resultData = isPerfectScore
     ? {
         title: t("perfectScore.title"),
-        message: t("perfectScore.message", { score }),
         icon: <TrophyOutlined className="text-5xl text-primary" />,
         color: "#52c41a",
       }
     : isPassed
     ? {
         title: t("passed.title"),
-        message: t("passed.message", { score, passingScore }),
         icon: <CheckCircleOutlined className="text-5xl text-green-500" />,
         color: "#52c41a",
       }
     : {
         title: t("failed.title"),
-        message: t("failed.message", { score, passingScore }),
         icon: <CloseCircleOutlined className="text-5xl text-red-500" />,
         color: "#ff4d4f",
       };
@@ -84,16 +81,6 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           {resultData.title}
         </h2>
 
-        {/* Message */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-          {resultData.message}
-        </p>
-
-        {/* Passing Score Info */}
-        <div className="mb-6 text-gray-500 dark:text-gray-400">
-          {t("passingScore", { passingScore })}
-        </div>
-
         {/* Actions */}
         <div className="flex justify-center gap-4">
           <Button
@@ -104,9 +91,17 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           >
             {t("viewMyExams")}
           </Button>
+          {!isPassed && (
+            <Button
+              size="large"
+              onClick={() => router.push("/career")}
+              className="border-primary text-primary hover:bg-primary/10"
+            >
+              {t("tryAgain")}
+            </Button>
+          )}
         </div>
 
-        {/* Celebration Message */}
         {isPassed && (
           <div className="mt-6 animate-bounce">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 dark:bg-primary/20 rounded-full">

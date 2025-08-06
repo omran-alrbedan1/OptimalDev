@@ -61,7 +61,7 @@ const ServiceDetailsPage = () => {
               <div className="relative bg-white dark:bg-slate-800 p-2 sm:p-3 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl shadow-primary/10 group-hover:shadow-primary/20 transition-all duration-500">
                 <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] overflow-hidden rounded-xl sm:rounded-2xl">
                   <Image
-                    src={images.service}
+                    src={service?.image!}
                     alt={service?.name || t("imageAlt")}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"

@@ -23,6 +23,36 @@ export const forgotPasswordSchema = z.object({
     .min(1, "fields.email.required")
     .email("fields.email.invalid"),
 });
+export const verifyResetCodeSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, { message: t("fields.email.required") })
+      .email({ message: t("fields.email.invalid") }),
+    token: z
+      .string()
+      .min(1, { message: t("fields.token.required") })
+      .length(5, { message: t("fields.token.length") })
+      .regex(/^\d+$/, { message: t("fields.token.digits") }),
+  });
+
+export const resetPasswordSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      email: z.string().email(t("fields.email.invalid")),
+      token: z.string().min(1, t("fields.token.required")),
+      password: z.string().min(8, {
+        message: t("fields.password.error"),
+      }),
+      password_confirmation: z.string().min(1, {
+        message: t("fields.password_confirmation.error"),
+      }),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("fields.password_confirmation.mismatch"),
+      path: ["password_confirmation"],
+    });
+
 export const subscribeFormShema = z.object({
   email: z
     .string()

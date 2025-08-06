@@ -13,6 +13,8 @@ import anonymous from "@/public/images/anonymous.png";
 import noResult from "@/public/images/no-result.svg";
 import resetPassword from "@/public/images/reset-password.svg";
 import favicon from "@/public/images/favicon.png";
+import serverError from "@/public/images/server-error.png";
+import Verify from "@/public/images/Verifie.png";
 
 export const images = {
   logo,
@@ -30,4 +32,6 @@ export const images = {
   noResult,
   resetPassword,
   favicon,
+  serverError,
+  Verify,
 };

@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import Loader from "@/components/Loader";
 import { JobApplicationModal } from "@/components/modal/JobApplicationModal";
@@ -46,23 +47,16 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
     try {
       const response = await applyForJob(Number(params.id));
       if (
-        //@ts-ignore
         typeof response.message === "string" &&
-        //@ts-ignore
         (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
-          //@ts-ignore
           response.message.includes("Please complete the required tests first"))
       ) {
-        //@ts-ignore
         setModalType("tests");
-        //@ts-ignore
         setModalMessage(response.message);
-        //@ts-ignore
         setRequiredTests(response.required_tests);
       } else {
         setModalType("success");
         setModalMessage(
-          //@ts-ignore
           response.message || "Application submitted successfully"
         );
       }
@@ -98,10 +92,14 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          {error}
-        </div>
+      <div className="max-w-7xl mx-auto mt-24 flex  items-center justify-center flex-col px-4 sm:px-6 lg:px-8 py-8">
+        <Image
+          src={images.serverError}
+          height={300}
+          width={300}
+          alt="server error"
+        />
+        <div className=" text-primary px-4 py-3 rounded">{error}</div>
       </div>
     );
   }

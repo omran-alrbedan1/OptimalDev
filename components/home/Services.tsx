@@ -6,32 +6,8 @@ import { motion } from "framer-motion";
 import ServiceCard from "../cards/ServiceCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Service } from "@/app";
-import { Checkbox } from "@/components/ui/checkbox";
-
-const services: Service[] = [
-  {
-    id: 1,
-    title: "Service 1",
-    description: "Description for service 1 goes here. This is a sample text.",
-    image: "/images/section.jpg",
-    link: "/images/section.jpg",
-  },
-  {
-    id: 2,
-    title: "Service 2",
-    description: "Description for service 2 goes here. This is a sample text.",
-    image: "/images/work-space.jpg",
-    link: "/services/2",
-  },
-  {
-    id: 3,
-    title: "Service 3",
-    description: "Description for service 3 goes here. This is a sample text.",
-    image: "/images/about-us.jpg",
-    link: "/services/3",
-  },
-];
+import { useFetch } from "@/hooks/useFetch";
+import { fetchSubServices } from "@/lib/client-action";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -71,7 +47,7 @@ const CustomArrow = ({
 };
 export default function Services() {
   const t = useTranslations("ourServices");
-
+  const { data: services } = useFetch<SubService[]>(fetchSubServices);
   return (
     <motion.section
       initial="hidden"
@@ -93,7 +69,7 @@ export default function Services() {
           dots={{ className: "custom-dots" }}
           className="hover:cursor-pointer [&_.slick-dots]:bottom-[-30px] [&_.slick-dots_li_button]:bg-gray-300 [&_.slick-dots_li.slick-active_button]:bg-primary-color1"
         >
-          {services.map((service, index) => (
+          {services?.map((service, index) => (
             <div key={service.id} className="px-2">
               <ServiceCard service={service} index={index} />
             </div>

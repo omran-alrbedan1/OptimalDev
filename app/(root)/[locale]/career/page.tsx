@@ -196,6 +196,12 @@ const JobSearchPage = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
+        <Image
+          src={images.serverError}
+          height={100}
+          width={100}
+          alt="server error"
+        />
         <div className="text-red-500">{t("errorLoadingJobs")}</div>
       </div>
     );
