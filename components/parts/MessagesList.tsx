@@ -1,51 +1,18 @@
 "use client";
-import { Tabs, Button, Modal, Card, Tag, Divider, Skeleton } from "antd";
-import type { TabsProps } from "antd";
-import {
-  MailOutlined,
-  EnvironmentOutlined,
-  FileTextOutlined,
-  MessageOutlined,
-  BookOutlined,
-  SolutionOutlined,
-  LockOutlined,
-  EyeOutlined,
-  LogoutOutlined,
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import Image from "next/image";
-import { FaPhoneAlt, FaRegEdit } from "react-icons/fa";
-import { images } from "@/constants/images";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-import { useFetch } from "@/hooks/useFetch";
+import { MessageOutlined, LockOutlined } from "@ant-design/icons";
 
 import { useState, useRef, useEffect } from "react";
-import PasswordChangeForm from "@/components/forms/RestPasswordForm";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { ApplicationsList } from "@/components/parts/ApplicationsList";
-import { logout } from "@/store/slices/authSlice";
-import { User, Clock, Send } from "lucide-react";
-import { fetchConversations, fetchProfileInfo } from "@/lib/client-action";
+import { User } from "lucide-react";
+import { fetchConversations } from "@/lib/client-action";
 
 const MessageLists = () => {
   const t = useTranslations("chat");
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState("1");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState("");
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [shouldRefreshMessages, setShouldRefreshMessages] = useState(false);
-  const locale = useLocale();
-  const dispatch = useDispatch();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

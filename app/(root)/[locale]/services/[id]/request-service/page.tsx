@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useFetch, useFetchWithId } from "@/hooks/useFetch";
 import {
   fetchCountries,
@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useAppSelector } from "@/hooks/hook";
 
 type AnswerValue = string | string[] | number | Date;
 
@@ -79,11 +80,15 @@ type FormValues = z.infer<typeof formSchema>;
 
 const ServiceRequestPage = () => {
   const { id } = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [step, setStep] = useState(1);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const t = useTranslations("serviceRequest");
 
@@ -91,6 +96,12 @@ const ServiceRequestPage = () => {
     fetchSubServiceQuestions,
     Number(id)
   );
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+    }
+  }, [isAuthenticated, router, pathname]);
 
   const allQuestions = useMemo(() => {
     if (!questions) return [];
@@ -613,6 +624,10 @@ const ServiceRequestPage = () => {
         return null;
     }
   };
+
+  if (!isAuthenticated) {
+    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900"></div>;
+  }
 
   if (submitSuccess) {
     return (
