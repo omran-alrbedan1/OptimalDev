@@ -714,7 +714,7 @@ const ServiceRequestPage = () => {
             >
               <Button
                 className="group relative w-full bg-gradient-to-r from-[#22ace3] to-cyan-500 hover:from-[#1a9bc7] hover:to-cyan-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 overflow-hidden"
-                onClick={() => (window.location.href = "/")}
+                onClick={() => router.push("/home")}
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {t("success.returnHome")}

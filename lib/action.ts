@@ -51,3 +51,6 @@ export const fetchOrganization = async (
 ): Promise<Organization> => {
   return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
 };
+export const fetchContactInfo = async (lang?: string): Promise<Contact> => {
+  return fetchApi("/contact", { next: { revalidate: 3600 }, lang });
+};

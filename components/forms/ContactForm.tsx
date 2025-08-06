@@ -7,6 +7,8 @@ import { MdEmail, MdSubject } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import { contactUs } from "@/lib/client-action";
+import { toast } from "sonner";
 
 const ContactForm = () => {
   const t = useTranslations("forms.contactForm");
@@ -14,6 +16,7 @@ const ContactForm = () => {
   const isArabic = pathname.includes("/ar");
 
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({
     first_name: "",
     last_name: "",
@@ -60,7 +63,7 @@ const ContactForm = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
@@ -68,10 +71,29 @@ const ContactForm = () => {
     const validationErrors = validateForm(data);
     setErrors(validationErrors);
 
-    if (!Object.values(validationErrors).some((error) => error)) {
-      data.phone = phoneNumber;
-      console.log("Form Data:", data);
-      // Add your form submission logic here
+    if (Object.values(validationErrors).some((error) => error)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    data.phone = phoneNumber;
+
+    try {
+      await contactUs(
+        data.first_name as string,
+        data.last_name as string,
+        data.email as string,
+        data.phone as string,
+        data.subject as string,
+        data.message as string
+      );
+
+      toast.success(t("successMessage"));
+    } catch (error) {
+      console.log(error);
+      toast.error(t("errorMessage"));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -246,12 +268,15 @@ const ContactForm = () => {
       <div className="flex-1">
         <button
           type="submit"
+          disabled={isSubmitting}
           className={`bg-primary-color1 ${
             isArabic ? "ml-auto" : "mr-auto"
-          } max-sm:w-full w-1/4 h-11 flex justify-center items-center rounded-[8px] text-white relative overflow-hidden hover:bg-primary-color1-dark transition-colors`}
+          } max-sm:w-full w-1/4 h-11 flex justify-center items-center rounded-[8px] text-white relative overflow-hidden hover:bg-primary-color1-dark transition-colors disabled:opacity-70 disabled:cursor-not-allowed`}
         >
           <span className="absolute inset-0 bg-primary-color2 opacity-30 rounded-[8px] hover:opacity-40 transition-opacity" />
-          <span className="relative z-10">{t("submit")}</span>
+          <span className="relative z-10">
+            {isSubmitting ? t("submitting") : t("submit")}
+          </span>
         </button>
       </div>
     </form>

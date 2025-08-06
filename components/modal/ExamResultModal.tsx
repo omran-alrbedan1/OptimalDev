@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Modal, Progress, Button } from "antd";
+import { Modal, Button } from "antd";
 import {
   TrophyOutlined,
   CloseCircleOutlined,
@@ -12,21 +12,18 @@ import { useTranslations } from "next-intl";
 
 interface ExamResultModalProps {
   visible: boolean;
-  score: number;
   status: "success" | "failed";
   onClose: () => void;
 }
 
 const ExamResultModal: React.FC<ExamResultModalProps> = ({
   visible,
-  score,
   status,
   onClose,
 }) => {
   const t = useTranslations("examResultModal");
   const router = useRouter();
   const isPassed = status === "success";
-  const isPerfectScore = isPassed && score === 100;
 
   useEffect(() => {
     if (visible && isPassed) {
@@ -37,22 +34,20 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
     }
   }, [visible, isPassed]);
 
-  const resultData = isPerfectScore
-    ? {
-        title: t("perfectScore.title"),
-        icon: <TrophyOutlined className="text-5xl text-primary" />,
-        color: "#52c41a",
-      }
-    : isPassed
+  const resultData = isPassed
     ? {
         title: t("passed.title"),
+        message: t("passed.message"),
         icon: <CheckCircleOutlined className="text-5xl text-green-500" />,
         color: "#52c41a",
+        actionText: t("viewResults"),
       }
     : {
         title: t("failed.title"),
+        message: t("failed.message"),
         icon: <CloseCircleOutlined className="text-5xl text-red-500" />,
         color: "#ff4d4f",
+        actionText: t("tryAgain"),
       };
 
   return (
@@ -71,7 +66,10 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           <div className="relative">
             {resultData.icon}
             {isPassed && (
-              <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping opacity-75"></div>
+              <div
+                className="absolute inset-0 rounded-full border-4 opacity-75 animate-ping"
+                style={{ borderColor: resultData.color }}
+              ></div>
             )}
           </div>
         </div>
@@ -81,6 +79,11 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           {resultData.title}
         </h2>
 
+        {/* Message */}
+        <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
+          {resultData.message}
+        </p>
+
         {/* Actions */}
         <div className="flex justify-center gap-4">
           <Button
@@ -89,7 +92,7 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
             className="bg-primary hover:bg-primary/90"
             onClick={() => router.push("/profile")}
           >
-            {t("viewMyExams")}
+            {t("viewResults")}
           </Button>
           {!isPassed && (
             <Button
@@ -106,7 +109,7 @@ const ExamResultModal: React.FC<ExamResultModalProps> = ({
           <div className="mt-6 animate-bounce">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 dark:bg-primary/20 rounded-full">
               <span className="text-primary dark:text-primary-300 font-medium">
-                {isPerfectScore ? t("congratulations") : t("wellDone")}
+                {t("congratulations")}
               </span>
             </div>
           </div>

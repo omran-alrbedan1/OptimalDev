@@ -1,25 +1,15 @@
-import React from "react";
-import axios from "axios";
+"use client";
+
 import { Suspense } from "react";
-import { FaPhone } from "react-icons/fa";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import Loader from "@/components/Loader";
 import ContactForm from "@/components/forms/ContactForm";
-import { ContactUsProps } from "@/types";
-import { getTranslations } from "next-intl/server";
-import { Phone, Smartphone } from "lucide-react";
-import { fetchOrganization } from "@/lib/action";
+import { Smartphone } from "lucide-react";
+import { useFetch } from "@/hooks/useFetch";
+import { fetchContactInfo } from "@/lib/client-action";
 
-const ContactUsPage = async () => {
-  const t = await getTranslations("contactUs");
-  const organization = await fetchOrganization();
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // Filter data by type
-  const text = "text";
-  const email = "email";
-  const phone = "phone";
-  const address = "address";
+const ContactUsPage = () => {
+  const { data: contactInfo } = useFetch<Contact>(fetchContactInfo);
 
   return (
     <div className="min-h-[100vh] overflow-y-auto relative">
@@ -38,18 +28,13 @@ const ContactUsPage = async () => {
             className="text-2xl sm:text-3xl md:text-4xl text-white mb-6 font-bold"
             style={{ letterSpacing: "4px" }}
           >
-            {t("title")}
+            {contactInfo?.title}
           </h1>
 
           {/* Text Content */}
-          {text && (
+          {contactInfo?.text && (
             <div className="text-gray-200 text-[15px] md:text-lg mb-6 max-w-4xl max-sm:font-light">
-              Optimal Path is a premier management consulting firm that empowers
-              businesses through strategic digital transformation, AI-driven
-              solutions, and cloud-powered operational excellence. We specialize
-              in optimizing organizational performance by integrating
-              cutting-edge technology with proven business strategies to drive
-              efficiency, scalability, and competitive advantage.
+              {contactInfo?.text}
             </div>
           )}
         </div>
@@ -61,9 +46,9 @@ const ContactUsPage = async () => {
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
                   <MdLocationOn />
                 </span>
-                {address && (
+                {contactInfo?.address && (
                   <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>{organization.address}</span>
+                    <span>{contactInfo?.address}</span>
                   </p>
                 )}
               </div>
@@ -71,9 +56,9 @@ const ContactUsPage = async () => {
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
                   <Smartphone />
                 </span>
-                {phone && (
+                {contactInfo?.phone && (
                   <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>{organization.phone}</span>
+                    <span>{contactInfo?.phone}</span>
                   </p>
                 )}
               </div>
@@ -81,9 +66,9 @@ const ContactUsPage = async () => {
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center mt-3 max-xs:mt-1">
                   <MdEmail />
                 </span>
-                {email && (
+                {contactInfo?.email && (
                   <p className="text-white text-sm sm:text-lg flex flex-col">
-                    <span> {organization.email}</span>
+                    <span> {contactInfo?.email}</span>
                   </p>
                 )}
               </div>
@@ -99,9 +84,5 @@ const ContactUsPage = async () => {
 };
 
 export default function Page() {
-  return (
-    <Suspense fallback={<Loader />}>
-      <ContactUsPage />
-    </Suspense>
-  );
+  return <ContactUsPage />;
 }

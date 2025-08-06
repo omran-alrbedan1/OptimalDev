@@ -79,37 +79,6 @@ export const ExamsList = () => {
     );
   }
 
-  if (error) {
-    return (
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={scaleIn}
-        transition={{ duration: 0.6 }}
-        className="text-center py-8 md:py-12 lg:py-16 px-2 sm:px-4"
-      >
-        <div className="max-w-md sm:max-w-lg mx-auto">
-          <Alert
-            message={t("error.loading")}
-            description={error.message}
-            type="error"
-            showIcon
-            className="rounded-xl md:rounded-2xl border-0 shadow-md md:shadow-lg bg-gradient-to-r from-red-50 to-pink-50"
-          />
-          <Button
-            type="primary"
-            onClick={() => window.location.reload()}
-            className="mt-4 md:mt-6 h-10 md:h-12 px-6 md:px-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 border-0 shadow-sm md:shadow-md hover:shadow-md md:hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center mx-auto"
-            size={screens.xs ? "middle" : "large"}
-            icon={<RocketOutlined />}
-          >
-            {t("error.retry")}
-          </Button>
-        </div>
-      </motion.div>
-    );
-  }
-
   if (!exams || exams.length === 0 || !hasTests) {
     return (
       <motion.div

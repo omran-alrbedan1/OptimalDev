@@ -520,7 +520,6 @@ const ExamPage = () => {
         <ExamResultModal
           visible={showResultsModal}
           onClose={handleResultsModalClose}
-          score={testResult.score}
           status={testResult.status}
         />
       )}

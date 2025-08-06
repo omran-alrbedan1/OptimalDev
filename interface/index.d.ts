@@ -44,6 +44,13 @@ interface Organization {
   mission: string;
   values: string;
 }
+interface Contact {
+  title: string;
+  text: string;
+  phone: string;
+  address: string;
+  email: string;
+}
 
 interface Company {
   id: number;

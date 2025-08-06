@@ -52,8 +52,7 @@ const MessageLists = () => {
   return (
     <div className="mt-10 flex flex-col lg:flex-row gap-6 min-h-[500px]">
       <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 rounded-[5px] p-8 items-center justify-center relative overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-200/30 dark:bg-blue-800/20 rounded-full blur-xl"></div>
-        <div className="absolute bottom-10 left-0 w-32 h-32 bg-purple-200/30 dark:bg-purple-800/20 rounded-full blur-xl"></div>
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-primary/10 dark:bg-blue-800/20 rounded-full blur-xl"></div>
 
         <div className="text-center relative z-10">
           <motion.div
@@ -62,7 +61,7 @@ const MessageLists = () => {
             transition={{ duration: 0.5 }}
             className="relative mb-8"
           >
-            <div className="w-48 h-48 mx-auto bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-[#1976d2] dark:to-[#0d47a1] rounded-full flex items-center justify-center shadow-2xl relative overflow-hidden">
+            <div className="w-48 h-48 mx-auto bg-gradient-to-br from-blue-50 to-blue-200 dark:from-[#1976d2] dark:to-[#0d47a1] rounded-full flex items-center justify-center shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 dark:opacity-5"></div>
               <MessageOutlined className="text-6xl text-primary-color1  transform transition-transform hover:scale-110" />
             </div>
@@ -77,7 +76,7 @@ const MessageLists = () => {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400/80 rounded-full blur-[1px]"
+              className="absolute -top-4 -right-4 w-12 h-12 bg-primary rounded-full blur-[1px]"
             ></motion.div>
 
             <motion.div

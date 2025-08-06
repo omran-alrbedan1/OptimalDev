@@ -412,3 +412,32 @@ export const requestService = async (
 export const fetchConversations = async (): Promise<any> => {
   return get<any>(`/api/messages?with_id=1`);
 };
+
+export const fetchContactInfo = async (): Promise<Contact> => {
+  return get<Contact>(`/api/contact`);
+};
+
+export const contactUs = async (
+  first_name: string,
+  last_name: string,
+  email: string,
+  phone: string,
+  subject: string,
+  message: string
+): Promise<any> => {
+  const response = await post<any>("/api/contact", {
+    first_name,
+    last_name,
+    email,
+    phone,
+    subject,
+    message,
+  });
+  return response;
+};
+export const subscribe = async (email: string): Promise<any> => {
+  const response = await post<any>("/api/subscribe", {
+    email,
+  });
+  return response;
+};

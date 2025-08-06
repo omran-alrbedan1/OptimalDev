@@ -420,6 +420,9 @@
     }
   },
   "submit": "Submit",
+   "successMessage": "Your message has been sent successfully!",
+  "errorMessage": "Failed to send message. Please try again later.",
+  "submitting": "Submitting...",
   "validation": {
     "required": "This field is required",
     "invalidFormat": "Invalid format"
@@ -707,25 +710,19 @@
   "backToApplicationPage": "View My Applications",
   "congratulations": "Congratulations! Perfect Score!"
 },
-  "examResultModal": {
-    "perfectScore": {
-      "title": "Perfect Score!",
-      "message": "Congratulations! You achieved a perfect score of {score}%!"
-    },
+   "examResultModal": {
     "passed": {
-      "title": "Exam Passed!",
-      "message": "You passed with a score of {score}% (passing score: {passingScore}%)"
+      "title": "Congratulations!",
+      "message": "You have successfully completed the assessment."
     },
     "failed": {
-      "title": "Exam Failed",
-      "message": "Your score was {score}% (passing score: {passingScore}%)"
+      "title": "Assessment Result",
+      "message": "You didn't meet the passing criteria this time."
     },
-    "passingScore": "Passing Score: {passingScore}%",
-    "viewMyExams": "View My Exams",
-    "retakeExam": "Retake Exam",
-    "congratulations": "🎉 Congratulations! 🎉",
-    "wellDone": "Well done! You passed!"
-  } , 
+    "viewResults": "View My Exams",
+    "tryAgain": "Try Again",
+    "congratulations": "Excellent Work!"
+  }, 
   "serviceRequest": {
     "title": "Request Service",
     "description": "Let's get started with your service request. We'll guide you through each step to ensure we have all the information we need.",
@@ -798,7 +795,7 @@
       "usuallyResponds": "Usually responds within 1 hour",
       "loadingMessages": "Loading your messages...",
       "noMessages": "No Messages Yet",
-      "noMessagesDescription": "When our admin team sends you important updates, they'll appear in this beautifully designed space.",
+      "noMessagesDescription": "When our admin team sends you important updates, they'll appear in this  space.",
       "readOnly": "Secure messages from admin team",
       "liveSupport": "Admin Support",
       "requestHelp": "Request Help"
