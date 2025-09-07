@@ -44,6 +44,7 @@ const Header = () => {
   const { user, isAuthenticated, isLoading } = useAuth(true);
 
   const isArabic = path.includes("/ar");
+  const isCareerPage = path.includes("/career");
 
   useEffect(() => {
     setIsClient(true);
@@ -262,20 +263,23 @@ const Header = () => {
               </Tooltip>
             </div>
           ) : (
-            <div className="flex items-center gap-2 ml-4">
-              <Link
-                href="/login"
-                className="px-4 py-2 text-sm font-medium !rounded-[3px] border border-primary-color1  text-primary-color1 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                {t("login")}
-              </Link>
-              <Link
-                href="/register"
-                className="px-4 py-2 text-sm font-medium !rounded-[3px] text-white bg-primary-color1  hover:bg-primary-color1/90"
-              >
-                {t("register")}
-              </Link>
-            </div>
+            // Only show login/register buttons on career pages
+            isCareerPage && (
+              <div className="flex items-center gap-2 ml-4">
+                <Link
+                  href="/login"
+                  className="px-4 py-2 text-sm font-medium !rounded-[3px] border border-primary-color1  text-primary-color1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  {t("login")}
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-4 py-2 text-sm font-medium !rounded-[3px] text-white bg-primary-color1  hover:bg-primary-color1/90"
+                >
+                  {t("register")}
+                </Link>
+              </div>
+            )
           )}
         </div>
 
@@ -527,7 +531,7 @@ const Header = () => {
             }`}
             style={{ direction: isArabic ? "rtl" : "ltr" }}
           />
-          {!isAuthenticated && (
+          {!isAuthenticated && isCareerPage && (
             <div className="flex items-center w-full justify-evenly mt-24  gap-2">
               <Link
                 href="/login"

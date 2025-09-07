@@ -24,14 +24,12 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
     return () => clearInterval(intervalRef.current);
   }, [sliders?.length, isPaused]);
 
-  // Handle slide click
   const handleSlideClick = () => {
     if (sliders[currentIndex].link_url) {
       router.push(sliders[currentIndex].link_url);
     }
   };
 
-  // Handle hover events
   const handleMouseEnter = () => {
     setIsPaused(true);
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -104,18 +102,34 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
             className="w-full p-6"
           >
             <div className="text-center">
-              <h2 className="text-3xl text-white font-bold mt-6 mb-4">
-                {sliders[currentIndex].title}
-              </h2>
-              <p className="text-gray-100 mb-6 xl:mx-80 max-sm:mb-10">
-                {sliders[currentIndex].description}
-              </p>
-              <button
-                className="bg-primary-color1 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition"
-                onClick={handleSlideClick}
-              >
-                {sliders[currentIndex].link_text}
-              </button>
+              {sliders[currentIndex].title && (
+                <div
+                  className="text-3xl text-white font-bold mt-6 mb-4"
+                  dangerouslySetInnerHTML={{
+                    __html: sliders[currentIndex].title,
+                  }}
+                />
+              )}
+              {sliders[currentIndex].description && (
+                <div
+                  className="text-gray-100 mb-6 xl:mx-80 max-sm:mb-10"
+                  dangerouslySetInnerHTML={{
+                    __html: sliders[currentIndex].description,
+                  }}
+                />
+              )}
+              {sliders[currentIndex].link_text && (
+                <button
+                  className="bg-primary-color1 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition"
+                  onClick={handleSlideClick}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: sliders[currentIndex].link_text,
+                    }}
+                  />
+                </button>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>

@@ -163,6 +163,7 @@ const TestPage = () => {
       setSubmitLoading(false);
     }
   };
+  
   const handleResultsModalClose = () => {
     setShowResultsModal(false);
     setTestResult(null);

@@ -114,9 +114,12 @@ const ServiceDetailsPage = () => {
               <div className="relative">
                 <div className="absolute -left-4 sm:-left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-primary/50 to-transparent rounded-full"></div>
                 <div className="pl-5 sm:pl-8">
-                  <p className="text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed font-light whitespace-pre-line">
-                    {service?.description}
-                  </p>
+                  <div
+                    className="text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed font-light whitespace-pre-line"
+                    dangerouslySetInnerHTML={{
+                      __html: service?.description || "",
+                    }}
+                  />
                 </div>
               </div>
 

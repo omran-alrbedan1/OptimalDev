@@ -483,3 +483,35 @@ interface Message {
   direction: string;
   is_read: number;
 }
+
+type AnswerValue = string | string[] | number | Date;
+
+type Question = {
+  id: number;
+  title: {
+    title: string;
+    current: string;
+  };
+  type: string;
+  options?: Array<{ id: number; option: { option: string; current: string } }>;
+  is_required: boolean;
+  has_options?: boolean;
+  category?: string;
+  sort_order?: number;
+};
+
+type QuestionResponse = {
+  general_info: Question[];
+  service_details: Question[];
+  pricing_questions: Question[];
+};
+
+type Country = {
+  id: number;
+  name: string;
+};
+
+type City = {
+  id: number;
+  name: string;
+};

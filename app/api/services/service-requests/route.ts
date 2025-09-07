@@ -1,17 +1,8 @@
-// app/api/services/service-requests/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function POST(request: Request) {
   try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: "Authorization header missing" },
-        { status: 401 }
-      );
-    }
-
     const requestData = await request.json();
 
     const response = await axios.post(
@@ -20,7 +11,6 @@ export async function POST(request: Request) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: authHeader,
         },
       }
     );

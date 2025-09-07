@@ -5,13 +5,14 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useFetch, useFetchWithId } from "@/hooks/useFetch";
 import {
   fetchCountries,
   fetchCities,
   requestService,
   fetchSubServiceQuestions,
+  fetchSubService,
 } from "@/lib/client-action";
 import {
   User,
@@ -30,65 +31,19 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/hooks/hook";
+import { requestServiceFormShema } from "@/lib/validation/userValidation";
 
-type AnswerValue = string | string[] | number | Date;
-
-type Question = {
-  id: number;
-  title: {
-    title: string;
-    current: string;
-  };
-  type: string;
-  options?: Array<{ id: number; option: { option: string; current: string } }>;
-  is_required: boolean;
-  has_options?: boolean;
-  category?: string;
-  sort_order?: number;
-};
-
-type QuestionResponse = {
-  general_info: Question[];
-  service_details: Question[];
-  pricing_questions: Question[];
-};
-
-type Country = {
-  id: number;
-  name: string;
-};
-
-type City = {
-  id: number;
-  name: string;
-};
-
-const formSchema = z.object({
-  sub_service_id: z.number(),
-  full_name: z.string().min(2, "Name is required"),
-  email: z.string().email("Invalid email"),
-  phone: z.string().min(6, "Phone is required"),
-  company_name: z.string().optional(),
-  job_title: z.string().optional(),
-  country_id: z.number().min(1, "Country is required"),
-  city_id: z.number().min(1, "City is required"),
-  answers: z.record(z.any()),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof requestServiceFormShema>;
 
 const ServiceRequestPage = () => {
   const { id } = useParams();
   const router = useRouter();
-  const pathname = usePathname();
 
   const [step, setStep] = useState(1);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const t = useTranslations("serviceRequest");
 
@@ -97,11 +52,10 @@ const ServiceRequestPage = () => {
     Number(id)
   );
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
-    }
-  }, [isAuthenticated, router, pathname]);
+  const { data: service, isLoading } = useFetchWithId<SubService>(
+    fetchSubService,
+    Number(id)
+  );
 
   const allQuestions = useMemo(() => {
     if (!questions) return [];
@@ -142,7 +96,7 @@ const ServiceRequestPage = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(requestServiceFormShema),
     defaultValues,
   });
 
@@ -154,31 +108,71 @@ const ServiceRequestPage = () => {
     countryId
   );
 
-  const stepItems = useMemo(
-    () => [
+  const availableSteps = useMemo(() => {
+    const steps = [1];
+
+    if (
+      questions &&
+      questions.general_info &&
+      questions.general_info.length > 0
+    ) {
+      steps.push(2);
+    }
+
+    if (
+      questions &&
+      questions.service_details &&
+      questions.service_details.length > 0
+    ) {
+      steps.push(steps.length + 1);
+    }
+
+    if (
+      questions &&
+      questions.pricing_questions &&
+      questions.pricing_questions.length > 0
+    ) {
+      steps.push(steps.length + 1);
+    }
+
+    return steps;
+  }, [questions]);
+
+  const stepItems = useMemo(() => {
+    const items = [
       {
+        id: 1,
         title: t("steps.personalInfo.title"),
         description: t("steps.personalInfo.description"),
         icon: User,
       },
       {
+        id: 2,
         title: t("steps.generalInfo.title"),
         description: t("steps.generalInfo.description"),
         icon: Building,
       },
       {
+        id: 3,
         title: t("steps.serviceDetails.title"),
         description: t("steps.serviceDetails.description"),
         icon: FileText,
       },
       {
+        id: 4,
         title: t("steps.pricing.title"),
         description: t("steps.pricing.description"),
         icon: CreditCard,
       },
-    ],
-    [t]
-  );
+    ];
+
+    // Only include steps that are available
+    return items.filter((item) => availableSteps.includes(item.id));
+  }, [t, availableSteps]);
+
+  const getActualStep = (stepIndex: number) => {
+    return availableSteps[stepIndex - 1] || stepIndex;
+  };
 
   useEffect(() => {
     if (allQuestions.length > 0) {
@@ -267,8 +261,9 @@ const ServiceRequestPage = () => {
 
       await requestService(requestData);
       setSubmitSuccess(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to submit service request:", error);
+      console.error("Response data:", error.response?.data);
       setValidationErrors([t("validationErrors.submissionFailed")]);
     } finally {
       setIsSubmittingForm(false);
@@ -284,7 +279,9 @@ const ServiceRequestPage = () => {
   const getCurrentStepQuestions = (): Question[] => {
     if (!questions) return [];
 
-    switch (step) {
+    const actualStep = getActualStep(step);
+
+    switch (actualStep) {
       case 2:
         return (questions.general_info || []).sort(
           (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
@@ -305,8 +302,9 @@ const ServiceRequestPage = () => {
   const validateCurrentStep = async (): Promise<boolean> => {
     setValidationErrors([]);
     const currentFormValues = watch();
+    const actualStep = getActualStep(step);
 
-    if (step === 1) {
+    if (actualStep === 1) {
       // Existing step 1 validation
       const isValid = await trigger([
         "full_name",
@@ -383,9 +381,10 @@ const ServiceRequestPage = () => {
       return isFormValid;
     }
   };
+
   const nextStep = async () => {
     const isValid = await validateCurrentStep();
-    if (isValid) {
+    if (isValid && step < stepItems.length) {
       setStep(step + 1);
       setValidationErrors([]);
     }
@@ -393,8 +392,10 @@ const ServiceRequestPage = () => {
   };
 
   const prevStep = () => {
-    setStep(step - 1);
-    setValidationErrors([]);
+    if (step > 1) {
+      setStep(step - 1);
+      setValidationErrors([]);
+    }
   };
 
   const renderQuestionInput = (question: Question) => {
@@ -625,10 +626,6 @@ const ServiceRequestPage = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900"></div>;
-  }
-
   if (submitSuccess) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
@@ -744,12 +741,18 @@ const ServiceRequestPage = () => {
       <div className="relative max-w-7xl mx-auto p-6 pt-28">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-            {t("title")}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t("description")}
-          </p>
+          <div
+            className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4"
+            dangerouslySetInnerHTML={{
+              __html: service?.name || "",
+            }}
+          />
+          <div
+            className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+            dangerouslySetInnerHTML={{
+              __html: service?.description || "",
+            }}
+          />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -847,7 +850,7 @@ const ServiceRequestPage = () => {
                     transition={{ duration: 0.3 }}
                   >
                     {/* Step 1: Personal Info */}
-                    {step === 1 && (
+                    {getActualStep(step) === 1 && (
                       <div className="space-y-6">
                         <div className="text-center mb-8">
                           <h2 className="text-2xl font-bold text-primary mb-2">
@@ -1001,14 +1004,14 @@ const ServiceRequestPage = () => {
                     )}
 
                     {/* Steps 2-4 */}
-                    {[2, 3, 4].includes(step) && (
+                    {[2, 3, 4].includes(getActualStep(step)) && (
                       <div className="space-y-6">
                         <div className="text-center mb-8">
                           <h2 className="text-2xl font-bold text-primary mb-2">
-                            {stepItems[step - 1].title}
+                            {stepItems[step - 1]?.title}
                           </h2>
                           <p className="text-gray-600 dark:text-gray-400">
-                            {stepItems[step - 1].description}
+                            {stepItems[step - 1]?.description}
                           </p>
                         </div>
 
@@ -1055,7 +1058,7 @@ const ServiceRequestPage = () => {
                     <div></div>
                   )}
 
-                  {step < 4 ? (
+                  {step < stepItems.length ? (
                     <Button
                       type="button"
                       onClick={nextStep}
@@ -1068,7 +1071,7 @@ const ServiceRequestPage = () => {
                     <Button
                       type="button"
                       onClick={() => {
-                        if (step === 4) {
+                        if (step === stepItems.length) {
                           setHasAttemptedSubmit(true);
                           handleSubmit(onSubmit)();
                         } else {

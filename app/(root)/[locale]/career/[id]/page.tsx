@@ -214,9 +214,12 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
                 useLocale() === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
               }`}
             >
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                {job.description}
-              </p>
+              <div
+                className="text-gray-600 dark:text-gray-300 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: job?.description || "",
+                }}
+              />
             </div>
           </div>
 

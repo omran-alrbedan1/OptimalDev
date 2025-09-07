@@ -1,7 +1,7 @@
 "use client";
 
 import { Select } from "antd";
-import ReactCountryFlag from "react-country-flag";
+import ReactCountryFlag from "react-country-flag";  
 import { useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
 

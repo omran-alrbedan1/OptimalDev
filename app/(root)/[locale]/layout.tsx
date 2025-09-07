@@ -1,4 +1,4 @@
-import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { NextIntlClientProvider, hasLocale } from "next-intl";  
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Footer from "@/components/parts/Footer";
@@ -42,6 +42,7 @@ const zain = localFont({
   ],
   variable: "--font-zain",
 });
+
 export const metadata: Metadata = {
   title: "Optimal Path",
   description: "Pitch , Vote and Grow",
