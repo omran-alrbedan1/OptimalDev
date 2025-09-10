@@ -25,12 +25,12 @@ const ServiceDetailsPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 flex flex-col items-center justify-center py-20 px-4">
       {/* Image at the top */}
-      <div className=" rounded-2xl overflow-hidden  dark:border-slate-700 mb-8">
+      <div className=" rounded-2xl mt-12 overflow-hidden  dark:border-slate-700 mb-8">
         <Image
           src={service?.image!}
           alt={service?.name || t("imageAlt")}
           width={1200}
-          height={600}
+          height={800}
           className="w-full h-auto object-contain"
           priority
         />

@@ -747,12 +747,6 @@ const ServiceRequestPage = () => {
               __html: service?.name || "",
             }}
           />
-          <div
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-            dangerouslySetInnerHTML={{
-              __html: service?.description || "",
-            }}
-          />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
