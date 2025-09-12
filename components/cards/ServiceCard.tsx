@@ -19,6 +19,9 @@ const buttonVariants = {
   pressed: { scale: 0.95 },
 };
 
+// Maximum number of characters to show before truncating
+const MAX_DESCRIPTION_LENGTH = 200;
+
 export default function ServiceCard({
   service,
   index,
@@ -26,6 +29,14 @@ export default function ServiceCard({
   service: SubService;
   index: number;
 }) {
+  // Check if description needs truncation
+  const needsTruncation = service.description.length > MAX_DESCRIPTION_LENGTH;
+
+  // Truncate description if needed
+  const displayDescription = needsTruncation
+    ? service.description.substring(0, MAX_DESCRIPTION_LENGTH) + "..."
+    : service.description;
+
   return (
     <motion.div
       variants={cardVariants}
@@ -54,7 +65,11 @@ export default function ServiceCard({
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.3 }}
         >
-          {service.name}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: service.name,
+            }}
+          />
         </motion.h3>
         <motion.p
           className="text-gray-600 mb-6 dark:text-gray-200"
@@ -62,7 +77,12 @@ export default function ServiceCard({
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.4 }}
         >
-          {service.description}
+          <div
+            className="line-clamp-6"
+            dangerouslySetInnerHTML={{
+              __html: service.description,
+            }}
+          />
         </motion.p>
         <motion.a
           href={`/services/${service.id}`}

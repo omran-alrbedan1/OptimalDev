@@ -453,6 +453,7 @@ type Question = {
 };
 
 type QuestionResponse = {
+  personal_info: Question[];
   general_info: Question[];
   service_details: Question[];
   pricing_questions: Question[];
@@ -460,13 +461,7 @@ type QuestionResponse = {
 
 interface ServiceRequestData {
   sub_service_id: number;
-  full_name: string;
-  email: string;
-  phone: string;
-  company_name?: string;
-  job_title?: string;
-  country_id?: number;
-  city_id?: number;
+
   answers: Record<string, string | number>;
 }
 

@@ -144,15 +144,7 @@ export const editProfileSchema = (t: (key: string) => string) =>
     country_id: z.string().min(1, t("form.country.required")),
     city_id: z.string().min(1, t("form.city.required")),
   });
-
 export const requestServiceFormShema = z.object({
   sub_service_id: z.number(),
-  full_name: z.string().min(2, "Name is required"),
-  email: z.string().email("Invalid email"),
-  phone: z.string().min(6, "Phone is required"),
-  company_name: z.string().optional(),
-  job_title: z.string().optional(),
-  country_id: z.number().min(1, "Country is required"),
-  city_id: z.number().min(1, "City is required"),
   answers: z.record(z.any()),
 });

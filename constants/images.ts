@@ -15,6 +15,10 @@ import resetPassword from "@/public/images/reset-password.svg";
 import favicon from "@/public/images/favicon.png";
 import serverError from "@/public/images/server-error.png";
 import Verify from "@/public/images/Verifie.png";
+import service1 from "@/public/images/service1.png";
+import service2 from "@/public/images/service2.png";
+import service3 from "@/public/images/service3.png";
+import service4 from "@/public/images/service4.png";
 
 export const images = {
   logo,
@@ -34,4 +38,8 @@ export const images = {
   favicon,
   serverError,
   Verify,
+  service1,
+  service2,
+  service3,
+  service4,
 };

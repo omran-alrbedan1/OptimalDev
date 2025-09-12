@@ -44,6 +44,7 @@ const ServiceRequestPage = () => {
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [countryId, setCountryId] = useState<number | null>(null);
 
   const t = useTranslations("serviceRequest");
 
@@ -60,6 +61,7 @@ const ServiceRequestPage = () => {
   const allQuestions = useMemo(() => {
     if (!questions) return [];
     return [
+      ...(questions.personal_info || []),
       ...(questions.general_info || []),
       ...(questions.service_details || []),
       ...(questions.pricing_questions || []),
@@ -69,13 +71,6 @@ const ServiceRequestPage = () => {
   const defaultValues = useMemo(() => {
     const values: FormValues = {
       sub_service_id: Number(id),
-      full_name: "",
-      email: "",
-      phone: "",
-      company_name: "",
-      job_title: "",
-      country_id: 0,
-      city_id: 0,
       answers: {},
     };
 
@@ -102,14 +97,22 @@ const ServiceRequestPage = () => {
 
   const { data: countries, isLoading: countriesLoading } =
     useFetch<Country[]>(fetchCountries);
-  const countryId = watch("country_id");
+
   const { data: cities, isLoading: citiesLoading } = useFetchWithId<City[]>(
     fetchCities,
-    countryId
+    Number(countryId)
   );
 
   const availableSteps = useMemo(() => {
-    const steps = [1];
+    const steps = [];
+
+    if (
+      questions &&
+      questions.personal_info &&
+      questions.personal_info.length > 0
+    ) {
+      steps.push(1);
+    }
 
     if (
       questions &&
@@ -124,7 +127,7 @@ const ServiceRequestPage = () => {
       questions.service_details &&
       questions.service_details.length > 0
     ) {
-      steps.push(steps.length + 1);
+      steps.push(3);
     }
 
     if (
@@ -132,7 +135,7 @@ const ServiceRequestPage = () => {
       questions.pricing_questions &&
       questions.pricing_questions.length > 0
     ) {
-      steps.push(steps.length + 1);
+      steps.push(4);
     }
 
     return steps;
@@ -185,13 +188,6 @@ const ServiceRequestPage = () => {
 
       reset({
         sub_service_id: Number(id),
-        full_name: "",
-        email: "",
-        phone: "",
-        company_name: "",
-        job_title: "",
-        country_id: 0,
-        city_id: 0,
         answers: initialAnswers,
       });
     }
@@ -249,27 +245,29 @@ const ServiceRequestPage = () => {
 
       const requestData = {
         sub_service_id: Number(id),
-        full_name: data.full_name,
-        email: data.email,
-        phone: data.phone,
-        company_name: data.company_name || "",
-        job_title: data.job_title || "",
-        country_id: Number(data.country_id),
-        city_id: Number(data.city_id),
         answers: formattedAnswers,
       };
+
+      // DEBUG: Log the data being sent
+      console.log("Submitting data:", JSON.stringify(requestData, null, 2));
+      console.log("All questions:", allQuestions);
 
       await requestService(requestData);
       setSubmitSuccess(true);
     } catch (error: any) {
       console.error("Failed to submit service request:", error);
       console.error("Response data:", error.response?.data);
+
+      // DEBUG: Log more details about the error
+      if (error.response?.data) {
+        console.error("Server validation errors:", error.response.data);
+      }
+
       setValidationErrors([t("validationErrors.submissionFailed")]);
     } finally {
       setIsSubmittingForm(false);
     }
   };
-
   const handleAnswerChange = (questionId: string, value: AnswerValue) => {
     setValue(`answers.${questionId}`, value);
     trigger(`answers.${questionId}`);
@@ -282,6 +280,10 @@ const ServiceRequestPage = () => {
     const actualStep = getActualStep(step);
 
     switch (actualStep) {
+      case 1:
+        return (questions.personal_info || []).sort(
+          (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
+        );
       case 2:
         return (questions.general_info || []).sort(
           (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
@@ -302,84 +304,55 @@ const ServiceRequestPage = () => {
   const validateCurrentStep = async (): Promise<boolean> => {
     setValidationErrors([]);
     const currentFormValues = watch();
-    const actualStep = getActualStep(step);
+    const currentStepQuestions = getCurrentStepQuestions();
+    const requiredQuestions = currentStepQuestions.filter((q) => q.is_required);
+    const stepErrors: string[] = [];
+    let hasErrors = false;
 
-    if (actualStep === 1) {
-      // Existing step 1 validation
-      const isValid = await trigger([
-        "full_name",
-        "email",
-        "phone",
-        "country_id",
-        "city_id",
-      ]);
-
-      if (!isValid) {
-        const stepErrors: string[] = [];
-        if (errors.full_name)
-          stepErrors.push(t("validationErrors.fullNameRequired"));
-        if (errors.email) stepErrors.push(t("validationErrors.emailRequired"));
-        if (errors.phone) stepErrors.push(t("validationErrors.phoneRequired"));
-        if (errors.country_id)
-          stepErrors.push(t("validationErrors.countryRequired"));
-        if (errors.city_id) stepErrors.push(t("validationErrors.cityRequired"));
-        setValidationErrors(stepErrors);
-      }
-
-      return isValid;
-    } else {
-      const currentStepQuestions = getCurrentStepQuestions();
-      const requiredQuestions = currentStepQuestions.filter(
-        (q) => q.is_required
-      );
-      const stepErrors: string[] = [];
-      let hasErrors = false;
-
-      // Only validate if the user has interacted with the form
-      const hasUserInteracted = Object.keys(
-        currentFormValues.answers || {}
-      ).some((key) => {
+    // Only validate if the user has interacted with the form
+    const hasUserInteracted = Object.keys(currentFormValues.answers || {}).some(
+      (key) => {
         const questionId = key.toString();
         const question = currentStepQuestions.find(
           (q) => q.id.toString() === questionId
         );
         return question && currentFormValues.answers[questionId] !== undefined;
-      });
-
-      if (!hasUserInteracted) return true;
-
-      const requiredFields = requiredQuestions.map(
-        (q) => `answers.${q.id}` as keyof FormValues
-      );
-      const isFormValid = await trigger(requiredFields);
-
-      for (const question of requiredQuestions) {
-        const answerValue = currentFormValues.answers?.[question.id.toString()];
-
-        if (
-          errors.answers?.[question.id] ||
-          (question.is_required &&
-            (answerValue === undefined ||
-              answerValue === null ||
-              answerValue === "" ||
-              (Array.isArray(answerValue) && answerValue.length === 0)))
-        ) {
-          stepErrors.push(
-            t("validationErrors.questionRequired", {
-              field: question.title.current,
-            })
-          );
-          hasErrors = true;
-        }
       }
+    );
 
-      if (hasErrors) {
-        setValidationErrors(stepErrors);
-        return false;
+    if (!hasUserInteracted) return true;
+
+    const requiredFields = requiredQuestions.map(
+      (q) => `answers.${q.id}` as keyof FormValues
+    );
+    const isFormValid = await trigger(requiredFields);
+
+    for (const question of requiredQuestions) {
+      const answerValue = currentFormValues.answers?.[question.id.toString()];
+
+      if (
+        errors.answers?.[question.id] ||
+        (question.is_required &&
+          (answerValue === undefined ||
+            answerValue === null ||
+            answerValue === "" ||
+            (Array.isArray(answerValue) && answerValue.length === 0)))
+      ) {
+        stepErrors.push(
+          t("validationErrors.questionRequired", {
+            field: question.title.current,
+          })
+        );
+        hasErrors = true;
       }
-
-      return isFormValid;
     }
+
+    if (hasErrors) {
+      setValidationErrors(stepErrors);
+      return false;
+    }
+
+    return isFormValid;
   };
 
   const nextStep = async () => {
@@ -576,12 +549,14 @@ const ServiceRequestPage = () => {
           <div>
             <select
               value={currentValue || ""}
-              onChange={(e) =>
+              onChange={(e) => {
                 handleAnswerChange(
                   question.id.toString(),
                   Number(e.target.value)
-                )
-              }
+                );
+                // Also update a separate state for country ID
+                setCountryId(Number(e.target.value));
+              }}
               className={inputClasses}
               disabled={countriesLoading}
             >
@@ -600,27 +575,6 @@ const ServiceRequestPage = () => {
             )}
           </div>
         );
-      default:
-        return null;
-    }
-  };
-
-  const getInputIcon = (fieldName: string) => {
-    const iconClasses = "h-5 w-5 text-gray-400 dark:text-gray-500";
-    switch (fieldName) {
-      case "full_name":
-        return <User className={iconClasses} />;
-      case "email":
-        return <Mail className={iconClasses} />;
-      case "phone":
-        return <Smartphone className={iconClasses} />;
-      case "company_name":
-      case "job_title":
-        return <Building className={iconClasses} />;
-      case "country_id":
-        return <Globe className={iconClasses} />;
-      case "city_id":
-        return <MapPin className={iconClasses} />;
       default:
         return null;
     }
@@ -833,7 +787,6 @@ const ServiceRequestPage = () => {
                   </ul>
                 </motion.div>
               )}
-
               <form onSubmit={handleSubmit(onSubmit)} className="p-6">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -843,197 +796,41 @@ const ServiceRequestPage = () => {
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.3 }}
                   >
-                    {/* Step 1: Personal Info */}
-                    {getActualStep(step) === 1 && (
-                      <div className="space-y-6">
-                        <div className="text-center mb-8">
-                          <h2 className="text-2xl font-bold text-primary mb-2">
-                            {t("steps.personalInfo.title")}
-                          </h2>
-                          <p className="text-gray-600 dark:text-gray-400">
-                            {t("steps.personalInfo.description")}
-                          </p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.fullName")}{" "}
-                              <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("full_name")}
-                              </div>
-                              <input
-                                {...register("full_name")}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                placeholder={t("form.fullName")}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.email")}{" "}
-                              <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("email")}
-                              </div>
-                              <input
-                                {...register("email")}
-                                type="email"
-                                className="w-full pl-10 focus:outline-none pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                placeholder={t("form.email")}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.phone")}{" "}
-                              <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("phone")}
-                              </div>
-                              <input
-                                {...register("phone")}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                placeholder={t("form.phone")}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.companyName")}
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("company_name")}
-                              </div>
-                              <input
-                                {...register("company_name")}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                placeholder={t("form.companyName")}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.jobTitle")}
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("job_title")}
-                              </div>
-                              <input
-                                {...register("job_title")}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                placeholder={t("form.jobTitle")}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.country")}{" "}
-                              <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("country_id")}
-                              </div>
-                              <select
-                                {...register("country_id", {
-                                  valueAsNumber: true,
-                                })}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 appearance-none"
-                                disabled={countriesLoading}
-                              >
-                                <option value="">
-                                  {t("form.selectCountry")}
-                                </option>
-                                {countries?.map((country) => (
-                                  <option key={country.id} value={country.id}>
-                                    {country.name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                              {t("form.city")}{" "}
-                              <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                {getInputIcon("city_id")}
-                              </div>
-                              <select
-                                {...register("city_id", {
-                                  valueAsNumber: true,
-                                })}
-                                className="w-full pl-10 pr-4 py-3 border focus:outline-none border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 appearance-none"
-                                disabled={!countryId || citiesLoading}
-                              >
-                                <option value="">{t("form.selectCity")}</option>
-                                {cities?.map((city) => (
-                                  <option key={city.id} value={city.id}>
-                                    {city.name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                    {/* All Steps */}
+                    <div className="space-y-6">
+                      <div className="text-center mb-8">
+                        <h2 className="text-2xl font-bold text-primary mb-2">
+                          {stepItems[step - 1]?.title}
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {stepItems[step - 1]?.description}
+                        </p>
                       </div>
-                    )}
 
-                    {/* Steps 2-4 */}
-                    {[2, 3, 4].includes(getActualStep(step)) && (
-                      <div className="space-y-6">
-                        <div className="text-center mb-8">
-                          <h2 className="text-2xl font-bold text-primary mb-2">
-                            {stepItems[step - 1]?.title}
-                          </h2>
-                          <p className="text-gray-600 dark:text-gray-400">
-                            {stepItems[step - 1]?.description}
-                          </p>
-                        </div>
-
-                        {getCurrentStepQuestions().map((question) => (
-                          <motion.div
-                            key={question.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="space-y-3"
-                          >
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                              {question.title.current}
-                              {question.is_required && (
-                                <span className="text-red-500"> *</span>
-                              )}
-                            </label>
-                            {renderQuestionInput(question)}
-                            {errors.answers?.[question.id] && (
-                              <p className="text-red-500 text-sm mt-2 flex items-center">
-                                <AlertCircle className="h-4 w-4 mr-1" />
-                                {String(errors.answers[question.id]?.message)}
-                              </p>
+                      {getCurrentStepQuestions().map((question) => (
+                        <motion.div
+                          key={question.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="space-y-3"
+                        >
+                          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            {question.title.current}
+                            {question.is_required && (
+                              <span className="text-red-500"> *</span>
                             )}
-                          </motion.div>
-                        ))}
-                      </div>
-                    )}
+                          </label>
+                          {renderQuestionInput(question)}
+                          {errors.answers?.[question.id] && (
+                            <p className="text-red-500 text-sm mt-2 flex items-center">
+                              <AlertCircle className="h-4 w-4 mr-1" />
+                              {String(errors.answers[question.id]?.message)}
+                            </p>
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
                   </motion.div>
                 </AnimatePresence>
 

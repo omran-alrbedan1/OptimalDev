@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { images } from "@/constants/images";
 
 const Slider = ({ sliders }: { sliders: Slider[] }) => {
   const router = useRouter();
@@ -74,7 +73,7 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
       {/* Background image with click handler */}
       <div
         style={{
-          backgroundImage: `url(${images.applications})`,
+          backgroundImage: `url(${sliders[currentIndex].image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
