@@ -1,20 +1,16 @@
 "use client";
 import Loader from "@/components/Loader";
-import { images } from "@/constants/images";
 import { useFetchWithId } from "@/hooks/useFetch";
 import { fetchSubService } from "@/lib/client-action";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();
   const t = useTranslations("serviceDetails");
-  const [activeSection, setActiveSection] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const { data: service, isLoading } = useFetchWithId<SubService>(
@@ -22,61 +18,13 @@ const ServiceDetailsPage = () => {
     Number(id)
   );
 
-  // Split description into meaningful sections
-  const [sections, setSections] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (service?.description) {
-      const desc = service.description;
-      // Split by paragraphs and filter empty ones
-      const paragraphs = desc
-        .split("</p>")
-        .filter((p) => p.trim())
-        .map((p) => p + "</p>");
-
-      // Group paragraphs into sections (2-3 paragraphs each)
-      const sectionGroups = [];
-      for (let i = 0; i < paragraphs.length; i += 2) {
-        sectionGroups.push(paragraphs.slice(i, i + 2).join(""));
-      }
-
-      setSections(sectionGroups);
-    }
-  }, [service]);
-
-  // Handle scroll for progress bar
-  useEffect(() => {
-    const handleScroll = () => {
-      if (contentRef.current) {
-        const scrollTop = window.scrollY;
-        const docHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / docHeight) * 100;
-        setScrollProgress(Math.min(progress, 100));
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Array of service images to use in the alternating sections
-  const serviceImages = [
-    images.service1,
-    images.service2,
-    images.service3,
-    images.service4,
-  ];
-
   if (isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="min-h-screen overflow-hidden">
-      {/* Improved Hero Section */}
       <section className="relative h-screen flex flex-col justify-center overflow-hidden">
-        {/* Background with gradient overlay */}
         <div className="absolute inset-0 z-0">
           {service?.image && (
             <Image
@@ -85,7 +33,6 @@ const ServiceDetailsPage = () => {
               fill
               className="object-cover"
               priority
-              onLoad={() => setIsImageLoaded(true)}
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
@@ -157,58 +104,11 @@ const ServiceDetailsPage = () => {
       </section>
 
       {/* Rest of your content sections remain the same */}
-      <section
-        className="relative -my-44"
-        ref={contentRef}
-        id="content-section"
-      >
-        {sections.map((section, index) => (
-          <div
-            key={index}
-            className={`min-h-screen flex items-center -my-44 transition-all duration-1000 py-20 `}
-          >
-            <div className="max-w-7xl mx-auto px-8 lg:px-16 w-full">
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
-                {/* Text Content */}
-                <div className={`${index % 2 === 0 ? "order-1" : "order-2"}`}>
-                  <div className="space-y-8">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
-                    </div>
-
-                    <div
-                      className=" leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: section }}
-                    />
-                  </div>
-                </div>
-
-                {/* Image Element - Replacing the content card */}
-                <div className={`${index % 2 === 0 ? "order-2" : "order-1"}`}>
-                  <div className="relative group">
-                    {/* Image Container */}
-                    <div className="relative h-80 lg:h-96 w-full overflow-hidden rounded-3xl">
-                      <Image
-                        src={serviceImages[index % serviceImages.length]}
-                        alt={`Service feature ${index + 1}`}
-                        height={440}
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <section className="relative mx-14" ref={contentRef} id="content-section">
+        <div dangerouslySetInnerHTML={{ __html: service?.description || "" }} />
       </section>
 
-      <div className="px-4 flex justify-center py-14">
+      <div className="px-4 flex justify-center pb-14 -mt-14">
         <Link
           href={`/services/${id}/request-service`}
           className="group relative inline-flex w-fit items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-primary hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
