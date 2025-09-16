@@ -27,19 +27,23 @@ declare interface Client {
 
 interface Organization {
   id: number;
-  name: string;
-  address: string;
-  description: string;
+  whatsapp: string | null;
+  facebook: string | null;
+  x: string | null;
+  instagram: string | null;
+  telegram: string | null;
+  phone_1: string;
+  phone_2: string;
+  phone_3: string;
   email: string;
-  phone: string;
   logo: string;
-  social_links: {
-    twitter: string;
-    youtube: string;
-    facebook: string;
-    linkedin: string;
-  };
+  created_at: string;
+  updated_at: string;
   about_us: string;
+  contact_us: string;
+  home: string;
+  location: string;
+  description: string;
   vision: string;
   mission: string;
   values: string;

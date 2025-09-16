@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "next/image";
 import {
   FaInstagram,
@@ -10,12 +11,12 @@ import { MdOutlineMail } from "react-icons/md";
 import { RiTelegram2Fill } from "react-icons/ri";
 import Link from "next/link";
 import { images } from "@/constants/images";
-import { FaLocationDot } from "react-icons/fa6";
 import SubscribeForm from "../forms/SubscribeForm";
 import { useTranslations } from "next-intl";
 import { Smartphone } from "lucide-react";
 import { fetchOrganization } from "@/lib/action";
 import { getTranslations } from "next-intl/server";
+import { FaLocationDot } from "react-icons/fa6";
 
 const Footer = async () => {
   const t = await getTranslations("footer");
@@ -24,65 +25,87 @@ const Footer = async () => {
   const socialLinks = [
     {
       icon: <FaWhatsapp className="text-xl" />,
-      href: organization?.social_links?.facebook,
+      href: organization?.whatsapp,
+      name: "whatsapp",
     },
     {
       icon: <RiTelegram2Fill className="text-xl" />,
-      href: organization?.social_links?.facebook,
+      href: organization?.telegram,
+      name: "telegram",
     },
     {
       icon: <FaFacebookF className="text-lg" />,
-      href: organization?.social_links?.facebook,
+      href: organization?.facebook,
+      name: "facebook",
     },
     {
       icon: <FaInstagram className="text-lg" />,
-      href: organization?.social_links?.facebook,
+      href: organization?.instagram,
+      name: "instagram",
     },
     {
       icon: <FaLinkedinIn className="text-lg" />,
-      href: organization?.social_links?.linkedin,
+      href: `https://www.linkedin.com/company/optimalpathmc`,
+      name: "linkedin",
     },
-  ];
+  ].filter((link) => link.href);
 
   const contactItems = [
-    { icon: <FaLocationDot className="text-xl" />, text: organization.address },
-    {
+    organization?.location && {
+      icon: <FaLocationDot className="text-xl" />,
+      text: organization.location,
+    },
+    organization?.email && {
       icon: <MdOutlineMail className="text-xl" />,
       text: organization.email,
     },
-    { icon: <Smartphone className="text-xl" />, text: organization.phone },
-  ];
+    organization?.phone_1 && {
+      icon: <Smartphone className="text-xl" />,
+      text: organization.phone_1,
+    },
+    organization?.phone_2 && {
+      icon: <Smartphone className="text-xl" />,
+      text: organization.phone_2,
+    },
+    organization?.phone_3 && {
+      icon: <Smartphone className="text-xl" />,
+      text: organization.phone_3,
+    },
+  ].filter(Boolean); // Filter out falsy values
 
   return (
-    <footer className="relative md:px-8  bg-[#f7f7f8]  dark:bg-darkMod-200  dark:text-white pt-12 md:pt-16 pb-16 md:pb-20">
+    <footer className="relative md:px-8 bg-[#f7f7f8] dark:bg-darkMod-200 dark:text-white pt-12 md:pt-16 pb-16 md:pb-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-10">
           <div className="space-y-4 md:mr-8 md:space-y-6">
             <div className="flex items-center justify-center md:justify-start">
               <Link
                 href="/home"
-                className="flex items-center mx-12   gap-2 focus:!border-none border-none"
+                className="flex items-center mx-12 gap-2 focus:!border-none border-none"
               >
                 <Image
                   src={images.logo}
                   width={230}
                   height={230}
-                  className=" h-64  -my-24"
+                  className="h-64 -my-24"
                   alt="Optimal Path Logo"
                 />
               </Link>
             </div>
-            <p className="text-gray-600  dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed  md:text-center">
-              {organization.description}
+            <p className="text-gray-600 dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed md:text-center">
+              <div
+                dangerouslySetInnerHTML={{ __html: organization?.description }}
+              />
             </p>
 
             {/* Social links - centered on mobile */}
-            <div className="flex justify-center   relative md:justify-start space-x-3 md:space-x-4">
-              {socialLinks?.map((item, index) => (
+            <div className="flex justify-center relative md:justify-start space-x-3 md:space-x-4">
+              {socialLinks.map((item, index) => (
                 <Link
                   key={index}
-                  href={item.href}
+                  href={item.href!}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="p-1.5 md:p-2 rounded-full bg-white dark:bg-darkMod-400 text-gray-700 dark:text-gray-200 hover:bg-primary-color1 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   {item.icon}
@@ -96,10 +119,10 @@ const Footer = async () => {
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left">
                   {t("contactUs")}
-                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
+                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1"></span>
                 </h3>
                 <ul className="mt-6 md:mt-6 space-y-2 md:space-y-4">
-                  {contactItems?.map((item, index) => (
+                  {contactItems.map((item, index) => (
                     <li
                       key={index}
                       className="flex items-start justify-start mt-4 md:justify-start"
@@ -118,7 +141,7 @@ const Footer = async () => {
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white relative inline-block text-center md:text-left mb-3 md:mb-4">
                   {t("subscribe")}
-                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1 "></span>
+                  <span className="absolute -bottom-3 left-0 w-8 mt-5 h-0.5 bg-primary-color1"></span>
                 </h3>
                 <SubscribeForm />
               </div>

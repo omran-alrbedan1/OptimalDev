@@ -66,9 +66,10 @@ const AboutPage = async () => {
                       duration={0.8}
                       once={true}
                     >
-                      <div className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed">
-                        {section.content}
-                      </div>
+                      <div
+                        className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: section.content }}
+                      />
                     </Animate>
                   </div>
                 </div>

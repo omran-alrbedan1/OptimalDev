@@ -396,15 +396,31 @@ export const requestService = async (
   requestData: ServiceRequestData
 ): Promise<any> => {
   try {
-    // Use a clean, absolute path
     const endpoint = "/api/services/service-requests";
-    console.log(requestData);
+    console.log("Request data:", JSON.stringify(requestData, null, 2));
 
     const response = await post<any>(endpoint, requestData);
-    console.log(response);
+    console.log("Response:", response);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Service request failed:", error);
+
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Headers:", error.response.headers);
+      console.error("Response data:", error.response.data);
+
+      if (error.response.data?.errors) {
+        console.error("Validation errors:", error.response.data.errors);
+      } else if (error.response.data?.message) {
+        console.error("Error message:", error.response.data.message);
+      }
+    } else if (error.request) {
+      console.error("No response received:", error.request);
+    } else {
+      console.error("Error setting up request:", error.message);
+    }
+
     throw error;
   }
 };
