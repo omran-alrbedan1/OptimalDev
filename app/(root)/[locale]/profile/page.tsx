@@ -1,4 +1,3 @@
-//@ts-nocheck
 "use client";
 import { Tabs, Button, Modal, Card, Tag, Divider, Skeleton } from "antd";
 import type { TabsProps } from "antd";
@@ -44,14 +43,6 @@ const ProfilePage = () => {
   const locale = useLocale();
   const dispatch = useDispatch();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  // Fix: Check if we're on the client side before using browser APIs
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -71,7 +62,7 @@ const ProfilePage = () => {
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated || !isClient) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center"></div>
     );
