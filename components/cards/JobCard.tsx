@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FiBriefcase, FiClock, FiMapPin, FiShare2 } from "react-icons/fi";
 import {
   FacebookIcon,
@@ -34,7 +34,16 @@ const JobCard = ({ job }: { job: any }) => {
   const [requiredTests, setRequiredTests] = useState<any[]>([]);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
-  const jobUrl = `${window.location.origin}/${locale}/career/${job.id}`;
+  // Fixed job URL construction
+  const jobUrl = useMemo(() => {
+    // Check if window is defined (client-side)
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}/${locale}/career/${job.id}`;
+    }
+    // Fallback for server-side rendering
+    return `/${locale}/career/${job.id}`;
+  }, [locale, job.id]);
+
   const shareTitle = `${t("checkOutJob")}: ${job.title} ${t("at")} ${
     job.company
   }`;
@@ -56,9 +65,7 @@ const JobCard = ({ job }: { job: any }) => {
           response.message.includes("Please complete the required tests first"))
       ) {
         setModalType("tests");
-
         setModalMessage(response.message);
-
         setRequiredTests(response.required_tests);
       } else {
         setModalType("success");
@@ -75,6 +82,13 @@ const JobCard = ({ job }: { job: any }) => {
     } finally {
       setIsApplying(false);
     }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(jobUrl);
+    toast.success(t("linkCopied"), {
+      duration: 2000,
+    });
   };
 
   const items: MenuProps["items"] = [
@@ -96,6 +110,7 @@ const JobCard = ({ job }: { job: any }) => {
           url={jobUrl}
           title={job.title}
           summary={job.description}
+          source={typeof window !== "undefined" ? window.location.hostname : ""}
         >
           <div className={`flex items-center gap-2 px-2 py-1`}>
             <LinkedinIcon size={24} round />
@@ -119,12 +134,7 @@ const JobCard = ({ job }: { job: any }) => {
       key: "copy",
       label: (
         <button
-          onClick={() => {
-            navigator.clipboard.writeText(jobUrl);
-            toast.success(t("linkCopied"), {
-              duration: 2000,
-            });
-          }}
+          onClick={handleCopyLink}
           className={`flex items-center gap-2 px-2 py-1 w-full `}
         >
           <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
@@ -242,9 +252,7 @@ const JobCard = ({ job }: { job: any }) => {
                   </Button>
                   <Dropdown
                     menu={{ items }}
-                    placement={
-                      useLocale() === "ar" ? "bottomRight" : "bottomLeft"
-                    }
+                    placement={locale === "ar" ? "bottomRight" : "bottomLeft"}
                     trigger={["click"]}
                     overlayClassName="share-dropdown"
                   >

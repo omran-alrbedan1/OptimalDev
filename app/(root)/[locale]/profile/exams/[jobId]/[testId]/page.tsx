@@ -222,7 +222,7 @@ const ExamPage = () => {
                           : "text-gray-700 dark:text-gray-300 group-hover:text-primary"
                       }`}
                     >
-                      {choice.text}
+                      <div dangerouslySetInnerHTML={{ __html: choice.text }} />
                     </span>
                   </div>
                   {isSelected && (

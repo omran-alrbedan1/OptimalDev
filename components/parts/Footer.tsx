@@ -16,7 +16,7 @@ import { useTranslations } from "next-intl";
 import { Smartphone } from "lucide-react";
 import { fetchOrganization } from "@/lib/action";
 import { getTranslations } from "next-intl/server";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationDot, FaXTwitter } from "react-icons/fa6";
 
 const Footer = async () => {
   const t = await getTranslations("footer");
@@ -45,8 +45,13 @@ const Footer = async () => {
     },
     {
       icon: <FaLinkedinIn className="text-lg" />,
-      href: `https://www.linkedin.com/company/optimalpathmc`,
+      href: organization?.linkedin,
       name: "linkedin",
+    },
+    {
+      icon: <FaXTwitter className="text-lg" />,
+      href: organization?.x,
+      name: "twitter",
     },
   ].filter((link) => link.href);
 
@@ -71,7 +76,7 @@ const Footer = async () => {
       icon: <Smartphone className="text-xl" />,
       text: organization.phone_3,
     },
-  ].filter(Boolean); // Filter out falsy values
+  ].filter(Boolean);
 
   return (
     <footer className="relative md:px-8 bg-[#f7f7f8] dark:bg-darkMod-200 dark:text-white pt-12 md:pt-16 pb-16 md:pb-20">

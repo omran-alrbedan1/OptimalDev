@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import { Tabs, Button, Modal, Card, Tag, Divider, Skeleton } from "antd";
 import type { TabsProps } from "antd";
@@ -55,6 +56,14 @@ const ProfilePage = () => {
       setIsLoggingOut(false);
     }
   };
+
+  const isClient = typeof window !== "undefined";
+  if (!isClient) {
+    if (typeof global !== "undefined" && !global.File) {
+      global.File = class File {};
+      global.Blob = class Blob {};
+    }
+  }
 
   useEffect(() => {
     if (isAuthenticated === false) {

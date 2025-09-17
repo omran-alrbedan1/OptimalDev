@@ -30,6 +30,7 @@ interface Organization {
   whatsapp: string | null;
   facebook: string | null;
   x: string | null;
+  linkedin: string | null;
   instagram: string | null;
   telegram: string | null;
   phone_1: string;

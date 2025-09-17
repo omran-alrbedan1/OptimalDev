@@ -163,7 +163,7 @@ const TestPage = () => {
       setSubmitLoading(false);
     }
   };
-  
+
   const handleResultsModalClose = () => {
     setShowResultsModal(false);
     setTestResult(null);
@@ -209,7 +209,7 @@ const TestPage = () => {
                           : "text-gray-700 dark:text-gray-300 group-hover:text-[#22ace3]"
                       }`}
                     >
-                      {choice.text}
+                      <div dangerouslySetInnerHTML={{ __html: choice.text }} />
                     </span>
                   </div>
                 </div>
@@ -225,7 +225,7 @@ const TestPage = () => {
               value={textAnswers[currentQuestion.id] || ""}
               onChange={handleTextAnswerChange}
               className="w-full p-4 border-1 border-gray-200 dark:border-gray-600 rounded-xl transition-all duration-300 min-h-[120px] resize-none text-base bg-white/90 dark:bg-gray-700/90 text-gray-800 dark:text-gray-100 focus:border-[#22ace3] focus:ring-4 focus:ring-[#22ace3]/30 focus:outline-none focus:shadow-md focus:shadow-[#22ace3]/20"
-              placeholder={t("textAnswerPlaceholder")} // Make sure to add this translation
+              placeholder={t("textAnswerPlaceholder")}
             />
           </div>
         );
