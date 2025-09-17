@@ -415,6 +415,14 @@ export const requestService = async (
       } else if (error.response.data?.message) {
         console.error("Error message:", error.response.data.message);
       }
+      if (error.response) {
+        console.error(
+          "Backend validation errors:",
+          JSON.stringify(error.response.data, null, 2)
+        );
+        console.error("Backend status:", error.response.status);
+        console.error("Backend headers:", error.response.headers);
+      }
     } else if (error.request) {
       console.error("No response received:", error.request);
     } else {

@@ -12,17 +12,29 @@ import {
   Slider,
   Clients,
 } from "@/components/home";
-import { fetchClients, fetchPartners, fetchSliders } from "@/lib/action";
+import {
+  fetchClients,
+  fetchOrganization,
+  fetchPartners,
+  fetchSliders,
+} from "@/lib/action";
 
 const Page = async () => {
   const sliders = await fetchSliders();
   const partners = await fetchPartners();
   const clients = await fetchClients();
+  const organization = await fetchOrganization();
+  console.log(organization.home);
 
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative duration-500">
         <Slider sliders={sliders} />
+        {organization.home ? (
+          <div dangerouslySetInnerHTML={{ __html: organization.home }} />
+        ) : (
+          <div />
+        )}
         <Services />
         <Partners partners={partners} />
         <Clients clients={clients} />

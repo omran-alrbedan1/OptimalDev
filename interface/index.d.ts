@@ -457,7 +457,7 @@ type Question = {
 };
 
 type QuestionResponse = {
-  personal_info: Question[];
+  personal_information: Question[];
   general_info: Question[];
   service_details: Question[];
   pricing_questions: Question[];
