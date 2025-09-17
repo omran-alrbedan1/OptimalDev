@@ -44,6 +44,14 @@ const ProfilePage = () => {
   const locale = useLocale();
   const dispatch = useDispatch();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  // Fix: Check if we're on the client side before using browser APIs
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -57,21 +65,13 @@ const ProfilePage = () => {
     }
   };
 
-  const isClient = typeof window !== "undefined";
-  if (!isClient) {
-    if (typeof global !== "undefined" && !global.File) {
-      global.File = class File {};
-      global.Blob = class Blob {};
-    }
-  }
-
   useEffect(() => {
     if (isAuthenticated === false) {
       router.push("/login");
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !isClient) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center"></div>
     );
