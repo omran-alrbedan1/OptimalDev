@@ -88,15 +88,15 @@ export default function LoginForm() {
           </p>
         </div>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
+        <div className="space-y-4 dark:!text-white">
+          <div className="space-y-2 ">
             <Label htmlFor="identifier">{t("fields.identifier.label")}</Label>
             <Input
               id="identifier"
               placeholder={t("fields.identifier.placeholder")}
               {...form.register("login")}
               autoComplete="username"
-              className="dark:bg-gray-800"
+              className="dark:bg-gray-800 "
             />
             {form.formState.errors.login && (
               <p className="text-sm text-red-500">

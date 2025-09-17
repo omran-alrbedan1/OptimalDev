@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useFetch } from "@/hooks/useFetch";
 import { fetchProfileInfo } from "@/lib/client-action";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PasswordChangeForm from "@/components/forms/RestPasswordForm";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
@@ -31,6 +31,7 @@ import { logout } from "@/store/slices/authSlice";
 import { Loader2 } from "lucide-react";
 import { ExamsList } from "@/components/parts/ExamsList";
 import MessageLists from "@/components/parts/MessagesList";
+import { useAppSelector } from "@/hooks/hook";
 
 const ProfilePage = () => {
   const t = useTranslations("profilePage");
@@ -41,7 +42,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("1");
   const locale = useLocale();
   const dispatch = useDispatch();
-
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -54,6 +55,18 @@ const ProfilePage = () => {
       setIsLoggingOut(false);
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center"></div>
+    );
+  }
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -79,30 +92,39 @@ const ProfilePage = () => {
     {
       key: "1",
       label: (
-        <span className="flex items-center font-medium">
+        <button
+          type="button"
+          className="flex items-center font-medium border-none bg-transparent"
+        >
           <SolutionOutlined className="mx-2" />
           {t("applications")}
-        </span>
+        </button>
       ),
       children: <ApplicationsList />,
     },
     {
       key: "2",
       label: (
-        <span className="flex items-center font-medium">
+        <button
+          type="button"
+          className="flex items-center font-medium border-none bg-transparent"
+        >
           <BookOutlined className="mx-2" />
           {t("exams")}
-        </span>
+        </button>
       ),
       children: <ExamsList />,
     },
     {
       key: "3",
       label: (
-        <span className="flex items-center font-medium">
+        <button
+          type="button"
+          className="flex items-center font-medium border-none bg-transparent"
+        >
           <MessageOutlined className="mx-2" />
           {t("messages")}
-        </span>
+        </button>
       ),
       children: <MessageLists />,
     },

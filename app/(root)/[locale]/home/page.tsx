@@ -31,7 +31,10 @@ const Page = async () => {
       <div className="relative duration-500">
         <Slider sliders={sliders} />
         {organization.home ? (
-          <div dangerouslySetInnerHTML={{ __html: organization.home }} />
+          <div
+            dangerouslySetInnerHTML={{ __html: organization.home }}
+            className="dark:text-white"
+          />
         ) : (
           <div />
         )}
