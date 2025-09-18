@@ -1,4 +1,3 @@
-// components/FileUploadSection.tsx
 "use client";
 
 import { useState } from "react";
@@ -17,19 +16,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
-interface FileUploadSectionProps {
+interface ClientOnlyUploadProps {
   profileData: any;
   onProfileImageChange: (file: File) => void;
   onCvChange: (file: File) => void;
   t: any;
 }
 
-export default function FileUploadSection({
+export default function ClientOnlyUpload({
   profileData,
   onProfileImageChange,
   onCvChange,
   t,
-}: FileUploadSectionProps) {
+}: ClientOnlyUploadProps) {
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [cvFile, setCvFile] = useState<File | null>(null);
 
@@ -51,9 +50,9 @@ export default function FileUploadSection({
 
   return (
     <>
-      <div className="  dark:from-slate-800 dark:to-slate-700 rounded-2xl p-3 border border-slate-200 shadow-sm dark:border-slate-600/50 ">
+      <div className="dark:from-slate-800 dark:to-slate-700 rounded-2xl p-3 border border-slate-200 shadow-sm dark:border-slate-600/50">
         <div className="text-center flex flex-col">
-          <div className="relative inline-block  mb-6">
+          <div className="relative inline-block mb-6">
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
