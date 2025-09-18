@@ -107,7 +107,6 @@ const put = async <T>(
 
     const response = await fetch(endpoint, {
       method: "PUT",
-
       ...options,
       headers,
       body: isFormData ? body : JSON.stringify(body),
@@ -136,6 +135,7 @@ export const fetchProfileInfo = async (): Promise<User> => {
 export const fetchCities = async (id: number): Promise<City[]> => {
   return get<City[]>(`/api/cities/${id}`);
 };
+
 export const updateProfile = async (profileData: any): Promise<User> => {
   const formData = new FormData();
 
@@ -151,7 +151,7 @@ export const updateProfile = async (profileData: any): Promise<User> => {
     formData.append("city_id", String(profileData.city_id));
   }
 
-  // طريقة آمنة للتعامل مع الملفات - duck typing بدلاً من instanceof
+  // Safe way to handle files - duck typing instead of instanceof
   if (profileData.profile_image) {
     const img = profileData.profile_image;
     if (img && typeof img === "object" && "name" in img && "type" in img) {
@@ -231,6 +231,7 @@ export const verifyResetToken = async (
   const response = await post<any>("/api/verify-reset-code", { email, token });
   return response;
 };
+
 export const resetPassword = async (
   email: string,
   token: string,
@@ -374,6 +375,7 @@ export const fetchJobs = async (params: {
 export const fetchServices = async (): Promise<Service[]> => {
   return get<Service[]>(`/api/services`);
 };
+
 export const fetchSubServices = async (): Promise<SubService[]> => {
   return get<SubService[]>(`/api/services/sub-services`);
 };
@@ -455,6 +457,7 @@ export const contactUs = async (
   });
   return response;
 };
+
 export const subscribe = async (email: string): Promise<any> => {
   const response = await post<any>("/api/subscribe", {
     email,
