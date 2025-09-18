@@ -1,11 +1,4 @@
-import dynamic from "next/dynamic";
-
-const EditProfileClient = dynamic(
-  () => import("./_components/EditProfileClient"),
-  {
-    ssr: false,
-  }
-);
+import EditProfileClient from "./_components/EditProfileClient";
 
 export default function EditProfilePage() {
   return <EditProfileClient />;
