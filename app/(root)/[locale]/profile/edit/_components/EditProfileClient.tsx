@@ -158,28 +158,18 @@ const EditProfilePage = () => {
         city_id: values.city_id ? Number(values.city_id) : undefined,
       };
 
-      // فقط على العميل (المتصفح) أضف ملفات الصور والسيرة الذاتية
-      if (!isServer) {
-        if (profileImageFile) {
-          updateData.profile_image = profileImageFile;
-        } else if (profileData?.profile_image) {
-          updateData.profile_image = profileData.profile_image;
-        }
+      // إضافة ملفات الصور والسيرة الذاتية فقط إذا كانت موجودة
+      // لن نحتاج إلى التحقق من isServer لأن المكون كله سيعمل فقط على العميل
+      if (profileImageFile) {
+        updateData.profile_image = profileImageFile;
+      } else if (profileData?.profile_image) {
+        updateData.profile_image = profileData.profile_image;
+      }
 
-        if (cvFile) {
-          updateData.cv = cvFile;
-        } else if (profileData?.cv_path) {
-          // إذا كان لديك طريقة للتعامل مع CV موجود كرابط
-          updateData.cv_url = profileData.cv_path;
-        }
-      } else {
-        // على الخادم، استخدم الروابط فقط إذا كانت موجودة
-        if (profileData?.profile_image) {
-          updateData.profile_image = profileData.profile_image;
-        }
-        if (profileData?.cv_path) {
-          updateData.cv_url = profileData.cv_path;
-        }
+      if (cvFile) {
+        updateData.cv = cvFile;
+      } else if (profileData?.cv_path) {
+        updateData.cv_url = profileData.cv_path;
       }
 
       await updateProfile(updateData);
@@ -192,7 +182,6 @@ const EditProfilePage = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen  relative overflow-hidden">
       <div className="relative mt-8 z-10 max-w-7xl mx-auto px-4 sm:px-6   py-8 lg:py-16">

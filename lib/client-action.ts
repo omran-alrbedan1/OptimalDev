@@ -144,12 +144,11 @@ export const updateProfile = async (profileData: {
   email: string;
   country_id?: number | string;
   city_id?: number | string;
-  profile_image?: File | string;
-  cv?: File;
+  profile_image?: any; // تغيير من File | string إلى any
+  cv?: any; // تغيير من File إلى any
 }): Promise<User> => {
   const formData = new FormData();
 
-  // إضافة الحقول الأساسية
   formData.append("first_name", profileData.first_name);
   formData.append("last_name", profileData.last_name);
   formData.append("phone", profileData.phone);
@@ -162,23 +161,32 @@ export const updateProfile = async (profileData: {
     formData.append("city_id", String(profileData.city_id));
   }
 
-  // التحقق من أننا في بيئة المتصفح قبل استخدام كائن File
   if (typeof window !== "undefined" && typeof File !== "undefined") {
-    if (profileData.profile_image instanceof File) {
+    if (
+      profileData.profile_image &&
+      typeof profileData.profile_image === "object" &&
+      "name" in profileData.profile_image &&
+      "size" in profileData.profile_image &&
+      "type" in profileData.profile_image
+    ) {
       formData.append("profile_image", profileData.profile_image);
     } else if (typeof profileData.profile_image === "string") {
       formData.append("profile_image_url", profileData.profile_image);
     }
 
-    if (profileData.cv instanceof File) {
+    if (
+      profileData.cv &&
+      typeof profileData.cv === "object" &&
+      "name" in profileData.cv &&
+      "size" in profileData.cv &&
+      "type" in profileData.cv
+    ) {
       formData.append("cv", profileData.cv);
     }
   } else {
-    // التعامل مع الحالة على الخادم - إضافة كقيم نصية
     if (typeof profileData.profile_image === "string") {
       formData.append("profile_image_url", profileData.profile_image);
     }
-    // تجاهل ملفات الـ CV على الخادم حيث لا يمكن معالجتها
   }
 
   return post<User>("/api/profile", formData, {}, true);
