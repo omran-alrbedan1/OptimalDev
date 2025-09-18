@@ -179,6 +179,7 @@ export const updateProfile = async (profileData: {
 
   return post<User>("/api/profile", formData, {}, true);
 };
+
 export const changePassword = async (data: {
   current_password: string;
   new_password: string;
