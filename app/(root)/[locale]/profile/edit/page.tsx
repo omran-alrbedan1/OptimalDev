@@ -1,7 +1,7 @@
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 
-// const EditProfileClient = dynamic(() => import("./EditProfileComponent"));
+const EditProfileClient = dynamic(() => import("./EditProfileComponent"));
 
-// export default function EditProfilePage() {
-//   return <EditProfileClient />;
-// }
+export default function EditProfilePage() {
+  return <EditProfileClient />;
+}

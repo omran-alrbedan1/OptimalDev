@@ -162,19 +162,26 @@ export const updateProfile = async (profileData: {
     formData.append("city_id", String(profileData.city_id));
   }
 
-  if (profileData.profile_image instanceof File) {
-    formData.append("profile_image", profileData.profile_image);
-  } else if (typeof profileData.profile_image === "string") {
-    formData.append("profile_image_url", profileData.profile_image);
-  }
+  // Check if we're in a browser environment before using File
+  if (typeof window !== "undefined") {
+    if (profileData.profile_image instanceof File) {
+      formData.append("profile_image", profileData.profile_image);
+    } else if (typeof profileData.profile_image === "string") {
+      formData.append("profile_image_url", profileData.profile_image);
+    }
 
-  if (profileData.cv instanceof File) {
-    formData.append("cv", profileData.cv);
+    if (profileData.cv instanceof File) {
+      formData.append("cv", profileData.cv);
+    }
+  } else {
+    // Handle server-side case - append as strings or skip
+    if (typeof profileData.profile_image === "string") {
+      formData.append("profile_image_url", profileData.profile_image);
+    }
   }
 
   return post<User>("/api/profile", formData, {}, true);
 };
-
 export const changePassword = async (data: {
   current_password: string;
   new_password: string;
