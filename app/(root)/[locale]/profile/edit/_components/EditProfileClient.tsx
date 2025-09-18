@@ -34,10 +34,11 @@ import {
 } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { UploadProps } from "antd";
-import { Avatar, Card, message, Upload } from "antd";
+import { Avatar, Card, message } from "antd";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,6 +46,12 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { toast } from "sonner";
 import * as z from "zod";
+import ClientWrapper from "./ClientWrapper";
+import FileUploadSection from "./FileUploadSection";
+
+const Upload = dynamic(() => import("antd").then((mod) => mod.Upload), {
+  ssr: false,
+});
 
 type EditProfileValues = z.infer<ReturnType<typeof editProfileSchema>>;
 
@@ -58,18 +65,9 @@ const EditProfilePage = () => {
   const [cities, setCities] = useState<City[]>([]);
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [cvFile, setCvFile] = useState<File | null>(null);
-  const [isClientReady, setIsClientReady] = useState(false);
-
-  useEffect(() => {
-    setIsClientReady(true);
-  }, []);
 
   const { data: profileData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);
-
-  useEffect(() => {
-    setIsClientReady(true);
-  }, []);
 
   const form = useForm<EditProfileValues>({
     resolver: zodResolver(editProfileSchema(t)),
@@ -106,8 +104,6 @@ const EditProfilePage = () => {
   const getCountries = async () => {
     try {
       const response = await fetchCountries();
-      //@ts-ignore
-      console.log(response);
       setCountries(response);
     } catch (error) {
       console.log(error);
@@ -118,25 +114,18 @@ const EditProfilePage = () => {
   const getCities = async (countryId: number) => {
     try {
       const response = await fetchCities(countryId);
-      //@ts-ignore
       setCities(response);
     } catch (error) {
       message.error(t("messages.citiesError"));
     }
   };
 
-  const handleProfileImageUpload: UploadProps["onChange"] = (info) => {
-    if (info.file.originFileObj) {
-      setProfileImageFile(info.file.originFileObj);
-      message.success(`${info.file.name} ${t("messages.fileSelected")}`);
-    }
+  const handleProfileImageChange = (file: File) => {
+    setProfileImageFile(file);
   };
 
-  const handleCvUpload: UploadProps["onChange"] = (info) => {
-    if (info.file.originFileObj) {
-      setCvFile(info.file.originFileObj);
-      message.success(`${info.file.name} ${t("messages.fileSelected")}`);
-    }
+  const handleCvChange = (file: File) => {
+    setCvFile(file);
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -151,6 +140,10 @@ const EditProfilePage = () => {
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value ? Number(e.target.value) : undefined;
     form.setValue("city_id", value?.toString() || "");
+  };
+
+  const onSubmit = () => {
+    console.log("submit");
   };
 
   // const onSubmit = async (values: EditProfileValues) => {
@@ -184,21 +177,10 @@ const EditProfilePage = () => {
   //     setLoading(false);
   //   }
   // };
-  const onSubmit = () => {
-    console.log("submit");
-  };
-
-  if (!isClientReady) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen  relative overflow-hidden">
-      {isClientReady && (
+    <ClientWrapper>
+      <div className="min-h-screen  relative overflow-hidden">
         <div>
           <div className="relative mt-8 z-10 max-w-7xl mx-auto px-4 sm:px-6   py-8 lg:py-16">
             <motion.div
@@ -226,174 +208,12 @@ const EditProfilePage = () => {
                           transition={{ delay: 0.6, duration: 0.6 }}
                           className="xl:col-span-1"
                         >
-                          <div className="  dark:from-slate-800 dark:to-slate-700 rounded-2xl p-3 border border-slate-200 shadow-sm dark:border-slate-600/50 ">
-                            <div className="text-center flex flex-col">
-                              <div className="relative inline-block  mb-6">
-                                <motion.div
-                                  whileHover={{ scale: 1.05 }}
-                                  transition={{
-                                    type: "spring",
-                                    stiffness: 300,
-                                  }}
-                                  className="relative group"
-                                >
-                                  <Avatar
-                                    size={140}
-                                    src={
-                                      profileImageFile
-                                        ? URL.createObjectURL(profileImageFile)
-                                        : profileData?.profile_image ||
-                                          undefined
-                                    }
-                                    icon={<UserOutlined className="text-4xl" />}
-                                    className="relative border-4 border-white dark:border-slate-700 shadow-2xl"
-                                  />
-                                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="bg-white/90 dark:bg-slate-800/90 p-3 rounded-full shadow-lg">
-                                      <CameraOutlined className="text-xl text-slate-700 dark:text-slate-300" />
-                                    </div>
-                                  </div>
-                                </motion.div>
-                              </div>
-
-                              <Upload
-                                name="profile_image"
-                                beforeUpload={(file) => {
-                                  setProfileImageFile(file);
-                                  return false;
-                                }}
-                                onChange={handleProfileImageUpload}
-                                showUploadList={false}
-                                accept="image/*"
-                                className="w-full"
-                              >
-                                <motion.div
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}
-                                >
-                                  <Button
-                                    type="button"
-                                    className="w-full bg-gradient-to-r from-[#22ace3] to-[#1d9bd1] hover:from-[#1d9bd1] hover:to-[#188cb8] text-white font-semibold py-3 px-4 rounded-[4px] shadow-lg hover:shadow-xl transition-all duration-300 border-0"
-                                  >
-                                    <UploadOutlined className="mr-2 text-base" />
-                                    {t("photoSection.changePhoto")}
-                                  </Button>
-                                </motion.div>
-                              </Upload>
-                            </div>
-                          </div>
-
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.8, duration: 0.6 }}
-                            className="mt-6 dark:from-slate-800 dark:to-cyan-900/20 rounded-2xl p-6 border border-slate-200 dark:border-slate-600/50 shadow-sm"
-                          >
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center gap-x-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-[#22ace3] to-[#1d9bd1] rounded-[4px] flex items-center justify-center mr-3 shadow-lg">
-                                  <FilePdfOutlined className="text-white text-lg" />
-                                </div>
-                                <div>
-                                  <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">
-                                    {t("photoSection.cvSection.title")}
-                                  </h3>
-                                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    PDF, DOC, DOCX
-                                  </p>
-                                </div>
-                              </div>
-
-                              {(cvFile || profileData?.cv_path) && (
-                                <motion.a
-                                  whileHover={{ scale: 1.05 }}
-                                  href={
-                                    cvFile
-                                      ? URL.createObjectURL(cvFile)
-                                      : profileData?.cv_path || "#"
-                                  }
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center text-[#22ace3] dark:text-[#22ace3] hover:text-[#1d9bd1] dark:hover:text-[#1d9bd1] font-medium text-sm"
-                                >
-                                  <EyeOutlined className="mr-1" />
-                                  {t("actions.view")}
-                                </motion.a>
-                              )}
-                            </div>
-
-                            <div
-                              className={`border-2 border-dashed rounded-[4px] p-6 mb-4 text-center transition-all duration-300 ${
-                                cvFile || profileData?.cv_path
-                                  ? "border-primary/50 dark:border-[#22ace3]/50 bg-[#22ace3]/10 dark:bg-[#22ace3]/20"
-                                  : "border-slate-300 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-800/50"
-                              }`}
-                            >
-                              {cvFile || profileData?.cv_path ? (
-                                <div className="text-[#22ace3] dark:text-[#22ace3]">
-                                  <div className="relative inline-block mb-2">
-                                    <FilePdfOutlined className="text-3xl" />
-                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#22ace3] rounded-full flex items-center justify-center">
-                                      <CheckOutlined className="text-white text-xs" />
-                                    </div>
-                                  </div>
-                                  <p className="font-medium text-sm">
-                                    {t("photoSection.cvSection.cvUploaded")}
-                                  </p>
-                                </div>
-                              ) : (
-                                <div className="text-slate-400 dark:text-slate-500">
-                                  <FileAddOutlined className="text-3xl mb-2" />
-                                  <p className="text-sm">
-                                    {t("photoSection.cvSection.uploadNewCV")}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-
-                            <Upload
-                              name="cv"
-                              beforeUpload={(file) => {
-                                setCvFile(file);
-                                return false;
-                              }}
-                              onChange={handleCvUpload}
-                              showUploadList={false}
-                              accept=".pdf,.doc,.docx"
-                              className="w-full"
-                            >
-                              <motion.div
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                              >
-                                <Button
-                                  type="button"
-                                  variant={
-                                    cvFile || profileData?.cv_path
-                                      ? "outline"
-                                      : "default"
-                                  }
-                                  className={`w-full font-semibold py-3 px-4 rounded-[4px] shadow-lg hover:shadow-xl transition-all duration-300 ${
-                                    cvFile || profileData?.cv_path
-                                      ? "border-2 border-[#22ace3] text-[#22ace3] hover:bg-[#22ace3]/10 dark:border-[#22ace3] dark:text-[#22ace3] dark:hover:bg-[#22ace3]/20"
-                                      : "bg-gradient-to-r from-[#22ace3] to-[#1d9bd1] hover:from-[#1d9bd1] hover:to-[#188cb8] text-white border-0"
-                                  }`}
-                                >
-                                  {cvFile || profileData?.cv_path ? (
-                                    <>
-                                      <SyncOutlined className="mr-2" />
-                                      {t("photoSection.cvSection.changeCV")}
-                                    </>
-                                  ) : (
-                                    <>
-                                      <UploadOutlined className="mr-2" />
-                                      {t("photoSection.cvSection.uploadNewCV")}
-                                    </>
-                                  )}
-                                </Button>
-                              </motion.div>
-                            </Upload>
-                          </motion.div>
+                          <FileUploadSection
+                            profileData={profileData}
+                            onProfileImageChange={handleProfileImageChange}
+                            onCvChange={handleCvChange}
+                            t={t}
+                          />
                         </motion.div>
 
                         <motion.div
@@ -507,35 +327,29 @@ const EditProfilePage = () => {
                                             field.onChange(phone)
                                           }
                                           containerClass="w-full"
-                                          buttonClass=" !h-12 !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50  !rounded-l-[1px] rtl:!rounded-r-[1px] rtl:!rounded-l-none rtl:!pr-2 dark:hover:bg-gray-900"
-                                          dropdownClass="!bg-white dark:!bg-slate-800 !border-slate-300 dark:!border-slate-600 !shadow-xl  !rounded-lg"
-                                          inputClass="!h-12  !w-full  rtl:pr-16 !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
+                                          buttonClass="!h-12 !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !rounded-l-[1px] rtl:!rounded-r-[1px] rtl:!rounded-l-none rtl:!pr-2 dark:hover:bg-gray-900"
+                                          dropdownClass="!bg-white dark:!bg-slate-800 !border-slate-300 dark:!border-slate-600 !shadow-xl !rounded-lg"
+                                          inputClass="!h-12 !w-full rtl:pr-16 !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
                                           inputStyle={{
                                             direction:
-                                              useLocale() === "ar"
-                                                ? "ltr"
-                                                : "ltr",
+                                              locale === "ar" ? "ltr" : "ltr",
                                             textAlign:
-                                              useLocale() === "ar"
+                                              locale === "ar"
                                                 ? "right"
                                                 : "left",
                                           }}
                                           buttonStyle={{
                                             direction:
-                                              useLocale() === "ar"
-                                                ? "ltr"
-                                                : "ltr",
+                                              locale === "ar" ? "ltr" : "ltr",
                                           }}
                                           placeholder={
-                                            useLocale() === "ar"
+                                            locale === "ar"
                                               ? "رقم الهاتف"
                                               : "Phone Number"
                                           }
                                           containerStyle={{
                                             direction:
-                                              useLocale() === "ar"
-                                                ? "rtl"
-                                                : "ltr",
+                                              locale === "ar" ? "rtl" : "ltr",
                                           }}
                                         />
                                       </div>
@@ -614,21 +428,22 @@ const EditProfilePage = () => {
                               </div>
                             </div>
                           </div>
+
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1, duration: 0.6 }}
-                            className="flex justify-center pt-8 md:pt-2 "
+                            className="flex justify-center pt-8 md:pt-2"
                           >
                             <motion.div
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="  ml-auto w-fit"
+                              className="ml-auto w-fit"
                             >
                               <Button
                                 type="submit"
                                 disabled={loading}
-                                className=" bg-gradient-to-r from-primary-color1 via-primary-color1/90 to-primary-color1/80 hover:from-primary-color1 hover:via-primary-color1 hover:to-primary-color1 text-white rounded-[4px] shadow-xl hover:shadow-2xl transition-all duration-300 border-0 relative overflow-hidden group"
+                                className="bg-gradient-to-r from-primary-color1 via-primary-color1/90 to-primary-color1/80 hover:from-primary-color1 hover:via-primary-color1 hover:to-primary-color1 text-white rounded-[4px] shadow-xl hover:shadow-2xl transition-all duration-300 border-0 relative overflow-hidden group"
                               >
                                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                                 {loading ? (
@@ -715,8 +530,8 @@ const EditProfilePage = () => {
           `}</style>
           )}
         </div>
-      )}
-    </div>
+      </div>
+    </ClientWrapper>
   );
 };
 
