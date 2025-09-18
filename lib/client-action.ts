@@ -148,6 +148,7 @@ export const updateProfile = async (profileData: {
   cv?: File;
 }): Promise<User> => {
   const formData = new FormData();
+
   formData.append("first_name", profileData.first_name);
   formData.append("last_name", profileData.last_name);
   formData.append("phone", profileData.phone);
@@ -159,6 +160,7 @@ export const updateProfile = async (profileData: {
   if (profileData.city_id) {
     formData.append("city_id", String(profileData.city_id));
   }
+
   if (typeof window !== "undefined") {
     if (profileData.profile_image instanceof File) {
       formData.append("profile_image", profileData.profile_image);
@@ -177,7 +179,6 @@ export const updateProfile = async (profileData: {
 
   return post<User>("/api/profile", formData, {}, true);
 };
-
 export const changePassword = async (data: {
   current_password: string;
   new_password: string;
