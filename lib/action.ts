@@ -4,12 +4,12 @@ const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
+  // Use the API base URL for server-side, empty string for client-side
   const baseUrl =
-    typeof window === "undefined" ? process.env.NEXT_PUBLIC_SITE_URL : "";
-  const url = `${baseUrl}/api${endpoint}`;
-  const language =
-    //@ts-ignore
-    options?.lang || cookies().get("preferredLanguage")?.value || "en";
+    typeof window === "undefined" ? process.env.NEXT_PUBLIC_BASE_URL : "";
+
+  const url = `${baseUrl}${endpoint}`;
+  const language = options?.lang || "en";
 
   try {
     const response = await fetch(url, {
@@ -51,6 +51,7 @@ export const fetchOrganization = async (
 ): Promise<Organization> => {
   return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
 };
+
 export const fetchContactInfo = async (lang?: string): Promise<Contact> => {
   return fetchApi("/contact", { next: { revalidate: 3600 }, lang });
 };
