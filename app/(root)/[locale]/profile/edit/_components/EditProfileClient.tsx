@@ -151,36 +151,39 @@ const EditProfilePage = () => {
     form.setValue("city_id", value?.toString() || "");
   };
 
-  const onSubmit = async (values: EditProfileValues) => {
-    setLoading(true);
-    try {
-      const updateData: any = {
-        ...values,
-        country_id: values.country_id ? Number(values.country_id) : undefined,
-        city_id: values.city_id ? Number(values.city_id) : undefined,
-      };
+  // const onSubmit = async (values: EditProfileValues) => {
+  //   setLoading(true);
+  //   try {
+  //     const updateData: any = {
+  //       ...values,
+  //       country_id: values.country_id ? Number(values.country_id) : undefined,
+  //       city_id: values.city_id ? Number(values.city_id) : undefined,
+  //     };
 
-      if (profileImageFile) {
-        updateData.profile_image = profileImageFile;
-      } else if (profileData?.profile_image) {
-        updateData.profile_image = profileData.profile_image;
-      }
+  //     if (profileImageFile) {
+  //       updateData.profile_image = profileImageFile;
+  //     } else if (profileData?.profile_image) {
+  //       updateData.profile_image = profileData.profile_image;
+  //     }
 
-      if (cvFile) {
-        updateData.cv = cvFile;
-      } else if (profileData?.cv_path) {
-        updateData.cv_url = profileData.cv_path;
-      }
+  //     if (cvFile) {
+  //       updateData.cv = cvFile;
+  //     } else if (profileData?.cv_path) {
+  //       updateData.cv_url = profileData.cv_path;
+  //     }
 
-      await updateProfile(updateData);
-      toast.success(t("toast.success"));
-      router.push("/profile");
-    } catch (error) {
-      console.error("Update error:", error);
-      toast.error(t("toast.error"));
-    } finally {
-      setLoading(false);
-    }
+  //     await updateProfile(updateData);
+  //     toast.success(t("toast.success"));
+  //     router.push("/profile");
+  //   } catch (error) {
+  //     console.error("Update error:", error);
+  //     toast.error(t("toast.error"));
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const onSubmit = () => {
+    console.log("submit");
   };
 
   if (!isClientReady) {
