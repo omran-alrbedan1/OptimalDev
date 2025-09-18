@@ -4,9 +4,10 @@ const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
-  // Use the API base URL for server-side, empty string for client-side
   const baseUrl =
-    typeof window === "undefined" ? process.env.NEXT_PUBLIC_BASE_URL : "";
+    typeof window === "undefined"
+      ? process.env.NEXT_PUBLIC_BASE_URL
+      : window.location.origin;
 
   const url = `${baseUrl}${endpoint}`;
   const language = options?.lang || "en";
@@ -34,6 +35,7 @@ const fetchApi = async <T>(
   }
 };
 
+// Your export functions remain the same...
 export const fetchSliders = async (lang?: string): Promise<Slider[]> => {
   return fetchApi("/sliders", { next: { revalidate: 3600 }, lang });
 };
