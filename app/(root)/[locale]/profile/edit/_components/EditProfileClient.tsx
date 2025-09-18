@@ -145,14 +145,14 @@ const EditProfilePage = () => {
     const value = e.target.value ? Number(e.target.value) : undefined;
     form.setValue("city_id", value?.toString() || "");
   };
+
   // في الجزء العلوي من الملف، أضف هذا التحقق
   const isServer = typeof window === "undefined";
 
-  // ثم في دالة onSubmit، غلّف الجزء المتعلق بـ File بشرط
   const onSubmit = async (values: EditProfileValues) => {
     setLoading(true);
     try {
-      const updateData = {
+      const updateData: any = {
         ...values,
         country_id: values.country_id ? Number(values.country_id) : undefined,
         city_id: values.city_id ? Number(values.city_id) : undefined,
@@ -160,11 +160,26 @@ const EditProfilePage = () => {
 
       // فقط على العميل (المتصفح) أضف ملفات الصور والسيرة الذاتية
       if (!isServer) {
-        Object.assign(updateData, {
-          profile_image:
-            profileImageFile || profileData?.profile_image || undefined,
-          cv: cvFile || undefined,
-        });
+        if (profileImageFile) {
+          updateData.profile_image = profileImageFile;
+        } else if (profileData?.profile_image) {
+          updateData.profile_image = profileData.profile_image;
+        }
+
+        if (cvFile) {
+          updateData.cv = cvFile;
+        } else if (profileData?.cv_path) {
+          // إذا كان لديك طريقة للتعامل مع CV موجود كرابط
+          updateData.cv_url = profileData.cv_path;
+        }
+      } else {
+        // على الخادم، استخدم الروابط فقط إذا كانت موجودة
+        if (profileData?.profile_image) {
+          updateData.profile_image = profileData.profile_image;
+        }
+        if (profileData?.cv_path) {
+          updateData.cv_url = profileData.cv_path;
+        }
       }
 
       await updateProfile(updateData);
@@ -177,6 +192,7 @@ const EditProfilePage = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen  relative overflow-hidden">
       <div className="relative mt-8 z-10 max-w-7xl mx-auto px-4 sm:px-6   py-8 lg:py-16">

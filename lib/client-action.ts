@@ -149,6 +149,7 @@ export const updateProfile = async (profileData: {
 }): Promise<User> => {
   const formData = new FormData();
 
+  // إضافة الحقول الأساسية
   formData.append("first_name", profileData.first_name);
   formData.append("last_name", profileData.last_name);
   formData.append("phone", profileData.phone);
@@ -161,7 +162,8 @@ export const updateProfile = async (profileData: {
     formData.append("city_id", String(profileData.city_id));
   }
 
-  if (typeof window !== "undefined") {
+  // التحقق من أننا في بيئة المتصفح قبل استخدام كائن File
+  if (typeof window !== "undefined" && typeof File !== "undefined") {
     if (profileData.profile_image instanceof File) {
       formData.append("profile_image", profileData.profile_image);
     } else if (typeof profileData.profile_image === "string") {
@@ -172,9 +174,11 @@ export const updateProfile = async (profileData: {
       formData.append("cv", profileData.cv);
     }
   } else {
+    // التعامل مع الحالة على الخادم - إضافة كقيم نصية
     if (typeof profileData.profile_image === "string") {
       formData.append("profile_image_url", profileData.profile_image);
     }
+    // تجاهل ملفات الـ CV على الخادم حيث لا يمكن معالجتها
   }
 
   return post<User>("/api/profile", formData, {}, true);
