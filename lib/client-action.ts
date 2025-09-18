@@ -136,17 +136,7 @@ export const fetchProfileInfo = async (): Promise<User> => {
 export const fetchCities = async (id: number): Promise<City[]> => {
   return get<City[]>(`/api/cities/${id}`);
 };
-
-export const updateProfile = async (profileData: {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  email: string;
-  country_id?: number | string;
-  city_id?: number | string;
-  profile_image?: any; // تغيير من File | string إلى any
-  cv?: any; // تغيير من File إلى any
-}): Promise<User> => {
+export const updateProfile = async (profileData: any): Promise<User> => {
   const formData = new FormData();
 
   formData.append("first_name", profileData.first_name);
@@ -161,31 +151,20 @@ export const updateProfile = async (profileData: {
     formData.append("city_id", String(profileData.city_id));
   }
 
-  if (typeof window !== "undefined" && typeof File !== "undefined") {
-    if (
-      profileData.profile_image &&
-      typeof profileData.profile_image === "object" &&
-      "name" in profileData.profile_image &&
-      "size" in profileData.profile_image &&
-      "type" in profileData.profile_image
-    ) {
-      formData.append("profile_image", profileData.profile_image);
-    } else if (typeof profileData.profile_image === "string") {
-      formData.append("profile_image_url", profileData.profile_image);
+  // طريقة آمنة للتعامل مع الملفات - duck typing بدلاً من instanceof
+  if (profileData.profile_image) {
+    const img = profileData.profile_image;
+    if (img && typeof img === "object" && "name" in img && "type" in img) {
+      formData.append("profile_image", img);
+    } else if (typeof img === "string") {
+      formData.append("profile_image_url", img);
     }
+  }
 
-    if (
-      profileData.cv &&
-      typeof profileData.cv === "object" &&
-      "name" in profileData.cv &&
-      "size" in profileData.cv &&
-      "type" in profileData.cv
-    ) {
-      formData.append("cv", profileData.cv);
-    }
-  } else {
-    if (typeof profileData.profile_image === "string") {
-      formData.append("profile_image_url", profileData.profile_image);
+  if (profileData.cv) {
+    const cv = profileData.cv;
+    if (cv && typeof cv === "object" && "name" in cv && "type" in cv) {
+      formData.append("cv", cv);
     }
   }
 

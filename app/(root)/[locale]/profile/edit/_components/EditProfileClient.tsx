@@ -56,14 +56,19 @@ const EditProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [cities, setCities] = useState<City[]>([]);
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [profileImageFile, setProfileImageFile] = useState<any>(null);
+  const [cvFile, setCvFile] = useState<any>(null);
+  const [isClientReady, setIsClientReady] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const router = useRouter();
 
   const { data: profileData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);
-  console.log(profileData);
+
+  useEffect(() => {
+    setIsClientReady(true);
+  }, []);
+
   const form = useForm<EditProfileValues>({
     resolver: zodResolver(editProfileSchema(t)),
     defaultValues: {
@@ -146,9 +151,6 @@ const EditProfilePage = () => {
     form.setValue("city_id", value?.toString() || "");
   };
 
-  // في الجزء العلوي من الملف، أضف هذا التحقق
-  const isServer = typeof window === "undefined";
-
   const onSubmit = async (values: EditProfileValues) => {
     setLoading(true);
     try {
@@ -158,8 +160,6 @@ const EditProfilePage = () => {
         city_id: values.city_id ? Number(values.city_id) : undefined,
       };
 
-      // إضافة ملفات الصور والسيرة الذاتية فقط إذا كانت موجودة
-      // لن نحتاج إلى التحقق من isServer لأن المكون كله سيعمل فقط على العميل
       if (profileImageFile) {
         updateData.profile_image = profileImageFile;
       } else if (profileData?.profile_image) {
@@ -182,6 +182,15 @@ const EditProfilePage = () => {
       setLoading(false);
     }
   };
+
+  if (!isClientReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen  relative overflow-hidden">
       <div className="relative mt-8 z-10 max-w-7xl mx-auto px-4 sm:px-6   py-8 lg:py-16">
