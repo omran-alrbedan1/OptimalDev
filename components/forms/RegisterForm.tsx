@@ -145,11 +145,13 @@ export default function RegisterForm() {
       const response = await register(formData);
 
       if (response.access_token) {
+        const isHttps = window.location.protocol === "https:";
+
         setCookie("token", response.access_token, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
+          secure: isHttps,
+          sameSite: isHttps ? "strict" : "lax",
         });
       }
       dispatch(loginSuccess(response));
