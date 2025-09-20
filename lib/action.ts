@@ -4,6 +4,7 @@ const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
+  // التصحيح هنا: إزالة "http://" الإضافية
   const baseUrl =
     typeof window === "undefined" ? "http://147.79.118.212:3005" : "";
 
