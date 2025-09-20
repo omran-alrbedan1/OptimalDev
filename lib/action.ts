@@ -4,10 +4,7 @@ const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
-  const baseUrl =
-    typeof window === "undefined" ? "http://147.79.118.212:4005" : "";
-
-  const url = `${baseUrl}/api${endpoint}`;
+  const url = `http://147.79.118.212:7099/api${endpoint}`;
   const language = options?.lang || "en";
 
   try {
