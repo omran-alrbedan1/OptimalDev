@@ -50,11 +50,13 @@ export default function LoginForm() {
     try {
       dispatch(loginStart());
       const response = await login(values.login, values.password);
+      const isHttps = window.location.protocol === "https:";
+
       setCookie("token", response.access_token, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: isHttps,
+        sameSite: isHttps ? "strict" : "lax",
       });
 
       dispatch(loginSuccess(response));
