@@ -28,7 +28,7 @@ const Page = async () => {
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative duration-500">
-        <Slider sliders={sliders} />
+        {/* <Slider sliders={sliders} /> */}
         {organization.home ? (
           <div
             dangerouslySetInnerHTML={{ __html: organization.home }}
