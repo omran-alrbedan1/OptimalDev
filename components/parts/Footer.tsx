@@ -22,6 +22,8 @@ const Footer = async () => {
   const t = await getTranslations("footer");
   const organization = await fetchOrganization();
 
+  console.log(organization);
+
   const socialLinks = [
     {
       icon: <FaWhatsapp className="text-xl" />,
@@ -97,11 +99,10 @@ const Footer = async () => {
                 />
               </Link>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed md:text-center">
-              <div
-                dangerouslySetInnerHTML={{ __html: organization?.description }}
-              />
-            </p>
+            <div
+              className="text-gray-600 dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed md:text-center"
+              dangerouslySetInnerHTML={{ __html: organization?.description }}
+            />
 
             {/* Social links - centered on mobile */}
             <div className="flex justify-center relative md:justify-start space-x-3 md:space-x-4">

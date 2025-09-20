@@ -5,12 +5,11 @@ const fetchApi = async <T>(
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
   const baseUrl =
-    typeof window === "undefined"
-      ? process.env.NEXT_PUBLIC_BASE_URL
-      : window.location.origin;
-
-  const url = `${baseUrl}${endpoint}`;
-  const language = options?.lang || "en";
+    typeof window === "undefined" ? "http://http://147.79.118.212:3005" : "";
+  const url = `${baseUrl}/api${endpoint}`;
+  const language =
+    //@ts-ignore
+    options?.lang || cookies().get("preferredLanguage")?.value || "en";
 
   try {
     const response = await fetch(url, {
@@ -35,7 +34,6 @@ const fetchApi = async <T>(
   }
 };
 
-// Your export functions remain the same...
 export const fetchSliders = async (lang?: string): Promise<Slider[]> => {
   return fetchApi("/sliders", { next: { revalidate: 3600 }, lang });
 };
@@ -53,7 +51,6 @@ export const fetchOrganization = async (
 ): Promise<Organization> => {
   return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
 };
-
 export const fetchContactInfo = async (lang?: string): Promise<Contact> => {
   return fetchApi("/contact", { next: { revalidate: 3600 }, lang });
 };

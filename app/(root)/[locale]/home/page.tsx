@@ -24,7 +24,6 @@ const Page = async () => {
   const partners = await fetchPartners();
   const clients = await fetchClients();
   const organization = await fetchOrganization();
-  console.log(organization.home);
 
   return (
     <Suspense fallback={<Loader />}>
