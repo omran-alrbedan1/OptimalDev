@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { sl } from "date-fns/locale";
 
 const Slider = ({ sliders }: { sliders: Slider[] }) => {
   const router = useRouter();
@@ -9,8 +10,6 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
-
-  // Auto-play with pause on hover
   useEffect(() => {
     const startAutoPlay = () => {
       intervalRef.current = setInterval(() => {
@@ -25,8 +24,8 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
   }, [sliders?.length, isPaused]);
 
   const handleSlideClick = () => {
-    if (sliders[currentIndex].link_url) {
-      router.push(sliders[currentIndex].link_url);
+    if (sliders[currentIndex]?.link_url) {
+      router.push(sliders[currentIndex]?.link_url);
     }
   };
 
@@ -63,6 +62,8 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
     }, 4000);
   };
 
+  console.log(sliders);
+
   return (
     <div
       ref={sliderRef}
@@ -73,7 +74,7 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
       {/* Background image with click handler */}
       <div
         style={{
-          backgroundImage: `url(${sliders[currentIndex].image})`,
+          backgroundImage: `url(${sliders[currentIndex]?.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -102,30 +103,30 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
             className="w-full p-6"
           >
             <div className="text-center">
-              {sliders[currentIndex].title && (
+              {sliders[currentIndex]?.title && (
                 <div
                   className="text-3xl text-white font-bold mt-6 mb-4"
                   dangerouslySetInnerHTML={{
-                    __html: sliders[currentIndex].title,
+                    __html: sliders[currentIndex]?.title,
                   }}
                 />
               )}
-              {sliders[currentIndex].description && (
+              {sliders[currentIndex]?.description && (
                 <div
                   className="text-gray-100 mb-6 xl:mx-80 max-sm:mb-10"
                   dangerouslySetInnerHTML={{
-                    __html: sliders[currentIndex].description,
+                    __html: sliders[currentIndex]?.description,
                   }}
                 />
               )}
-              {sliders[currentIndex].link_text && (
+              {sliders[currentIndex]?.link_text && (
                 <button
                   className="bg-primary-color1 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition"
                   onClick={handleSlideClick}
                 >
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: sliders[currentIndex].link_text,
+                      __html: sliders[currentIndex]?.link_text,
                     }}
                   />
                 </button>
@@ -137,7 +138,7 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
 
       {/* Navigation dots */}
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-        {sliders.map((_, index) => (
+        {sliders?.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}

@@ -25,6 +25,11 @@ const Page = async () => {
   const clients = await fetchClients();
   const organization = await fetchOrganization();
 
+  console.log("Sliders:", sliders);
+  console.log("Partners:", partners);
+  console.log("Clients:", clients);
+  console.log("Organization:", organization);
+
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative duration-500">

@@ -1,5 +1,12 @@
 import { cookies } from "next/headers";
 
+interface ApiResponse<T> {
+  data?: T;
+  message?: string;
+  error?: string;
+  status?: number;
+}
+
 const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
@@ -18,12 +25,20 @@ const fetchApi = async <T>(
       },
     });
 
+    const responseData: ApiResponse<T> = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `Failed to fetch ${endpoint}`);
+      throw new Error(
+        responseData.error ||
+          responseData.message ||
+          `Failed to fetch ${endpoint} (Status: ${response.status})`
+      );
     }
 
-    return await response.json();
+    // إرجاع data مباشرة إذا كانت موجودة، وإلا إرجاع الرد كاملاً
+    return responseData.data !== undefined
+      ? responseData.data
+      : (responseData as T);
   } catch (error: any) {
     console.error(`API Error (${endpoint}):`, error);
     throw new Error(error.message || `Failed to fetch ${endpoint}`);
