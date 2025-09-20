@@ -1,10 +1,12 @@
 "use client";
 import { images } from "@/constants/images";
 import Image from "next/image";
-import RegisterForm from "@/components/forms/RegisterForm";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+const RegisterForm = dynamic(() => import("@/components/forms/RegisterForm"), {
+  ssr: false,
+});
 
-export const dynamic = "force-dynamic";
 export default function RegisterPage() {
   return (
     <div className="flex mx-auto w-fit lg:grid-cols-2 min-h-[80vh] mt-20">
