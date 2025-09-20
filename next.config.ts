@@ -35,6 +35,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  experimental: {
+    esmExternals: true,
+  },
 };
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

@@ -3,9 +3,14 @@ import { images } from "@/constants/images";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-const RegisterForm = dynamic(() => import("@/components/forms/RegisterForm"), {
-  ssr: false,
-});
+
+const RegisterForm = dynamic(
+  () => import("@/components/forms/RegisterForm").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => <div>Loading...</div>,
+  }
+);
 
 export default function RegisterPage() {
   return (
