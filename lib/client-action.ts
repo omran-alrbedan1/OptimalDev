@@ -207,12 +207,13 @@ export const logout = async (): Promise<void> => {
     );
   } catch (error) {
     console.error("Error during logout:", error);
+  } finally {
+    // حذف الكوكيز دائمًا حتى لو فشل طلب الخروج من الخادم
+    deleteCookie("token");
+    deleteCookie("authData");
+
+    window.dispatchEvent(new Event("authChange"));
   }
-
-  deleteCookie("token");
-  deleteCookie("authData");
-
-  window.dispatchEvent(new Event("authChange"));
 };
 
 export const register = async (formData: FormData): Promise<any> => {

@@ -33,6 +33,7 @@ import { Loader2 } from "lucide-react";
 import { ExamsList } from "@/components/parts/ExamsList";
 import MessageLists from "@/components/parts/MessagesList";
 import { useAppSelector } from "@/hooks/hook";
+import { logout as apiLogout } from "@/lib/client-action";
 
 const ClientProfileContent = () => {
   const t = useTranslations("profilePage");
@@ -48,7 +49,7 @@ const ClientProfileContent = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      await logout();
+      await apiLogout();
       dispatch(logout());
       router.push("/home");
     } catch (error) {
