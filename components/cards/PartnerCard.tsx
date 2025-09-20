@@ -41,7 +41,7 @@ const PartnerCard = ({
             <div className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-primary via-primary/90 to-primary dark:from-primary dark:via-primary/80 dark:to-primary">
               <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 p-2">
                 <Image
-                  src={partner.image}
+                  src={partner.image ? partner.image : ""}
                   width={200}
                   height={200}
                   alt={partner.title}

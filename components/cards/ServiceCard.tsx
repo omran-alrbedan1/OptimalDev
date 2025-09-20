@@ -45,7 +45,11 @@ export default function ServiceCard({
       <motion.div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
         <motion.div className="relative w-fit">
           <img
-            src={service.image}
+            src={
+              service.image
+                ? service.image
+                : "https://via.placeholder.com/400x300?text=No+Image"
+            }
             alt={service.name}
             className="object-contain w-fit"
             style={{

@@ -90,7 +90,7 @@ export const InfiniteMovingCards = ({
             key={item.id}
           >
             <Image
-              src={item.logo}
+              src={item.logo ? item.logo : ""}
               width={130}
               height={100}
               alt={`image${item.id}`}
