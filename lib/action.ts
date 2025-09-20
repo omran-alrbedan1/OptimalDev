@@ -4,12 +4,23 @@ const fetchApi = async <T>(
   endpoint: string,
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
-  const baseUrl =
-    typeof window === "undefined" ? "http://http://147.79.118.212:3005" : "";
+  // Get base URL - use different approaches for client vs server
+  let baseUrl = "";
+
+  if (typeof window === "undefined") {
+    // Server-side: Use absolute URL with proper environment variable
+    // Use NEXT_PUBLIC_BASE_URL if available, otherwise fallback
+    baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "http://localhost:3000";
+  } else {
+    // Client-side: Use relative URL
+    baseUrl = "";
+  }
+
   const url = `${baseUrl}/api${endpoint}`;
-  const language =
-    //@ts-ignore
-    options?.lang || cookies().get("preferredLanguage")?.value || "en";
+  const language = options?.lang || "en";
 
   try {
     const response = await fetch(url, {
@@ -34,6 +45,7 @@ const fetchApi = async <T>(
   }
 };
 
+// Your export functions remain the same...
 export const fetchSliders = async (lang?: string): Promise<Slider[]> => {
   return fetchApi("/sliders", { next: { revalidate: 3600 }, lang });
 };
@@ -42,15 +54,4 @@ export const fetchPartners = async (lang?: string): Promise<Partner[]> => {
   return fetchApi("/partners", { next: { revalidate: 3600 }, lang });
 };
 
-export const fetchClients = async (lang?: string): Promise<Client[]> => {
-  return fetchApi("/clients", { next: { revalidate: 3600 }, lang });
-};
-
-export const fetchOrganization = async (
-  lang?: string
-): Promise<Organization> => {
-  return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
-};
-export const fetchContactInfo = async (lang?: string): Promise<Contact> => {
-  return fetchApi("/contact", { next: { revalidate: 3600 }, lang });
-};
+// ... other functions
