@@ -84,13 +84,13 @@ export const InfiniteMovingCards = ({
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
-        {items.map((item, idx) => (
+        {items?.map((item, idx) => (
           <li
             className="relative flex p-2 flex-col items-center max-w-full w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-2xl border border-b-0 border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)]  dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
             key={item.id}
           >
             <Image
-              src={item.logo ? item.logo : ""}
+              src={item?.logo ? item?.logo : ""}
               width={130}
               height={100}
               alt={`image${item.id}`}

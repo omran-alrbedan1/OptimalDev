@@ -34,17 +34,22 @@ import { ExamsList } from "@/components/parts/ExamsList";
 import MessageLists from "@/components/parts/MessagesList";
 import { useAppSelector } from "@/hooks/hook";
 import { logout as apiLogout } from "@/lib/client-action";
+import Loader from "@/components/Loader";
 
 const ClientProfileContent = () => {
   const t = useTranslations("profilePage");
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
   const locale = useLocale();
   const dispatch = useDispatch();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  const { data: userData, isLoading: profileLoading } =
+    useFetch<User>(fetchProfileInfo);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -62,6 +67,8 @@ const ClientProfileContent = () => {
   useEffect(() => {
     if (isAuthenticated === false) {
       router.push("/login");
+    } else {
+      setIsLoading(false);
     }
   }, [isAuthenticated, router]);
 
@@ -70,7 +77,9 @@ const ClientProfileContent = () => {
       <div className="min-h-[80vh] flex items-center justify-center"></div>
     );
   }
-
+  if (profileLoading) {
+    return <Loader />;
+  }
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -132,9 +141,6 @@ const ClientProfileContent = () => {
       children: <MessageLists />,
     },
   ];
-
-  const { data: userData, isLoading: profileLoading } =
-    useFetch<User>(fetchProfileInfo);
 
   return (
     <div className="container mx-auto px-4 md:mt-20 mt-8 py-8 max-w-7xl">

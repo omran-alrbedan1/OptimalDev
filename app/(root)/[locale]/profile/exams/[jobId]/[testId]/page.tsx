@@ -260,19 +260,7 @@ const ExamPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
-            <Brain className="w-8 h-8 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-          </div>
-          <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg font-medium">
-            <Loader />
-          </p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!testData) {
@@ -294,7 +282,7 @@ const ExamPage = () => {
   }
 
   return (
-    <div className="min-h-screen mt-24 bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
+    <div className="min-h-screen mt-24 pb-24 bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
       {/* Left Sidebar - Fixed height */}
       <div className="max-sm:hidden w-2/5 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 relative overflow-hidden border-r-2 border-primary/20 h-screen">
         {/* Background Pattern */}

@@ -27,10 +27,7 @@ const PartnerCard = ({
       }}
       className="px-6 flex flex-1 h-[380px] border border-zinc-200/50 dark:border-gray-700/50 rounded-2xl bg-gradient-to-br from-white via-gray-50/30 to-white dark:from-gray-800 dark:via-gray-800/50 dark:to-gray-900 shadow-lg  transition-all duration-500 overflow-hidden backdrop-blur-sm"
     >
-      <Link
-        href={`/`}
-        className="relative cursor-pointer w-full h-full py-10 flex flex-col items-center gap-6 group"
-      >
+      <div className="relative cursor-pointer w-full h-full py-10 flex flex-col items-center gap-6 group">
         {/* Enhanced Image with primary color effects */}
         {partner.image && (
           <div className="relative w-36 h-36 group-hover:scale-110 transition-all duration-500">
@@ -77,7 +74,7 @@ const PartnerCard = ({
 
         {/* Interactive corner accent with primary color */}
         <div className="absolute top-4 right-4 w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      </Link>
+      </div>
     </motion.div>
   );
 };
