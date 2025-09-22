@@ -27,7 +27,7 @@ const Page = async () => {
   console.log(clients);
   return (
     <Suspense fallback={<Loader />}>
-      <div className="relative duration-500">
+      <div className="relative w-full duration-500">
         <Slider sliders={sliders} />
         {organization.home ? (
           <div

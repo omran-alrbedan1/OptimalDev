@@ -105,10 +105,8 @@ const EditProfilePage = () => {
     try {
       const response = await fetchCountries();
       //@ts-ignore
-      console.log(response);
       setCountries(response);
     } catch (error) {
-      console.log(error);
       message.error(t("messages.countriesError"));
     }
   };

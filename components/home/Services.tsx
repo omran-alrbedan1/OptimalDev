@@ -53,7 +53,7 @@ export default function Services() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-col w-full items-center mt-10 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
+      className="flex flex-col  w-full items-center mt-16  p-8 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
     >
       <Header title={t("title")} paragraph={t("paragraph")} />
 

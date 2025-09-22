@@ -24,38 +24,62 @@ const Footer = async () => {
 
   console.log(organization);
 
+  const ensureAbsoluteUrl = (url: string | undefined) => {
+    if (!url) return undefined;
+
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+
+    if (
+      url.startsWith("wa.me/") ||
+      url.startsWith("t.me/") ||
+      url.startsWith("facebook.com/") ||
+      url.startsWith("instagram.com/") ||
+      url.startsWith("linkedin.com/") ||
+      url.startsWith("x.com/") ||
+      url.startsWith("twitter.com/")
+    ) {
+      return `https://${url}`;
+    }
+
+    return `https://${url}`;
+  };
+
   const socialLinks = [
     {
       icon: <FaWhatsapp className="text-xl" />,
-      href: organization?.whatsapp,
+      href: ensureAbsoluteUrl(organization?.whatsapp),
       name: "whatsapp",
     },
     {
       icon: <RiTelegram2Fill className="text-xl" />,
-      href: organization?.telegram,
+      href: ensureAbsoluteUrl(organization?.telegram),
       name: "telegram",
     },
     {
       icon: <FaFacebookF className="text-lg" />,
-      href: organization?.facebook,
+      href: ensureAbsoluteUrl(organization?.facebook),
       name: "facebook",
     },
     {
       icon: <FaInstagram className="text-lg" />,
-      href: organization?.instagram,
+      href: ensureAbsoluteUrl(organization?.instagram),
       name: "instagram",
     },
     {
       icon: <FaLinkedinIn className="text-lg" />,
-      href: organization?.linkedin,
+      href: ensureAbsoluteUrl(organization?.linkedin),
       name: "linkedin",
     },
     {
       icon: <FaXTwitter className="text-lg" />,
-      href: organization?.x,
+      href: ensureAbsoluteUrl(organization?.x),
       name: "twitter",
     },
   ].filter((link) => link.href);
+
+  console.log(socialLinks);
 
   const contactItems = [
     organization?.location && {
@@ -65,18 +89,22 @@ const Footer = async () => {
     organization?.email && {
       icon: <MdOutlineMail className="text-xl" />,
       text: organization.email,
+      href: `mailto:${organization.email}`,
     },
     organization?.phone_1 && {
       icon: <Smartphone className="text-xl" />,
       text: organization.phone_1,
+      href: `tel:${organization.phone_1}`,
     },
     organization?.phone_2 && {
       icon: <Smartphone className="text-xl" />,
       text: organization.phone_2,
+      href: `tel:${organization.phone_2}`,
     },
     organization?.phone_3 && {
       icon: <Smartphone className="text-xl" />,
       text: organization.phone_3,
+      href: `tel:${organization.phone_3}`,
     },
   ].filter(Boolean);
 
@@ -88,13 +116,13 @@ const Footer = async () => {
             <div className="flex items-center justify-center md:justify-start">
               <Link
                 href="/home"
-                className="flex items-center mx-12 gap-2 focus:!border-none border-none"
+                className="flex items-center -ml-2 gap-2 focus:!border-none border-none"
               >
                 <Image
                   src={images.logo}
                   width={230}
                   height={230}
-                  className="h-64 -my-24"
+                  className="h-64 -my-24 "
                   alt="Optimal Path Logo"
                 />
               </Link>
@@ -107,7 +135,7 @@ const Footer = async () => {
             {/* Social links - centered on mobile */}
             <div className="flex justify-center relative md:justify-start space-x-3 md:space-x-4">
               {socialLinks.map((item, index) => (
-                <Link
+                <a
                   key={index}
                   href={item.href!}
                   target="_blank"
@@ -115,7 +143,7 @@ const Footer = async () => {
                   className="p-1.5 md:p-2 rounded-full bg-white dark:bg-darkMod-400 text-gray-700 dark:text-gray-200 hover:bg-primary-color1 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   {item.icon}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -136,9 +164,18 @@ const Footer = async () => {
                       <span className="text-primary-color1 dark:text-primary-color2 mt-0.5 mr-2 md:mr-3">
                         {item.icon}
                       </span>
-                      <span className="text-gray-600 dark:text-gray-300 text-xs md:text-sm break-all">
-                        {item.text}
-                      </span>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-gray-600 dark:text-gray-300 text-xs md:text-sm break-all hover:text-primary-color1 transition-colors"
+                        >
+                          {item.text}
+                        </a>
+                      ) : (
+                        <span className="text-gray-600 dark:text-gray-300 text-xs md:text-sm break-all">
+                          {item.text}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>

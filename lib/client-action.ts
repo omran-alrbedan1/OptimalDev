@@ -270,7 +270,6 @@ export const fetchApplicationDetails = async (
   id: number
 ): Promise<Application> => {
   const response = get<Application>(`/api/applications/${id}`);
-  console.log(response);
   return response;
 };
 
@@ -288,7 +287,6 @@ export const submitTestAnswers = async (
 ): Promise<TestSubmissionResponse> => {
   try {
     const endpoint = `/api/jobs/${jobId}/tests/${testId}/submit`;
-    console.log("Submitting answers:", JSON.stringify(answers, null, 2));
     const response = await post<TestSubmissionResponse>(endpoint, answers);
     return response;
   } catch (error: any) {
@@ -325,7 +323,6 @@ export const fetchJobs = async (params: {
   salary_min?: number;
   salary_max?: number;
 }): Promise<PaginatedResponse<Job>> => {
-  console.log(params);
   const queryParams = new URLSearchParams();
   queryParams.append("page", params.page.toString());
 
@@ -365,11 +362,9 @@ export const fetchJobs = async (params: {
     queryParams.append("salary_max", params.salary_max.toString());
   }
 
-  console.log(queryParams);
   const response = get<PaginatedResponse<Job>>(
     `/api/jobs?${queryParams.toString()}`
   );
-  console.log(response);
   return response;
 };
 
@@ -396,10 +391,8 @@ export const requestService = async (
 ): Promise<any> => {
   try {
     const endpoint = "/api/services/service-requests";
-    console.log("Request data:", JSON.stringify(requestData, null, 2));
 
     const response = await post<any>(endpoint, requestData);
-    console.log("Response:", response);
     return response;
   } catch (error: any) {
     console.error("Service request failed:", error);

@@ -3,7 +3,7 @@ import React from "react";
 
 const Sliders = async ({ sliders }: { sliders: Slider[] }) => {
   return (
-    <div className="mb-20 h-[80vh]">
+    <div className="mb-20 w-full h-[80vh]">
       <Slider sliders={sliders} />
     </div>
   );

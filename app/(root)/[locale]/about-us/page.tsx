@@ -10,6 +10,7 @@ import { fetchOrganization } from "@/lib/action";
 const AboutPage = async () => {
   const t = await getTranslations("aboutSection");
   const organization = await fetchOrganization();
+  console.log(organization);
   const sections = [
     {
       title: t("whoWeAre"),
