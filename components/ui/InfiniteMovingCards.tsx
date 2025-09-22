@@ -90,7 +90,11 @@ export const InfiniteMovingCards = ({
             key={item.id}
           >
             <Image
-              src={item?.logo ? item?.logo : ""}
+              src={
+                item?.logo
+                  ? "http://147.79.118.212:7099/storage/" + item?.logo
+                  : ""
+              }
               width={130}
               height={100}
               alt={`image${item.id}`}

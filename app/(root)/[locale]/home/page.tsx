@@ -24,7 +24,7 @@ const Page = async () => {
   const partners = await fetchPartners();
   const clients = await fetchClients();
   const organization = await fetchOrganization();
-
+  console.log(clients);
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative duration-500">
@@ -39,7 +39,7 @@ const Page = async () => {
         )}
         <Services />
         <Partners partners={partners} />
-        {/* <Clients clients={clients} /> */}
+        <Clients clients={clients} />
       </div>
     </Suspense>
   );
