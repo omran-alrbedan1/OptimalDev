@@ -22,8 +22,7 @@ const fetchApi = async <T>(
   const url = `http://147.79.118.212:7099/api${endpoint}`;
 
   const cookieStore = cookies();
-  const preferredLanguage =
-    cookieStore.get("preferredLanguage")?.value || locale;
+  const preferredLanguage = cookieStore.get("preferredLanguage")?.value;
 
   try {
     const response = await fetch(url, {
