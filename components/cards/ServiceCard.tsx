@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +30,11 @@ export default function ServiceCard({
   service: SubService;
   index: number;
 }) {
+  const pathname = usePathname();
+
+  // Detect if the current language is Arabic based on URL path
+  const isArabic = pathname.startsWith("/ar/") || pathname.includes("/ar/");
+
   // Check if description needs truncation
   const needsTruncation = service.description.length > MAX_DESCRIPTION_LENGTH;
 
@@ -40,7 +46,9 @@ export default function ServiceCard({
   return (
     <motion.div
       variants={cardVariants}
-      className="flex flex-col md:flex-row items-center gap-8 p-6"
+      className={`flex ${
+        isArabic ? "flex-row-reverse" : "flex-row"
+      } items-center gap-8 p-6`}
     >
       <motion.div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
         <motion.div className="relative w-fit">
@@ -62,9 +70,13 @@ export default function ServiceCard({
         </motion.div>
       </motion.div>
 
-      <div className="w-full md:w-1/2">
+      <div
+        className={`w-full md:w-1/2 ${isArabic ? "text-right" : "text-left"}`}
+      >
         <motion.h3
-          className="text-2xl font-bold mb-4"
+          className={`text-2xl font-bold mb-4 ${
+            isArabic ? "text-right" : "text-left"
+          }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.3 }}
@@ -76,7 +88,9 @@ export default function ServiceCard({
           />
         </motion.h3>
         <motion.p
-          className="text-gray-600 mb-6 dark:text-gray-200"
+          className={`text-gray-600 mb-6 dark:text-gray-200 ${
+            isArabic ? "text-right" : "text-left"
+          }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.4 }}
@@ -90,13 +104,15 @@ export default function ServiceCard({
         </motion.p>
         <motion.a
           href={`/services/${service.id}`}
-          className="inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition"
+          className={`inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition ${
+            isArabic ? "text-right" : "text-left"
+          }`}
           variants={buttonVariants}
           initial="rest"
           whileHover="hover"
           whileTap="pressed"
         >
-          Learn More
+          {isArabic ? "اعرف المزيد" : "Learn More"}
         </motion.a>
       </div>
     </motion.div>

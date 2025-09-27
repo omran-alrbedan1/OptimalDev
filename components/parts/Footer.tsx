@@ -130,7 +130,7 @@ const Footer = async () => {
               </Link>
             </div>
             <div
-              className="text-gray-600 dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed md:text-center"
+              className="text-gray-600 ml-8 w-fit dark:text-gray-300 text-xs text-center md:text-sm leading-relaxed md:text-center"
               dangerouslySetInnerHTML={{ __html: organization?.description }}
             />
 
