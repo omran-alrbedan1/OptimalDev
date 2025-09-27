@@ -94,6 +94,8 @@ const ServiceRequestPage = () => {
     Number(countryId)
   );
 
+  console.log(questions);
+
   // Memoized values
   const allQuestions = useMemo(() => {
     if (!questions) return [];
@@ -451,7 +453,9 @@ const ServiceRequestPage = () => {
                   htmlFor={`${question.id}-${option.id}`}
                   className="ml-3 text-gray-700 dark:text-gray-300 font-medium cursor-pointer"
                 >
-                  {option.option.current}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: option.option.current }}
+                  />
                 </label>
               </div>
             ))}
@@ -773,7 +777,7 @@ const ServiceRequestPage = () => {
                           : "text-gray-500 dark:text-gray-400"
                       } transition-colors duration-300`}
                     >
-                      {item.title}
+                      <div dangerouslySetInnerHTML={{ __html: item.title }} />
                     </h4>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {item.description}
@@ -822,7 +826,11 @@ const ServiceRequestPage = () => {
               <div className="space-y-6">
                 <div className="text-center mb-8">
                   <h2 className="text-2xl font-bold text-primary mb-2">
-                    {stepItems[step - 1]?.title}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: stepItems[step - 1]?.title,
+                      }}
+                    />
                   </h2>
                   <p className="text-gray-600 dark:text-gray-400">
                     {stepItems[step - 1]?.description}
@@ -838,7 +846,12 @@ const ServiceRequestPage = () => {
                     className="space-y-3"
                   >
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      {question.title.current}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: question.title.current,
+                        }}
+                        className="inline-block"
+                      />
                       {question.is_required && (
                         <span className="text-red-500"> *</span>
                       )}

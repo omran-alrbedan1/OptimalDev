@@ -108,6 +108,8 @@ const Footer = async () => {
     },
   ].filter(Boolean);
 
+  console.log(organization);
+
   return (
     <footer className="relative md:px-8 bg-[#f7f7f8] dark:bg-darkMod-200 dark:text-white pt-12 md:pt-16 pb-16 md:pb-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

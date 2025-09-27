@@ -99,17 +99,21 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="absolute  inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full flex items-center justify-center bg-gray-900"
           onClick={handleSlideClick}
-          style={{
-            backgroundImage: `url(${sliders[currentIndex]?.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-            height: "100%",
-          }}
-        />
+        >
+          <img
+            src={sliders[currentIndex]?.image}
+            alt={sliders[currentIndex]?.title || "Slider image"}
+            className="object-contain max-w-full max-h-full"
+            style={{
+              width: "auto",
+              height: "auto",
+              maxWidth: "100%",
+              maxHeight: "100%",
+            }}
+          />
+        </motion.div>
       </AnimatePresence>
 
       {/* Dark overlay for better text readability */}

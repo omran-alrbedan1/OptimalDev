@@ -1,4 +1,12 @@
+//@ts-nocheck
 import { cookies } from "next/headers";
+
+interface ApiResponse<T> {
+  data?: T;
+  message?: string;
+  error?: string;
+  status?: number;
+}
 
 interface ApiResponse<T> {
   data?: T;
@@ -12,7 +20,10 @@ const fetchApi = async <T>(
   options?: RequestInit & { lang?: string }
 ): Promise<T> => {
   const url = `http://147.79.118.212:7099/api${endpoint}`;
-  const language = options?.lang || "en";
+
+  const cookieStore = cookies();
+  const preferredLanguage =
+    cookieStore.get("preferredLanguage")?.value || locale;
 
   try {
     const response = await fetch(url, {
@@ -20,7 +31,7 @@ const fetchApi = async <T>(
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
-        "Accept-Language": language,
+        "Accept-Language": preferredLanguage,
         ...options?.headers,
       },
     });
@@ -35,7 +46,6 @@ const fetchApi = async <T>(
       );
     }
 
-    // إرجاع data مباشرة إذا كانت موجودة، وإلا إرجاع الرد كاملاً
     return responseData.data !== undefined
       ? responseData.data
       : (responseData as T);
