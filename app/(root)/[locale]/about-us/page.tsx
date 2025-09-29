@@ -68,7 +68,7 @@ const AboutPage = async () => {
                       once={true}
                     >
                       <div
-                        className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed"
+                        className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: section.content }}
                       />
                     </Animate>

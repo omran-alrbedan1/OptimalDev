@@ -20,9 +20,6 @@ const buttonVariants = {
   pressed: { scale: 0.95 },
 };
 
-// Maximum number of characters to show before truncating
-const MAX_DESCRIPTION_LENGTH = 200;
-
 export default function ServiceCard({
   service,
   index,
@@ -32,16 +29,7 @@ export default function ServiceCard({
 }) {
   const pathname = usePathname();
 
-  // Detect if the current language is Arabic based on URL path
   const isArabic = pathname.startsWith("/ar/") || pathname.includes("/ar/");
-
-  // Check if description needs truncation
-  const needsTruncation = service.description.length > MAX_DESCRIPTION_LENGTH;
-
-  // Truncate description if needed
-  const displayDescription = needsTruncation
-    ? service.description.substring(0, MAX_DESCRIPTION_LENGTH) + "..."
-    : service.description;
 
   return (
     <motion.div
@@ -54,11 +42,11 @@ export default function ServiceCard({
         <motion.div className="relative w-fit">
           <img
             src={
-              service.image
+              service?.image
                 ? service.image
                 : "https://via.placeholder.com/400x300?text=No+Image"
             }
-            alt={service.name}
+            alt={service?.name}
             className="object-contain w-fit"
             style={{
               maxWidth: "100%",
@@ -83,7 +71,7 @@ export default function ServiceCard({
         >
           <div
             dangerouslySetInnerHTML={{
-              __html: service.name,
+              __html: service?.name,
             }}
           />
         </motion.h3>
@@ -98,12 +86,12 @@ export default function ServiceCard({
           <div
             className="line-clamp-6"
             dangerouslySetInnerHTML={{
-              __html: service.description,
+              __html: service?.description,
             }}
           />
         </motion.p>
         <motion.a
-          href={`/services/${service.id}`}
+          href={`/services/${service?.id}`}
           className={`inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition ${
             isArabic ? "text-right" : "text-left"
           }`}
