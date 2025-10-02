@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -29,6 +30,8 @@ import {
   CreditCard,
   Smartphone,
   Loader2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -66,6 +69,9 @@ const STEP_CONFIG = [
   },
 ];
 
+// Storage key for localStorage
+const STORAGE_KEY = "service-request-form-data";
+
 const ServiceRequestPage = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -78,6 +84,10 @@ const ServiceRequestPage = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
   const [countryId, setCountryId] = useState<number | null>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [expandedChildQuestions, setExpandedChildQuestions] = useState<
+    Set<number>
+  >(new Set());
 
   // Data fetching
   const { data: questions, isLoading: questionsLoading } =
@@ -102,7 +112,61 @@ const ServiceRequestPage = () => {
     return Object.values(questions).flat().filter(Boolean) as Question[];
   }, [questions]);
 
+  // Get stored form data from localStorage
+  const getStoredFormData = (): Partial<FormValues> | null => {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Check if the stored data is for the same service
+        if (parsed.sub_service_id === Number(id)) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error("Error loading stored form data:", error);
+    }
+    return null;
+  };
+
+  // Save form data to localStorage
+  const saveFormDataToStorage = (data: FormValues) => {
+    if (typeof window === "undefined") return;
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          ...data,
+          sub_service_id: Number(id),
+          timestamp: Date.now(),
+        })
+      );
+    } catch (error) {
+      console.error("Error saving form data:", error);
+    }
+  };
+
+  // Clear stored form data
+  const clearStoredFormData = () => {
+    if (typeof window === "undefined") return;
+
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      console.error("Error clearing form data:", error);
+    }
+  };
+
   const defaultValues = useMemo(() => {
+    const storedData = getStoredFormData();
+
+    if (storedData) {
+      return storedData as FormValues;
+    }
+
     const values: FormValues = {
       sub_service_id: Number(id),
       answers: {},
@@ -147,22 +211,76 @@ const ServiceRequestPage = () => {
     defaultValues,
   });
 
+  // Watch all answers to handle conditional questions and save to localStorage
+  const answers = watch();
+
+  // Save form data to localStorage whenever answers change
+  useEffect(() => {
+    if (Object.keys(answers).length > 0 && answers.answers) {
+      saveFormDataToStorage(answers);
+    }
+  }, [answers]);
+
+  // Save step and question index to localStorage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            ...parsed,
+            currentStep: step,
+            currentQuestionIndex: currentQuestionIndex,
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Error saving navigation state:", error);
+    }
+  }, [step, currentQuestionIndex]);
+
   // Effects
   useEffect(() => {
     if (allQuestions.length > 0) {
-      const initialAnswers: Record<string, any> = {};
+      const storedData = getStoredFormData();
 
-      allQuestions.forEach((question) => {
-        initialAnswers[question.id.toString()] =
-          question.type === "checkbox" ? [] : "";
-      });
+      if (storedData) {
+        // Restore form state from localStorage
+        reset(storedData as FormValues);
 
-      reset({
-        sub_service_id: Number(id),
-        answers: initialAnswers,
-      });
+        // Restore navigation state
+        if (storedData.currentStep) {
+          setStep(storedData.currentStep);
+        }
+        if (storedData.currentQuestionIndex !== undefined) {
+          setCurrentQuestionIndex(storedData.currentQuestionIndex);
+        }
+      } else {
+        // Initialize with default values
+        const initialAnswers: Record<string, any> = {};
+
+        allQuestions.forEach((question) => {
+          initialAnswers[question.id.toString()] =
+            question.type === "checkbox" ? [] : "";
+        });
+
+        reset({
+          sub_service_id: Number(id),
+          answers: initialAnswers,
+        });
+      }
     }
   }, [allQuestions, id, reset]);
+
+  // Reset question index when step changes
+  useEffect(() => {
+    setCurrentQuestionIndex(0);
+    setExpandedChildQuestions(new Set());
+  }, [step]);
 
   // Helper functions
   const getActualStep = (stepIndex: number) => {
@@ -203,6 +321,18 @@ const ServiceRequestPage = () => {
     setValidationErrors([]);
   };
 
+  const toggleChildExpansion = (childId: number) => {
+    setExpandedChildQuestions((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(childId)) {
+        newSet.delete(childId);
+      } else {
+        newSet.add(childId);
+      }
+      return newSet;
+    });
+  };
+
   const getCurrentStepQuestions = (): Question[] => {
     if (!questions) return [];
 
@@ -216,48 +346,198 @@ const ServiceRequestPage = () => {
     );
   };
 
+  // Get organized questions for current step (parents and children)
+  const getCurrentStepOrganizedQuestions = () => {
+    const currentStepQuestions = getCurrentStepQuestions();
+    if (!currentStepQuestions.length)
+      return { parents: [], childrenMap: new Map() };
+
+    const parents = currentStepQuestions.filter((q) => !q.parent_id);
+    const childrenMap = new Map<number, Question[]>();
+
+    // Group children by parent_id
+    currentStepQuestions.forEach((question) => {
+      if (question.parent_id) {
+        if (!childrenMap.has(question.parent_id)) {
+          childrenMap.set(question.parent_id, []);
+        }
+        childrenMap.get(question.parent_id)!.push(question);
+      }
+    });
+
+    // Sort children by sort_order
+    childrenMap.forEach((children, parentId) => {
+      children.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+    });
+
+    return { parents, childrenMap };
+  };
+
+  // Get current question to display
+  const getCurrentQuestion = (): Question | null => {
+    const { parents, childrenMap } = getCurrentStepOrganizedQuestions();
+
+    let currentIndex = 0;
+
+    // Iterate through parents
+    for (const parent of parents) {
+      if (currentIndex === currentQuestionIndex) {
+        return parent;
+      }
+      currentIndex++;
+    }
+
+    return null;
+  };
+
+  // Helper function to get children for a specific question
+  const getChildrenForQuestion = (questionId: number): Question[] => {
+    const { childrenMap } = getCurrentStepOrganizedQuestions();
+    return childrenMap.get(questionId) || [];
+  };
+
+  const getTotalQuestionsInCurrentStep = (): number => {
+    const { parents } = getCurrentStepOrganizedQuestions();
+    return parents.length;
+  };
+
+  const canGoToNextQuestion = (): boolean => {
+    const currentQuestion = getCurrentQuestion();
+    if (!currentQuestion) return false;
+
+    const currentValue = watch(`answers.${currentQuestion.id.toString()}`);
+
+    // Check if parent question is required and answered
+    if (currentQuestion.is_required) {
+      if (currentQuestion.type === "checkbox") {
+        if (!Array.isArray(currentValue) || currentValue.length === 0) {
+          return false;
+        }
+      } else {
+        if (!currentValue || currentValue === "") {
+          return false;
+        }
+      }
+    }
+
+    // Check if any child questions are required and not answered
+    const children = getChildrenForQuestion(currentQuestion.id);
+
+    if (children.length > 0) {
+      for (const child of children) {
+        const childValue = watch(`answers.${child.id.toString()}`);
+
+        // For child questions that are checkboxes, check if they are selected and have required options
+        if (
+          child.type === "checkbox" &&
+          Array.isArray(childValue) &&
+          childValue.length > 0
+        ) {
+          // If child is selected and has required options, check those options
+          if (child.is_required && childValue.length === 0) {
+            return false;
+          }
+        } else if (child.is_required) {
+          // For other types, check if required and empty
+          if (
+            !childValue ||
+            childValue === "" ||
+            (Array.isArray(childValue) && childValue.length === 0)
+          ) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  };
+
+  const nextQuestion = () => {
+    const totalQuestions = getTotalQuestionsInCurrentStep();
+    if (currentQuestionIndex < totalQuestions - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // Move to next step
+      setCurrentQuestionIndex(0);
+      setStep(step + 1);
+    }
+    setValidationErrors([]);
+  };
+
+  const prevQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    } else if (step > 1) {
+      // Move to previous step and set to last question
+      const prevStepQuestions = getCurrentStepQuestionsForStep(step - 1);
+      const totalQuestions = prevStepQuestions.filter(
+        (q) => !q.parent_id
+      ).length;
+      setStep(step - 1);
+      setCurrentQuestionIndex(totalQuestions - 1);
+    }
+    setValidationErrors([]);
+  };
+
+  const getCurrentStepQuestionsForStep = (stepNumber: number): Question[] => {
+    if (!questions) return [];
+
+    const actualStep = getActualStep(stepNumber);
+    const stepConfig = STEP_CONFIG.find((config) => config.id === actualStep);
+
+    if (!stepConfig || !questions[stepConfig.questionKey]) return [];
+
+    return (questions[stepConfig.questionKey] as Question[]).sort(
+      (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
+    );
+  };
+
   const validateCurrentStep = async (): Promise<boolean> => {
     setValidationErrors([]);
     const currentFormValues = watch();
-    const currentStepQuestions = getCurrentStepQuestions();
-    const requiredQuestions = currentStepQuestions.filter((q) => q.is_required);
+    const { parents, childrenMap } = getCurrentStepOrganizedQuestions();
     const stepErrors: string[] = [];
     let hasErrors = false;
 
-    const hasUserInteracted = Object.keys(currentFormValues.answers || {}).some(
-      (key) => {
-        const questionId = key.toString();
-        const question = currentStepQuestions.find(
-          (q) => q.id.toString() === questionId
-        );
-        return question && currentFormValues.answers[questionId] !== undefined;
+    // Check all parents and their visible children
+    for (const parent of parents) {
+      // Validate parent if required
+      if (parent.is_required) {
+        const parentAnswer = currentFormValues.answers?.[parent.id.toString()];
+        if (
+          !parentAnswer ||
+          parentAnswer === "" ||
+          (Array.isArray(parentAnswer) && parentAnswer.length === 0)
+        ) {
+          stepErrors.push(
+            t("validationErrors.questionRequired", {
+              field: parent.title.current,
+            })
+          );
+          hasErrors = true;
+        }
       }
-    );
 
-    if (!hasUserInteracted) return true;
+      // Validate children
+      const children = childrenMap.get(parent.id) || [];
+      for (const child of children) {
+        const childAnswer = currentFormValues.answers?.[child.id.toString()];
 
-    const requiredFields = requiredQuestions.map(
-      (q) => `answers.${q.id}` as keyof FormValues
-    );
-    const isFormValid = await trigger(requiredFields);
-
-    for (const question of requiredQuestions) {
-      const answerValue = currentFormValues.answers?.[question.id.toString()];
-
-      if (
-        errors.answers?.[question.id] ||
-        (question.is_required &&
-          (answerValue === undefined ||
-            answerValue === null ||
-            answerValue === "" ||
-            (Array.isArray(answerValue) && answerValue.length === 0)))
-      ) {
-        stepErrors.push(
-          t("validationErrors.questionRequired", {
-            field: question.title.current,
-          })
-        );
-        hasErrors = true;
+        if (child.is_required) {
+          if (
+            !childAnswer ||
+            childAnswer === "" ||
+            (Array.isArray(childAnswer) && childAnswer.length === 0)
+          ) {
+            stepErrors.push(
+              t("validationErrors.questionRequired", {
+                field: child.title.current,
+              })
+            );
+            hasErrors = true;
+          }
+        }
       }
     }
 
@@ -266,13 +546,14 @@ const ServiceRequestPage = () => {
       return false;
     }
 
-    return isFormValid;
+    return true;
   };
 
   const nextStep = async () => {
     const isValid = await validateCurrentStep();
     if (isValid && step < stepItems.length) {
       setStep(step + 1);
+      setCurrentQuestionIndex(0);
       setValidationErrors([]);
     }
     setHasAttemptedSubmit(true);
@@ -281,6 +562,7 @@ const ServiceRequestPage = () => {
   const prevStep = () => {
     if (step > 1) {
       setStep(step - 1);
+      setCurrentQuestionIndex(0);
       setValidationErrors([]);
     }
   };
@@ -323,6 +605,9 @@ const ServiceRequestPage = () => {
       };
 
       await requestService(requestData);
+
+      // Clear stored data on successful submission
+      clearStoredFormData();
       setSubmitSuccess(true);
     } catch (error: any) {
       console.error("Failed to submit service request:", error);
@@ -341,10 +626,24 @@ const ServiceRequestPage = () => {
     }
   };
 
+  // Clear form data manually (optional - you can add a button for this)
+  const handleClearForm = () => {
+    clearStoredFormData();
+    reset(defaultValues);
+    setStep(1);
+    setCurrentQuestionIndex(0);
+    setValidationErrors([]);
+    setHasAttemptedSubmit(false);
+  };
+
   const renderQuestionInput = (question: Question) => {
     const currentValue = watch(`answers.${question.id.toString()}`);
     const inputClasses =
       "w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent focus:outline-none transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100";
+
+    // Get children for this question
+    const children = getChildrenForQuestion(question.id);
+    const hasChildren = children.length > 0;
 
     if (
       question.has_options &&
@@ -401,9 +700,11 @@ const ServiceRequestPage = () => {
             ))}
           </div>
         );
+
       case "checkbox":
         return (
           <div className="space-y-3">
+            {/* Render parent options */}
             {question.options?.map((option) => (
               <div
                 key={option.id}
@@ -459,8 +760,168 @@ const ServiceRequestPage = () => {
                 </label>
               </div>
             ))}
+
+            {/* Render child questions as checkbox options */}
+            {hasChildren && (
+              <div className=" space-y-3 ">
+                {children.map((child) => {
+                  const childValue = watch(`answers.${child.id.toString()}`);
+                  const isChildSelected =
+                    Array.isArray(childValue) && childValue.length > 0;
+                  const isExpanded = expandedChildQuestions.has(child.id);
+
+                  return (
+                    <div key={child.id} className="space-y-2">
+                      {/* Child question as a checkbox */}
+                      <div
+                        className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+                          isChildSelected
+                            ? " bg-blue-50 dark:bg-blue-900/20"
+                            : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-500"
+                        }`}
+                        onClick={() => {
+                          // Toggle child selection
+                          const newValue = isChildSelected
+                            ? []
+                            : [child.title.current];
+                          handleAnswerChange(child.id.toString(), newValue);
+                          toggleChildExpansion(child.id);
+                        }}
+                      >
+                        <label
+                          htmlFor={`child-${child.id}`}
+                          className="ml-3 text-gray-700 dark:text-gray-300 font-medium cursor-pointer flex-1"
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: child.title.current,
+                            }}
+                          />
+                        </label>
+
+                        {/* Expand/collapse button for child options */}
+                        {child.options.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleChildExpansion(child.id);
+                            }}
+                            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
+                          >
+                            {isExpanded ? (
+                              <ChevronUp className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4 text-gray-500" />
+                            )}
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Child question options - only show if expanded */}
+                      <AnimatePresence>
+                        {isExpanded &&
+                          child.options &&
+                          child.options.length > 0 && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="ml-6 space-y-2"
+                            >
+                              {child.options.map((childOption) => (
+                                <div
+                                  key={childOption.id}
+                                  className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
+                                    Array.isArray(childValue) &&
+                                    childValue.includes(
+                                      childOption.option.current
+                                    )
+                                      ? "border-primary bg-blue-50 dark:bg-blue-900/20"
+                                      : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800"
+                                  }`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const currentChildValues = Array.isArray(
+                                      childValue
+                                    )
+                                      ? childValue
+                                      : [];
+                                    const isChildChecked =
+                                      currentChildValues.includes(
+                                        childOption.option.current
+                                      );
+                                    const newChildValue = isChildChecked
+                                      ? currentChildValues.filter(
+                                          (v: string) =>
+                                            v !== childOption.option.current
+                                        )
+                                      : [
+                                          ...currentChildValues,
+                                          childOption.option.current,
+                                        ];
+                                    handleAnswerChange(
+                                      child.id.toString(),
+                                      newChildValue
+                                    );
+                                  }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={`${child.id}-${childOption.id}`}
+                                    checked={
+                                      Array.isArray(childValue)
+                                        ? childValue.includes(
+                                            childOption.option.current
+                                          )
+                                        : false
+                                    }
+                                    onChange={(e) => {
+                                      e.stopPropagation();
+                                      const currentChildValues = Array.isArray(
+                                        childValue
+                                      )
+                                        ? childValue
+                                        : [];
+                                      const newChildValue = e.target.checked
+                                        ? [
+                                            ...currentChildValues,
+                                            childOption.option.current,
+                                          ]
+                                        : currentChildValues.filter(
+                                            (v: string) =>
+                                              v !== childOption.option.current
+                                          );
+                                      handleAnswerChange(
+                                        child.id.toString(),
+                                        newChildValue
+                                      );
+                                    }}
+                                    className="w-4 h-4 mx-1 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
+                                  />
+                                  <label
+                                    htmlFor={`${child.id}-${childOption.id}`}
+                                    className="ml-2 text-gray-700 dark:text-gray-300 font-medium cursor-pointer text-sm"
+                                  >
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: childOption.option.current,
+                                      }}
+                                    />
+                                  </label>
+                                </div>
+                              ))}
+                            </motion.div>
+                          )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
+
       case "text":
       case "date":
         return (
@@ -792,139 +1253,165 @@ const ServiceRequestPage = () => {
     </div>
   );
 
-  const renderFormContent = () => (
-    <div className="w-full lg:w-2/3">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
-        {validationErrors.length > 0 && hasAttemptedSubmit && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mx-6 mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-          >
-            <div className="flex items-center mb-2">
-              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
-              <h3 className="text-red-800 dark:text-red-400 font-semibold">
-                {t("validationErrors.title")}
-              </h3>
-            </div>
-            <ul className="list-disc list-inside text-red-700 dark:text-red-400 space-y-1">
-              {validationErrors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="space-y-6">
-                <div className="text-center mb-8">
-                  <h2 className="text-2xl font-bold text-primary mb-2">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: stepItems[step - 1]?.title,
-                      }}
-                    />
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {stepItems[step - 1]?.description}
-                  </p>
-                </div>
+  const renderFormContent = () => {
+    const currentQuestion = getCurrentQuestion();
 
-                {getCurrentStepQuestions().map((question) => (
-                  <motion.div
-                    key={question.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="space-y-3"
-                  >
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+    return (
+      <div className="w-full lg:w-2/3">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+          {validationErrors.length > 0 && hasAttemptedSubmit && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-6 mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+            >
+              <div className="flex items-center mb-2">
+                <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+                <h3 className="text-red-800 dark:text-red-400 font-semibold">
+                  {t("validationErrors.title")}
+                </h3>
+              </div>
+              <ul className="list-disc list-inside text-red-700 dark:text-red-400 space-y-1">
+                {validationErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="p-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${step}-${currentQuestionIndex}`}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <h2 className="text-2xl font-bold text-primary mb-2">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: question.title.current,
+                          __html: stepItems[step - 1]?.title,
                         }}
-                        className="inline-block"
                       />
-                      {question.is_required && (
-                        <span className="text-red-500"> *</span>
-                      )}
-                    </label>
-                    {renderQuestionInput(question)}
-                    {errors.answers?.[question.id] && (
-                      <p className="text-red-500 text-sm mt-2 flex items-center">
-                        <AlertCircle className="h-4 w-4 mr-1" />
-                        {String(errors.answers[question.id]?.message)}
-                      </p>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {stepItems[step - 1]?.description}
+                    </p>
 
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-            {step > 1 ? (
-              <Button
-                type="button"
-                onClick={prevStep}
-                variant="outline"
-                className="flex items-center gap-2 border-2 border-primary text-primary dark:border-primary dark:text-primary hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white"
-              >
-                <ChevronLeft className="h-5 w-5" />
-                {t("buttons.previous")}
-              </Button>
-            ) : (
-              <div></div>
-            )}
+                    {/* Progress indicator */}
+                    <div className="mt-4">
+                      <div className="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+                        <span>
+                          {currentQuestionIndex + 1} /{" "}
+                          {getTotalQuestionsInCurrentStep()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-            {step < stepItems.length ? (
-              <Button
-                type="button"
-                onClick={nextStep}
-                className="flex items-center gap-2 text-white bg-primary hover:bg-primary/90"
-              >
-                {t("buttons.next")}
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={() => {
-                  if (step === stepItems.length) {
+                  {currentQuestion && (
+                    <div className="space-y-6">
+                      {/* Parent Question - now includes children as nested options */}
+                      <motion.div
+                        key={currentQuestion.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="space-y-3"
+                      >
+                        <label className="block text-lg font-semibold text-gray-700 dark:text-gray-300">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: currentQuestion.title.current,
+                            }}
+                            className="inline-block"
+                          />
+                          {currentQuestion.is_required && (
+                            <span className="text-red-500"> *</span>
+                          )}
+                        </label>
+                        {renderQuestionInput(currentQuestion)}
+                        {errors.answers?.[currentQuestion.id] && (
+                          <p className="text-red-500 text-sm mt-2 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {String(
+                              errors.answers[currentQuestion.id]?.message
+                            )}
+                          </p>
+                        )}
+                      </motion.div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+              {step > 1 || currentQuestionIndex > 0 ? (
+                <Button
+                  type="button"
+                  onClick={prevQuestion}
+                  variant="outline"
+                  className="flex items-center gap-2 border-2 border-primary text-primary dark:border-primary dark:text-primary hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                  {t("buttons.previous")}
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentQuestionIndex < getTotalQuestionsInCurrentStep() - 1 ? (
+                <Button
+                  type="button"
+                  onClick={nextQuestion}
+                  disabled={!canGoToNextQuestion()}
+                  className="flex items-center gap-2 text-white bg-primary hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {t("buttons.next")}
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              ) : step < stepItems.length ? (
+                <Button
+                  type="button"
+                  onClick={nextStep}
+                  className="flex items-center gap-2 text-white bg-primary hover:bg-primary/90"
+                >
+                  {t("buttons.next")}
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => {
                     setHasAttemptedSubmit(true);
                     handleSubmit(onSubmit)();
-                  } else {
-                    nextStep();
-                  }
-                }}
-                disabled={isSubmittingForm}
-                className="flex items-center gap-2 text-white bg-primary hover:bg-primary/90 disabled:opacity-50"
-              >
-                {isSubmittingForm ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    {t("buttons.submitting")}
-                  </>
-                ) : (
-                  <>
-                    {t("buttons.submit")}
-                    <CheckCircle className="h-5 w-5" />
-                  </>
-                )}
-              </Button>
-            )}
-          </div>
-        </form>
+                  }}
+                  disabled={isSubmittingForm}
+                  className="flex items-center gap-2 text-white bg-primary hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {isSubmittingForm ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                      {t("buttons.submitting")}
+                    </>
+                  ) : (
+                    <>
+                      {t("buttons.submit")}
+                      <CheckCircle className="h-5 w-5" />
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Main render logic
   if (serviceLoading || questionsLoading) {

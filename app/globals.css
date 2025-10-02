@@ -64,14 +64,6 @@ html, body {
   scroll-behavior: smooth;
 }
 
-html {
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For IE and Edge */
-}
-
-html::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Opera */
-}
 
 @layer utilities {
   .flex-between {

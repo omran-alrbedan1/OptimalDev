@@ -454,6 +454,7 @@ type Question = {
   sort_order: number;
   is_required: boolean;
   options: Option[];
+  parent_id?: number;
   has_options: boolean;
 };
 

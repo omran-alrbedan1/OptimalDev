@@ -35,7 +35,7 @@ export default function ServiceCard({
     <motion.div
       variants={cardVariants}
       className={`flex ${
-        isArabic ? "flex-row-reverse" : "flex-row"
+        isArabic ? "flex-row" : "flex-row-reverse"
       } items-center gap-8 p-6`}
     >
       <motion.div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
