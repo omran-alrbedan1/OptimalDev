@@ -437,10 +437,12 @@ interface Service {
 
 type Option = {
   id: number;
+  has_sub_options?: boolean;
   option: {
     option: string;
     current: string;
   };
+  sub_options: any;
 };
 
 type Question = {
@@ -516,3 +518,59 @@ type City = {
   id: number;
   name: string;
 };
+
+interface Question {
+  id: number;
+  title: { current: string };
+  type: "text" | "radio" | "checkbox" | "date" | "city" | "country";
+  is_required: boolean;
+  has_options: boolean;
+  options?: QuestionOption[];
+  sort_order?: number;
+}
+
+interface QuestionOption {
+  id: string;
+  option: { current: string };
+  has_sub_options: boolean;
+  sub_options?: SubOption[];
+}
+
+interface SubOption {
+  title: { current: string };
+}
+
+interface QuestionResponse {
+  personal_information?: Question[];
+  general_info?: Question[];
+  service_details?: Question[];
+  pricing_questions?: Question[];
+}
+
+interface SubService {
+  id: number;
+  name: string;
+}
+
+interface Country {
+  id: number;
+  name: string;
+}
+
+interface City {
+  id: number;
+  name: string;
+}
+
+interface FormValues {
+  sub_service_id: number;
+  answers: Record<string, any>;
+  sub_answers: Record<string, any>;
+}
+
+interface StepConfig {
+  id: number;
+  key: string;
+  icon: React.ComponentType;
+  questionKey: keyof QuestionResponse;
+}
