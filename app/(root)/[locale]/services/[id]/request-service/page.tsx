@@ -185,6 +185,10 @@ const ServiceRequestPage = () => {
     allQuestions.forEach((question) => {
       values.answers[question.id.toString()] =
         question.type === "checkbox" ? [] : "";
+
+      if (question.options?.some((opt) => opt.has_sub_options)) {
+        values.sub_answers[question.id.toString()] = {};
+      }
     });
 
     return values;
@@ -220,6 +224,11 @@ const ServiceRequestPage = () => {
     resolver: zodResolver(requestServiceFormShema),
     defaultValues,
   });
+
+  useEffect(() => {
+    const currentSubAnswers = watch("sub_answers");
+    const currentAnswers = watch("answers");
+  }, [watch("sub_answers")]);
 
   // Watch all answers to handle conditional questions and save to localStorage
   const answers = watch();
@@ -350,35 +359,32 @@ const ServiceRequestPage = () => {
     let newSubAnswers = { ...currentSubAnswers };
 
     if (isChecked) {
-      // Select parent option and all sub-options
+      // Select parent option
       newValue = [...currentValues, option.option.current];
 
-      // Auto-select all sub-options
+      // Auto-select all sub-options if they exist
       if (option.has_sub_options && option.sub_options) {
         const allSubOptions = option.sub_options.map(
           (subOpt: any) => subOpt.title.current
         );
-        newSubAnswers[option.id] = allSubOptions;
+        // Use option.id.toString() as the key
+        newSubAnswers[option.id.toString()] = allSubOptions;
       }
     } else {
-      // Deselect parent option and clear all sub-options
+      // Deselect parent option
       newValue = currentValues.filter(
         (v: string) => v !== option.option.current
       );
 
       // Clear sub-answers for this option
-      delete newSubAnswers[option.id];
+      delete newSubAnswers[option.id.toString()];
     }
 
     // Update main answer
     handleAnswerChange(questionId, newValue);
 
-    // Update sub-answers
-    if (Object.keys(newSubAnswers).length > 0) {
-      setValue(`sub_answers.${questionId}`, newSubAnswers);
-    } else {
-      setValue(`sub_answers.${questionId}`, {});
-    }
+    // Update sub-answers - this is critical
+    setValue(`sub_answers.${questionId}`, newSubAnswers);
   };
 
   const handleSubAnswerChange = (
@@ -390,14 +396,15 @@ const ServiceRequestPage = () => {
     const currentSubAnswers = watch(`sub_answers.${questionId}`) || {};
 
     // Find the parent option
-    const parentOption = allQuestions
-      .flatMap((q) => q.options || [])
-      .find((opt) => opt.id === optionId);
+    const question = allQuestions.find((q) => q.id.toString() === questionId);
+    const parentOption = question?.options?.find(
+      (opt) => opt.id.toString() === optionId
+    );
 
     let updatedAnswers = [...currentAnswers];
     let updatedSubAnswers = { ...currentSubAnswers };
 
-    // Update sub-answers
+    // Update sub-answers with the option ID as string
     if (value.length > 0) {
       updatedSubAnswers[optionId] = value;
 
@@ -608,11 +615,17 @@ const ServiceRequestPage = () => {
     setIsSubmittingForm(true);
     setHasAttemptedSubmit(true);
     const isValid = await validateCurrentStep();
-    if (!isValid) return;
+    if (!isValid) {
+      setIsSubmittingForm(false);
+      return;
+    }
 
     try {
       const isValid = await trigger(undefined, { shouldFocus: true });
-      if (!isValid) return;
+      if (!isValid) {
+        setIsSubmittingForm(false);
+        return;
+      }
 
       const formattedAnswers: Record<string, any> = {};
       const formattedSubAnswers: Record<string, any> = {};
@@ -630,18 +643,34 @@ const ServiceRequestPage = () => {
         }
       });
 
-      // Process sub answers - only include non-empty sub answers
-      if (data.sub_answers) {
-        Object.entries(data.sub_answers).forEach(([questionId, options]) => {
-          if (options && Object.keys(options).length > 0) {
+      // FIXED: Get sub_answers directly from watch() instead of data
+      const currentSubAnswers = watch("sub_answers");
+
+      // Process sub answers using the watched value
+      if (currentSubAnswers && typeof currentSubAnswers === "object") {
+        Object.entries(currentSubAnswers).forEach(([questionId, options]) => {
+          if (
+            options &&
+            typeof options === "object" &&
+            Object.keys(options).length > 0
+          ) {
             const nonEmptyOptions: Record<string, string[]> = {};
 
             Object.entries(options).forEach(([optionId, subValues]) => {
+              // Ensure subValues is an array and has items
               if (Array.isArray(subValues) && subValues.length > 0) {
-                nonEmptyOptions[optionId] = subValues.map((v) => v.toString());
+                // Filter out empty strings and ensure all values are strings
+                const cleanedValues = subValues
+                  .filter((v) => v !== null && v !== undefined && v !== "")
+                  .map((v) => String(v));
+
+                if (cleanedValues.length > 0) {
+                  nonEmptyOptions[optionId] = cleanedValues;
+                }
               }
             });
 
+            // Only add to formattedSubAnswers if there are valid sub-options
             if (Object.keys(nonEmptyOptions).length > 0) {
               formattedSubAnswers[questionId] = nonEmptyOptions;
             }
@@ -662,11 +691,24 @@ const ServiceRequestPage = () => {
         sub_answers: formattedSubAnswers,
       };
 
-      console.log("Submitting data:", requestData);
-
       await requestService(requestData);
 
-      // Clear everything and reset form to initial state after successful submission
+      // Mark as submitted before clearing
+      if (typeof window !== "undefined") {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            localStorage.setItem(
+              STORAGE_KEY,
+              JSON.stringify({ ...parsed, submitted: true })
+            );
+          }
+        } catch (error) {
+          console.error("Error marking form as submitted:", error);
+        }
+      }
+
       clearStoredFormData();
       resetFormToInitialState();
       setSubmitSuccess(true);
@@ -771,14 +813,9 @@ const ServiceRequestPage = () => {
               const isOptionSelected =
                 Array.isArray(currentValue) &&
                 currentValue.includes(option.option.current);
-              const optionSubAnswers = currentSubAnswers[option.id] || [];
-
-              // Check if all sub-options are selected (for select all functionality)
-              const allSubOptionsSelected =
-                hasSubOptions &&
-                option.sub_options?.every((subOpt: any) =>
-                  optionSubAnswers.includes(subOpt.title.current)
-                );
+              // Use option.id.toString() as the key
+              const optionSubAnswers =
+                currentSubAnswers[option.id.toString()] || [];
 
               return (
                 <div key={option.id} className="space-y-2">
@@ -796,7 +833,6 @@ const ServiceRequestPage = () => {
                         !isOptionSelected
                       );
 
-                      // Auto-expand if it has sub-options and is being selected
                       if (hasSubOptions && !isOptionSelected && !isExpanded) {
                         toggleOptionExpansion(optionKey);
                       }
@@ -813,7 +849,6 @@ const ServiceRequestPage = () => {
                           e.target.checked
                         );
 
-                        // Auto-expand if it has sub-options and is being selected
                         if (hasSubOptions && e.target.checked && !isExpanded) {
                           toggleOptionExpansion(optionKey);
                         }
@@ -832,7 +867,7 @@ const ServiceRequestPage = () => {
                     </label>
                   </div>
 
-                  {/* Sub-options - only show if expanded and has sub-options */}
+                  {/* Sub-options */}
                   <AnimatePresence>
                     {hasSubOptions && (
                       <motion.div
@@ -870,9 +905,10 @@ const ServiceRequestPage = () => {
                                       ...currentSubValues,
                                       subOption.title.current,
                                     ];
+                                // Pass option.id.toString()
                                 handleSubAnswerChange(
                                   question.id.toString(),
-                                  option.id,
+                                  option.id.toString(),
                                   newSubValues
                                 );
                               }}
@@ -895,9 +931,10 @@ const ServiceRequestPage = () => {
                                         (v: string) =>
                                           v !== subOption.title.current
                                       );
+                                  // Pass option.id.toString()
                                   handleSubAnswerChange(
                                     question.id.toString(),
-                                    option.id,
+                                    option.id.toString(),
                                     newSubValues
                                   );
                                 }}
@@ -924,6 +961,7 @@ const ServiceRequestPage = () => {
             })}
           </div>
         );
+
       case "text":
       case "date":
         return (
@@ -1051,6 +1089,10 @@ const ServiceRequestPage = () => {
     allQuestions.forEach((question) => {
       initialValues.answers[question.id.toString()] =
         question.type === "checkbox" ? [] : "";
+
+      if (question.options?.some((opt) => opt.has_sub_options)) {
+        initialValues.sub_answers[question.id.toString()] = {};
+      }
     });
 
     reset(initialValues);
