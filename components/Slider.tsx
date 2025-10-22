@@ -86,7 +86,7 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
   return (
     <div
       ref={sliderRef}
-      className="relative w-full h-full cursor-pointer overflow-hidden shadow-2xl"
+      className="relative w-full h-full  cursor-pointer overflow-hidden shadow-2xl"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => router.push(sliders[currentIndex]?.link_url || "#")}
@@ -104,7 +104,7 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
           <img
             src={sliders[currentIndex]?.image}
             alt={sliders[currentIndex]?.title || "Slider image"}
-            className=" w-screen max-h-full"
+            className=" w-screen max-h-full "
           />
         </motion.div>
       </AnimatePresence>
