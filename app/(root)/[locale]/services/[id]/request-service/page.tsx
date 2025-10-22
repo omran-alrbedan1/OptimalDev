@@ -575,9 +575,12 @@ const ServiceRequestPage = () => {
         }
 
         if (!isAnswered) {
+          // Extract text content from HTML string
+          const fieldText = extractTextFromHTML(question.title.current);
+
           stepErrors.push(
             t("validationErrors.questionRequired", {
-              field: question.title.current,
+              field: fieldText,
             })
           );
           hasErrors = true;
@@ -591,6 +594,22 @@ const ServiceRequestPage = () => {
     }
 
     return true;
+  };
+
+  // Add this helper function to extract text from HTML
+  const extractTextFromHTML = (htmlString: string): string => {
+    if (typeof document === "undefined") {
+      // Fallback for server-side rendering
+      return htmlString.replace(/<[^>]*>/g, "");
+    }
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    return (
+      tempDiv.textContent ||
+      tempDiv.innerText ||
+      htmlString.replace(/<[^>]*>/g, "")
+    );
   };
 
   const nextStep = async () => {
@@ -874,7 +893,7 @@ const ServiceRequestPage = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="ml-6 space-y-2"
+                        className="mx-10 space-y-2"
                       >
                         {option.sub_options?.map((subOption, index) => {
                           const subOptionKey = `${optionKey}-${index}`;

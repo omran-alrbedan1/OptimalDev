@@ -27,13 +27,15 @@ const ServiceDetailsPage = () => {
       <section className="relative h-screen flex flex-col justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           {service?.image && (
-            <Image
-              src={service.image}
-              alt={service.name || "Service"}
-              fill
-              className="object-cover"
-              priority
-            />
+            <div className="w-full h-full relative">
+              <Image
+                src={service.image}
+                alt={service.name || "Service"}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
@@ -49,8 +51,7 @@ const ServiceDetailsPage = () => {
 
             {/* Subtitle */}
             <p className="text-xl text-gray-200 mb-8 max-w-lg leading-relaxed">
-              Transform your vision into reality with cutting-edge solutions
-              tailored for your success.
+              {t("subtitle")}
             </p>
 
             {/* CTA Buttons */}
@@ -83,7 +84,7 @@ const ServiceDetailsPage = () => {
                 }}
                 className="px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all duration-300 backdrop-blur-sm flex items-center gap-2"
               >
-                Learn More
+                {t("learnMore")}
                 <svg
                   className="w-5 h-5 animate-bounce"
                   fill="none"
@@ -103,11 +104,12 @@ const ServiceDetailsPage = () => {
         </div>
       </section>
 
-      {/* Rest of your content sections remain the same */}
+      {/* Content Section */}
       <section className="relative mx-14" ref={contentRef} id="content-section">
         <div dangerouslySetInnerHTML={{ __html: service?.description || "" }} />
       </section>
 
+      {/* Bottom CTA Button */}
       <div className="px-4 flex justify-center pb-14 -mt-14">
         <Link
           href={`/services/${id}/request-service`}

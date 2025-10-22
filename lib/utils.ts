@@ -96,3 +96,18 @@ export const shootRelisticConfetti = () => {
     document.body.removeChild(confettiCanvas);
   }, 5000);
 };
+
+const extractTextFromHTML = (htmlString: string): string => {
+  if (typeof document === "undefined") {
+    // Fallback for server-side rendering
+    return htmlString.replace(/<[^>]*>/g, "");
+  }
+
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlString;
+  return (
+    tempDiv.textContent ||
+    tempDiv.innerText ||
+    htmlString.replace(/<[^>]*>/g, "")
+  );
+};

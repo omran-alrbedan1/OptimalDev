@@ -89,7 +89,6 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
       className="relative w-full h-full cursor-pointer overflow-hidden shadow-2xl"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ minHeight: "400px" }}
       onClick={() => router.push(sliders[currentIndex]?.link_url || "#")}
     >
       <AnimatePresence>
@@ -99,19 +98,13 @@ const Slider = ({ sliders }: { sliders: Slider[] }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="absolute inset-0 w-full h-full flex items-center justify-center bg-gray-900"
+          className="absolute inset-0 w-full  h-full flex items-center justify-center "
           onClick={handleSlideClick}
         >
           <img
             src={sliders[currentIndex]?.image}
             alt={sliders[currentIndex]?.title || "Slider image"}
-            className="object-contain max-w-full max-h-full"
-            style={{
-              width: "auto",
-              height: "auto",
-              maxWidth: "100%",
-              maxHeight: "100%",
-            }}
+            className=" w-screen max-h-full"
           />
         </motion.div>
       </AnimatePresence>

@@ -770,7 +770,7 @@
       "submitting": "Submitting..."
     },
     "validationErrors": {
-      "title": "Please fix the following errors:",
+      "title": "Please :",
       "fullNameRequired": "Full Name is required",
       "emailRequired": "Valid Email is required",
       "phoneRequired": "Phone is required",
@@ -781,15 +781,20 @@
       "radioConfigError": "Configuration error: This radio question has no options",
       "submissionFailed": "Failed to submit request. Please try again."
     }
-  },  "serviceDetails": {
+  }, 
+  
+  "serviceDetails": {
     "imageAlt": "Service image",
     "overview": {
       "title": "Service Overview"
     },
     "cta": {
-      "requestService": "I'm Interested Till Me More"
-    }
-  }, "chat": {
+      "requestService": "I'm Interested Tell Me More"
+    },
+    "learnMore": "Learn More",
+    "subtitle": "Transform your vision into reality with cutting-edge solutions tailored for your success."
+  }, 
+  "chat": {
       "adminDescription": "This is your secure inbox for official communications from our admin team. All messages here are for your reference and cannot be replied to.",
       "adminSupport": "Admin Support",
       "usuallyResponds": "Usually responds within 1 hour",
