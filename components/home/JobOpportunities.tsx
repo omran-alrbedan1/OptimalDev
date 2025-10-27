@@ -6,7 +6,6 @@ import Header from "../Header";
 import Image from "next/image";
 import { images } from "@/constants/images";
 import { fetchJobs } from "@/lib/client-action";
-import Loader from "@/components/Loader";
 import { useRouter } from "next/navigation";
 import {
   FiBriefcase,
@@ -14,7 +13,6 @@ import {
   FiDollarSign,
   FiCalendar,
   FiArrowRight,
-  FiEye,
 } from "react-icons/fi";
 import { useTranslations } from "next-intl";
 
@@ -138,7 +136,7 @@ const JobOpportunities: React.FC<JobOpportunitiesProps> = ({}) => {
   }
 
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section className="py-16 px-8 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <Header title={t("title")} paragraph={t("paragraph")} />
         <div className="flex -mt-6 flex-col lg:flex-row gap-12 items-center">

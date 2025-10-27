@@ -39,7 +39,7 @@ const Page = async () => {
           <div />
         )}
         <Services />
-        <JobOpportunities />
+        {/* <JobOpportunities /> */}
         <Partners partners={partners} />
         <Clients clients={clients} />
       </div>
