@@ -11,6 +11,8 @@ import {
   Partners,
   Slider,
   Clients,
+  CustomerReviews,
+  JobOpportunities,
 } from "@/components/home";
 import {
   fetchClients,
@@ -24,7 +26,6 @@ const Page = async () => {
   const partners = await fetchPartners();
   const clients = await fetchClients();
   const organization = await fetchOrganization();
-  console.log(clients);
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative w-full duration-500">
@@ -38,6 +39,7 @@ const Page = async () => {
           <div />
         )}
         <Services />
+        <JobOpportunities />
         <Partners partners={partners} />
         <Clients clients={clients} />
       </div>

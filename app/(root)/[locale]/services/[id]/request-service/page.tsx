@@ -359,16 +359,13 @@ const ServiceRequestPage = () => {
     let newSubAnswers = { ...currentSubAnswers };
 
     if (isChecked) {
-      // Select parent option
+      // Select parent option only
       newValue = [...currentValues, option.option.current];
 
-      // Auto-select all sub-options if they exist
+      // Initialize empty array for sub-options but don't auto-select them
       if (option.has_sub_options && option.sub_options) {
-        const allSubOptions = option.sub_options.map(
-          (subOpt: any) => subOpt.title.current
-        );
-        // Use option.id.toString() as the key
-        newSubAnswers[option.id.toString()] = allSubOptions;
+        // Use option.id.toString() as the key with empty array
+        newSubAnswers[option.id.toString()] = [];
       }
     } else {
       // Deselect parent option
@@ -383,7 +380,7 @@ const ServiceRequestPage = () => {
     // Update main answer
     handleAnswerChange(questionId, newValue);
 
-    // Update sub-answers - this is critical
+    // Update sub-answers
     setValue(`sub_answers.${questionId}`, newSubAnswers);
   };
 
@@ -838,24 +835,13 @@ const ServiceRequestPage = () => {
 
               return (
                 <div key={option.id} className="space-y-2">
-                  {/* Main option */}
+                  {/* Main option with dropdown indicator */}
                   <div
                     className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
                       isOptionSelected
                         ? "border-primary bg-blue-50 dark:bg-blue-900/20"
                         : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-500"
                     }`}
-                    onClick={() => {
-                      handleParentOptionWithSubOptions(
-                        question.id.toString(),
-                        option,
-                        !isOptionSelected
-                      );
-
-                      if (hasSubOptions && !isOptionSelected && !isExpanded) {
-                        toggleOptionExpansion(optionKey);
-                      }
-                    }}
                   >
                     <input
                       type="checkbox"
@@ -868,7 +854,7 @@ const ServiceRequestPage = () => {
                           e.target.checked
                         );
 
-                        if (hasSubOptions && e.target.checked && !isExpanded) {
+                        if (e.target.checked && !isExpanded) {
                           toggleOptionExpansion(optionKey);
                         }
                       }}
@@ -884,94 +870,112 @@ const ServiceRequestPage = () => {
                         }}
                       />
                     </label>
+
+                    {/* Dropdown indicator for options with sub-options */}
+                    {hasSubOptions && (
+                      <div className="flex items-center">
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-gray-500"
+                        >
+                          <ChevronDown className="h-5 w-5" />
+                        </motion.div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Sub-options */}
+                  {/* Sub-options as combobox/dropdown */}
                   <AnimatePresence>
-                    {hasSubOptions && (
+                    {hasSubOptions && isOptionSelected && isExpanded && (
                       <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mx-10 space-y-2"
+                        initial={{ opacity: 0, height: 0, y: -10 }}
+                        animate={{ opacity: 1, height: "auto", y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="ml-8 bg-white dark:bg-gray-800 overflow-hidden"
                       >
-                        {option.sub_options?.map((subOption, index) => {
-                          const subOptionKey = `${optionKey}-${index}`;
-                          const isSubOptionSelected = optionSubAnswers.includes(
-                            subOption.title.current
-                          );
+                        {/* Sub-options grid */}
+                        <div className="p-4 grid md:grid-cols-2 gap-3">
+                          {option.sub_options?.map((subOption, index) => {
+                            const subOptionKey = `${optionKey}-${index}`;
+                            const isSubOptionSelected =
+                              optionSubAnswers.includes(
+                                subOption.title.current
+                              );
 
-                          return (
-                            <div
-                              key={index}
-                              className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
-                                isSubOptionSelected
-                                  ? "border-primary bg-blue-50 dark:bg-blue-900/20"
-                                  : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800"
-                              }`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                const currentSubValues = [...optionSubAnswers];
-                                const isChecked = currentSubValues.includes(
-                                  subOption.title.current
-                                );
-                                const newSubValues = isChecked
-                                  ? currentSubValues.filter(
-                                      (v: string) =>
-                                        v !== subOption.title.current
-                                    )
-                                  : [
-                                      ...currentSubValues,
-                                      subOption.title.current,
-                                    ];
-                                // Pass option.id.toString()
-                                handleSubAnswerChange(
-                                  question.id.toString(),
-                                  option.id.toString(),
-                                  newSubValues
-                                );
-                              }}
-                            >
-                              <input
-                                type="checkbox"
-                                id={subOptionKey}
-                                checked={isSubOptionSelected}
-                                onChange={(e) => {
+                            return (
+                              <div
+                                key={index}
+                                className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
+                                  isSubOptionSelected
+                                    ? "border-primary bg-blue-50 dark:bg-blue-900/20"
+                                    : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500"
+                                }`}
+                                onClick={(e) => {
                                   e.stopPropagation();
                                   const currentSubValues = [
                                     ...optionSubAnswers,
                                   ];
-                                  const newSubValues = e.target.checked
-                                    ? [
-                                        ...currentSubValues,
-                                        subOption.title.current,
-                                      ]
-                                    : currentSubValues.filter(
+                                  const isChecked = currentSubValues.includes(
+                                    subOption.title.current
+                                  );
+                                  const newSubValues = isChecked
+                                    ? currentSubValues.filter(
                                         (v: string) =>
                                           v !== subOption.title.current
-                                      );
-                                  // Pass option.id.toString()
+                                      )
+                                    : [
+                                        ...currentSubValues,
+                                        subOption.title.current,
+                                      ];
                                   handleSubAnswerChange(
                                     question.id.toString(),
                                     option.id.toString(),
                                     newSubValues
                                   );
                                 }}
-                                className="w-4 h-4 mx-1 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
-                              />
-                              <label
-                                htmlFor={subOptionKey}
-                                className="ml-2 text-gray-700 dark:text-gray-300 font-medium cursor-pointer text-sm"
                               >
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: subOption.title.current,
+                                <input
+                                  type="checkbox"
+                                  id={subOptionKey}
+                                  checked={isSubOptionSelected}
+                                  onChange={(e) => {
+                                    e.stopPropagation();
+                                    const currentSubValues = [
+                                      ...optionSubAnswers,
+                                    ];
+                                    const newSubValues = e.target.checked
+                                      ? [
+                                          ...currentSubValues,
+                                          subOption.title.current,
+                                        ]
+                                      : currentSubValues.filter(
+                                          (v: string) =>
+                                            v !== subOption.title.current
+                                        );
+                                    handleSubAnswerChange(
+                                      question.id.toString(),
+                                      option.id.toString(),
+                                      newSubValues
+                                    );
                                   }}
+                                  className="w-4 h-4 mx-1 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                                 />
-                              </label>
-                            </div>
-                          );
-                        })}
+                                <label
+                                  htmlFor={subOptionKey}
+                                  className="ml-2 text-gray-700 dark:text-gray-300 font-medium cursor-pointer text-sm flex-1"
+                                >
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html: subOption.title.current,
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>

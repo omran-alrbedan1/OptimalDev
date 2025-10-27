@@ -19,6 +19,7 @@ import service1 from "@/public/images/service1.png";
 import service2 from "@/public/images/service2.png";
 import service3 from "@/public/images/service3.png";
 import service4 from "@/public/images/service4.png";
+import jobs from "@/public/images/latest jobs.png";
 
 export const images = {
   logo,
@@ -42,4 +43,5 @@ export const images = {
   service2,
   service3,
   service4,
+  jobs,
 };

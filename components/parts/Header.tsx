@@ -113,7 +113,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full dark:bg-darkMod-200 bg-white z-50 shadow-md">
-      <div className=" max-w-[85rem] mx-auto flex justify-between items-center h-[75px] lg:h-24 px-4 lg:px-4">
+      <div className=" max-w-[85rem] mx-auto flex justify-between items-center h-[60px] lg:h-[90px] px-4 lg:px-4">
         <Link
           href="/home"
           className="flex items-center gap-2 focus:!border-none border-none"
@@ -121,7 +121,7 @@ const Header = () => {
           <Image
             src={images.logo}
             width={windowWidth > 1024 ? 300 : 200}
-            height={windowWidth > 1024 ? 100 : 200}
+            height={windowWidth > 1024 ? 90 : 150}
             alt="logo"
             priority
             className="focus:!border-none"

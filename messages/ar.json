@@ -23,6 +23,20 @@
   "title": "خدماتنا",
   "paragraph": "يوفر مسار الأمثل الربط بين المواهب المناسبة والفرص المناسبة."
 },
+  "jobOpportunities": {
+    "title": "تصفح فرص العمل",
+    "paragraph": "اكتشف أحدث الوظائف وكن أول المتقدمين",
+    "viewMore": "رؤية المزيد",
+    "applyNow": "تقدم الآن",
+    "posted": "نُشر",
+    "unknownCompany": "شركة غير معروفة",
+    "fullTime": "دوام كامل",
+    "noDescription": "لا يوجد وصف متاح",
+    "fetchError": "فشل في جلب الوظائف",
+    "errorLoading": "خطأ في تحميل الوظائف",
+    "retry": "إعادة المحاولة",
+    "imageAlt": "فرص العمل"
+  },
     "ourPartners":{
     "title":"شركاؤنا "
   },
