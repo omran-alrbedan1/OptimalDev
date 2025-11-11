@@ -439,7 +439,7 @@ export const contactUs = async (
   email: string,
   phone: string,
   subject: string,
-  message: string
+  notes: string
 ): Promise<any> => {
   const response = await post<any>("/api/contact", {
     first_name,
@@ -447,7 +447,7 @@ export const contactUs = async (
     email,
     phone,
     subject,
-    message,
+    notes,
   });
   return response;
 };

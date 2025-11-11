@@ -23,7 +23,7 @@ const ContactForm = () => {
     email: "",
     phone: "",
     subject: "",
-    message: "",
+    notes: "",
   });
 
   const regex = {
@@ -31,7 +31,7 @@ const ContactForm = () => {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     phone: /^\+?[1-9]\d{1,14}$/,
     subject: /.+/,
-    message: /.+/,
+    notes: /.+/,
   };
 
   const validateForm = (formData: any) => {
@@ -57,7 +57,7 @@ const ContactForm = () => {
         ? t("fields.phone.error")
         : "",
       subject: !formData.subject ? t("validation.required") : "",
-      message: !formData.message ? t("validation.required") : "",
+      notes: !formData.notes ? t("validation.required") : "",
     };
 
     return newErrors;
@@ -85,7 +85,7 @@ const ContactForm = () => {
         data.email as string,
         data.phone as string,
         data.subject as string,
-        data.message as string
+        data.notes as string
       );
 
       toast.success(t("successMessage"));
@@ -251,16 +251,16 @@ const ContactForm = () => {
           rows={3}
           required
           className={`w-full outline-none px-4 py-2 dark:text-white dark:bg-darkMod-400 rounded-[8px] border ${
-            errors.message
+            errors.notes
               ? "border-red-500"
               : "border-gray-300 focus-within:border-primary-color1"
           }`}
-          placeholder={t("fields.message.placeholder")}
-          name="message"
+          placeholder={t("fields.notes.placeholder")}
+          name="notes"
           dir={isArabic ? "rtl" : "ltr"}
         ></textarea>
-        {errors.message && (
-          <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+        {errors.notes && (
+          <p className="text-red-500 text-sm mt-1">{errors.notes}</p>
         )}
       </div>
 

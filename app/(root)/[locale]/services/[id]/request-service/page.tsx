@@ -44,6 +44,9 @@ import {
   StepIndicator,
   SuccessScreen,
 } from "./_components";
+import { Combobox } from "@/components/ui/combobox";
+import { validateInputByRules } from "./utils/helper";
+
 type FormValues = z.infer<typeof requestServiceFormShema>;
 
 type AnswerValue = string | string[] | number;
@@ -64,17 +67,19 @@ const ServiceRequestPage = () => {
   const [expandedOptions, setExpandedOptions] = useState<Set<string>>(
     new Set()
   );
+  const [fieldValidationErrors, setFieldValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   // Data fetching
   const { data: questions, isLoading: questionsLoading } =
     useFetchWithId<QuestionResponse>(fetchSubServiceQuestions, Number(id));
 
+  console.log(questions);
   const { data: service, isLoading: serviceLoading } =
     useFetchWithId<SubService>(fetchSubService, Number(id));
-
   const { data: countries, isLoading: countriesLoading } =
     useFetch<Country[]>(fetchCountries);
-
   const { data: cities, isLoading: citiesLoading } = useFetchWithId<City[]>(
     fetchCities,
     Number(countryId)
@@ -97,15 +102,12 @@ const ServiceRequestPage = () => {
         const isSameService = parsed.sub_service_id === Number(id);
         const isDataRecent =
           parsed.timestamp &&
-          Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000; // 24 hours
-
-        // Check if form was successfully submitted - look for the submitted flag
+          Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000;
         const wasSubmitted = parsed.submitted === true;
 
         if (isSameService && isDataRecent && !wasSubmitted) {
           return parsed;
         } else {
-          // Clear expired, different service, or submitted data
           localStorage.removeItem(STORAGE_KEY);
         }
       }
@@ -153,7 +155,6 @@ const ServiceRequestPage = () => {
   };
 
   const defaultValues = useMemo(() => {
-    // Always check for submitted data first
     if (typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -170,12 +171,10 @@ const ServiceRequestPage = () => {
 
     const storedData = getStoredFormData();
 
-    // If we have valid stored data that hasn't been submitted, use it
     if (storedData) {
       return storedData as FormValues;
     }
 
-    // Otherwise start with fresh values
     const values: FormValues = {
       sub_service_id: Number(id),
       answers: {},
@@ -229,6 +228,48 @@ const ServiceRequestPage = () => {
     const currentSubAnswers = watch("sub_answers");
     const currentAnswers = watch("answers");
   }, [watch("sub_answers")]);
+  // Helper functions
+  const getActualStep = (stepIndex: number) => {
+    return availableSteps[stepIndex - 1] || stepIndex;
+  };
+  const getCurrentStepQuestions = (): Question[] => {
+    if (!questions) return [];
+
+    const actualStep = getActualStep(step);
+    const stepConfig = STEP_CONFIG.find((config) => config.id === actualStep);
+
+    if (!stepConfig || !questions[stepConfig.questionKey]) return [];
+
+    return (questions[stepConfig.questionKey] as Question[]).sort(
+      (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
+    );
+  };
+  const getValidationErrorMessage = (
+    validationRules: string[] | null
+  ): string => {
+    if (!validationRules || validationRules.length === 0) return "";
+
+    const rulesMap: Record<string, string> = {
+      numeric: t("validationErrors.enterNumbersOnly"),
+      alpha: t("validationErrors.enterLettersOnly"),
+      alphanumeric: t("validationErrors.enterLettersNumbersOnly"),
+      email: t("validationErrors.enterValidEmail"),
+    };
+
+    const messages = validationRules
+      .map((rule) => rulesMap[rule])
+      .filter(Boolean);
+
+    if (messages.length === 0) return "";
+
+    // Return the first message (usually there's only one rule)
+    return messages[0];
+  };
+  // Get current question to display
+  const getCurrentQuestion = (): Question | null => {
+    const currentStepQuestions = getCurrentStepQuestions();
+    return currentStepQuestions[currentQuestionIndex] || null;
+  };
 
   // Watch all answers to handle conditional questions and save to localStorage
   const answers = watch();
@@ -268,10 +309,8 @@ const ServiceRequestPage = () => {
       const storedData = getStoredFormData();
 
       if (storedData) {
-        // Restore form state from localStorage
         reset(storedData as FormValues);
 
-        // Restore navigation state
         if (storedData.currentStep) {
           setStep(storedData.currentStep);
         }
@@ -279,7 +318,6 @@ const ServiceRequestPage = () => {
           setCurrentQuestionIndex(storedData.currentQuestionIndex);
         }
       } else {
-        // Initialize with default values
         const initialAnswers: Record<string, any> = {};
         const initialSubAnswers: Record<string, any> = {};
 
@@ -287,7 +325,6 @@ const ServiceRequestPage = () => {
           initialAnswers[question.id.toString()] =
             question.type === "checkbox" ? [] : "";
 
-          // Initialize sub_answers structure for questions with sub-options
           if (question.options?.some((opt) => opt.has_sub_options)) {
             initialSubAnswers[question.id.toString()] = {};
           }
@@ -306,12 +343,48 @@ const ServiceRequestPage = () => {
   useEffect(() => {
     setCurrentQuestionIndex(0);
     setExpandedOptions(new Set());
+    setFieldValidationErrors({});
   }, [step]);
 
-  // Helper functions
-  const getActualStep = (stepIndex: number) => {
-    return availableSteps[stepIndex - 1] || stepIndex;
-  };
+  // Real-time validation for text inputs
+  useEffect(() => {
+    const currentQuestion = getCurrentQuestion();
+    if (
+      currentQuestion &&
+      currentQuestion.type === "text" &&
+      currentQuestion.validation_rules
+    ) {
+      const currentValue = watch(`answers.${currentQuestion.id.toString()}`);
+
+      if (currentValue && currentValue !== "") {
+        const isValid = validateInputByRules(
+          currentValue.toString(),
+          currentQuestion.validation_rules
+        );
+
+        setFieldValidationErrors((prev) => {
+          const newErrors = { ...prev };
+          if (!isValid) {
+            newErrors[currentQuestion.id.toString()] =
+              getValidationErrorMessage(currentQuestion.validation_rules);
+          } else {
+            delete newErrors[currentQuestion.id.toString()];
+          }
+          return newErrors;
+        });
+      } else {
+        setFieldValidationErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[currentQuestion.id.toString()];
+          return newErrors;
+        });
+      }
+    }
+  }, [
+    watch(`answers.${getCurrentQuestion()?.id.toString()}`),
+    step,
+    currentQuestionIndex,
+  ]);
 
   const formatAnswer = (
     value: any,
@@ -359,28 +432,19 @@ const ServiceRequestPage = () => {
     let newSubAnswers = { ...currentSubAnswers };
 
     if (isChecked) {
-      // Select parent option only
       newValue = [...currentValues, option.option.current];
 
-      // Initialize empty array for sub-options but don't auto-select them
       if (option.has_sub_options && option.sub_options) {
-        // Use option.id.toString() as the key with empty array
         newSubAnswers[option.id.toString()] = [];
       }
     } else {
-      // Deselect parent option
       newValue = currentValues.filter(
         (v: string) => v !== option.option.current
       );
-
-      // Clear sub-answers for this option
       delete newSubAnswers[option.id.toString()];
     }
 
-    // Update main answer
     handleAnswerChange(questionId, newValue);
-
-    // Update sub-answers
     setValue(`sub_answers.${questionId}`, newSubAnswers);
   };
 
@@ -392,7 +456,6 @@ const ServiceRequestPage = () => {
     const currentAnswers = watch(`answers.${questionId}`) || [];
     const currentSubAnswers = watch(`sub_answers.${questionId}`) || {};
 
-    // Find the parent option
     const question = allQuestions.find((q) => q.id.toString() === questionId);
     const parentOption = question?.options?.find(
       (opt) => opt.id.toString() === optionId
@@ -401,11 +464,9 @@ const ServiceRequestPage = () => {
     let updatedAnswers = [...currentAnswers];
     let updatedSubAnswers = { ...currentSubAnswers };
 
-    // Update sub-answers with the option ID as string
     if (value.length > 0) {
       updatedSubAnswers[optionId] = value;
 
-      // Auto-select parent if not already selected
       if (
         parentOption &&
         !updatedAnswers.includes(parentOption.option.current)
@@ -413,10 +474,8 @@ const ServiceRequestPage = () => {
         updatedAnswers.push(parentOption.option.current);
       }
     } else {
-      // Remove this option from sub-answers
       delete updatedSubAnswers[optionId];
 
-      // Check if we should deselect the parent
       const hasOtherSubOptions = Object.keys(updatedSubAnswers).some(
         (key) => key !== optionId && updatedSubAnswers[key]?.length > 0
       );
@@ -447,25 +506,6 @@ const ServiceRequestPage = () => {
     });
   };
 
-  const getCurrentStepQuestions = (): Question[] => {
-    if (!questions) return [];
-
-    const actualStep = getActualStep(step);
-    const stepConfig = STEP_CONFIG.find((config) => config.id === actualStep);
-
-    if (!stepConfig || !questions[stepConfig.questionKey]) return [];
-
-    return (questions[stepConfig.questionKey] as Question[]).sort(
-      (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
-    );
-  };
-
-  // Get current question to display
-  const getCurrentQuestion = (): Question | null => {
-    const currentStepQuestions = getCurrentStepQuestions();
-    return currentStepQuestions[currentQuestionIndex] || null;
-  };
-
   const getTotalQuestionsInCurrentStep = (): number => {
     return getCurrentStepQuestions().length;
   };
@@ -481,7 +521,6 @@ const ServiceRequestPage = () => {
     // Check if question is required and answered
     if (currentQuestion.is_required) {
       if (currentQuestion.type === "checkbox") {
-        // For checkbox, check both main answers and sub-answers
         const hasMainAnswers =
           Array.isArray(currentValue) && currentValue.length > 0;
         const hasSubAnswers = Object.keys(currentSubAnswers).some(
@@ -500,15 +539,34 @@ const ServiceRequestPage = () => {
       }
     }
 
+    // Check validation rules for text inputs
+    if (
+      currentQuestion.type === "text" &&
+      currentValue &&
+      currentQuestion.validation_rules
+    ) {
+      const isValid = validateInputByRules(
+        currentValue.toString(),
+        currentQuestion.validation_rules
+      );
+      if (!isValid) {
+        return false;
+      }
+    }
+
     return true;
   };
 
   const nextQuestion = () => {
+    if (!canGoToNextQuestion()) {
+      setHasAttemptedSubmit(true);
+      return;
+    }
+
     const totalQuestions = getTotalQuestionsInCurrentStep();
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Move to next step
       setCurrentQuestionIndex(0);
       setStep(step + 1);
     }
@@ -519,7 +577,6 @@ const ServiceRequestPage = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     } else if (step > 1) {
-      // Move to previous step and set to last question
       const prevStepQuestions = getCurrentStepQuestionsForStep(step - 1);
       setStep(step - 1);
       setCurrentQuestionIndex(prevStepQuestions.length - 1);
@@ -540,6 +597,20 @@ const ServiceRequestPage = () => {
     );
   };
 
+  const extractTextFromHTML = (htmlString: string): string => {
+    if (typeof document === "undefined") {
+      return htmlString.replace(/<[^>]*>/g, "");
+    }
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    return (
+      tempDiv.textContent ||
+      tempDiv.innerText ||
+      htmlString.replace(/<[^>]*>/g, "")
+    );
+  };
+
   const validateCurrentStep = async (): Promise<boolean> => {
     setValidationErrors([]);
     const currentFormValues = watch();
@@ -557,7 +628,6 @@ const ServiceRequestPage = () => {
         let isAnswered = false;
 
         if (question.type === "checkbox") {
-          // For checkbox questions, check if either main answers or sub-answers exist
           const hasMainAnswers = Array.isArray(answer) && answer.length > 0;
           const hasSubAnswers =
             subAnswers &&
@@ -572,13 +642,27 @@ const ServiceRequestPage = () => {
         }
 
         if (!isAnswered) {
-          // Extract text content from HTML string
           const fieldText = extractTextFromHTML(question.title.current);
-
           stepErrors.push(
-            t("validationErrors.questionRequired", {
-              field: fieldText,
-            })
+            t("validationErrors.questionRequired", { field: fieldText })
+          );
+          hasErrors = true;
+        }
+      }
+
+      // Check validation rules for text inputs
+      const answer = currentFormValues.answers?.[question.id.toString()];
+      if (question.type === "text" && answer && question.validation_rules) {
+        const isValid = validateInputByRules(
+          answer.toString(),
+          question.validation_rules
+        );
+        if (!isValid) {
+          const fieldText = extractTextFromHTML(question.title.current);
+          stepErrors.push(
+            `${fieldText}: ${getValidationErrorMessage(
+              question.validation_rules
+            )}`
           );
           hasErrors = true;
         }
@@ -591,22 +675,6 @@ const ServiceRequestPage = () => {
     }
 
     return true;
-  };
-
-  // Add this helper function to extract text from HTML
-  const extractTextFromHTML = (htmlString: string): string => {
-    if (typeof document === "undefined") {
-      // Fallback for server-side rendering
-      return htmlString.replace(/<[^>]*>/g, "");
-    }
-
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlString;
-    return (
-      tempDiv.textContent ||
-      tempDiv.innerText ||
-      htmlString.replace(/<[^>]*>/g, "")
-    );
   };
 
   const nextStep = async () => {
@@ -649,33 +717,30 @@ const ServiceRequestPage = () => {
       // Process main answers
       allQuestions.forEach((question) => {
         const value = data.answers[question.id.toString()];
+
         if (value !== undefined && value !== null && value !== "") {
-          formattedAnswers[question.id.toString()] = formatAnswer(
-            value,
-            question.type,
-            countries || [],
-            cities || []
-          );
+          if (question.type === "checkbox") {
+            if (Array.isArray(value) && value.length > 0) {
+              formattedAnswers[question.id.toString()] = value.map((v) =>
+                v.toString()
+              );
+            }
+          } else {
+            formattedAnswers[question.id.toString()] = value.toString();
+          }
         }
       });
 
-      // FIXED: Get sub_answers directly from watch() instead of data
+      // Process sub answers
       const currentSubAnswers = watch("sub_answers");
 
-      // Process sub answers using the watched value
       if (currentSubAnswers && typeof currentSubAnswers === "object") {
         Object.entries(currentSubAnswers).forEach(([questionId, options]) => {
-          if (
-            options &&
-            typeof options === "object" &&
-            Object.keys(options).length > 0
-          ) {
+          if (options && typeof options === "object") {
             const nonEmptyOptions: Record<string, string[]> = {};
 
             Object.entries(options).forEach(([optionId, subValues]) => {
-              // Ensure subValues is an array and has items
               if (Array.isArray(subValues) && subValues.length > 0) {
-                // Filter out empty strings and ensure all values are strings
                 const cleanedValues = subValues
                   .filter((v) => v !== null && v !== undefined && v !== "")
                   .map((v) => String(v));
@@ -686,7 +751,6 @@ const ServiceRequestPage = () => {
               }
             });
 
-            // Only add to formattedSubAnswers if there are valid sub-options
             if (Object.keys(nonEmptyOptions).length > 0) {
               formattedSubAnswers[questionId] = nonEmptyOptions;
             }
@@ -694,20 +758,30 @@ const ServiceRequestPage = () => {
         });
       }
 
+      // Create the final request data
       const requestData = {
         sub_service_id: Number(id),
-        answers: Object.fromEntries(
-          Object.entries(formattedAnswers).map(([key, value]) => {
-            if (Array.isArray(value)) {
-              return [key, value.map((item) => item.toString())];
-            }
-            return [key, value.toString()];
-          })
-        ),
+        answers: formattedAnswers,
         sub_answers: formattedSubAnswers,
       };
 
-      await requestService(requestData);
+      console.log(
+        "🚀 FINAL REQUEST DATA TO SEND:",
+        JSON.stringify(requestData, null, 2)
+      );
+
+      try {
+        await requestService(requestData);
+      } catch (error: any) {
+        console.error("❌ REQUEST SERVICE ERROR DETAILS:", {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+          config: error.response?.config,
+        });
+        throw error;
+      }
 
       // Mark as submitted before clearing
       if (typeof window !== "undefined") {
@@ -729,14 +803,33 @@ const ServiceRequestPage = () => {
       resetFormToInitialState();
       setSubmitSuccess(true);
     } catch (error: any) {
-      console.error("Failed to submit service request:", error);
+      console.error("❌ COMPLETE SUBMISSION FAILURE:", {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
 
       if (error.response?.data?.errors) {
-        setValidationErrors(
-          Object.values(error.response.data.errors).flat() as string[]
+        const backendErrors = Object.entries(error.response.data.errors).map(
+          ([field, messages]) => {
+            return `${field}: ${
+              Array.isArray(messages) ? messages.join(", ") : messages
+            }`;
+          }
         );
+        console.error(
+          "🔍 BACKEND VALIDATION ERRORS (DETAILED):",
+          backendErrors
+        );
+        setValidationErrors(backendErrors);
       } else if (error.response?.data?.message) {
+        console.error("🔍 BACKEND ERROR MESSAGE:", error.response.data.message);
         setValidationErrors([error.response.data.message]);
+      } else if (error.message) {
+        console.error("🔍 CLIENT ERROR:", error.message);
+        setValidationErrors([error.message]);
       } else {
         setValidationErrors([t("validationErrors.submissionFailed")]);
       }
@@ -745,7 +838,7 @@ const ServiceRequestPage = () => {
     }
   };
 
-  // Clear form data manually (optional - you can add a button for this)
+  // Clear form data manually
   const handleClearForm = () => {
     clearStoredFormData();
     reset(defaultValues);
@@ -753,6 +846,7 @@ const ServiceRequestPage = () => {
     setCurrentQuestionIndex(0);
     setValidationErrors([]);
     setHasAttemptedSubmit(false);
+    setFieldValidationErrors({});
   };
 
   const renderQuestionInput = (question: Question) => {
@@ -761,6 +855,10 @@ const ServiceRequestPage = () => {
       watch(`sub_answers.${question.id.toString()}`) || {};
     const inputClasses =
       "w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent focus:outline-none transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100";
+
+    // Check for validation errors for this field
+    const hasFieldValidationError =
+      fieldValidationErrors[question.id.toString()];
 
     if (
       question.has_options &&
@@ -776,6 +874,47 @@ const ServiceRequestPage = () => {
       );
     }
 
+    // Use combobox for dropdown style questions
+    if (question.is_dropdown_style && question.options) {
+      const comboboxOptions: ComboboxOption[] = question.options.map(
+        (option) => ({
+          value: option.option.current,
+          label: option.option.current,
+          hasSubOptions: option.has_sub_options,
+        })
+      );
+
+      if (question.type === "checkbox") {
+        return (
+          <div className="space-y-3 ">
+            <Combobox
+              options={comboboxOptions}
+              value={Array.isArray(currentValue) ? currentValue : []}
+              onChange={(value) =>
+                handleAnswerChange(question.id.toString(), value)
+              }
+              placeholder={t("form.selectOptions")}
+              multiple={true}
+              className="!w-full"
+            />
+          </div>
+        );
+      } else {
+        return (
+          <Combobox
+            options={comboboxOptions}
+            value={currentValue || ""}
+            onChange={(value) =>
+              handleAnswerChange(question.id.toString(), value)
+            }
+            placeholder={t("form.selectOption")}
+            multiple={false}
+          />
+        );
+      }
+    }
+
+    // Original rendering logic for non-dropdown style questions
     switch (question.type) {
       case "radio":
         return (
@@ -811,7 +950,9 @@ const ServiceRequestPage = () => {
                   htmlFor={`${question.id}-${option.id}`}
                   className="ml-3 text-gray-700 dark:text-gray-300 font-medium cursor-pointer"
                 >
-                  {option.option.current}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: option.option.current }}
+                  />
                 </label>
               </div>
             ))}
@@ -829,7 +970,6 @@ const ServiceRequestPage = () => {
               const isOptionSelected =
                 Array.isArray(currentValue) &&
                 currentValue.includes(option.option.current);
-              // Use option.id.toString() as the key
               const optionSubAnswers =
                 currentSubAnswers[option.id.toString()] || [];
 
@@ -874,13 +1014,22 @@ const ServiceRequestPage = () => {
                     {/* Dropdown indicator for options with sub-options */}
                     {hasSubOptions && (
                       <div className="flex items-center">
-                        <motion.div
-                          animate={{ rotate: isExpanded ? 180 : 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="text-gray-500"
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleOptionExpansion(optionKey);
+                          }}
+                          className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
                         >
-                          <ChevronDown className="h-5 w-5" />
-                        </motion.div>
+                          <motion.div
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-gray-500"
+                          >
+                            <ChevronDown className="h-5 w-5" />
+                          </motion.div>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -988,18 +1137,32 @@ const ServiceRequestPage = () => {
       case "text":
       case "date":
         return (
-          <input
-            type={question.type}
-            value={currentValue || ""}
-            onChange={(e) =>
-              handleAnswerChange(question.id.toString(), e.target.value)
-            }
-            className={inputClasses}
-            placeholder={
-              question.type === "text" ? t("form.textPlaceholder") : undefined
-            }
-          />
+          <div className="space-y-2">
+            <input
+              type={question.type}
+              value={currentValue || ""}
+              onChange={(e) =>
+                handleAnswerChange(question.id.toString(), e.target.value)
+              }
+              className={`${inputClasses} ${
+                hasFieldValidationError
+                  ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+                  : ""
+              }`}
+              placeholder={
+                question.type === "text" ? t("form.textPlaceholder") : undefined
+              }
+            />
+            {/* Show validation error message */}
+            {hasFieldValidationError && (
+              <p className="text-red-500 text-sm mt-1 flex items-center">
+                <AlertCircle className="h-4 w-4 mr-1" />
+                {hasFieldValidationError}
+              </p>
+            )}
+          </div>
         );
+
       case "city":
         return (
           <div>
@@ -1035,6 +1198,7 @@ const ServiceRequestPage = () => {
             )}
           </div>
         );
+
       case "country":
         return (
           <div>
@@ -1071,8 +1235,16 @@ const ServiceRequestPage = () => {
             )}
           </div>
         );
+
       default:
-        return null;
+        return (
+          <div className="flex items-center space-x-2 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+            <AlertCircle className="h-5 w-5 text-yellow-500" />
+            <span className="text-yellow-600 dark:text-yellow-400 text-sm">
+              {t("validationErrors.unsupportedType")}
+            </span>
+          </div>
+        );
     }
   };
 
@@ -1124,6 +1296,7 @@ const ServiceRequestPage = () => {
     setValidationErrors([]);
     setHasAttemptedSubmit(false);
     setExpandedOptions(new Set());
+    setFieldValidationErrors({});
   };
 
   // Main render logic

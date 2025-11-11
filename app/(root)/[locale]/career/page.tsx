@@ -63,7 +63,6 @@ const JobSearchPage = () => {
     const getFeaturedJobs = async () => {
       try {
         const featuredJobs = await fetchFeaturedJobs();
-        console.log(featuredJobs);
         //@ts-ignore
         setFeaturedJobs(featuredJobs);
       } catch (err) {
@@ -76,7 +75,6 @@ const JobSearchPage = () => {
     const fetchFilters = async () => {
       try {
         const filters = await fetchJobFilters();
-        console.log(filters);
         setFilterOptions(filters);
       } catch (err) {
         console.error("Failed to fetch filters:", err);
@@ -103,7 +101,6 @@ const JobSearchPage = () => {
           salary_min: salaryRange[0],
           salary_max: salaryRange[1],
         });
-        console.log(response);
         setJobs(response.data);
         setPaginationMeta(
           response.meta || {
@@ -128,7 +125,6 @@ const JobSearchPage = () => {
     return () => clearTimeout(debounceTimer);
   }, [currentPage, isFiltering]);
 
-  console.log(featuredJobs);
   const handleIndustryChange = (industryId: number) => {
     setSelectedIndustries((prev) =>
       prev.includes(industryId)

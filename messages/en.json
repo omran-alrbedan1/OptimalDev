@@ -428,8 +428,8 @@
       "placeholder": "Subject",
       "error": "Subject cannot be empty"
     },
-    "message": {
-      "label": "Message",
+    "notes": {
+      "label": "notes",
       "placeholder": "Your message here",
       "error": "Message cannot be empty"
     }
@@ -738,6 +738,7 @@
     "tryAgain": "Try Again",
     "congratulations": "Excellent Work!"
   }, 
+
   "serviceRequest": {
     "title": "Request Service",
     "description": "Let's get started with your service request. We'll guide you through each step to ensure we have all the information we need.",
@@ -770,7 +771,10 @@
       "city": "City",
       "selectCountry": "Select Country",
       "selectCity": "Select City",
-      "textPlaceholder": "Enter your answer..."
+      "textPlaceholder": "Enter your answer...",
+      "selectOption": "Select an option",
+      "selectOptions": "Select options",
+      "selectSubOptions": "Select sub-options"
     },
     "success": {
       "title": "Request Submitted Successfully!",
@@ -785,7 +789,7 @@
       "submitting": "Submitting..."
     },
     "validationErrors": {
-      "title": "Please :",
+      "title": "Please:",
       "fullNameRequired": "Full Name is required",
       "emailRequired": "Valid Email is required",
       "phoneRequired": "Phone is required",
@@ -794,9 +798,23 @@
       "questionRequired": "{field} is required",
       "noOptions": "No options available for this question",
       "radioConfigError": "Configuration error: This radio question has no options",
-      "submissionFailed": "Failed to submit request. Please try again."
+      "submissionFailed": "Failed to submit request. Please try again.",
+      "numericOnly": "numbers only",
+      "alphaOnly": "letters only",
+      "alphanumericOnly": "letters and numbers only",
+      "validEmail": "valid email address",
+      "enterNumbersOnly": "Please enter numbers only",
+      "enterLettersOnly": "Please enter letters only",
+      "enterLettersNumbersOnly": "Please enter letters and numbers only",
+      "enterValidEmail": "Please enter a valid email address",
+      "unsupportedType": "Unsupported field type"
+    },
+    "loading": {
+      "countries": "Loading countries...",
+      "cities": "Loading cities..."
     }
-  }, 
+  }
+, 
   
   "serviceDetails": {
     "imageAlt": "Service image",

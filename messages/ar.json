@@ -440,7 +440,7 @@
       "placeholder": "الموضوع",
       "error": "لا يمكن ترك الموضوع فارغًا"
     },
-    "message": {
+    "notes": {
       "label": "الرسالة",
       "placeholder": "اكتب رسالتك هنا",
       "error": "لا يمكن ترك الرسالة فارغة"
@@ -750,7 +750,8 @@
     "viewResults": "عرض الامتحانات",
     "tryAgain": "إعادة المحاولة",
     "congratulations": "عمل ممتاز!"
-  },  "serviceRequest": {
+  },  
+  "serviceRequest": {
     "title": "طلب الخدمة",
     "description": "لنبدأ بطلب الخدمة الخاص بك. سنرشدك خلال كل خطوة لضمان حصولنا على جميع المعلومات التي نحتاجها.",
     "progressTitle": "التقدم",
@@ -782,7 +783,9 @@
       "city": "المدينة",
       "selectCountry": "اختر الدولة",
       "selectCity": "اختر المدينة",
-      "textPlaceholder": "أدخل إجابتك..."
+      "textPlaceholder": "أدخل إجابتك...",
+      "selectOption": "اختر خيارًا",
+      "selectOptions": "اختر الخيارات"
     },
     "success": {
       "title": "تم إرسال الطلب بنجاح!",
@@ -806,7 +809,19 @@
       "questionRequired": "{field} مطلوب",
       "noOptions": "لا توجد خيارات متاحة لهذا السؤال",
       "radioConfigError": "خطأ في التهيئة: لا توجد خيارات لهذا السؤال",
-      "submissionFailed": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."
+      "submissionFailed": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى.",
+      "numericOnly": "أرقام فقط",
+      "alphaOnly": "حروف فقط",
+      "alphanumericOnly": "حروف وأرقام فقط",
+      "validEmail": "بريد إلكتروني صالح",
+      "enterNumbersOnly": "يرجى إدخال أرقام فقط",
+      "enterLettersOnly": "يرجى إدخال حروف فقط",
+      "enterLettersNumbersOnly": "يرجى إدخال حروف وأرقام فقط",
+      "enterValidEmail": "يرجى إدخال بريد إلكتروني صالح"
+    },
+    "loading": {
+      "countries": "جاري تحميل الدول...",
+      "cities": "جاري تحميل المدن..."
     }
   },  "serviceDetails": {
     "imageAlt": "صورة الخدمة",
