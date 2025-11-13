@@ -1,0 +1,844 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Our Services",
+    "career": "Career",
+    "contact": "Contact Us",
+    "businessDev": "Business Development",
+    "personalDev": "Personal Development",
+    "training": "Training",
+    "employment": "Employment",
+    "hr": "Human Resources",
+    "webManagement": "Website Management",
+    "marketing": "Marketing Solutions",
+    "coaching": "Life Coaching",
+    "careerPath": "Career Path",
+    "internship": "Internship",
+    "login":"Login",
+    "register":"Sign Up"
+  },
+    "ourServices":{
+    "title":"Our Services",
+    "paragraph":"Optimal Path connects the right talent with the right opportunities."
+  },
+  "jobOpportunities": {
+    "title": "Browse Job Opportunities",
+    "paragraph": "Discover the latest positions and be the first to apply",
+    "viewMore": "View More",
+    "applyNow": "Apply Now",
+    "posted": "Posted",
+    "unknownCompany": "Unknown Company",
+    "fullTime": "Full-time",
+    "noDescription": "No description available",
+    "fetchError": "Failed to fetch jobs",
+    "errorLoading": "Error loading jobs",
+    "retry": "Retry",
+    "imageAlt": "Job opportunities"
+  }
+,
+    "ourPartners":{
+    "title":"Our Partners"
+  },
+  "ourClients":{
+    "title":"Our Clients",
+    "paragraph":"Empowering businesses through trusted partnerships and innovative solutions."
+  },
+    "aboutSection": {
+    "title":"About Us",
+
+    "whoWeAre": "Who We Are",
+    "ourVision": "Our Vision",
+    "ourMission": "Our Mission",
+    "ourValues": "Our Values"
+  },
+  "footer": {
+  "companyDescription": "Optimal Path bridges the gap between top talent and exceptional opportunities. We provide strategic recruitment solutions to grow businesses and careers.",
+  "contactUs": "Contact Us",
+  "subscribe": "Subscribe",
+  "copyright": "© 2025 Your Company. All rights reserved. by",
+  "companyName": "Optimal Path",
+  "contactItems": {
+    "location": "Jordan",
+    "email": "info@optimalpathmc.com",
+    "phone": "+962 797 701 545"
+  }
+},
+"contactUs":{
+  "title":"Contact Us",
+  "address":"Address",
+  "phone":"Phone",
+  "email":"Email"
+},
+  "profilePage": {
+    "applications": "Applications",
+    "exams": "Exams",
+    "messages": "Messages",
+    "noApplications": {
+      "title": "No Applications Yet",
+      "description": "You haven't applied to any jobs yet. Start exploring opportunities today!",
+      "button": "Browse Available Jobs"
+    },
+
+    "noMessages": {
+      "title": "No Messages",
+      "description": "Your messages and notifications will appear here"
+    },
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+        "logout": {
+      "button": "Logout",
+      "confirmTitle": "Confirm Logout",
+      "confirmMessage": "Are you sure you want to logout? You will need to sign in again to access your account.",
+      "confirm": "Logout",
+      "loggingOut": "Logging out...",
+      "cancel":"Cancel"
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "description": "Manage your personal details and contact information"
+    },
+    
+  "ApplicationList": {
+    "header": {
+      "title": "My Applications"
+    },
+
+    "jobDetails": {
+      "salary": "Salary",
+      "experience": "Experience",
+      "contract": "Contract",
+      "workMode": "Work Mode",
+      "skills": "Required Skills",
+      "appliedDate": "Applied: {date}",
+      "years":"years"
+    },
+    "actions": {
+      "details": "Details",
+      "viewJob": "View Job"
+    },
+    "noApplications": {
+      "title": "No Applications Yet",
+      "description": "You haven't applied to any jobs yet. Start exploring opportunities today!",
+      "button": "Browse Available Jobs"
+    },
+    "error": {
+      "loading": "Error loading applications",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+"ExamsList": {
+  "noExams": {
+    "title": "No Exams Available",
+    "description": "You don't have any exams scheduled at this time"
+  },
+  "noTests": {
+    "title": "No Tests Available",
+    "description": "There are currently no tests assigned to you"
+  },
+  "header": {
+    "title": "My Exams"
+  },
+  "status": {
+    "eligible": "Eligible",
+    "notEligible": "Not Eligible",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
+  "testType": {
+    "interview": "Interview",
+    "quiz": "Quiz",
+    "failed": "Failed"
+  },
+  "actions": {
+    "view": "View Details",
+    "ok": "OK",
+    "pending": "Pending Approval",
+    "start": "Start Test",
+    "understand": "I Understand",
+    "appliedOn": "Applied On",
+    "retry": "Retry Test",
+    "retryNow": "Retry Now"
+  },
+  "testNotAvailable": "Test Not Available",
+  "testPendingMessage": "This test is currently pending approval. You will be notified when it becomes available.",
+  "testFailed": "Test Failed",
+  "testFailedMessage": "Unfortunately you did not pass this test. Please review your performance and try again if available.",
+  "retryAvailable": "Retry Available",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "error": {
+    "loading": "Error Loading Exams",
+    "retry": "Try Again"
+  },
+  "test": {
+    "retryable": "Eligible for retry"
+  }
+}
+,
+    
+    "email": "Email",
+    "location": "Location",
+    "phone": "Phone",
+    "documents": "CV",
+    "notProvided": "Not provided",
+    "notSpecified": "Not specified",
+    "viewDocuments": "View CV",
+    "secureAccount": {
+      "title": "Secure Your Account",
+      "description": "Choose a strong password to protect your personal information"
+    }
+  }, 
+"editProfile": {
+  "title": "Edit Your Profile",
+  "subtitle": "Update your personal information",
+  "photoSection": {
+    "changePhoto": "Change Photo",
+    "cvSection": {
+      "title": "Your CV",
+      "noCV": "No CV uploaded",
+      "changeCV": "Change CV",
+      "uploadNewCV": "Upload New CV",
+      "fileRequirements": "PDF, DOCX (Max. 5MB)",
+      "cvUploaded":"CV is available"
+    }
+  },
+"form": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "Enter your first name",
+        "required": "First name is required"
+      },
+      "lastName": {
+        "label": "Last Name",
+
+        "placeholder": "Enter your last name",
+        "required": "Last name is required"
+      },
+      "email": {
+        "label": "Email",
+
+        "invalid": "Please enter a valid email",
+        "placeholder": "Enter your email"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "required": "Phone number is required",
+        "placeholder": "Enter your phone number"
+      },
+      "country": {
+        "label": "Country",
+        "required": "Country is required",
+        "select": "Select Country"
+      },
+      "city": {
+        "label": "City",
+        "required": "City is required",
+        "select": "Select City"
+      },
+      "updateButton": "Update Profile",
+      "updating": "Updating..."
+    },
+  "toast": {
+    "success": "Profile updated successfully!",
+    "error": "Failed to update profile"
+  },
+  "messages": {
+    "fileSelected": "file selected",
+    "countriesError": "Failed to load countries",
+    "citiesError": "Failed to load cities"
+  },
+  "actions": {
+    "view": "View"
+  }
+},
+ "careerPage": {
+    "availableJobs": "Available Jobs",
+    "searchPlaceholder": "Search jobs...",
+    "searchButton": "Search",
+    "filters": "Filters",
+    "applyFilters": "Apply Filters",
+    "industry": "Industry",
+    "jobType": "Job Type",
+    "salaryRange": "Salary Range",
+    "salaryMarks": {
+      "0": "$0",
+      "500": "$500",
+      "1000": "$1000",
+      "1500": "$1500",
+      "2000": "$2000+"
+    },
+    "currencySymbol": "$",
+    "minSalary": "Min",
+    "maxSalary": "Max",
+    "workMode": "Work Mode",
+    "experienceLevel": "Experience Level",
+    "educationLevel": "Education Level",
+    "country": "Country",
+    "noJobsFoundAlt": "No jobs found illustration",
+    "noMatchingJobs": "No matching jobs",
+    "noResultsMessage": "Your search didn't return any results. Try different filters.",
+    "clearSearch": "Clear search",
+    "resetAllFilters": "Reset all filters",
+    "fullTime": "Full-time",
+    "onSite": "On-site",
+    "previous": "Previous",
+    "next": "Next",
+    "errorLoadingJobs": "Error loading jobs",
+    "jobCard": {
+      "checkOutJob": "Check out this job",
+      "at": "at",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "whatsapp": "WhatsApp",
+      "copyLink": "Copy Link",
+      "linkCopied": "Link copied to clipboard!",
+      "industry": "Industry",
+      "applyNow": "Apply Now",
+      "loginToApply": "Login to Apply",
+      "applying": "Applying"
+    }
+  },
+
+  "jobDetailsPage": {
+    "loading": "Loading...",
+    "error": "Failed to connect to server",
+    "jobNotFound": "Job not found",
+    "jobDescription": "Job Description",
+    "dutiesResponsibilities": "Duties and Responsibilities",
+    "technicalSkills": "Technical Skills",
+    "jobDetails": "Job Details",
+    "salaryRange": "Salary Range",
+    "publishedDate": "Published Date",
+    "expirationDate": "Expiration Date",
+    "jobType": "Job Type",
+    "requirements": "Requirements",
+    "yearsExperience": "Years of Experience",
+    "preferredCandidate": "Preferred Candidate",
+    "otherRequirements": "Other Requirements",
+    "companyInformation": "Company Information",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "applyNow": "Apply Now",
+    "loginToApply": "Login to Apply"
+  },
+  "ApplicationDetailsPage": {
+    "header": {
+      "remote": "Remote",
+      "contractType": "Contract Type",
+      "experienceLevel": "Experience Level"
+    },
+    "testResults": {
+      "title": "Assessment Tests",
+      "questions": "Questions",
+      "question": "Question",
+      "submittedAt": "Submitted",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "score": "Score",
+      "hideQuestions": "Hide Questions & Answers",
+      "viewQuestions": "View Questions & Answers",
+      "questionsAnswers": "Questions & Answers Review",
+      "yourAnswer": "Your Answer"
+    },
+    "quickStats": {
+      "applied": "Applied",
+      "deadline": "Deadline",
+      "status": "Status",
+      "experience": "Experience",
+      "salary": "Salary",
+      "years": "years"
+    },
+    "jobDetails": {
+      "title": "Job Details",
+      "responsibilities": "Responsibilities",
+      "technicalSkills": "Technical Skills",
+      "requirements": "Requirements"
+    },
+    "applicationProgress": {
+      "title": "Application Progress",
+      "pending": "Pending",
+      "submitted": {
+        "title": "Application Submitted",
+        "description": "Your application has been successfully submitted"
+      },
+      "review": {
+        "title": "Under Review",
+        "description": "Waiting for employer review"
+      },
+      "interview": {
+        "title": "Interview",
+        "description": "Potential interview invitation"
+      }
+    },
+    "applicationInfo": {
+      "title": "Application Info",
+      "appId": "Application ID",
+      "jobId": "Job ID",
+      "education": "Education",
+      "workMode": "Work Mode"
+    },
+    "location": {
+      "title": "Location",
+      "companyAddress": "Company Address"
+    },
+    "statusCard": {
+      "title": "Application Status",
+      "message": "Your application is currently being processed. We'll keep you updated on any changes."
+    }
+  },
+  "applyingModal": {
+    "gotItThanks": "Got it, Thanks!",
+    "viewMyApplications": "View My Applications",
+    "startTest": "Start Test"
+  },
+  
+  "forms":{
+  "contactForm": {
+  "fields": {
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "First Name",
+      "error": "First name must contain only letters"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Last Name",
+      "error": "Last name must contain only letters"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email",
+      "error": "Invalid email format"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number",
+      "error": "Invalid phone number"
+    },
+    "subject": {
+      "label": "Subject",
+      "placeholder": "Subject",
+      "error": "Subject cannot be empty"
+    },
+    "notes": {
+      "label": "notes",
+      "placeholder": "Your message here",
+      "error": "Message cannot be empty"
+    }
+  },
+  "submit": "Submit",
+   "successMessage": "Your message has been sent successfully!",
+  "errorMessage": "Failed to send message. Please try again later.",
+  "submitting": "Submitting...",
+  "validation": {
+    "required": "This field is required",
+    "invalidFormat": "Invalid format"
+  }
+},
+"subscribeForm": {
+  "description": "Stay updated with our latest news and offers",
+  "emailPlaceholder": "your@email.com",
+  "subscribe": "Subscribe",
+  "submitting": "Subscribing...",
+  "success": {
+    "title": "Subscription successful!",
+    "description": "Thank you for subscribing to our newsletter."
+  },
+  "error": {
+    "title": "Subscription failed",
+    "description": "Please try again later."
+  }
+},
+  "loginForm": {
+    "title": "Welcome back",
+    "description": "Enter your email or phone number to sign in",
+    "fields": {
+      "identifier": {
+        "label": "Email or Phone",
+        "placeholder": "john@example.com or +1234567890",
+        "error": "Please enter a valid email or phone number (e.g., +1234567890)"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "••••••",
+        "error": "Password must be at least 6 characters"
+      }
+    },
+    "forgotPassword": "Forgot password?",
+    "submit": "Sign In",
+    "submitting": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "toast": {
+      "success": {
+        "title": "Login successful!",
+        "description": "Redirecting to your dashboard..."
+      },
+      "error": {
+        "title": "Login failed",
+        "description": "Invalid credentials. Please try again."
+      }
+    }
+},
+  "forgotPasswordForm": {
+    "title": "Forgot your password?",
+    "description": "Enter your email and we will send you a link to reset your password",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+        "required": "Email is required",
+        "invalid": "Please enter a valid email address"
+      }
+    },
+    "submit": "Send reset link",
+    "submitting": "Sending...",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Reset link sent",
+        "description": "If an account exists with this email, you'll receive a password reset link."
+      },
+      "error": {
+        "title": "Failed to send reset link",
+        "description": "An error occurred while trying to send the reset link. Please try again."
+      }
+    }
+},
+    "registerForm": {
+      "title": "Create an account",
+      "description": "Enter your details below to create your account",
+      "fields": {
+        "name": {
+          "label": "First Name",
+          "placeholder": "John",
+          "error": "Name must be at least 2 characters"
+        },
+        "surname": {
+          "label": "Surname",
+          "placeholder": "Doe",
+          "error": "Surname must be at least 2 characters"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "example@example.com",
+          "error": "Please enter a valid email address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "error": "Please enter a valid phone number"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Select Country",
+          "error": "Please select a country"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Select City",
+          "error": "Please select a city"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••",
+          "error": "Password must be at least 8 characters"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "••••••••",
+          "error": "Passwords don't match"
+        },
+        "cv": {
+          "label": "Upload CV (PDF or Word)",
+          "dragText": "Click or drag file to this area to upload",
+          "hint": "Support for single upload. Only PDF and Word documents are accepted (max 5MB).",
+          "errorSize": "CV file must be less than 5MB",
+          "errorType": "Only PDF and Word documents are accepted",
+          "optional": "optional"
+        },
+   "acceptTerms": {
+      "label": "I accept the {terms} and {privacy}",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy",
+      "error": "You must accept the terms and policies"
+    }
+      },
+      "submit": "Create Account",
+      "submitting": "Creating account...",
+        "loginLink": {
+        "prefix": "Already have an account?",
+         "loginText": "login"
+        },
+      "login": "Login",
+      "toast": {
+        "success": {
+          "title": "Registration successful!",
+          "description": "Your account has been created successfully."
+        },
+        "error": {
+          "title": "Registration failed",
+          "description": "An error occurred. Please try again."
+        }
+      }
+    },
+"passwordChangeForm": {
+  "title": "Change Password",
+  "description": "Enter your current and new password",
+  "fields": {
+    "current_password": {
+      "label": "Current Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters"
+    },
+    "new_password": {
+      "label": "New Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters"
+    },
+    "new_password_confirmation": {
+      "label": "Confirm New Password",
+      "placeholder": "••••••",
+      "error": "Password must be at least 6 characters",
+      "mismatch": "Passwords do not match"
+    }
+  },
+  "submit": "Change Password",
+  "submitting": "Changing password...",
+  "toast": {
+    "success": {
+      "title": "Password changed successfully!",
+      "description": "Your password has been updated"
+    },
+    "error": {
+      "title": "Password change failed",
+      "description": "Please check your current password and try again"
+    }
+  }
+}, "verifyResetCodeForm": {
+    "title": "Verify Reset Code",
+    "description": "Enter the verification code sent to your email",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com",
+            "required": "Email is required",
+      "invalid": "Please enter a valid email address"
+      },
+      "token": {
+        "label": "Verification Code",
+        "placeholder": "Enter 5-digit code",
+            "required": "Verification code is required",
+      "length": "Code must be 5 digits",
+      "digits": "Code must contain only numbers"
+      }
+    },
+    "submit": "Verify Code",
+    "submitting": "Verifying...",
+    "resendCode": "Resend Code",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Verification successful!",
+        "description": "You can now reset your password"
+      },
+      "error": {
+        "title": "Verification failed",
+        "description": "Invalid or expired verification code"
+      },
+      "resendSuccess": {
+        "title": "Code resent",
+        "description": "A new verification code has been sent to your email"
+      }
+    }
+  },
+    "resetPasswordForm": {
+    "title": "Reset Your Password",
+    "description": "Enter your new password below",
+    "fields": {
+      "password": {
+        "label": "New Password",
+        "placeholder": "••••••••",
+        "error": "Password must be at least 8 characters"
+      },
+      "password_confirmation": {
+        "label": "Confirm New Password",
+        "placeholder": "••••••••",
+        "error": "Please confirm your password",
+        "mismatch": "Passwords do not match"
+      },
+      "email": {
+        "invalid": "Invalid email address"
+      },
+      "token": {
+        "required": "Token is required"
+      }
+    },
+    "submit": "Reset Password",
+    "submitting": "Resetting...",
+    "backToLogin": "Back to login",
+    "toast": {
+      "success": {
+        "title": "Password reset successful!",
+        "description": "You can now login with your new password"
+      },
+      "error": {
+        "title": "Password reset failed",
+        "description": "Please try again"
+      }
+    }
+  }
+},
+"testQuestionPage": {
+    "progress": "Progress",
+    "complete": "Complete",
+    "motivation": "You're doing great!",
+    "advice": "Take your time and think carefully",
+    "previous": "Previous",
+    "next": "Next",
+
+    "submitTest": "Submit Test",
+    "submitting": "Submitting...",
+    "textAnswerPlaceholder": "Type your answer here...",
+     "questionsCompleted": "Questions Completed",
+    "questionsRemaining": "Questions Remaining"
+},
+"resultModal": {
+  "perfectScore": {
+    "title": "Perfect Score!",
+    "message": "The job application has been successfully submitted. Continue searching and applying for the jobs that suit you"
+  },
+  "notAccepted": {
+    "title": "Application Not Accepted",
+    "message": "Thank you for applying, one or more of your answers does not meet Our Clients requirements, continue to apply for other jobs"
+  },
+  "yourScore": "Your Score",
+  "submissionId": "Submission ID",
+  "backToCareerPage": "Back to Career Page",
+  "backToApplicationPage": "View My Applications",
+  "congratulations": "Congratulations! Perfect Score!"
+},
+   "examResultModal": {
+    "passed": {
+      "title": "Congratulations!",
+      "message": "You have successfully completed the assessment."
+    },
+    "failed": {
+      "title": "Assessment Result",
+      "message": "You didn't meet the passing criteria this time."
+    },
+    "viewResults": "View My Exams",
+    "tryAgain": "Try Again",
+    "congratulations": "Excellent Work!"
+  }, 
+
+  "serviceRequest": {
+    "title": "Request Service",
+    "description": "Let's get started with your service request. We'll guide you through each step to ensure we have all the information we need.",
+    "progressTitle": "Progress",
+    "steps": {
+      "personalInfo": {
+        "title": "Personal Information",
+        "description": "Tell us about yourself"
+      },
+      "generalInfo": {
+        "title": "General Info",
+        "description": "Company information"
+      },
+      "serviceDetails": {
+        "title": "Service Details",
+        "description": "Your requirements"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "description": "Budget information"
+      }
+    },
+    "form": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "companyName": "Company Name",
+      "jobTitle": "Job Title",
+      "country": "Country",
+      "city": "City",
+      "selectCountry": "Select Country",
+      "selectCity": "Select City",
+      "textPlaceholder": "Enter your answer...",
+      "selectOption": "Select an option",
+      "selectOptions": "Select options",
+      "selectSubOptions": "Select sub-options"
+    },
+    "success": {
+      "title": "Request Submitted Successfully!",
+      "message": "Thank you for your request. Our team will review it and get back to you shortly.",
+      "responseTime": "We typically respond within 24 hours",
+      "returnHome": "Return to Home"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Request",
+      "submitting": "Submitting..."
+    },
+    "validationErrors": {
+      "title": "Please:",
+      "fullNameRequired": "Full Name is required",
+      "emailRequired": "Valid Email is required",
+      "phoneRequired": "Phone is required",
+      "countryRequired": "Country is required",
+      "cityRequired": "City is required",
+      "questionRequired": "{field} is required",
+      "noOptions": "No options available for this question",
+      "radioConfigError": "Configuration error: This radio question has no options",
+      "submissionFailed": "Failed to submit request. Please try again.",
+      "numericOnly": "numbers only",
+      "alphaOnly": "letters only",
+      "alphanumericOnly": "letters and numbers only",
+      "validEmail": "valid email address",
+      "enterNumbersOnly": "Please enter numbers only",
+      "enterLettersOnly": "Please enter letters only",
+      "enterLettersNumbersOnly": "Please enter letters and numbers only",
+      "enterValidEmail": "Please enter a valid email address",
+      "unsupportedType": "Unsupported field type"
+    },
+    "loading": {
+      "countries": "Loading countries...",
+      "cities": "Loading cities..."
+    }
+  }
+, 
+  
+  "serviceDetails": {
+    "imageAlt": "Service image",
+    "overview": {
+      "title": "Service Overview"
+    },
+    "cta": {
+      "requestService": "I'm Interested Tell Me More"
+    },
+    "learnMore": "Learn More",
+    "subtitle": "Transform your vision into reality with cutting-edge solutions tailored for your success."
+  }, 
+  "chat": {
+      "adminDescription": "This is your secure inbox for official communications from our admin team. All messages here are for your reference and cannot be replied to.",
+      "adminSupport": "Admin Support",
+      "usuallyResponds": "Usually responds within 1 hour",
+      "loadingMessages": "Loading your messages...",
+      "noMessages": "No Messages Yet",
+      "noMessagesDescription": "When our admin team sends you important updates, they'll appear in this  space.",
+      "readOnly": "Secure messages from admin team",
+      "liveSupport": "Admin Support",
+      "requestHelp": "Request Help"
+    }
+ 
+}
+
+

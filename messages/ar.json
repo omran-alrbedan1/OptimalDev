@@ -1,0 +1,849 @@
+{
+  "header": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+     "services": "خدماتنا",
+    "career": "وظائف",
+    "contact": "اتصل بنا",
+    "businessDev": "تطوير الأعمال",
+    "personalDev": "تطوير شخصي",
+    "training": "تدريب",
+    "employment": "توظيف",
+    "hr": "موارد بشرية",
+    "webManagement": "إدارة المواقع",
+    "marketing": "حلول تسويقية",
+    "coaching": "تدريب حياتي",
+    "careerPath": "مسار وظيفي",
+    "internship": "تدريب عملي",
+  "login": "تسجيل الدخول",
+  "register": "إنشاء حساب"
+
+  },
+  "ourServices": {
+  "title": "خدماتنا",
+  "paragraph": "يوفر مسار الأمثل الربط بين المواهب المناسبة والفرص المناسبة."
+},
+  "jobOpportunities": {
+    "title": "تصفح فرص العمل",
+    "paragraph": "اكتشف أحدث الوظائف وكن أول المتقدمين",
+    "viewMore": "رؤية المزيد",
+    "applyNow": "تقدم الآن",
+    "posted": "نُشر",
+    "unknownCompany": "شركة غير معروفة",
+    "fullTime": "دوام كامل",
+    "noDescription": "لا يوجد وصف متاح",
+    "fetchError": "فشل في جلب الوظائف",
+    "errorLoading": "خطأ في تحميل الوظائف",
+    "retry": "إعادة المحاولة",
+    "imageAlt": "فرص العمل"
+  },
+    "ourPartners":{
+    "title":"شركاؤنا "
+  },
+"ourClients": {
+  "title": "عملاؤنا",
+  "paragraph": "نمكن الأعمال من خلال شراكات موثوقة وحلول مبتكرة."
+},
+  "aboutSection": {
+    "title":"من نحن",
+    "whoWeAre": "من نحن",
+    "ourVision": "رؤيتنا",
+    "ourMission": "مهمتنا",
+    "ourValues": "قيمنا"
+  },
+"footer": {
+  "companyDescription": "يوفر مسار الأمثل الربط بين أفضل الكفاءات والفرص الاستثنائية. نقدم حلول توظيف استراتيجية لتنمية الأعمال والمهن.",
+  "contactUs": "اتصل بنا",
+  "subscribe": "اشترك معنا",
+  "copyright": "© 2025 جميع الحقوق محفوظة لشركة",
+  "companyName": "مسار الأمثل",
+  "contactItems": {
+    "location": "الأردن",
+    "email": "info@optimalpathmc.com",
+    "phone": "٩٦٢٧٩٧٧٠١٥٤٥+"
+  }
+},
+"contactUs":{
+  "title":"اتصل بنا",
+  "address":"العنوان",
+  "phone":"الهاتف",
+  "email":"الايميل"
+},
+  "profilePage": {
+    "applications": "التقديمات",
+    "exams": "الاختبارات",
+    "messages": "الرسائل",
+    "noApplications": {
+      "title": "لا توجد طلبات حتى الآن",
+      "description": "لم تتقدم لأي وظائف بعد. ابدأ في استكشاف الفرص اليوم!",
+      "button": "تصفح الوظائف المتاحة"
+    },
+ 
+    "noMessages": {
+      "title": "لا توجد رسائل",
+      "description": "ستظهر رسائلك وإشعاراتك هنا"
+    },
+    "editProfile": "تعديل الملف الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+     "logout": {
+    "button": "تسجيل الخروج",
+    "confirmTitle": "تأكيد تسجيل الخروج",
+    "confirmMessage": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حسابك.",
+    "confirm": "تسجيل الخروج",
+    "loggingOut": "جاري تسجيل الخروج...",
+    "cancel": "إلغاء"
+  },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "description": "إدارة التفاصيل الشخصية ومعلومات الاتصال الخاصة بك"
+    },
+    
+  "ApplicationList": {
+    "header": {
+      "title": "طلباتي",
+      "subtitle": "تم العثور على {total} طلب"
+    },
+    "status": {
+      "applied": "تم التقديم",
+      "pending": "قيد المراجعة",
+      "reviewed": "تمت المراجعة",
+      "shortlisted": "في القائمة المختصرة",
+      "approved": "مقبول",
+      "rejected": "مرفوض",
+      "withdrawn": "تم السحب"
+    },
+    "jobDetails": {
+      "salary": "الراتب",
+      "experience": "الخبرة",
+      "contract": "نوع العقد",
+      "workMode": "نمط العمل",
+      "skills": "المهارات المطلوبة",
+      "appliedDate": "تاريخ التقديم: {date}",
+      "expiringSoon": "⚠️ تنتهي خلال {days} أيام",
+      "expired": "❌ منتهية الصلاحية",
+      "years":"سنة"
+
+    },
+    "actions": {
+      "details": "التفاصيل",
+      "viewJob": "عرض الوظيفة"
+    },
+    "noApplications": {
+      "title": "لا توجد طلبات بعد",
+      "description": "لم تتقدم لأي وظائف بعد. ابدأ استكشاف الفرص اليوم!",
+      "button": "تصفح الوظائف المتاحة"
+    },
+    "error": {
+      "loading": "خطأ في تحميل الطلبات",
+      "retry": "إعادة المحاولة"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
+"ExamsList": {
+  "noExams": {
+    "title": "لا توجد اختبارات متاحة",
+    "description": "ليس لديك أي اختبارات مجدولة في الوقت الحالي"
+  },
+  "noTests": {
+    "title": "لا توجد اختبارات",
+    "description": "لا توجد أي اختبارات مخصصة لك حالياً"
+  },
+  "header": {
+    "title": "اختباراتي"
+  },
+  "status": {
+    "eligible": "مؤهل",
+    "notEligible": "غير مؤهل",
+    "pending": "قيد الانتظار",
+    "failed": "فشل"
+  },
+  "testType": {
+    "interview": "مقابلة",
+    "quiz": "اختبار",
+    "failed": "فشل"
+  },
+  "actions": {
+    "view": "عرض التفاصيل",
+    "ok": "موافق",
+    "pending": "في انتظار الموافقة",
+    "start": "بدء الاختبار",
+    "understand": "أنا أتفهم",
+    "appliedOn": "تم التقديم في",
+    "retry": "إعادة الاختبار",
+    "retryNow": "إعادة الآن"
+  },
+  "testNotAvailable": "الاختبار غير متاح",
+  "testPendingMessage": "هذا الاختبار في انتظار الموافقة. سيتم إعلامك عندما يصبح متاحاً.",
+  "testFailed": "فشل في الاختبار",
+  "testFailedMessage": "للأسف لم تجتز هذا الاختبار. يرجى مراجعة أدائك وإعادة المحاولة إذا كان متاحاً.",
+  "retryAvailable": "إعادة الاختبار متاحة",
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "error": {
+    "loading": "خطأ في تحميل الاختبارات",
+    "retry": "حاول مرة أخرى"
+  },
+  "test": {
+    "retryable": "مؤهل لإعادة المحاولة"
+  }
+},
+    "email": "البريد الإلكتروني",
+    "location": "الموقع",
+    "phone": "الهاتف",
+    "documents": "السيرة الذاتية",
+    "notProvided": "غير متوفر",
+    "notSpecified": "غير محدد",
+    "viewDocuments": "عرض السيرة الذاتية",
+    "secureAccount": {
+      "title": "أمن حسابك",
+      "description": "اختر كلمة مرور قوية لحماية معلوماتك الشخصية"
+    }
+  }
+,
+"editProfile": {
+  "title": "تعديل الملف الشخصي",
+  "subtitle": "تحديث معلوماتك الشخصية",
+  "photoSection": {
+    "changePhoto": "تغيير الصورة",
+    "cvSection": {
+      "title": "سيرتك الذاتية",
+      "noCV": "لا يوجد سيرة ذاتية",
+      "changeCV": "تغيير السيرة الذاتية",
+      "uploadNewCV": "رفع سيرة ذاتية جديدة",
+      "fileRequirements": "PDF, DOCX (بحد أقصى 5MB)",
+      "cvUploaded":"السيرة الذاتية متاحة"
+
+    }
+  },
+"form": {
+      "firstName": {
+        "label": "الاسم الأول",
+        "required": "الاسم الأول مطلوب",
+        "placeholder": "أدخل اسمك الأول"
+      },
+      "lastName": {
+        "label": "الاسم الأخير",
+        "required": "الاسم الأخير مطلوب",
+        "placeholder": "أدخل اسمك الأخير"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "invalid": "الرجاء إدخال بريد إلكتروني صالح",
+        "placeholder": "أدخل بريدك الإلكتروني"
+      },
+      "phone": {
+        "label": "رقم الهاتف",
+        "required": "رقم الهاتف مطلوب",
+        "placeholder": "أدخل رقم هاتفك"
+      },
+      "country": {
+        "label": "الدولة",
+        "required": "الدولة مطلوبة",
+        "select": "اختر الدولة"
+      },
+      "city": {
+        "label": "المدينة",
+        "required": "المدينة مطلوبة",
+        "select": "اختر المدينة"
+      },
+      "updateButton": "تحديث الملف الشخصي",
+      "updating": "جاري التحديث..."
+    },
+  "toast": {
+    "success": "تم تحديث الملف الشخصي بنجاح!",
+    "error": "فشل تحديث الملف الشخصي"
+  },
+  "messages": {
+    "fileSelected": "تم اختيار الملف",
+    "countriesError": "فشل تحميل الدول",
+    "citiesError": "فشل تحميل المدن"
+  },
+  "actions": {
+    "view": "عرض"
+  }
+},
+
+  "careerPage": {
+    "availableJobs": "الوظائف المتاحة",
+    "searchPlaceholder": "ابحث عن وظائف...",
+    "searchButton": "بحث",
+    "filters": "الفلاتر",
+    "applyFilters": "تطبيق الفلاتر",
+    "industry": "الصناعة",
+    "jobType": "نوع الوظيفة",
+    "salaryRange": "نطاق الراتب",
+    "salaryMarks": {
+      "0": "٠$",
+      "500": "٥٠٠$ ",
+      "1000": "١٠٠٠$",
+      "1500": "١٥٠٠$",
+      "2000": "٢٠٠٠+$"
+    },
+    "currencySymbol": "$",
+    "minSalary": "الحد الأدنى",
+    "maxSalary": "الحد الأقصى",
+    "workMode": "طريقة العمل",
+    "experienceLevel": "مستوى الخبرة",
+    "educationLevel": "المستوى التعليمي",
+    "country": "البلد",
+    "noJobsFoundAlt": "لا توجد وظائف",
+    "noMatchingJobs": "لا توجد وظائف مطابقة",
+    "noResultsMessage": "لم يعثر بحثك على أي نتائج. جرب فلاتر مختلفة.",
+    "clearSearch": "مسح البحث",
+    "resetAllFilters": "إعادة تعيين جميع الفلاتر",
+    "fullTime": "دوام كامل",
+    "onSite": "حضوري",
+    "previous": "السابق",
+    "next": "التالي",
+    "errorLoadingJobs": "خطأ في تحميل الوظائف",
+
+    "jobCard": {
+      "checkOutJob": "اطلع على هذه الوظيفة",
+      "at": "في",
+      "facebook": "فيسبوك",
+      "linkedin": "لينكدإن",
+      "whatsapp": "واتساب",
+      "copyLink": "نسخ الرابط",
+      "linkCopied": "تم نسخ الرابط إلى الحافظة!",
+      "industry": "الصناعة",
+      "applyNow": "تقدم الآن",
+      "loginToApply": "سجل الدخول للتقديم",
+      "applying": "جاري التقدبم"
+    }
+  },
+
+  "jobDetailsPage": {
+    "loading": "جار التحميل...",
+    "error": "فشل الاتصال بالخادم",
+    "jobNotFound": "الوظيفة غير موجودة",
+    "jobDescription": "وصف الوظيفة",
+    "dutiesResponsibilities": "المهام والمسؤوليات",
+    "technicalSkills": "المهارات التقنية",
+    "jobDetails": "تفاصيل الوظيفة",
+    "salaryRange": "نطاق الراتب",
+    "publishedDate": "تاريخ النشر",
+    "expirationDate": "تاريخ الانتهاء",
+    "jobType": "نوع الوظيفة",
+    "requirements": "المتطلبات",
+    "yearsExperience": "سنوات الخبرة",
+    "preferredCandidate": "المرشح المفضل",
+    "otherRequirements": "متطلبات أخرى",
+    "companyInformation": "معلومات الشركة",
+    "address": "العنوان",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "applyNow": "تقديم الآن",
+    "loginToApply": "تسجيل الدخول للتقديم"
+  },
+  "ApplicationDetailsPage": {
+    "header": {
+      "remote": "عن بُعد",
+      "contractType": "نوع العقد",
+      "experienceLevel": "مستوى الخبرة"
+    },
+    "testResults": {
+      "title": "اختبارات التقييم",
+      "questions": "الأسئلة",
+      "question": "السؤال",
+      "submittedAt": "تم الإرسال",
+      "correct": "صحيح",
+      "incorrect": "غير صحيح",
+      "score": "النتيجة",
+      "hideQuestions": "إخفاء الأسئلة والإجابات",
+      "viewQuestions": "عرض الأسئلة والإجابات",
+      "questionsAnswers": "مراجعة الأسئلة والإجابات",
+      "yourAnswer": "إجابتك"
+    },
+    "quickStats": {
+      "applied": "تاريخ التقديم",
+      "deadline": "الموعد النهائي",
+      "status": "الحالة",
+      "experience": "الخبرة",
+      "salary": "الراتب",
+      "years": "سنة"
+    },
+    "jobDetails": {
+      "title": "تفاصيل الوظيفة",
+      "responsibilities": "المسؤوليات",
+      "technicalSkills": "المهارات التقنية",
+      "requirements": "المتطلبات"
+    },
+    "applicationProgress": {
+      "title": "تقدم الطلب",
+      "pending": "قيد الانتظار",
+      "submitted": {
+        "title": "تم تقديم الطلب",
+        "description": "تم تقديم طلبك بنجاح"
+      },
+      "review": {
+        "title": "قيد المراجعة",
+        "description": "بانتظار مراجعة صاحب العمل"
+      },
+      "interview": {
+        "title": "مقابلة",
+        "description": "دعوة محتملة للمقابلة"
+      }
+    },
+    "applicationInfo": {
+      "title": "معلومات الطلب",
+      "appId": "معرف الطلب",
+      "jobId": "معرف الوظيفة",
+      "education": "المؤهل التعليمي",
+      "workMode": "نمط العمل"
+    },
+    "location": {
+      "title": "الموقع",
+      "companyAddress": "عنوان الشركة"
+    },
+    "statusCard": {
+      "title": "حالة الطلب",
+      "message": "طلبك قيد المعالجة حالياً. سنبقيك على اطلاع بأي تغييرات."
+    }
+  }
+,
+
+  "applyingModal": {
+    "gotItThanks": "حسناً، شكراً لك!",
+    "viewMyApplications": "عرض طلباتي",
+    "startTest": "ابدأ الاختبار"
+  },
+"forms":{
+  "contactForm": {
+  "fields": {
+    "firstName": {
+      "label": "الاسم الأول",
+      "placeholder": "الاسم الأول",
+      "error": "يجب أن يحتوي الاسم الأول على أحرف فقط"
+    },
+    "lastName": {
+      "label": "الاسم الأخير",
+      "placeholder": "الاسم الأخير",
+      "error": "يجب أن يحتوي الاسم الأخير على أحرف فقط"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "البريد الإلكتروني",
+      "error": "صيغة البريد الإلكتروني غير صالحة"
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم الهاتف",
+      "error": "رقم الهاتف غير صالح"
+    },
+    "subject": {
+      "label": "الموضوع",
+      "placeholder": "الموضوع",
+      "error": "لا يمكن ترك الموضوع فارغًا"
+    },
+    "notes": {
+      "label": "الرسالة",
+      "placeholder": "اكتب رسالتك هنا",
+      "error": "لا يمكن ترك الرسالة فارغة"
+    }
+  },
+  "successMessage": "تم إرسال رسالتك بنجاح!",
+  "errorMessage": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقًا.",
+  "submitting": "جاري الإرسال...",
+  "submit": "إرسال",
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidFormat": "صيغة غير صالحة"
+  }
+},
+"subscribeForm": {
+  "description": "ابق على اطلاع بآخر أخبارنا وعروضنا",
+  "emailPlaceholder": "بريدك@الإلكتروني",
+  "subscribe": "اشترك",
+  "submitting": "جاري الاشتراك...",
+  "success": {
+    "title": "تم الاشتراك بنجاح!",
+    "description": "شكراً لك على اشتراكك في نشرتنا البريدية."
+  },
+  "error": {
+    "title": "فشل الاشتراك",
+    "description": "الرجاء المحاولة مرة أخرى لاحقاً."
+  }
+},
+  "loginForm": {
+    "title": "مرحباً بعودتك",
+    "description": "أدخل بريدك الإلكتروني أو رقم هاتفك لتسجيل الدخول",
+    "fields": {
+      "identifier": {
+        "label": "البريد الإلكتروني أو الهاتف",
+        "placeholder": "john@example.com أو +1234567890",
+        "error": "الرجاء إدخال بريد إلكتروني أو رقم هاتف صالح (مثال: +1234567890)"
+      },
+      "password": {
+        "label": "كلمة المرور",
+        "placeholder": "••••••",
+        "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+      }
+    },
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "submit": "تسجيل الدخول",
+    "submitting": "جاري تسجيل الدخول...",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "اشترك الآن",
+    "toast": {
+      "success": {
+        "title": "تم تسجيل الدخول بنجاح!",
+        "description": "جاري التوجيه إلى لوحة التحكم..."
+      },
+      "error": {
+        "title": "فشل تسجيل الدخول",
+        "description": "بيانات الاعتماد غير صالحة. الرجاء المحاولة مرة أخرى."
+      }
+    }
+},
+  "forgotPasswordForm": {
+    "title": "نسيت كلمة المرور؟",
+    "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور الخاصة بك",
+    "fields": {
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "m@example.com",
+        "required": "البريد الإلكتروني مطلوب",
+        "invalid": "الرجاء إدخال عنوان بريد إلكتروني صالح"
+      }
+    },
+    "submit": "إرسال رابط إعادة التعيين",
+    "submitting": "جاري الإرسال...",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "toast": {
+      "success": {
+        "title": "تم إرسال رابط إعادة التعيين",
+        "description": "إذا كان هناك حساب مسجل بهذا البريد الإلكتروني، فستتلقى رابطًا لإعادة تعيين كلمة المرور."
+      },
+      "error": {
+        "title": "فشل إرسال رابط إعادة التعيين",
+        "description": "حدث خطأ أثناء محاولة إرسال رابط إعادة التعيين. الرجاء المحاولة مرة أخرى."
+      }
+    }
+  },
+    "registerForm": {
+      "title": "إنشاء حساب",
+      "description": "أدخل بياناتك أدناه لإنشاء حسابك",
+      "fields": {
+        "name": {
+          "label": "الاسم الأول",
+          "placeholder": "محمد",
+          "error": "يجب أن يكون الاسم الأول مكونًا من حرفين على الأقل"
+        },
+        "surname": {
+          "label": "الاسم الأخير",
+          "placeholder": "علي",
+          "error": "يجب أن يكون الاسم الأخير مكونًا من حرفين على الأقل"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "example@example.com",
+          "error": "الرجاء إدخال عنوان بريد إلكتروني صالح"
+        },
+        "phone": {
+          "label": "رقم الهاتف",
+          "error": "الرجاء إدخال رقم هاتف صالح"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "اختر الدولة",
+          "error": "الرجاء اختيار دولة"
+        },
+        "city": {
+          "label": "المدينة",
+          "placeholder": "اختر المدينة",
+          "error": "الرجاء اختيار مدينة"
+        },
+        "password": {
+          "label": "كلمة المرور",
+          "placeholder": "••••••••",
+          "error": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل"
+        },
+        "confirmPassword": {
+          "label": "تأكيد كلمة المرور",
+          "placeholder": "••••••••",
+          "error": "كلمات المرور غير متطابقة"
+        },
+        "cv": {
+          "label": "رفع السيرة الذاتية (PDF أو Word)",
+          "dragText": "انقر أو اسحب الملف إلى هذه المنطقة للرفع",
+          "hint": "يدعم رفع ملف واحد فقط. يتم قبول ملفات PDF و Word فقط (بحد أقصى 5MB).",
+          "errorSize": "يجب أن يكون حجم ملف السيرة الذاتية أقل من 5MB",
+          "errorType": "يتم قبول ملفات PDF و Word فقط",
+           "optional": "اختياري"
+        },
+        "acceptTerms": {
+      "label": "أوافق على {terms} و {privacy}",
+      "terms": "الشروط والأحكام",
+      "privacy": "سياسة الخصوصية",
+      "error": "يجب عليك الموافقة على الشروط والسياسات"
+    }
+      },
+      "submit": "إنشاء حساب",
+      "submitting": "جاري إنشاء الحساب...",
+      "loginLink": {
+        "prefix": "هل لديك حساب بالفعل؟",
+         "loginText": "تسجيل الدخول"
+        },
+      "login": "تسجيل الدخول",
+      "toast": {
+        "success": {
+          "title": "تم التسجيل بنجاح!",
+          "description": "تم إنشاء حسابك بنجاح."
+        },
+        "error": {
+          "title": "فشل التسجيل",
+          "description": "حدث خطأ. الرجاء المحاولة مرة أخرى."
+        }
+      }
+    },
+"passwordChangeForm": {
+  "title": "تغيير كلمة المرور",
+  "description": "أدخل كلمة المرور الحالية والجديدة",
+  "fields": {
+    "current_password": {
+      "label": "كلمة المرور الحالية",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+    },
+    "new_password": {
+      "label": "كلمة المرور الجديدة",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+    },
+    "new_password_confirmation": {
+      "label": "تأكيد كلمة المرور الجديدة",
+      "placeholder": "••••••",
+      "error": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+      "mismatch": "كلمات المرور غير متطابقة"
+    }
+  },
+  "submit": "تغيير كلمة المرور",
+  "submitting": "جاري تغيير كلمة المرور...",
+  "toast": {
+    "success": {
+      "title": "تم تغيير كلمة المرور بنجاح!",
+      "description": "تم تحديث كلمة المرور الخاصة بك"
+    },
+    "error": {
+      "title": "فشل تغيير كلمة المرور",
+      "description": "الرجاء التحقق من كلمة المرور الحالية والمحاولة مرة أخرى"
+    }
+  }
+} , 
+ "verifyResetCodeForm": {
+    "title": "تحقق من رمز إعادة التعيين",
+    "description": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
+    "fields": {
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "m@example.com",
+           "required": "البريد الإلكتروني مطلوب",
+      "invalid": "الرجاء إدخال عنوان بريد إلكتروني صالح"
+      },
+      "token": {
+        "label": "رمز التحقق",
+        "placeholder": "أدخل الرمز المكون من 5 أرقام",
+      "required": "رمز التحقق مطلوب",
+      "length": "يجب أن يتكون الرمز من 5 أرقام",
+      "digits": "يجب أن يحتوي الرمز على أرقام فقط"
+      }
+    },
+    "submit": "تحقق من الرمز",
+    "submitting": "جاري التحقق...",
+    "resendCode": "إعادة إرسال الرمز",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "toast": {
+      "success": {
+        "title": "تم التحقق بنجاح!",
+        "description": "يمكنك الآن إعادة تعيين كلمة المرور الخاصة بك"
+      },
+      "error": {
+        "title": "فشل التحقق",
+        "description": "رمز التحقق غير صالح أو منتهي الصلاحية"
+      },
+      "resendSuccess": {
+        "title": "تم إعادة إرسال الرمز",
+        "description": "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني"
+      }
+    }
+  },
+  "resetPasswordForm": {
+    "title": "إعادة تعيين كلمة المرور",
+    "description": "الرجاء إدخال كلمة المرور الجديدة أدناه",
+    "fields": {
+      "password": {
+        "label": "كلمة المرور الجديدة",
+        "placeholder": "••••••••",
+        "error": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل"
+      },
+      "password_confirmation": {
+        "label": "تأكيد كلمة المرور الجديدة",
+        "placeholder": "••••••••",
+        "error": "الرجاء تأكيد كلمة المرور",
+        "mismatch": "كلمات المرور غير متطابقة"
+      },
+      "email": {
+        "invalid": "عنوان البريد الإلكتروني غير صالح"
+      },
+      "token": {
+        "required": "رمز التحقق مطلوب"
+      }
+    },
+    "submit": "إعادة تعيين كلمة المرور",
+    "submitting": "جاري إعادة التعيين...",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "toast": {
+      "success": {
+        "title": "تم إعادة تعيين كلمة المرور بنجاح!",
+        "description": "يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة"
+      },
+      "error": {
+        "title": "فشل إعادة تعيين كلمة المرور",
+        "description": "الرجاء المحاولة مرة أخرى"
+      }
+    }
+  }
+},
+"testQuestionPage": {
+    "progress": "التقدم",
+    "complete": "مكتمل",
+    "motivation": "أنت تقوم بعمل رائع!",
+    "advice": "خذ وقتك وفكر بعناية",
+    "previous": "السابق",
+    "next": "التالي",
+    "submitTest": "إرسال الاختبار",
+    "submitting": "جاري الإرسال...",
+    "textAnswerPlaceholder": "اكتب إجابتك هنا...",
+     "questionsCompleted": "الأسئلة المكتملة",
+    "questionsRemaining": "الأسئلة المتبقية"
+},
+"resultModal": {
+  "perfectScore": {
+    "title": "نتيجة ممتازة!",
+    "message": "تم تقديم طلب الوظيفة بنجاح. تابع البحث والتقديم على الوظائف التي تناسبك"
+  },
+  "notAccepted": {
+    "title": "لم يتم قبول الطلب",
+    "message": "شكرا لتقديمك، واحد أو أكثر من إجاباتك لا تستوفي متطلبات عملائنا، تابع التقديم على وظائف أخرى"
+  },
+  "yourScore": "نقاطك",
+  "submissionId": "معرف التقديم",
+  "backToCareerPage": "العودة الى تصفح فرص العمل",
+  "backToApplicationPage": "مراجعة طلباتي",
+  "congratulations": "مبروك! نتيجة ممتازة!"
+},
+
+    "examResultModal": {
+    "passed": {
+      "title": "تهانينا!",
+      "message": "لقد أكملت التقييم بنجاح."
+    },
+    "failed": {
+      "title": "نتيجة التقييم",
+      "message": "لم تستوفي معايير النجاح هذه المرة."
+    },
+    "viewResults": "عرض الامتحانات",
+    "tryAgain": "إعادة المحاولة",
+    "congratulations": "عمل ممتاز!"
+  },  
+  "serviceRequest": {
+    "title": "طلب الخدمة",
+    "description": "لنبدأ بطلب الخدمة الخاص بك. سنرشدك خلال كل خطوة لضمان حصولنا على جميع المعلومات التي نحتاجها.",
+    "progressTitle": "التقدم",
+    "steps": {
+      "personalInfo": {
+        "title": "المعلومات الشخصية",
+        "description": "أخبرنا عن نفسك"
+      },
+      "generalInfo": {
+        "title": "معلومات عامة",
+        "description": "معلومات الشركة"
+      },
+      "serviceDetails": {
+        "title": "تفاصيل الخدمة",
+        "description": "متطلباتك"
+      },
+      "pricing": {
+        "title": "التسعير",
+        "description": "معلومات الميزانية"
+      }
+    },
+    "form": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "companyName": "اسم الشركة",
+      "jobTitle": "المسمى الوظيفي",
+      "country": "الدولة",
+      "city": "المدينة",
+      "selectCountry": "اختر الدولة",
+      "selectCity": "اختر المدينة",
+      "textPlaceholder": "أدخل إجابتك...",
+      "selectOption": "اختر خيارًا",
+      "selectOptions": "اختر الخيارات"
+    },
+    "success": {
+      "title": "تم إرسال الطلب بنجاح!",
+      "message": "شكرًا لك على طلبك. سيقوم فريقنا بمراجعته والرد عليك قريبًا.",
+      "responseTime": "نحن عادة ما نرد خلال 24 ساعة",
+      "returnHome": "العودة إلى الصفحة الرئيسية"
+    },
+    "buttons": {
+      "previous": "السابق",
+      "next": "التالي",
+      "submit": "إرسال الطلب",
+      "submitting": "جاري الإرسال..."
+    },
+    "validationErrors": {
+      "title": "من فضلك :",
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "emailRequired": "بريد إلكتروني صالح مطلوب",
+      "phoneRequired": "الهاتف مطلوب",
+      "countryRequired": "الدولة مطلوبة",
+      "cityRequired": "المدينة مطلوبة",
+      "questionRequired": "{field} مطلوب",
+      "noOptions": "لا توجد خيارات متاحة لهذا السؤال",
+      "radioConfigError": "خطأ في التهيئة: لا توجد خيارات لهذا السؤال",
+      "submissionFailed": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى.",
+      "numericOnly": "أرقام فقط",
+      "alphaOnly": "حروف فقط",
+      "alphanumericOnly": "حروف وأرقام فقط",
+      "validEmail": "بريد إلكتروني صالح",
+      "enterNumbersOnly": "يرجى إدخال أرقام فقط",
+      "enterLettersOnly": "يرجى إدخال حروف فقط",
+      "enterLettersNumbersOnly": "يرجى إدخال حروف وأرقام فقط",
+      "enterValidEmail": "يرجى إدخال بريد إلكتروني صالح"
+    },
+    "loading": {
+      "countries": "جاري تحميل الدول...",
+      "cities": "جاري تحميل المدن..."
+    }
+  },  "serviceDetails": {
+    "imageAlt": "صورة الخدمة",
+    "overview": {
+      "title": "نظرة عامة على الخدمة"
+    },
+    "cta": {
+      "requestService": "انا مهتم اخبرني اكثر"
+    },
+    "learnMore": "اعرف المزيد",
+    "subtitle": "حول رؤيتك إلى واقع مع حلول متطورة مصممة خصيصًا لتحقيق نجاحك."
+  },
+   "chat": {
+      "adminDescription": "صندوق الوارد الخاص بالرسائل الرسمية من الإدارة. جميع الرسائل هنا للاطلاع فقط وليس من الممكن الرد عليها.",
+      "adminSupport": "دعم الإدارة",
+      "usuallyResponds": "عادة ما يتم الرد خلال ساعة واحدة",
+      "loadingMessages": "جاري تحميل الرسائل...",
+      "noMessages": "لا توجد رسائل بعد",
+      "noMessagesDescription": "عندما يرسل لك فريق الإدارة تحديثات مهمة، ستظهر في هذه المساحة.",
+      "readOnly": "رسائل آمنة من فريق الإدارة",
+      "liveSupport": "الدعم الفني",
+      "requestHelp": "طلب المساعدة"
+    }
+  
+}

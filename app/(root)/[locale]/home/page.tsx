@@ -1,0 +1,50 @@
+import React, { Suspense } from "react";
+
+import "@fontsource/poppins/300.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+
+import Loader from "@/components/Loader";
+import {
+  Section,
+  Services,
+  Partners,
+  Slider,
+  Clients,
+  CustomerReviews,
+  JobOpportunities,
+} from "@/components/home";
+import {
+  fetchClients,
+  fetchOrganization,
+  fetchPartners,
+  fetchSliders,
+} from "@/lib/action";
+
+const Page = async () => {
+  const sliders = await fetchSliders();
+  const partners = await fetchPartners();
+  const clients = await fetchClients();
+  const organization = await fetchOrganization();
+  return (
+    <Suspense fallback={<Loader />}>
+      <div className="relative w-full duration-500">
+        <Slider sliders={sliders} />
+        {organization.home ? (
+          <div
+            dangerouslySetInnerHTML={{ __html: organization.home }}
+            className="dark:text-white"
+          />
+        ) : (
+          <div />
+        )}
+        <Services />
+        {/* <JobOpportunities /> */}
+        <Partners partners={partners} />
+        <Clients clients={clients} />
+      </div>
+    </Suspense>
+  );
+};
+
+export default Page;
