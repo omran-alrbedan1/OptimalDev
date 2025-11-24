@@ -78,11 +78,19 @@ const QuestionInput = ({
     }
   };
 
-  // Handle image selection from options (for image type questions with predefined options)
   const handleImageOptionSelect = (option: any) => {
-    onAnswerChange(question.id.toString(), option);
-  };
+    const selectedValue = option.option.current;
 
+    if (Array.isArray(currentValue)) {
+      const isSelected = currentValue.includes(selectedValue);
+      const newValue = isSelected
+        ? currentValue.filter((v: string) => v !== selectedValue)
+        : [...currentValue, selectedValue];
+      onAnswerChange(question.id.toString(), newValue);
+    } else {
+      onAnswerChange(question.id.toString(), [selectedValue]);
+    }
+  };
   // Clear file/image
   const handleClearFile = () => {
     onAnswerChange(question.id.toString(), null);
@@ -222,41 +230,9 @@ const QuestionInput = ({
         // Image selection from predefined options
         return (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {question.options.map((option) => (
-                <div
-                  key={option.id}
-                  className={`relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                    currentValue?.id === option.id
-                      ? "border-primary ring-2 ring-primary ring-opacity-50"
-                      : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
-                  }`}
-                  onClick={() => handleImageOptionSelect(option)}
-                >
-                  {option.image && (
-                    <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                      <img
-                        src={option.image}
-                        alt={option.option.current}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="p-2 bg-white dark:bg-gray-800">
-                    <p className="text-xs text-center text-gray-700 dark:text-gray-300 font-medium">
-                      {option.option.current}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Also show image upload option if there are images in the images array */}
+            {/* Show additional images with the question title */}
             {question.images && question.images.length > 0 && (
               <div className="mt-6">
-                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                  {t("form.additionalImages")}
-                </h4>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {question.images.map((image) => (
                     <div
@@ -270,16 +246,46 @@ const QuestionInput = ({
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="p-2 bg-white dark:bg-gray-800">
-                        <p className="text-xs text-center text-gray-600 dark:text-gray-400">
-                          {image.title.current}
-                        </p>
-                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
+            <div className="grid grid-cols-2 mt-32 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {question.options.map((option) => {
+                const selectedValue = option.option.current;
+                const isSelected =
+                  Array.isArray(currentValue) &&
+                  currentValue.includes(selectedValue);
+
+                return (
+                  <div
+                    key={option.id}
+                    className={`relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
+                      isSelected
+                        ? "border-primary ring-2 ring-primary ring-opacity-50"
+                        : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
+                    }`}
+                    onClick={() => handleImageOptionSelect(option)}
+                  >
+                    {option.image && (
+                      <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        <img
+                          src={option.image}
+                          alt={option.option.current}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="p-2 bg-white dark:bg-gray-800">
+                      <p className="text-xs text-center text-gray-700 dark:text-gray-300 font-medium">
+                        {option.option.current}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
             {/* Validation error */}
             {hasFieldValidationError && (

@@ -464,7 +464,8 @@ export const useServiceRequestForm = () => {
       allQuestions.forEach((question) => {
         const value = data.answers[question.id.toString()];
         if (value !== undefined && value !== null && value !== "") {
-          if (question.type === "checkbox") {
+          if (question.type === "checkbox" || question.type === "image") {
+            // For checkbox and image questions with options, ensure it's an array
             if (Array.isArray(value) && value.length > 0) {
               formattedAnswers[question.id.toString()] = value.map((v) =>
                 v.toString()
@@ -475,7 +476,6 @@ export const useServiceRequestForm = () => {
           }
         }
       });
-
       // Process sub answers
       const currentSubAnswers = watch("sub_answers");
       if (currentSubAnswers && typeof currentSubAnswers === "object") {
