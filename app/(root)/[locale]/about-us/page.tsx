@@ -10,7 +10,6 @@ import { fetchOrganization } from "@/lib/action";
 const AboutPage = async () => {
   const t = await getTranslations("aboutSection");
   const organization = await fetchOrganization();
-  console.log(organization);
   const sections = [
     {
       title: t("whoWeAre"),
@@ -32,7 +31,13 @@ const AboutPage = async () => {
 
   return (
     <main className="min-h-[100vh] overflow-y-auto relative">
-      <div className="about-us-bg h-[70vh] flex items-center justify-center">
+      <div
+        className="h-[150px] md:h-[550px]  flex items-center justify-center bg-no-repeat bg-center"
+        style={{
+          backgroundImage: `url(${organization.about_us_image})`,
+          backgroundSize: "contain",
+        }}
+      >
         <h1 className="custom-title relative">{t("title")}</h1>
       </div>
 
@@ -68,7 +73,7 @@ const AboutPage = async () => {
                       once={true}
                     >
                       <div
-                        className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed"
+                        className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg "
                         dangerouslySetInnerHTML={{ __html: section.content }}
                       />
                     </Animate>

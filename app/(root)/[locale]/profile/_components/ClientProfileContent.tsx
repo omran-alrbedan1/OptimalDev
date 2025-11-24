@@ -352,7 +352,6 @@ const ClientProfileContent = () => {
         footer={null}
         width={800}
         centered
-        destroyOnClose
       >
         <div className="flex flex-col md:flex-row">
           <div className="hidden md:block md:w-1/2 p-4 bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/20 dark:to-gray-800 rounded-l-lg">

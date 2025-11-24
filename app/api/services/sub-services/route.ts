@@ -1,4 +1,3 @@
-// Example for app/api/sliders/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
@@ -7,7 +6,7 @@ export async function GET(request: Request) {
     const language = request.headers.get("Accept-Language") || "en";
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/sub-services`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/services`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -16,12 +15,11 @@ export async function GET(request: Request) {
       }
     );
 
-    const data = response.data?.data || response.data;
-    console.log(data);
-    return NextResponse.json(data);
+    return NextResponse.json(response.data);
   } catch (error: any) {
+    console.error("API route error:", error.message);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch sliders" },
+      { error: error.message || "Failed to fetch sub-services" },
       { status: 500 }
     );
   }

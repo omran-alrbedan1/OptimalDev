@@ -8,7 +8,6 @@ export async function POST(
   try {
     const language = request.headers.get("Accept-Language") || "en";
     const authHeader = request.headers.get("Authorization");
-    console.log("Auth Header:", authHeader);
 
     if (!authHeader) {
       return NextResponse.json(

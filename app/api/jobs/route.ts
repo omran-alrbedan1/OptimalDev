@@ -1,3 +1,4 @@
+// app/api/jobs/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
@@ -6,49 +7,61 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const language = request.headers.get("Accept-Language") || "en";
 
-    const page = searchParams.get("page") || "1";
-    const search = searchParams.get("search") || "";
-    const work_sectors = searchParams.get("work_sectors") || "";
-    const contract_types = searchParams.get("contract_types") || "";
-    const work_modes = searchParams.get("work_modes") || "";
-    const experience_levels = searchParams.get("experience_levels") || "";
-    const education_levels = searchParams.get("education_levels") || "";
-    const countries = searchParams.get("countries") || "";
-    const salary_min = searchParams.get("salary_min") || "";
-    const salary_max = searchParams.get("salary_max") || "";
+    // Get all parameters with defaults
+    const params = {
+      page: searchParams.get("page") || "1",
+      search: searchParams.get("search") || "",
+      work_sectors: searchParams.get("work_sectors"),
+      contract_types: searchParams.get("contract_types"),
+      work_modes: searchParams.get("work_modes"),
+      experience_levels: searchParams.get("experience_levels"),
+      education_levels: searchParams.get("education_levels"),
+      countries: searchParams.get("countries"),
+      salary_min: searchParams.get("salary_min") || "0",
+      salary_max: searchParams.get("salary_max") || "2000",
+    };
 
-    const params = new URLSearchParams();
-    params.append("page", page);
+    // Build query for external API
+    const apiParams = new URLSearchParams();
+    apiParams.append("page", params.page);
 
-    if (search) params.append("search", search);
-    if (work_sectors) params.append("work_sectors", work_sectors);
-    if (contract_types) params.append("contract_types", contract_types);
-    if (work_modes) params.append("work_modes", work_modes);
-    if (experience_levels)
-      params.append("experience_levels", experience_levels);
-    if (education_levels) params.append("education_levels", education_levels);
-    if (countries) params.append("countries", countries);
-    if (salary_min) params.append("salary_min", salary_min);
-    if (salary_max) params.append("salary_max", salary_max);
-
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/jobs?${params.toString()}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
+    // Only append parameters that have values
+    Object.entries(params).forEach(([key, value]) => {
+      if (value && value.length > 0 && key !== "page") {
+        apiParams.append(key, value);
       }
-    );
+    });
+
+    const apiUrl = `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/jobs?${apiParams.toString()}`;
+    const response = await axios.get(apiUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+      },
+      timeout: 10000,
+    });
 
     return NextResponse.json({
       data: response.data?.data || response.data,
-      meta: response.data?.meta,
+      meta: response.data?.meta || {
+        current_page: parseInt(params.page),
+        per_page: 15,
+        total: response.data?.data?.length || response.data?.length || 0,
+        last_page: 1,
+      },
     });
   } catch (error: any) {
+    console.error("API Route Error:", error.response?.data || error.message);
+
     return NextResponse.json(
-      { error: error.message || "Failed to fetch jobs" },
-      { status: 500 }
+      {
+        error: error.message || "Failed to fetch jobs",
+        details: error.response?.data,
+        status: error.response?.status,
+      },
+      { status: error.response?.status || 500 }
     );
   }
 }

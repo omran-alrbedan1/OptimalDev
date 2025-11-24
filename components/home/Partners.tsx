@@ -11,14 +11,16 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
-const Partners = ({ partners }: { partners: Partner[] }) => {
-  const t = useTranslations("ourPartners");
+const Partners = ({ partners }: { partners: PartnerResponse }) => {
   console.log(partners);
-
   return (
     <section className="px-5 md:px-10 lg:px-20 flex flex-col items-center md:-mt-8">
-      <Header title={t("title")} className="pb-11" />
-      <AutoAdvancingCarousel partners={partners} />
+      <Header
+        title={partners?.section?.title}
+        paragraph={partners?.section?.description}
+        className="pb-11"
+      />
+      <AutoAdvancingCarousel partners={partners.data} />
     </section>
   );
 };

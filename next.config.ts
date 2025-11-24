@@ -38,6 +38,23 @@ const nextConfig: NextConfig = {
   experimental: {
     esmExternals: true,
   },
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.cache = {
+        type: "filesystem",
+        buildDependencies: {
+          config: [__filename],
+        },
+      };
+    }
+    return config;
+  },
+  // Add this to completely disable the error overlay
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
 };
+
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

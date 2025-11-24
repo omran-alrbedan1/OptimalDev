@@ -104,13 +104,16 @@
       "subtitle": "تم العثور على {total} طلب"
     },
     "status": {
-      "applied": "تم التقديم",
-      "pending": "قيد المراجعة",
-      "reviewed": "تمت المراجعة",
-      "shortlisted": "في القائمة المختصرة",
-      "approved": "مقبول",
-      "rejected": "مرفوض",
-      "withdrawn": "تم السحب"
+      "salary": "الراتب",
+        "experience": "الخبرة",
+        "contract": "نوع العقد",
+        "workMode": "نمط العمل",
+        "deadline": "آخر موعد",
+        "skills": "المهارات المطلوبة",
+        "appliedDate": "تاريخ التقديم: {date}",
+        "expiringSoon": "⚠️ تنتهي خلال {days} أيام",
+        "expired": "❌ منتهية الصلاحية",
+        "years": "سنة"
     },
     "jobDetails": {
       "salary": "الراتب",
@@ -574,21 +577,21 @@
           "hint": "يدعم رفع ملف واحد فقط. يتم قبول ملفات PDF و Word فقط (بحد أقصى 5MB).",
           "errorSize": "يجب أن يكون حجم ملف السيرة الذاتية أقل من 5MB",
           "errorType": "يتم قبول ملفات PDF و Word فقط",
-           "optional": "اختياري"
+          "optional": "اختياري"
         },
         "acceptTerms": {
-      "label": "أوافق على {terms} و {privacy}",
-      "terms": "الشروط والأحكام",
-      "privacy": "سياسة الخصوصية",
-      "error": "يجب عليك الموافقة على الشروط والسياسات"
-    }
+          "label": "أوافق على {terms} و {privacy}",
+          "terms": "الشروط والأحكام",
+          "privacy": "سياسة الخصوصية",
+          "error": "يجب عليك الموافقة على الشروط والسياسات"
+        }
       },
       "submit": "إنشاء حساب",
       "submitting": "جاري إنشاء الحساب...",
       "loginLink": {
         "prefix": "هل لديك حساب بالفعل؟",
-         "loginText": "تسجيل الدخول"
-        },
+        "loginText": "تسجيل الدخول"
+      },
       "login": "تسجيل الدخول",
       "toast": {
         "success": {
@@ -600,7 +603,7 @@
           "description": "حدث خطأ. الرجاء المحاولة مرة أخرى."
         }
       }
-    },
+  },
 "passwordChangeForm": {
   "title": "تغيير كلمة المرور",
   "description": "أدخل كلمة المرور الحالية والجديدة",

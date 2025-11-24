@@ -199,7 +199,7 @@ const ContactForm = () => {
           >
             <PhoneInput
               international
-              defaultCountry={isArabic ? "JO" : "US"}
+              defaultCountry={"JO"}
               value={phoneNumber}
               //@ts-ignore
               onChange={setPhoneNumber}

@@ -1,14 +1,15 @@
-// Example for app/api/jobs/[id]/route.ts
+// app/api/jobs/[id]/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const language = request.headers.get("Accept-Language") || "en";
-    const { id } = params;
+
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${id}`,
       {

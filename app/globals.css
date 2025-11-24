@@ -7,8 +7,8 @@
 @layer base {
   :root {
     /* Additional Colors */
---primary: #22ace3; 
-     --primary: #22ace3; 
+    --primary: #22ace3; 
+    --primary: #22ace3; 
     --primary-foreground: #ffffff;
     --primary-hover: #1c9bd3;
     --primary-active: #168ac3;
@@ -64,6 +64,71 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* Custom Scrollbar Styles */
+@layer utilities {
+  /* For Webkit browsers (Chrome, Safari, Edge) */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--primary); /* #22ace3 */
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover); /* #1c9bd3 */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    background: var(--primary-active); /* #168ac3 */
+  }
+
+  /* For Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) #f1f1f1;
+  }
+
+  /* Dark mode support */
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #374151;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border: 2px solid #374151;
+  }
+
+  .dark .custom-scrollbar {
+    scrollbar-color: var(--primary) #374151;
+  }
+
+  /* Specific scrollbar variations */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thick::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
 
 @layer utilities {
   .flex-between {
@@ -194,8 +259,6 @@ section {
   border-bottom: none !important;
 }
 
-
-
 .violet-gradient {
   background: var(--primary-color1);
   background: linear-gradient(-90deg, var(--primary-color1) 0%, rgba(60, 51, 80, 0) 100%);
@@ -280,5 +343,3 @@ section {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
-
-

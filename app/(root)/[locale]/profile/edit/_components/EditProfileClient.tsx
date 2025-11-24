@@ -163,6 +163,7 @@ const EditProfilePage = () => {
       } else if (profileData?.profile_image) {
         updateData.profile_image = profileData.profile_image;
       }
+      console.log("profileImageFile:", profileImageFile);
 
       if (cvFile) {
         updateData.cv = cvFile;

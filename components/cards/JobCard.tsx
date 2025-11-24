@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { FiBriefcase, FiClock, FiMapPin, FiShare2 } from "react-icons/fi";
 import {
   FacebookIcon,
@@ -20,7 +20,7 @@ import {
 import { toast } from "sonner";
 import { JobApplicationModal } from "@/components/modal/JobApplicationModal";
 
-const JobCard = ({ job }: { job: any }) => {
+const JobCard = ({ job }) => {
   const t = useTranslations("careerPage.jobCard");
   const locale = useLocale();
   const router = useRouter();
@@ -33,6 +33,7 @@ const JobCard = ({ job }: { job: any }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [requiredTests, setRequiredTests] = useState<any[]>([]);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const dropdownRef = useRef<any>(null);
 
   // Fixed job URL construction
   const jobUrl = useMemo(() => {
@@ -58,7 +59,6 @@ const JobCard = ({ job }: { job: any }) => {
     setIsApplying(true);
     try {
       const response = await applyForJob(Number(job.id));
-      console.log(response);
       if (
         typeof response.message === "string" &&
         (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
@@ -84,19 +84,36 @@ const JobCard = ({ job }: { job: any }) => {
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(jobUrl);
-    toast.success(t("linkCopied"), {
-      duration: 2000,
-    });
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    navigator.clipboard
+      .writeText(jobUrl)
+      .then(() => {
+        toast.success(t("linkCopied"), {
+          duration: 2000,
+        });
+        // Close the dropdown manually after copy
+        if (dropdownRef.current) {
+          dropdownRef.current?.close();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const items: MenuProps["items"] = [
     {
       key: "facebook",
       label: (
-        <FacebookShareButton url={jobUrl} quote={shareTitle}>
-          <div className={`flex items-center gap-2 px-2 py-1 `}>
+        <FacebookShareButton
+          url={jobUrl}
+          quote={shareTitle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <FacebookIcon size={24} round />
             <span>{t("facebook")}</span>
           </div>
@@ -111,8 +128,9 @@ const JobCard = ({ job }: { job: any }) => {
           title={job.title}
           summary={job.description}
           source={typeof window !== "undefined" ? window.location.hostname : ""}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className={`flex items-center gap-2 px-2 py-1`}>
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <LinkedinIcon size={24} round />
             <span>{t("linkedin")}</span>
           </div>
@@ -122,8 +140,12 @@ const JobCard = ({ job }: { job: any }) => {
     {
       key: "whatsapp",
       label: (
-        <WhatsappShareButton url={jobUrl} title={shareTitle}>
-          <div className={`flex items-center gap-2 px-2 py-1 `}>
+        <WhatsappShareButton
+          url={jobUrl}
+          title={shareTitle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <WhatsappIcon size={24} round />
             <span>{t("whatsapp")}</span>
           </div>
@@ -135,7 +157,7 @@ const JobCard = ({ job }: { job: any }) => {
       label: (
         <button
           onClick={handleCopyLink}
-          className={`flex items-center gap-2 px-2 py-1 w-full `}
+          className={`flex items-center gap-2 px-2 py-1 w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded`}
         >
           <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
             <FiShare2 className="text-gray-600 text-sm" />
@@ -251,10 +273,16 @@ const JobCard = ({ job }: { job: any }) => {
                     )}
                   </Button>
                   <Dropdown
+                    ref={dropdownRef}
                     menu={{ items }}
                     placement={locale === "ar" ? "bottomRight" : "bottomLeft"}
                     trigger={["click"]}
                     overlayClassName="share-dropdown"
+                    onOpenChange={(open) => {
+                      if (!open) {
+                        // Dropdown is closing
+                      }
+                    }}
                   >
                     <Button
                       size="small"

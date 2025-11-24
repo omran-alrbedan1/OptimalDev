@@ -17,7 +17,40 @@ import { MdWork } from "react-icons/md";
 import { RiContractFill } from "react-icons/ri";
 import { TbFileDescription } from "react-icons/tb";
 
-const JobDetailsPage = ({ params }: { params: { id: string } }) => {
+// Define Job type interface
+interface Job {
+  id: number;
+  title: string;
+  description: string;
+  duties_responsibilities: string;
+  technical_skills: string | null;
+  salary_min: number;
+  salary_max: number;
+  published_at: string;
+  expires_at: string;
+  type: string;
+  years_experience: number;
+  preferred_candidate: string | null;
+  other_requirements: string;
+  company: {
+    name: string;
+    logo: string | null;
+    address: string;
+    email: string;
+    phone: string;
+  };
+  work_sector: {
+    name: string;
+  };
+  city: {
+    name: string;
+  };
+  country: {
+    name: string;
+  };
+}
+
+const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,20 +65,37 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
   const pathname = usePathname();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const router = useRouter();
+  const [jobId, setJobId] = useState<string | null>(null);
 
   const t = useTranslations("jobDetailsPage");
   const tt = useTranslations("careerPage.jobCard");
 
+  // Resolve params promise
+  useEffect(() => {
+    const resolveParams = async () => {
+      try {
+        const resolvedParams = await params;
+        setJobId(resolvedParams.id);
+      } catch (error) {
+        console.error("Error resolving params:", error);
+        setError("Failed to load job details");
+        setLoading(false);
+      }
+    };
+
+    resolveParams();
+  }, [params]);
+
   const applyToJob = async () => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !jobId) {
       router.push(
-        `/login?jobId=${params.id}&callbackUrl=${encodeURIComponent(pathname)}`
+        `/login?jobId=${jobId}&callbackUrl=${encodeURIComponent(pathname)}`
       );
       return;
     }
     setIsApplying(true);
     try {
-      const response = await applyForJob(Number(params.id));
+      const response = await applyForJob(Number(jobId));
       if (
         typeof response.message === "string" &&
         (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
@@ -53,7 +103,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
       ) {
         setModalType("tests");
         setModalMessage(response.message);
-        setRequiredTests(response.required_tests);
+        setRequiredTests(response.required_tests || []);
       } else {
         setModalType("success");
         setModalMessage(
@@ -72,9 +122,11 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
   };
 
   useEffect(() => {
+    if (!jobId) return;
+
     const getJobDetails = async () => {
       try {
-        const response = await fetchJobDetails(Number(params.id));
+        const response = await fetchJobDetails(Number(jobId));
         setJob(response);
       } catch (err) {
         setError(t("error"));
@@ -84,7 +136,16 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
     };
 
     getJobDetails();
-  }, [params.id, t]);
+  }, [jobId, t]);
+
+  // Safe function to split skills
+  const splitSkills = (skills: string | null): string[] => {
+    if (!skills) return [];
+    return skills
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter((skill) => skill.length > 0);
+  };
 
   if (loading) {
     return <Loader />;
@@ -114,9 +175,6 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const splitSkills = (skills: string) => {
-    return skills.split(",").map((skill) => skill.trim());
-  };
   return (
     <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6 md:mb-10">
@@ -150,7 +208,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
 
             <div
               className={`flex-1 w-full text-center ${
-                useLocale() === "ar" ? "xs:text-right" : "xs:text-left"
+                locale === "ar" ? "xs:text-right" : "xs:text-left"
               }`}
             >
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1">
@@ -211,7 +269,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div
               className={`  border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
+                locale === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
               }`}
             >
               <div
@@ -232,7 +290,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div
               className={`  border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
+                locale === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
               }`}
             >
               <p className="text-gray-600 dark:text-gray-300">
@@ -276,7 +334,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div
               className={`  border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
+                locale === "ar" ? "border-r-2 pr-2" : "border-l-2 pl-2"
               }`}
             >
               <div className="flex flex-wrap gap-2">
@@ -288,6 +346,11 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
                     {skill}
                   </span>
                 ))}
+                {splitSkills(job.technical_skills).length === 0 && (
+                  <span className="text-gray-500 dark:text-gray-400 text-sm">
+                    No technical skills specified
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -300,7 +363,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div
               className={` space-y-4 border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-3" : "border-l-2 pl-3"
+                locale === "ar" ? "border-r-2 pr-3" : "border-l-2 pl-3"
               }`}
             >
               <div>
@@ -343,7 +406,7 @@ const JobDetailsPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div
               className={` space-y-4 border-blue-200 dark:border-blue-800 ${
-                useLocale() === "ar" ? "border-r-2 pr-3" : "border-l-2 pl-3"
+                locale === "ar" ? "border-r-2 pr-3" : "border-l-2 pl-3"
               }`}
             >
               <div>

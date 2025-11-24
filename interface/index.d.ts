@@ -8,21 +8,46 @@ declare interface Slider {
   sort_order: number;
 }
 
-declare interface Partner {
-  id: number;
+interface ApiSection {
+  section_key: string;
+  title_ar: string;
+  title_en: string;
   title: string;
+  description_ar: string;
+  description_en: string;
   description: string;
-  image: string;
-  details: string;
+  is_active: boolean;
   sort_order: number;
 }
 
-declare interface Client {
+interface Client {
   id: number;
   name: string;
   description: string;
+  link_url: string | null;
   logo: string;
   sort_order: number;
+}
+
+interface ClientsResponse {
+  success: boolean;
+  section: ApiSection;
+  data: Client[];
+}
+
+interface Partner {
+  id: number;
+  title: string;
+  description: string;
+  link_url: string | null;
+  image: string;
+  sort_order: number;
+}
+
+interface PartnerResponse {
+  success: boolean;
+  section: ApiSection;
+  data: Partner[];
 }
 
 interface Organization {
@@ -410,29 +435,37 @@ interface PaginatedResponse<T> {
   meta: PaginationMeta;
 }
 
-interface SubService {
-  id: number;
-  service_id: number;
-  name: string;
-  description: string;
-  image: string;
-  service?: Service;
-  cost: number;
-  cost_formatted: string;
-  is_active: boolean;
-  created_at: string;
-}
-
 interface Service {
   id: number;
   name: string;
-  description: string;
+  description: string | null;
   service_code: string;
   is_active: boolean;
   image: string;
   sub_services_count: number;
   sub_services: SubService[];
   created_at: string;
+}
+
+interface SubService {
+  id: number;
+  service_id: number;
+  name: string;
+  description: string;
+  details: string | null;
+  details_ar: string | null;
+  details_en: string | null;
+  image: string;
+  cost: number;
+  cost_formatted: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+interface ServicesResponse {
+  success: boolean;
+  section: ApiSection;
+  data: Service[];
 }
 
 type Option = {

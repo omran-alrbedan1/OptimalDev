@@ -29,7 +29,6 @@ const get = async <T>(
   try {
     const response = await fetch(endpoint, {
       method: "GET",
-      cache: "no-cache",
       ...options,
       headers: {
         "Accept-Language": locale,
@@ -46,11 +45,19 @@ const get = async <T>(
 
     return await response.json();
   } catch (error) {
-    console.error(`Error fetching ${endpoint}:`, error);
-    throw error;
+    // Safe error logging without circular references
+    console.error(
+      `Error fetching ${endpoint}:`,
+      error instanceof Error ? error.message : String(error)
+    );
+
+    // Create a new error without circular references
+    const safeError = new Error(
+      error instanceof Error ? error.message : `Failed to fetch ${endpoint}`
+    );
+    throw safeError;
   }
 };
-
 const post = async <T>(
   endpoint: string,
   body: any,
@@ -372,8 +379,10 @@ export const fetchServices = async (): Promise<Service[]> => {
   return get<Service[]>(`/api/services`);
 };
 
-export const fetchSubServices = async (): Promise<SubService[]> => {
-  return get<SubService[]>(`/api/services/sub-services`);
+export const fetchSubServices = async (): Promise<ServicesResponse> => {
+  const response = await get<ServicesResponse>(`/api/services/sub-services`);
+  console.log(response);
+  return response;
 };
 
 export const fetchSubService = async (id: number): Promise<SubService> => {
@@ -431,6 +440,9 @@ export const fetchConversations = async (): Promise<any> => {
 
 export const fetchContactInfo = async (): Promise<Contact> => {
   return get<Contact>(`/api/contact`);
+};
+export const fetchOrganization = async (): Promise<Organization> => {
+  return get<Organization>(`/api/organization`);
 };
 
 export const contactUs = async (

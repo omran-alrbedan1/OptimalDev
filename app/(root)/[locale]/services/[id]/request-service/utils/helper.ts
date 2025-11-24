@@ -1,3 +1,6 @@
+import { STORAGE_KEY } from "@/constants/service-request";
+import { getStoredFormData } from "../hooks/useServiceRequestForm";
+
 export const validateInputByRules = (
   value: string,
   validationRules: string[] | null
@@ -24,4 +27,42 @@ export const validateInputByRules = (
   }
 
   return true;
+};
+
+export const getDefaultValues = (
+  id: any,
+  allQuestions: Question[]
+): FormValues => {
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.submitted === true) {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+    } catch (error) {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  const storedData = getStoredFormData();
+  if (storedData) return storedData as FormValues;
+
+  const values: FormValues = {
+    sub_service_id: Number(id),
+    answers: {},
+    sub_answers: {},
+  };
+
+  allQuestions.forEach((question) => {
+    values.answers[question.id.toString()] =
+      question.type === "checkbox" ? [] : "";
+    if (question.options?.some((opt) => opt.has_sub_options)) {
+      values.sub_answers[question.id.toString()] = {};
+    }
+  });
+
+  return values;
 };
