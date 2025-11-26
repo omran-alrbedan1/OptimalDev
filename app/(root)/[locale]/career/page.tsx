@@ -12,10 +12,26 @@ import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
 import JobFilters from "./_components/jobFilters";
 import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
+import { useAppSelector } from "@/hooks/hook";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const JobSearchPage = () => {
   const t = useTranslations("careerPage");
   const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+    }
+  }, [isAuthenticated, router, pathname]);
+
+  if (!isAuthenticated) {
+    return <Loader />;
+  }
 
   const {
     // State
@@ -205,18 +221,17 @@ const JobSearchPage = () => {
                           job={{
                             id: job.id,
                             title: job.title,
-                            company: job.company.name,
-                            industry: job.work_sector.name,
-                            city: job.city.name,
-                            country: job.country.name,
-                            type_of_contract: t("fullTime"),
-                            work_mode: t("onSite"),
+                            company: job.company,
+                            work_sector: job.work_sector,
+                            city: job.city,
+                            country: job.country,
+                            contract_types: job.contract_types,
+                            work_modes: job.work_modes,
+                            salary_min: job.salary_min,
+                            salary_max: job.salary_max,
                             post_data: job.published_at,
                             image: job.company.logo || icons.job,
                             description: job.description,
-                            salary: `${t("currencySymbol")}${
-                              job.salary_min
-                            } - ${t("currencySymbol")}${job.salary_max}`,
                             posted: formatPostedDate(job.published_at),
                             type: job.type,
                             duties_responsibilities:
@@ -225,6 +240,7 @@ const JobSearchPage = () => {
                             years_experience: job.years_experience,
                             other_requirements: job.other_requirements,
                             address: job.address,
+                            applied: job.applied,
                           }}
                         />
                       </motion.article>

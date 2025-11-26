@@ -492,6 +492,12 @@ type Question = {
   parent_id?: number;
   has_options: boolean;
 };
+interface Question {
+  id: number;
+  question: string;
+  answer_type: string;
+  choices?: Choice[];
+}
 
 type QuestionResponse = {
   personal_information: Question[];

@@ -22,6 +22,8 @@ const ServiceDetailsPage = () => {
     return <Loader />;
   }
 
+  console.log(service);
+
   return (
     <div className="min-h-screen overflow-hidden">
       <section className="relative h-screen flex flex-col justify-center overflow-hidden">

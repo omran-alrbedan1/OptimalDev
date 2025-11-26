@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const language = request.headers.get("Accept-Language") || "en";
 
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/subscribe`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/newsletter/subscribe`,
       { email },
       {
         headers: {

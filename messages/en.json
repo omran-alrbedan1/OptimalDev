@@ -292,7 +292,7 @@
     "previous": "Previous",
     "next": "Next",
     "errorLoadingJobs": "Error loading jobs",
-    "jobCard": {
+   "jobCard": {
       "checkOutJob": "Check out this job",
       "at": "at",
       "facebook": "Facebook",
@@ -303,33 +303,47 @@
       "industry": "Industry",
       "applyNow": "Apply Now",
       "loginToApply": "Login to Apply",
-      "applying": "Applying"
+      "applying": "Applying",
+      "alreadyApplied": "Already Applied",
+      "applied": "Applied",
+      "fullTime": "Full Time",
+      "onSite": "On Site",
+      "salaryNotSpecified": "Salary not specified",
+      "currencySymbol": "$"
     }
   },
 
-  "jobDetailsPage": {
-    "loading": "Loading...",
-    "error": "Failed to connect to server",
-    "jobNotFound": "Job not found",
-    "jobDescription": "Job Description",
-    "dutiesResponsibilities": "Duties and Responsibilities",
-    "technicalSkills": "Technical Skills",
-    "jobDetails": "Job Details",
-    "salaryRange": "Salary Range",
-    "publishedDate": "Published Date",
-    "expirationDate": "Expiration Date",
-    "jobType": "Job Type",
-    "requirements": "Requirements",
-    "yearsExperience": "Years of Experience",
-    "preferredCandidate": "Preferred Candidate",
-    "otherRequirements": "Other Requirements",
-    "companyInformation": "Company Information",
-    "address": "Address",
-    "email": "Email",
-    "phone": "Phone",
-    "applyNow": "Apply Now",
-    "loginToApply": "Login to Apply"
-  },
+"jobDetailsPage": {
+  "loading": "Loading...",
+  "error": "Failed to connect to server",
+  "jobNotFound": "Job not found",
+  "jobDescription": "Job Description",
+  "dutiesResponsibilities": "Duties and Responsibilities",
+  "technicalSkills": "Technical Skills",
+  "jobDetails": "Job Details",
+  "salaryRange": "Salary Range",
+  "publishedDate": "Published Date",
+  "expirationDate": "Expiration Date",
+  "jobType": "Job Type",
+  "requirements": "Requirements",
+  "yearsExperience": "Years of Experience",
+  "preferredCandidate": "Preferred Candidate",
+  "otherRequirements": "Other Requirements",
+  "companyInformation": "Company Information",
+  "address": "Address",
+  "email": "Email",
+  "phone": "Phone",
+  "applyNow": "Apply Now",
+  "loginToApply": "Login to Apply",
+  "applied": "Applied",
+  "alreadyApplied": "Already Applied",
+  "applicantsCount": "Applicants Count",
+  "contractTypes": "Contract Types",
+  "workModes": "Work Modes",
+  "experienceLevels": "Experience Levels",
+  "educationLevels": "Education Levels",
+  "companyDescription": "Company Description"
+},
   "ApplicationDetailsPage": {
     "header": {
       "remote": "Remote",
@@ -711,7 +725,19 @@
     "submitting": "Submitting...",
     "textAnswerPlaceholder": "Type your answer here...",
      "questionsCompleted": "Questions Completed",
-    "questionsRemaining": "Questions Remaining"
+    "questionsRemaining": "Questions Remaining",
+     "testValidation": {
+    "required": "This question is required",
+    "numeric": "Please enter numbers only",
+    "alpha": "Please enter letters only",
+    "alphanumeric": "Please enter letters and numbers only",
+    "email": "Please enter a valid email address",
+    "minLength": "Answer must be at least {min} characters",
+    "maxLength": "Answer must not exceed {max} characters",
+    "fileRequired": "Please upload a file",
+    "dateRequired": "Please select a date",
+    "optionRequired": "Please select an option"
+  }
 },
 "resultModal": {
   "perfectScore": {
@@ -764,21 +790,26 @@
         "description": "Budget information"
       }
     },
-    "form": {
-      "fullName": "Full Name",
-      "email": "Email",
-      "phone": "Phone",
-      "companyName": "Company Name",
-      "jobTitle": "Job Title",
-      "country": "Country",
-      "city": "City",
-      "selectCountry": "Select Country",
-      "selectCity": "Select City",
-      "textPlaceholder": "Enter your answer...",
-      "selectOption": "Select an option",
-      "selectOptions": "Select options",
-      "selectSubOptions": "Select sub-options"
-    },
+   "form": {
+  "fullName": "Full Name",
+  "email": "Email",
+  "phone": "Phone",
+  "companyName": "Company Name",
+  "jobTitle": "Job Title",
+  "country": "Country",
+  "city": "City",
+  "selectCountry": "Select Country",
+  "selectCity": "Select City",
+  "textPlaceholder": "Enter your answer...",
+  "selectOption": "Select an option",
+  "selectOptions": "Select options",
+  "selectSubOptions": "Select sub-options",
+  "removeFile": "Remove File",
+  "dragDropOrClick": "Drag & drop files here or click to upload",
+  "uploadFile": "Upload File",
+  "clickToChangeFile":"Click to change file "
+
+},
     "success": {
       "title": "Request Submitted Successfully!",
       "message": "Thank you for your request. Our team will review it and get back to you shortly.",

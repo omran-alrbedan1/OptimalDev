@@ -305,7 +305,7 @@
     "next": "التالي",
     "errorLoadingJobs": "خطأ في تحميل الوظائف",
 
-    "jobCard": {
+  "jobCard": {
       "checkOutJob": "اطلع على هذه الوظيفة",
       "at": "في",
       "facebook": "فيسبوك",
@@ -316,33 +316,47 @@
       "industry": "الصناعة",
       "applyNow": "تقدم الآن",
       "loginToApply": "سجل الدخول للتقديم",
-      "applying": "جاري التقدبم"
+      "applying": "جاري التقديم",
+      "alreadyApplied": "تم التقديم مسبقاً",
+      "applied": "تم التقديم",
+      "fullTime": "دوام كامل",
+      "onSite": "حضوري",
+      "salaryNotSpecified": "الراتب غير محدد",
+      "currencySymbol": "دينار"
     }
   },
 
   "jobDetailsPage": {
-    "loading": "جار التحميل...",
-    "error": "فشل الاتصال بالخادم",
-    "jobNotFound": "الوظيفة غير موجودة",
-    "jobDescription": "وصف الوظيفة",
-    "dutiesResponsibilities": "المهام والمسؤوليات",
-    "technicalSkills": "المهارات التقنية",
-    "jobDetails": "تفاصيل الوظيفة",
-    "salaryRange": "نطاق الراتب",
-    "publishedDate": "تاريخ النشر",
-    "expirationDate": "تاريخ الانتهاء",
-    "jobType": "نوع الوظيفة",
-    "requirements": "المتطلبات",
-    "yearsExperience": "سنوات الخبرة",
-    "preferredCandidate": "المرشح المفضل",
-    "otherRequirements": "متطلبات أخرى",
-    "companyInformation": "معلومات الشركة",
-    "address": "العنوان",
-    "email": "البريد الإلكتروني",
-    "phone": "الهاتف",
-    "applyNow": "تقديم الآن",
-    "loginToApply": "تسجيل الدخول للتقديم"
-  },
+  "loading": "جار التحميل...",
+  "error": "فشل الاتصال بالخادم",
+  "jobNotFound": "الوظيفة غير موجودة",
+  "jobDescription": "وصف الوظيفة",
+  "dutiesResponsibilities": "المهام والمسؤوليات",
+  "technicalSkills": "المهارات التقنية",
+  "jobDetails": "تفاصيل الوظيفة",
+  "salaryRange": "نطاق الراتب",
+  "publishedDate": "تاريخ النشر",
+  "expirationDate": "تاريخ الانتهاء",
+  "jobType": "نوع الوظيفة",
+  "requirements": "المتطلبات",
+  "yearsExperience": "سنوات الخبرة",
+  "preferredCandidate": "المرشح المفضل",
+  "otherRequirements": "متطلبات أخرى",
+  "companyInformation": "معلومات الشركة",
+  "address": "العنوان",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف",
+  "applyNow": "تقديم الآن",
+  "loginToApply": "تسجيل الدخول للتقديم",
+  "applied": "تم التقديم",
+  "alreadyApplied": "تم التقديم مسبقاً",
+  "applicantsCount": "عدد المتقدمين",
+  "contractTypes": "أنواع العقود",
+  "workModes": "أنماط العمل",
+  "experienceLevels": "مستويات الخبرة",
+  "educationLevels": "المستويات التعليمية",
+  "companyDescription": "وصف الشركة"
+},
   "ApplicationDetailsPage": {
     "header": {
       "remote": "عن بُعد",
@@ -723,7 +737,19 @@
     "submitting": "جاري الإرسال...",
     "textAnswerPlaceholder": "اكتب إجابتك هنا...",
      "questionsCompleted": "الأسئلة المكتملة",
-    "questionsRemaining": "الأسئلة المتبقية"
+    "questionsRemaining": "الأسئلة المتبقية",
+     "testValidation": {
+    "required": "This question is required",
+    "numeric": "Please enter numbers only",
+    "alpha": "Please enter letters only",
+    "alphanumeric": "Please enter letters and numbers only",
+    "email": "Please enter a valid email address",
+    "minLength": "Answer must be at least {min} characters",
+    "maxLength": "Answer must not exceed {max} characters",
+    "fileRequired": "Please upload a file",
+    "dateRequired": "Please select a date",
+    "optionRequired": "Please select an option"
+  }
 },
 "resultModal": {
   "perfectScore": {
@@ -776,20 +802,25 @@
         "description": "معلومات الميزانية"
       }
     },
-    "form": {
-      "fullName": "الاسم الكامل",
-      "email": "البريد الإلكتروني",
-      "phone": "الهاتف",
-      "companyName": "اسم الشركة",
-      "jobTitle": "المسمى الوظيفي",
-      "country": "الدولة",
-      "city": "المدينة",
-      "selectCountry": "اختر الدولة",
-      "selectCity": "اختر المدينة",
-      "textPlaceholder": "أدخل إجابتك...",
-      "selectOption": "اختر خيارًا",
-      "selectOptions": "اختر الخيارات"
-    },
+   "form": {
+  "fullName": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف",
+  "companyName": "اسم الشركة",
+  "jobTitle": "المسمى الوظيفي",
+  "country": "الدولة",
+  "city": "المدينة",
+  "selectCountry": "اختر الدولة",
+  "selectCity": "اختر المدينة",
+  "textPlaceholder": "أدخل إجابتك...",
+  "selectOption": "اختر خيارًا",
+  "selectOptions": "اختر الخيارات",
+  "removeFile": "إزالة الملف",
+  "dragDropOrClick": "اسحب وأفلت الملفات هنا أو انقر للتحميل",
+  "uploadFile": "تحميل الملف",
+  "clickToChangeFile":"انقر لتغيير الملف "
+
+},
     "success": {
       "title": "تم إرسال الطلب بنجاح!",
       "message": "شكرًا لك على طلبك. سيقوم فريقنا بمراجعته والرد عليك قريبًا.",

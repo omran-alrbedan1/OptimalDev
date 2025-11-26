@@ -9,6 +9,13 @@ export async function GET(
   try {
     const { id } = await params;
     const language = request.headers.get("Accept-Language") || "en";
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: "Unauthorized - Authorization header missing" },
+        { status: 401 }
+      );
+    }
 
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${id}`,
@@ -16,6 +23,8 @@ export async function GET(
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
+          Authorization: authHeader,
+          cache: "no-cache",
         },
       }
     );

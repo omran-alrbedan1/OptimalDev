@@ -6,7 +6,13 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const language = request.headers.get("Accept-Language") || "en";
-
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: "Unauthorized - Authorization header missing" },
+        { status: 401 }
+      );
+    }
     // Get all parameters with defaults
     const params = {
       page: searchParams.get("page") || "1",
@@ -39,6 +45,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "Accept-Language": language,
+        Authorization: authHeader,
       },
       timeout: 10000,
     });
