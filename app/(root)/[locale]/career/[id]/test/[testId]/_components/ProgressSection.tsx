@@ -16,7 +16,7 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
   const t = useTranslations("testQuestionPage");
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl px-5 py-2 dark:shadow-gray-900/30 border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
+    <div className="bg-gray-50 dark:bg-gray-800 w-full rounded-xl px-5 py-2 dark:shadow-gray-900/30 border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-x-3">
           <div className="w-8 h-8 bg-[#22ace3]/10 dark:bg-[#22ace3]/20 rounded-full flex items-center justify-center">

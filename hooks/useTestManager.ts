@@ -216,6 +216,7 @@ export const useTestManager = (jobId: number, testId: number) => {
     const getJobTest = async () => {
       try {
         const response = await fetchJobTest(jobId, testId);
+        //@ts-ignore
         setTestData(response?.data);
 
         // Load current question index from localStorage if available

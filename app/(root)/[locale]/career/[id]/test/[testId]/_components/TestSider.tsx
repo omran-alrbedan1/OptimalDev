@@ -20,7 +20,7 @@ const TestSidebar: React.FC<TestSidebarProps> = ({
   const t = useTranslations("testQuestionPage");
 
   return (
-    <div className="max-sm:hidden w-2/5 bg-white mt-10 dark:bg-gray-900 flex items-center justify-center p-8 relative overflow-hidden min-h-screen border-r border-gray-100 dark:border-gray-800">
+    <div className="max-sm:hidden  w-2/5 mt-10 dark:bg-gray-900 flex items-center justify-center p-8 relative overflow-hidden min-h-screen border-r border-gray-100 dark:border-gray-800">
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.08]">
           <svg className="w-full h-full" viewBox="0 0 100 100" fill="none">
@@ -49,7 +49,7 @@ const TestSidebar: React.FC<TestSidebarProps> = ({
       <div className="absolute bottom-40 left-16 w-2 h-2 bg-[#22ace3]/40 dark:bg-[#22ace3]/60 rounded-full animate-bounce delay-300"></div>
       <div className="absolute top-1/3 right-12 w-1.5 h-1.5 bg-[#22ace3]/50 dark:bg-[#22ace3]/70 rounded-full animate-bounce delay-700"></div>
 
-      <div className="text-center relative z-10 max-w-sm mx-auto">
+      <div className="text-center relative z-10 !w-full  ">
         <div className="mb-6">
           <div className="relative inline-block">
             <div className="w-24 h-24 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-2xl shadow-[#22ace3]/25 dark:shadow-[#22ace3]/40 transform hover:scale-110 transition-all duration-500 rotate-3 hover:rotate-0">
