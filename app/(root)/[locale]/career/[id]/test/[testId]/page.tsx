@@ -33,6 +33,10 @@ const TestPage = () => {
     isAnswered,
     progressPercentage,
     answers,
+    validationErrors,
+    hasAttemptedSubmit,
+    fieldValidationErrors,
+    getErrorMessage,
     handleRadioSelect,
     handleCheckboxSelect,
     handleTextAnswerChange,
@@ -85,7 +89,7 @@ const TestPage = () => {
           currentQuestionIndex={currentQuestionIndex}
         />
 
-        <div className="max-sm:w-full w-3/5 max-h-[80vh] overflow-auto beautiful-sidebar bg-gray-50 dark:bg-gray-800 flex flex-col p-8 relative h-[85vh] mt-24">
+        <div className="max-sm:w-full custom-scrollbar w-3/5 max-h-[80vh] overflow-auto beautiful-sidebar bg-gray-50 dark:bg-gray-800 flex flex-col p-8 relative h-[85vh] mt-24">
           <div className="flex-grow">
             <div className="pb-16">
               <div className="flex items-center text-start gap-x-2 mb-4">
@@ -105,6 +109,10 @@ const TestPage = () => {
               <QuestionContent
                 currentQuestion={currentQuestion!}
                 answers={answers}
+                validationErrors={validationErrors}
+                hasAttemptedSubmit={hasAttemptedSubmit}
+                fieldValidationErrors={fieldValidationErrors}
+                getErrorMessage={getErrorMessage}
                 handleRadioSelect={handleRadioSelect}
                 handleCheckboxSelect={handleCheckboxSelect}
                 handleTextAnswerChange={handleTextAnswerChange}

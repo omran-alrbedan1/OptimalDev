@@ -14,10 +14,11 @@ const Header = () => {
   const [isClient, setIsClient] = useState(false);
   const dispatch = useDispatch();
 
-  // Get auth state from Redux
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
   );
+
+  console.log(user);
 
   useEffect(() => {
     setIsClient(true);

@@ -735,22 +735,39 @@
     "next": "التالي",
     "submitTest": "إرسال الاختبار",
     "submitting": "جاري الإرسال...",
-    "textAnswerPlaceholder": "اكتب إجابتك هنا...",
-     "questionsCompleted": "الأسئلة المكتملة",
+    "textAnswerPlaceholder": "اكتب إجابتك هنا...",
+    "questionsCompleted": "الأسئلة المكتملة",
     "questionsRemaining": "الأسئلة المتبقية",
-     "testValidation": {
-    "required": "This question is required",
-    "numeric": "Please enter numbers only",
-    "alpha": "Please enter letters only",
-    "alphanumeric": "Please enter letters and numbers only",
-    "email": "Please enter a valid email address",
-    "minLength": "Answer must be at least {min} characters",
-    "maxLength": "Answer must not exceed {max} characters",
-    "fileRequired": "Please upload a file",
-    "dateRequired": "Please select a date",
-    "optionRequired": "Please select an option"
+    "details": "التفاصيل",
+    "fileSelected": "تم اختيار الملف",
+    "clickToChangeFile": "انقر لتغيير الملف",
+    "uploadImage": "رفع صورة",
+    "uploadFile": "رفع ملف",
+    "dragAndDrop": "اسحب وأفلت أو انقر للتصفح",
+    "removeFile": "إزالة الملف",
+    "unsupportedQuestionType": "نوع السؤال غير مدعوم:",
+    "testValidation": {
+      "required": "هذا السؤال مطلوب",
+      "numeric": "يرجى إدخال أرقام فقط",
+      "alpha": "يرجى إدخال أحرف فقط",
+      "alphanumeric": "يرجى إدخال أحرف وأرقام فقط",
+      "email": "يرجى إدخال بريد إلكتروني صحيح",
+      "minLength": "يجب أن تكون الإجابة على الأقل {min} حرف",
+      "maxLength": "يجب ألا تتجاوز الإجابة {max} حرف",
+      "fileRequired": "يرجى رفع ملف",
+      "dateRequired": "يرجى اختيار تاريخ",
+      "optionRequired": "يرجى اختيار خيار",
+      "enterNumbersOnly": "يرجى إدخال أرقام فقط",
+      "enterLettersOnly": "يرجى إدخال أحرف فقط",
+      "enterLettersNumbersOnly": "يرجى إدخال أحرف وأرقام فقط",
+      "enterValidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+      "invalid": "إدخال غير صحيح",
+      "completeQuestion": "يرجى إكمال هذا السؤال",
+      "thisField": "هذا الحقل"
+    }
   }
-},
+
+,
 "resultModal": {
   "perfectScore": {
     "title": "نتيجة ممتازة!",

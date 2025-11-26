@@ -17,6 +17,7 @@ import {
   updateProfile,
 } from "@/lib/client-action";
 import { editProfileSchema } from "@/lib/validation/userValidation";
+import { updateUser } from "@/store/slices/authSlice";
 import {
   CameraOutlined,
   CheckOutlined,
@@ -43,6 +44,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -51,7 +53,6 @@ type EditProfileValues = z.infer<ReturnType<typeof editProfileSchema>>;
 const EditProfilePage = () => {
   const t = useTranslations("editProfile");
   const locale = useLocale();
-  const isRTL = locale === "ar";
   const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -59,8 +60,8 @@ const EditProfilePage = () => {
   const [profileImageFile, setProfileImageFile] = useState<any>(null);
   const [cvFile, setCvFile] = useState<any>(null);
   const [isClientReady, setIsClientReady] = useState(false);
-  const [imageLoading, setImageLoading] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { data: profileData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);
@@ -160,18 +161,26 @@ const EditProfilePage = () => {
 
       if (profileImageFile) {
         updateData.profile_image = profileImageFile;
-      } else if (profileData?.profile_image) {
-        updateData.profile_image = profileData.profile_image;
       }
-      console.log("profileImageFile:", profileImageFile);
 
       if (cvFile) {
         updateData.cv = cvFile;
-      } else if (profileData?.cv_path) {
-        updateData.cv_url = profileData.cv_path;
       }
 
-      await updateProfile(updateData);
+      const response = await updateProfile(updateData);
+
+      dispatch(
+        updateUser({
+          first_name: response.first_name,
+          last_name: response.last_name,
+          email: response.email,
+          phone: response.phone,
+          profile_image: response.profile_image ?? undefined,
+          country_id: response.country_id?.toString(),
+          city_id: response.city_id?.toString(),
+        })
+      );
+
       toast.success(t("toast.success"));
       router.push("/profile");
     } catch (error) {

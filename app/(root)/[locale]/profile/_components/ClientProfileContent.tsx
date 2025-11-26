@@ -46,7 +46,7 @@ const ClientProfileContent = () => {
   const [activeTab, setActiveTab] = useState("1");
   const locale = useLocale();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
   const { data: userData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);

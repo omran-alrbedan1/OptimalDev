@@ -16,6 +16,10 @@ import { motion, AnimatePresence } from "framer-motion";
 interface QuestionContentProps {
   currentQuestion: Question;
   answers: any;
+  validationErrors: Record<number, string>;
+  hasAttemptedSubmit: boolean;
+  fieldValidationErrors: Record<number, string>;
+  getErrorMessage: (errorType: string, question?: Question) => string;
   handleRadioSelect: (optionId: number) => void;
   handleCheckboxSelect: (optionId: number, checked: boolean) => void;
   handleTextAnswerChange: (value: string) => void;
@@ -31,6 +35,10 @@ interface QuestionContentProps {
 const QuestionContent: React.FC<QuestionContentProps> = ({
   currentQuestion,
   answers,
+  validationErrors,
+  hasAttemptedSubmit,
+  fieldValidationErrors,
+  getErrorMessage,
   handleRadioSelect,
   handleCheckboxSelect,
   handleTextAnswerChange,
@@ -92,6 +100,19 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 
     handleSubAnswerChange(currentQuestion.id, optionId, newSubAnswers);
   };
+
+  // Check if current question has validation error
+  const hasError = validationErrors[currentQuestion.id] && hasAttemptedSubmit;
+  const errorMessage = hasError
+    ? getErrorMessage(validationErrors[currentQuestion.id], currentQuestion)
+    : null;
+
+  // Check if current question has field validation error (for text inputs)
+  const hasFieldError =
+    fieldValidationErrors[currentQuestion.id] && hasAttemptedSubmit;
+  const fieldErrorMessage = hasFieldError
+    ? fieldValidationErrors[currentQuestion.id]
+    : null;
 
   const renderQuestionImages = () => {
     if (!currentQuestion.images || currentQuestion.images.length === 0)
@@ -233,7 +254,9 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
                   isSelected
                     ? "border-[#22ace3] bg-[#22ace3]/5 shadow-sm"
                     : "border-gray-200 dark:border-gray-600 hover:border-[#22ace3]/60 hover:bg-gray-50 dark:hover:bg-gray-700"
-                } ${hasSubOptions ? "pb-3" : ""}`}
+                } ${hasSubOptions ? "pb-3" : ""} ${
+                  hasError ? "border-red-300 dark:border-red-700" : ""
+                }`}
                 onClick={() => {
                   if (currentQuestion.type === "radio") {
                     handleRadioSelect(option.id);
@@ -310,6 +333,25 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
                       >
                         {option.title.current}
                       </span>
+
+                      {hasSubOptions && (
+                        <div
+                          className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleSubOptions(option.id);
+                          }}
+                        >
+                          <span>
+                            {t("details", { defaultValue: "Details" })}
+                          </span>
+                          {expandedOptions.has(option.id) ? (
+                            <ChevronUp className="w-3 h-3" />
+                          ) : (
+                            <ChevronDown className="w-3 h-3" />
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -345,7 +387,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
                     isSelected
                       ? "border-[#22ace3] bg-[#22ace3]/5 shadow-lg"
                       : "border-gray-200 dark:border-gray-600 hover:border-[#22ace3]/60 hover:shadow-md"
-                  }`}
+                  } ${hasError ? "border-red-300 dark:border-red-700" : ""}`}
                   onClick={() => {
                     handleRadioSelect(option.id);
                     if (hasSubOptions && !expandedOptions.has(option.id)) {
@@ -400,7 +442,9 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
                             toggleSubOptions(option.id);
                           }}
                         >
-                          <span>Details</span>
+                          <span>
+                            {t("details", { defaultValue: "Details" })}
+                          </span>
                           {expandedOptions.has(option.id) ? (
                             <ChevronUp className="w-3 h-3" />
                           ) : (
@@ -442,7 +486,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
           answers.fileAnswers?.[currentQuestion.id] || imagePreview
             ? "border-[#22ace3] bg-[#22ace3]/5"
             : "border-gray-300 dark:border-gray-600 hover:border-[#22ace3] hover:bg-gray-50 dark:hover:bg-gray-700"
-        }`}
+        } ${hasError ? "border-red-300 dark:border-red-700" : ""}`}
         onClick={() => fileInputRef.current?.click()}
       >
         <input
@@ -467,10 +511,10 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
             <Upload className="h-8 w-8 text-[#22ace3] mx-auto" />
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {answers.fileAnswers?.[currentQuestion.id]?.name ||
-                "File selected"}
+                t("fileSelected", { defaultValue: "File selected" })}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Click to change file
+              {t("clickToChangeFile", { defaultValue: "Click to change file" })}
             </p>
           </div>
         ) : (
@@ -478,11 +522,13 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
             <Upload className="h-12 w-12 text-gray-400 mx-auto" />
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
               {currentQuestion.type === "image"
-                ? "Upload image"
-                : "Upload file"}
+                ? t("uploadImage", { defaultValue: "Upload image" })
+                : t("uploadFile", { defaultValue: "Upload file" })}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Drag and drop or click to browse
+              {t("dragAndDrop", {
+                defaultValue: "Drag and drop or click to browse",
+              })}
             </p>
           </div>
         )}
@@ -495,7 +541,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
           className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-200"
         >
           <X className="w-4 h-4" />
-          Remove file
+          {t("removeFile", { defaultValue: "Remove file" })}
         </button>
       )}
     </div>
@@ -506,9 +552,19 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
       <textarea
         value={answers.textAnswers?.[currentQuestion.id] || ""}
         onChange={(e) => handleTextAnswerChange(e.target.value)}
-        className="w-full p-4 border border-gray-200 dark:border-gray-600 rounded-xl transition-all duration-300 min-h-[120px] resize-none text-base bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:border-[#22ace3] focus:ring-2 focus:ring-[#22ace3]/30 focus:outline-none"
-        placeholder="Type your answer here..."
+        className={`w-full p-4 border rounded-xl transition-all duration-300 min-h-[120px] resize-none text-base bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none ${
+          hasFieldError
+            ? "border-red-300 dark:border-red-700 focus:ring-2 focus:ring-red-500/30"
+            : "border-gray-200 dark:border-gray-600 focus:border-[#22ace3] focus:ring-2 focus:ring-[#22ace3]/30"
+        }`}
+        placeholder={t("textAnswerPlaceholder")}
       />
+      {hasFieldError && (
+        <p className="text-red-500 text-sm mt-2 flex items-center">
+          <AlertCircle className="w-4 h-4 mr-1" />
+          {fieldErrorMessage}
+        </p>
+      )}
     </div>
   );
 
@@ -518,74 +574,103 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
         type="date"
         value={answers.dateAnswers?.[currentQuestion.id] || ""}
         onChange={(e) => handleDateChange(e.target.value)}
-        className="w-full p-4 border border-gray-200 dark:border-gray-600 rounded-xl transition-all duration-300 text-base bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:border-[#22ace3] focus:ring-2 focus:ring-[#22ace3]/30 focus:outline-none"
+        className={`w-full p-4 border rounded-xl transition-all duration-300 text-base bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none ${
+          hasError
+            ? "border-red-300 dark:border-red-700 focus:ring-2 focus:ring-red-500/30"
+            : "border-gray-200 dark:border-gray-600 focus:border-[#22ace3] focus:ring-2 focus:ring-[#22ace3]/30"
+        }`}
       />
     </div>
   );
 
-  switch (currentQuestion.type) {
-    case "radio":
-    case "checkbox":
-      return (
-        <>
-          {renderQuestionImages()}
-          {renderStandardOptions()}
-        </>
-      );
-
-    case "image":
-      if (currentQuestion.options && currentQuestion.options.length > 0) {
-        return (
-          <>
-            {renderQuestionImages()}
-            {renderImageOptions()}
-          </>
-        );
-      } else {
-        return (
-          <>
-            {renderQuestionImages()}
-            {renderFileUpload()}
-          </>
-        );
-      }
-
-    case "file":
-      return (
-        <>
-          {renderQuestionImages()}
-          {renderFileUpload()}
-        </>
-      );
-
-    case "text":
-    case "country":
-    case "city":
-      return (
-        <>
-          {renderQuestionImages()}
-          {renderTextInput()}
-        </>
-      );
-
-    case "date":
-      return (
-        <>
-          {renderQuestionImages()}
-          {renderDateInput()}
-        </>
-      );
-
-    default:
-      return (
-        <div className="text-center p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-          <AlertCircle className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-          <p className="text-yellow-600 dark:text-yellow-400">
-            Unsupported question type: {currentQuestion.type}
-          </p>
+  return (
+    <div className="space-y-6">
+      {/* Error Message */}
+      {hasError && (
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <div className="flex items-center gap-2 text-red-700 dark:text-red-400">
+            <AlertCircle className="w-4 h-4" />
+            <span className="text-sm font-medium">{errorMessage}</span>
+          </div>
         </div>
-      );
-  }
+      )}
+
+      {/* Question Content */}
+      <div>
+        {(() => {
+          switch (currentQuestion.type) {
+            case "radio":
+            case "checkbox":
+              return (
+                <>
+                  {renderQuestionImages()}
+                  {renderStandardOptions()}
+                </>
+              );
+
+            case "image":
+              if (
+                currentQuestion.options &&
+                currentQuestion.options.length > 0
+              ) {
+                return (
+                  <>
+                    {renderQuestionImages()}
+                    {renderImageOptions()}
+                  </>
+                );
+              } else {
+                return (
+                  <>
+                    {renderQuestionImages()}
+                    {renderFileUpload()}
+                  </>
+                );
+              }
+
+            case "file":
+              return (
+                <>
+                  {renderQuestionImages()}
+                  {renderFileUpload()}
+                </>
+              );
+
+            case "text":
+            case "country":
+            case "city":
+              return (
+                <>
+                  {renderQuestionImages()}
+                  {renderTextInput()}
+                </>
+              );
+
+            case "date":
+              return (
+                <>
+                  {renderQuestionImages()}
+                  {renderDateInput()}
+                </>
+              );
+
+            default:
+              return (
+                <div className="text-center p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
+                  <AlertCircle className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                  <p className="text-yellow-600 dark:text-yellow-400">
+                    {t("unsupportedQuestionType", {
+                      defaultValue: "Unsupported question type:",
+                    })}{" "}
+                    {currentQuestion.type}
+                  </p>
+                </div>
+              );
+          }
+        })()}
+      </div>
+    </div>
+  );
 };
 
 export default QuestionContent;
