@@ -1,8 +1,5 @@
-// components/FormContent.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -13,6 +10,7 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
+import QuestionInput from "./QuestionInput";
 
 interface FormContentProps {
   step: number;
@@ -37,15 +35,29 @@ interface FormContentProps {
   trigger: any;
   errors: any;
   handleSubmit: any;
-  onSubmit: SubmitHandler<any>;
+  onSubmit: any;
   prevQuestion: () => void;
   nextQuestion: () => void;
   nextStep: () => void;
   getCurrentQuestion: () => Question | null;
   getTotalQuestionsInCurrentStep: () => number;
   canGoToNextQuestion: () => boolean;
-  renderQuestionInput: (question: Question) => JSX.Element | null;
   setHasAttemptedSubmit: (value: boolean) => void;
+  fieldValidationErrors: Record<string, string>;
+  expandedOptions: Set<string>;
+  handleAnswerChange: (questionId: string, value: any) => void;
+  handleParentOptionWithSubOptions: (
+    questionId: string,
+    option: any,
+    isChecked: boolean
+  ) => void;
+  handleSubAnswerChange: (
+    questionId: string,
+    optionId: string,
+    value: string[]
+  ) => void;
+  toggleOptionExpansion: (optionKey: string) => void;
+  setCountryId: (id: number) => void;
 }
 
 const FormContent = ({
@@ -55,14 +67,11 @@ const FormContent = ({
   validationErrors,
   hasAttemptedSubmit,
   isSubmittingForm,
-  questions,
   countries,
   cities,
   countriesLoading,
   citiesLoading,
   watch,
-  setValue,
-  trigger,
   errors,
   handleSubmit,
   onSubmit,
@@ -72,8 +81,15 @@ const FormContent = ({
   getCurrentQuestion,
   getTotalQuestionsInCurrentStep,
   canGoToNextQuestion,
-  renderQuestionInput,
   setHasAttemptedSubmit,
+  // Add new props
+  fieldValidationErrors,
+  expandedOptions,
+  handleAnswerChange,
+  handleParentOptionWithSubOptions,
+  handleSubAnswerChange,
+  toggleOptionExpansion,
+  setCountryId,
 }: FormContentProps) => {
   const t = useTranslations("serviceRequest");
   const currentQuestion = getCurrentQuestion();
@@ -154,7 +170,33 @@ const FormContent = ({
                           <span className="text-red-500"> *</span>
                         )}
                       </label>
-                      {renderQuestionInput(currentQuestion)}
+
+                      <QuestionInput
+                        question={currentQuestion}
+                        currentValue={watch(
+                          `answers.${currentQuestion.id.toString()}`
+                        )}
+                        currentSubAnswers={
+                          watch(
+                            `sub_answers.${currentQuestion.id.toString()}`
+                          ) || {}
+                        }
+                        fieldValidationErrors={fieldValidationErrors}
+                        countries={countries ?? []}
+                        cities={cities ?? []}
+                        countriesLoading={countriesLoading}
+                        citiesLoading={citiesLoading}
+                        errors={errors}
+                        expandedOptions={expandedOptions}
+                        onAnswerChange={handleAnswerChange}
+                        onParentOptionWithSubOptions={
+                          handleParentOptionWithSubOptions
+                        }
+                        onSubAnswerChange={handleSubAnswerChange}
+                        onToggleOptionExpansion={toggleOptionExpansion}
+                        setCountryId={setCountryId}
+                      />
+
                       {errors.answers?.[currentQuestion.id] && (
                         <p className="text-red-500 text-sm mt-2 flex items-center">
                           <AlertCircle className="h-4 w-4 mr-1" />

@@ -11,12 +11,12 @@ export async function GET(request: Request) {
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
+          cache: "no-cache",
         },
       }
     );
 
-    const data = response.data?.data || response.data;
-    return NextResponse.json(data);
+    return NextResponse.json(response);
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message || "Failed to fetch clients" },

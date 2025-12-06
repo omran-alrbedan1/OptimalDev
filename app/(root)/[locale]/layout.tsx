@@ -11,7 +11,7 @@ import localFont from "next/font/local";
 import "@/app/globals.css";
 import { Toaster } from "sonner";
 
-const zain = localFont({
+export const zain = localFont({
   src: [
     {
       path: "../../fonts/Zain-Black.ttf",

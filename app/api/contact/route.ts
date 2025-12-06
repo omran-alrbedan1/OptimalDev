@@ -36,16 +36,6 @@ export async function POST(request: NextRequest) {
     const language = request.headers.get("Accept-Language") || "en";
     const backendUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/contact/send`;
 
-    console.log("Sending request to:", backendUrl);
-    console.log("Request data:", {
-      first_name,
-      last_name,
-      email,
-      phone,
-      subject,
-      notes,
-    });
-
     const response = await axios.post(
       backendUrl,
       { first_name, last_name, email, phone, subject, notes },
