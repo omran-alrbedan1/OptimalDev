@@ -5,8 +5,6 @@ export async function POST(request: Request) {
   try {
     const requestData = await request.json();
 
-    console.log("Received request data:", JSON.stringify(requestData, null, 2));
-
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/service-requests`,
       requestData,

@@ -1,29 +1,36 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
 
-export const useFetch = <T>(fn: () => Promise<T>, deps: any[] = []) => {
+export const useFetch = <T>(
+  fn: (params?: any) => Promise<T>,
+  deps: any[] = []
+) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fn();
-      setData(response);
-    } catch (err) {
-      const message = (err as Error)?.message || "An error occurred";
-      setError(message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [fn]);
+  const fetchData = useCallback(
+    async (params?: any) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fn(params);
+        setData(response);
+      } catch (err) {
+        const message = (err as Error)?.message || "An error occurred";
+        setError(message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [fn]
+  );
 
   useEffect(() => {
     fetchData();
   }, [fetchData, ...deps]);
 
-  const refetch = () => fetchData();
+  const refetch = (params?: any) => fetchData(params);
 
   return { data, isLoading, error, refetch };
 };

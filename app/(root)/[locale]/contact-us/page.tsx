@@ -1,18 +1,18 @@
 "use client";
-
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import Loader from "@/components/Loader";
 import ContactForm from "@/components/forms/ContactForm";
 import { Smartphone } from "lucide-react";
 import { useFetch } from "@/hooks/useFetch";
-import { fetchContactInfo } from "@/lib/client-action";
+import { fetchContactInfo, fetchOrganization } from "@/lib/client-action";
 
 const ContactUsPage = () => {
   const { data: contactInfo } = useFetch<Contact>(fetchContactInfo);
+  const { data: organization } = useFetch<Organization>(fetchOrganization);
 
   return (
-    <div className="min-h-[100vh] overflow-y-auto relative">
+    <div className="min-h-[90vh] overflow-y-auto relative">
       {/* Background Overlay */}
       <img
         src="/images/building.jpg"
@@ -39,37 +39,78 @@ const ContactUsPage = () => {
           )}
         </div>
 
-        <div className="px-5 sm:pl-10 lg:pl-0 mt-10 max-lg:gap-10  flex mx-auto max-w-full justify-start items-start lg:justify-evenly lg:items-center w-full max-lg:flex-col ">
-          <div className="flex flex-col justify-start lg:justify-center items-start lg:items-center max-lg:w-full  lg:basis-[470px]">
+        <div className="px-5 sm:pl-10 lg:pl-0 -mt-8 max-lg:gap-10 flex mx-auto max-w-full justify-start items-start lg:justify-evenly lg:items-center w-full max-lg:flex-col">
+          <div className="flex flex-col justify-start lg:justify-center items-start lg:items-center max-lg:w-full lg:basis-[470px]">
             <div className="flex flex-col gap-y-3 lg:gap-y-5">
+              {/* Location */}
               <div className="flex items-center gap-4">
-                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
+                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center max-xs:mt-1 mt-2">
                   <MdLocationOn />
                 </span>
-                {contactInfo?.address && (
-                  <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>{contactInfo?.address}</span>
+                {organization?.location && (
+                  <p className="text-white text-sm sm:text-lg flex flex-col">
+                    <span>{organization.location}</span>
                   </p>
                 )}
               </div>
+
+              {/* Phone 1 */}
               <div className="flex items-center gap-4">
-                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9  rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
+                <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
                   <Smartphone />
                 </span>
-                {contactInfo?.phone && (
-                  <p className="text-white text-sm sm:text-lg  flex flex-col">
-                    <span>{contactInfo?.phone}</span>
-                  </p>
+                {organization?.phone_1 && (
+                  <a
+                    href={`tel:${organization.phone_1}`}
+                    className="text-white text-sm sm:text-lg hover:text-primary-color1 transition-colors"
+                  >
+                    <span>{organization.phone_1}</span>
+                  </a>
                 )}
               </div>
+
+              {/* Phone 2 */}
+              {organization?.phone_2 && (
+                <div className="flex items-center gap-4">
+                  <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
+                    <Smartphone />
+                  </span>
+                  <a
+                    href={`tel:${organization.phone_2}`}
+                    className="text-white text-sm sm:text-lg hover:text-primary-color1 transition-colors"
+                  >
+                    <span>{organization.phone_2}</span>
+                  </a>
+                </div>
+              )}
+
+              {/* Phone 3 */}
+              {organization?.phone_3 && (
+                <div className="flex items-center gap-4">
+                  <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-lg flex justify-center items-center mt-2 max-xs:mt-1">
+                    <Smartphone />
+                  </span>
+                  <a
+                    href={`tel:${organization.phone_3}`}
+                    className="text-white text-sm sm:text-lg hover:text-primary-color1 transition-colors"
+                  >
+                    <span>{organization.phone_3}</span>
+                  </a>
+                </div>
+              )}
+
+              {/* Email */}
               <div className="flex items-center gap-4">
                 <span className="max-xs:w-8 max-xs:h-8 w-9 h-9 rounded-full text-primary-color1 bg-white-100 text-xl flex justify-center items-center mt-3 max-xs:mt-1">
                   <MdEmail />
                 </span>
-                {contactInfo?.email && (
-                  <p className="text-white text-sm sm:text-lg flex flex-col">
-                    <span> {contactInfo?.email}</span>
-                  </p>
+                {organization?.email && (
+                  <a
+                    href={`mailto:${organization.email}`}
+                    className="text-white text-sm sm:text-lg hover:text-primary-color1 transition-colors"
+                  >
+                    <span>{organization.email}</span>
+                  </a>
                 )}
               </div>
             </div>

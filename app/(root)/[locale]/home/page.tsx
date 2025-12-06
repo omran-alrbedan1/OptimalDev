@@ -1,25 +1,19 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 import "@fontsource/poppins/300.css";
 import "@fontsource/poppins/500.css";
 import "@fontsource/poppins/600.css";
 
 import Loader from "@/components/Loader";
-import {
-  Section,
-  Services,
-  Partners,
-  Slider,
-  Clients,
-  CustomerReviews,
-  JobOpportunities,
-} from "@/components/home";
+import { Services, Partners, Slider, Clients } from "@/components/home";
 import {
   fetchClients,
   fetchOrganization,
   fetchPartners,
   fetchSliders,
 } from "@/lib/action";
+import { cn } from "@/lib/utils";
+import { zain } from "../layout";
 
 const Page = async () => {
   const sliders = await fetchSliders();
@@ -33,14 +27,14 @@ const Page = async () => {
         {organization.home ? (
           <div
             dangerouslySetInnerHTML={{ __html: organization.home }}
-            className="dark:text-white"
+            className={cn("text-[30px] container mx-auto", zain.className)}
           />
         ) : (
           <div />
         )}
         <Services />
-        {/* <JobOpportunities /> */}
         <Partners partners={partners} />
+
         <Clients clients={clients} />
       </div>
     </Suspense>

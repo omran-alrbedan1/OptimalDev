@@ -46,7 +46,7 @@ const ClientProfileContent = () => {
   const [activeTab, setActiveTab] = useState("1");
   const locale = useLocale();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
   const { data: userData, isLoading: profileLoading } =
     useFetch<User>(fetchProfileInfo);
@@ -352,7 +352,6 @@ const ClientProfileContent = () => {
         footer={null}
         width={800}
         centered
-        destroyOnClose
       >
         <div className="flex flex-col md:flex-row">
           <div className="hidden md:block md:w-1/2 p-4 bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/20 dark:to-gray-800 rounded-l-lg">

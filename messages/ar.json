@@ -104,13 +104,16 @@
       "subtitle": "تم العثور على {total} طلب"
     },
     "status": {
-      "applied": "تم التقديم",
-      "pending": "قيد المراجعة",
-      "reviewed": "تمت المراجعة",
-      "shortlisted": "في القائمة المختصرة",
-      "approved": "مقبول",
-      "rejected": "مرفوض",
-      "withdrawn": "تم السحب"
+      "salary": "الراتب",
+        "experience": "الخبرة",
+        "contract": "نوع العقد",
+        "workMode": "نمط العمل",
+        "deadline": "آخر موعد",
+        "skills": "المهارات المطلوبة",
+        "appliedDate": "تاريخ التقديم: {date}",
+        "expiringSoon": "⚠️ تنتهي خلال {days} أيام",
+        "expired": "❌ منتهية الصلاحية",
+        "years": "سنة"
     },
     "jobDetails": {
       "salary": "الراتب",
@@ -302,7 +305,7 @@
     "next": "التالي",
     "errorLoadingJobs": "خطأ في تحميل الوظائف",
 
-    "jobCard": {
+  "jobCard": {
       "checkOutJob": "اطلع على هذه الوظيفة",
       "at": "في",
       "facebook": "فيسبوك",
@@ -313,33 +316,47 @@
       "industry": "الصناعة",
       "applyNow": "تقدم الآن",
       "loginToApply": "سجل الدخول للتقديم",
-      "applying": "جاري التقدبم"
+      "applying": "جاري التقديم",
+      "alreadyApplied": "تم التقديم مسبقاً",
+      "applied": "تم التقديم",
+      "fullTime": "دوام كامل",
+      "onSite": "حضوري",
+      "salaryNotSpecified": "الراتب غير محدد",
+      "currencySymbol": "دينار"
     }
   },
 
   "jobDetailsPage": {
-    "loading": "جار التحميل...",
-    "error": "فشل الاتصال بالخادم",
-    "jobNotFound": "الوظيفة غير موجودة",
-    "jobDescription": "وصف الوظيفة",
-    "dutiesResponsibilities": "المهام والمسؤوليات",
-    "technicalSkills": "المهارات التقنية",
-    "jobDetails": "تفاصيل الوظيفة",
-    "salaryRange": "نطاق الراتب",
-    "publishedDate": "تاريخ النشر",
-    "expirationDate": "تاريخ الانتهاء",
-    "jobType": "نوع الوظيفة",
-    "requirements": "المتطلبات",
-    "yearsExperience": "سنوات الخبرة",
-    "preferredCandidate": "المرشح المفضل",
-    "otherRequirements": "متطلبات أخرى",
-    "companyInformation": "معلومات الشركة",
-    "address": "العنوان",
-    "email": "البريد الإلكتروني",
-    "phone": "الهاتف",
-    "applyNow": "تقديم الآن",
-    "loginToApply": "تسجيل الدخول للتقديم"
-  },
+  "loading": "جار التحميل...",
+  "error": "فشل الاتصال بالخادم",
+  "jobNotFound": "الوظيفة غير موجودة",
+  "jobDescription": "وصف الوظيفة",
+  "dutiesResponsibilities": "المهام والمسؤوليات",
+  "technicalSkills": "المهارات التقنية",
+  "jobDetails": "تفاصيل الوظيفة",
+  "salaryRange": "نطاق الراتب",
+  "publishedDate": "تاريخ النشر",
+  "expirationDate": "تاريخ الانتهاء",
+  "jobType": "نوع الوظيفة",
+  "requirements": "المتطلبات",
+  "yearsExperience": "سنوات الخبرة",
+  "preferredCandidate": "المرشح المفضل",
+  "otherRequirements": "متطلبات أخرى",
+  "companyInformation": "معلومات الشركة",
+  "address": "العنوان",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف",
+  "applyNow": "تقديم الآن",
+  "loginToApply": "تسجيل الدخول للتقديم",
+  "applied": "تم التقديم",
+  "alreadyApplied": "تم التقديم مسبقاً",
+  "applicantsCount": "عدد المتقدمين",
+  "contractTypes": "أنواع العقود",
+  "workModes": "أنماط العمل",
+  "experienceLevels": "مستويات الخبرة",
+  "educationLevels": "المستويات التعليمية",
+  "companyDescription": "وصف الشركة"
+},
   "ApplicationDetailsPage": {
     "header": {
       "remote": "عن بُعد",
@@ -574,21 +591,21 @@
           "hint": "يدعم رفع ملف واحد فقط. يتم قبول ملفات PDF و Word فقط (بحد أقصى 5MB).",
           "errorSize": "يجب أن يكون حجم ملف السيرة الذاتية أقل من 5MB",
           "errorType": "يتم قبول ملفات PDF و Word فقط",
-           "optional": "اختياري"
+          "optional": "اختياري"
         },
         "acceptTerms": {
-      "label": "أوافق على {terms} و {privacy}",
-      "terms": "الشروط والأحكام",
-      "privacy": "سياسة الخصوصية",
-      "error": "يجب عليك الموافقة على الشروط والسياسات"
-    }
+          "label": "أوافق على {terms} و {privacy}",
+          "terms": "الشروط والأحكام",
+          "privacy": "سياسة الخصوصية",
+          "error": "يجب عليك الموافقة على الشروط والسياسات"
+        }
       },
       "submit": "إنشاء حساب",
       "submitting": "جاري إنشاء الحساب...",
       "loginLink": {
         "prefix": "هل لديك حساب بالفعل؟",
-         "loginText": "تسجيل الدخول"
-        },
+        "loginText": "تسجيل الدخول"
+      },
       "login": "تسجيل الدخول",
       "toast": {
         "success": {
@@ -600,7 +617,7 @@
           "description": "حدث خطأ. الرجاء المحاولة مرة أخرى."
         }
       }
-    },
+  },
 "passwordChangeForm": {
   "title": "تغيير كلمة المرور",
   "description": "أدخل كلمة المرور الحالية والجديدة",
@@ -718,10 +735,39 @@
     "next": "التالي",
     "submitTest": "إرسال الاختبار",
     "submitting": "جاري الإرسال...",
-    "textAnswerPlaceholder": "اكتب إجابتك هنا...",
-     "questionsCompleted": "الأسئلة المكتملة",
-    "questionsRemaining": "الأسئلة المتبقية"
-},
+    "textAnswerPlaceholder": "اكتب إجابتك هنا...",
+    "questionsCompleted": "الأسئلة المكتملة",
+    "questionsRemaining": "الأسئلة المتبقية",
+    "details": "التفاصيل",
+    "fileSelected": "تم اختيار الملف",
+    "clickToChangeFile": "انقر لتغيير الملف",
+    "uploadImage": "رفع صورة",
+    "uploadFile": "رفع ملف",
+    "dragAndDrop": "اسحب وأفلت أو انقر للتصفح",
+    "removeFile": "إزالة الملف",
+    "unsupportedQuestionType": "نوع السؤال غير مدعوم:",
+    "testValidation": {
+      "required": "هذا السؤال مطلوب",
+      "numeric": "يرجى إدخال أرقام فقط",
+      "alpha": "يرجى إدخال أحرف فقط",
+      "alphanumeric": "يرجى إدخال أحرف وأرقام فقط",
+      "email": "يرجى إدخال بريد إلكتروني صحيح",
+      "minLength": "يجب أن تكون الإجابة على الأقل {min} حرف",
+      "maxLength": "يجب ألا تتجاوز الإجابة {max} حرف",
+      "fileRequired": "يرجى رفع ملف",
+      "dateRequired": "يرجى اختيار تاريخ",
+      "optionRequired": "يرجى اختيار خيار",
+      "enterNumbersOnly": "يرجى إدخال أرقام فقط",
+      "enterLettersOnly": "يرجى إدخال أحرف فقط",
+      "enterLettersNumbersOnly": "يرجى إدخال أحرف وأرقام فقط",
+      "enterValidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+      "invalid": "إدخال غير صحيح",
+      "completeQuestion": "يرجى إكمال هذا السؤال",
+      "thisField": "هذا الحقل"
+    }
+  }
+
+,
 "resultModal": {
   "perfectScore": {
     "title": "نتيجة ممتازة!",
@@ -773,20 +819,25 @@
         "description": "معلومات الميزانية"
       }
     },
-    "form": {
-      "fullName": "الاسم الكامل",
-      "email": "البريد الإلكتروني",
-      "phone": "الهاتف",
-      "companyName": "اسم الشركة",
-      "jobTitle": "المسمى الوظيفي",
-      "country": "الدولة",
-      "city": "المدينة",
-      "selectCountry": "اختر الدولة",
-      "selectCity": "اختر المدينة",
-      "textPlaceholder": "أدخل إجابتك...",
-      "selectOption": "اختر خيارًا",
-      "selectOptions": "اختر الخيارات"
-    },
+   "form": {
+  "fullName": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف",
+  "companyName": "اسم الشركة",
+  "jobTitle": "المسمى الوظيفي",
+  "country": "الدولة",
+  "city": "المدينة",
+  "selectCountry": "اختر الدولة",
+  "selectCity": "اختر المدينة",
+  "textPlaceholder": "أدخل إجابتك...",
+  "selectOption": "اختر خيارًا",
+  "selectOptions": "اختر الخيارات",
+  "removeFile": "إزالة الملف",
+  "dragDropOrClick": "اسحب وأفلت الملفات هنا أو انقر للتحميل",
+  "uploadFile": "تحميل الملف",
+  "clickToChangeFile":"انقر لتغيير الملف "
+
+},
     "success": {
       "title": "تم إرسال الطلب بنجاح!",
       "message": "شكرًا لك على طلبك. سيقوم فريقنا بمراجعته والرد عليك قريبًا.",

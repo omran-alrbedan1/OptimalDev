@@ -1,20 +1,30 @@
-// Example for app/api/jobs/[id]/route.ts
+// app/api/jobs/[id]/route.ts
 import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const language = request.headers.get("Accept-Language") || "en";
-    const { id } = params;
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: "Unauthorized - Authorization header missing" },
+        { status: 401 }
+      );
+    }
+
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
+          Authorization: authHeader,
+          cache: "no-cache",
         },
       }
     );
