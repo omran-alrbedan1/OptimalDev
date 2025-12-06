@@ -11,6 +11,7 @@ import { FormFieldType } from "@/enum";
 import CustomFormField from "../inputs/CustomFormField";
 import { icons } from "@/constants/icons";
 import { subscribeFormShema } from "@/lib/validation/userValidation";
+import { subscribe } from "@/lib/client-action";
 
 export default function SubscribeForm() {
   const t = useTranslations("forms.subscribeForm");
@@ -23,7 +24,7 @@ export default function SubscribeForm() {
 
   async function onSubmit(values: z.infer<typeof subscribeFormShema>) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await subscribe(values.email);
       toast.success(t("success.title"), {
         description: t("success.description"),
       });

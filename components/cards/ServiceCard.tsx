@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useRef, useEffect } from "react";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -24,29 +25,55 @@ export default function ServiceCard({
   service,
   index,
 }: {
-  service: SubService;
+  service: Service;
   index: number;
 }) {
   const pathname = usePathname();
-
   const isArabic = pathname.startsWith("/ar/") || pathname.includes("/ar/");
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    // Safe image loading
+    if (imgRef.current) {
+      const img = imgRef.current;
+      const handleLoad = () => {
+        // Image loaded successfully
+      };
+      const handleError = () => {
+        if (img) {
+          img.src = "https://via.placeholder.com/400x300?text=No+Image";
+        }
+      };
+
+      img.addEventListener("load", handleLoad);
+      img.addEventListener("error", handleError);
+
+      return () => {
+        img.removeEventListener("load", handleLoad);
+        img.removeEventListener("error", handleError);
+      };
+    }
+  }, []);
 
   return (
     <motion.div
       variants={cardVariants}
+      initial="hidden"
+      animate="visible"
       className={`flex ${
         isArabic ? "flex-row" : "flex-row-reverse"
       } items-center gap-8 p-6`}
     >
-      <motion.div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
-        <motion.div className="relative w-fit">
+      <div className="w-full relative flex justify-center items-center rounded-lg overflow-hidden">
+        <div className="relative w-fit">
           <img
+            ref={imgRef}
             src={
               service?.image
                 ? service.image
                 : "https://via.placeholder.com/400x300?text=No+Image"
             }
-            alt={service?.name}
+            alt={service?.name || "Service image"}
             className="object-contain w-fit"
             style={{
               maxWidth: "100%",
@@ -54,14 +81,18 @@ export default function ServiceCard({
               width: "auto",
               height: "auto",
             }}
+            onError={(e) => {
+              e.currentTarget.src =
+                "https://via.placeholder.com/400x300?text=No+Image";
+            }}
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div
         className={`w-full md:w-1/2 ${isArabic ? "text-right" : "text-left"}`}
       >
-        <motion.h3
+        <motion.div
           className={`text-2xl font-bold mb-4 ${
             isArabic ? "text-right" : "text-left"
           }`}
@@ -71,25 +102,23 @@ export default function ServiceCard({
         >
           <div
             dangerouslySetInnerHTML={{
-              __html: service?.name,
+              __html: service?.name || "",
             }}
           />
-        </motion.h3>
-        <motion.p
-          className={`text-gray-600 mb-6 dark:text-gray-200 ${
+        </motion.div>
+
+        <motion.div
+          className={`text-gray-600 mb-6 dark:text-gray-200 line-clamp-6 ${
             isArabic ? "text-right" : "text-left"
           }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.1 + 0.4 }}
-        >
-          <div
-            className="line-clamp-6"
-            dangerouslySetInnerHTML={{
-              __html: service?.description,
-            }}
-          />
-        </motion.p>
+          dangerouslySetInnerHTML={{
+            __html: service?.description || "",
+          }}
+        />
+
         <motion.a
           href={`/services/${service?.id}`}
           className={`inline-block px-6 py-2 bg-primary-color1 text-white rounded-lg hover:border-primary-color1 hover:text-primary-color1 hover:bg-white-100 border-2 transition ${

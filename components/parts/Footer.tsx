@@ -22,8 +22,6 @@ const Footer = async () => {
   const t = await getTranslations("footer");
   const organization = await fetchOrganization();
 
-  console.log(organization);
-
   const ensureAbsoluteUrl = (url: string | undefined) => {
     if (!url) return undefined;
 
@@ -78,8 +76,6 @@ const Footer = async () => {
       name: "twitter",
     },
   ].filter((link) => link.href);
-
-  console.log(socialLinks);
 
   const contactItems = [
     organization?.location && {

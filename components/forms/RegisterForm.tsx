@@ -47,8 +47,12 @@ export default function RegisterForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const jobId = searchParams.get("jobId");
-  const form = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+
+  // Use the schema with translation function
+  const schema = registerFormSchema(t);
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -57,6 +61,7 @@ export default function RegisterForm() {
       country_id: "",
       city_id: "",
       password: "",
+      cv: undefined,
       password_confirmation: "",
       acceptTerms: false,
     },
@@ -101,30 +106,30 @@ export default function RegisterForm() {
         return Upload.LIST_IGNORE;
       }
 
-      form.setValue("cv", file);
+      form.setValue("cv", file, { shouldValidate: true });
       setFileList([file]);
       return false;
     },
     onChange(info: any) {
       if (info.file.status === "removed") {
-        form.setValue("cv", null);
+        form.setValue("cv", null, { shouldValidate: true }); // Add shouldValidate: true
         setFileList([]);
       }
     },
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value ? Number(e.target.value) : undefined;
-    form.setValue("country_id", value);
-    form.resetField("city_id");
+    const value = e.target.value ? e.target.value : "";
+    form.setValue("country_id", value, { shouldValidate: true });
+    form.setValue("city_id", "", { shouldValidate: true });
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value ? Number(e.target.value) : undefined;
-    form.setValue("city_id", value);
+    const value = e.target.value ? e.target.value : "";
+    form.setValue("city_id", value, { shouldValidate: true });
   };
 
-  async function onSubmit(values: z.infer<typeof registerFormSchema>) {
+  async function onSubmit(values: z.infer<typeof schema>) {
     try {
       const formData = new FormData();
 
@@ -132,8 +137,8 @@ export default function RegisterForm() {
       formData.append("last_name", values.last_name);
       formData.append("email", values.email);
       formData.append("phone", values.phone);
-      formData.append("country_id", String(Number(values.country_id)));
-      formData.append("city_id", String(Number(values.city_id)));
+      formData.append("country_id", values.country_id);
+      formData.append("city_id", values.city_id);
       formData.append("password", values.password);
       formData.append("password_confirmation", values.password_confirmation);
       formData.append("accept_terms", values.acceptTerms.toString());
@@ -145,26 +150,21 @@ export default function RegisterForm() {
       const response = await register(formData);
 
       if (response.access_token) {
-        const isHttps = window.location.protocol === "https:";
+        dispatch(loginSuccess(response));
 
-        setCookie("token", response.access_token, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/",
-          secure: isHttps,
-          sameSite: isHttps ? "strict" : "lax",
+        toast.success(t("toast.success.title"), {
+          description: t("toast.success.description"),
         });
+
+        const redirectUrl =
+          callbackUrl && callbackUrl.length > 0
+            ? decodeURIComponent(callbackUrl)
+            : `/${locale}/home`;
+        router.push(redirectUrl);
       }
-      dispatch(loginSuccess(response));
-      toast.success(t("toast.success.title"), {
-        description: t("toast.success.description"),
-      });
-      const redirectUrl =
-        callbackUrl && callbackUrl.length > 0
-          ? decodeURIComponent(callbackUrl)
-          : `/${locale}/home`;
-      router.push(redirectUrl);
     } catch (error) {
       console.error("Registration error", error);
+
       toast.error(t("toast.error.title"), {
         description:
           error instanceof Error ? error.message : t("toast.error.description"),
@@ -204,11 +204,7 @@ export default function RegisterForm() {
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
-                {form.formState.errors.name && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.name.error")}
-                  </p>
-                )}
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -228,11 +224,7 @@ export default function RegisterForm() {
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
-                {form.formState.errors.surname && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.surname.error")}
-                  </p>
-                )}
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -254,11 +246,7 @@ export default function RegisterForm() {
                       className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                     />
                   </FormControl>
-                  {form.formState.errors.email && (
-                    <p className="text-sm text-red-500">
-                      {t("fields.email.error")}
-                    </p>
-                  )}
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -279,20 +267,16 @@ export default function RegisterForm() {
                       value={field.value}
                       onChange={(phone) => field.onChange(phone)}
                       inputClass="!w-full rounded-md !border dark:!border-gray-500
-                       !bg-gray-50 dark:!bg-gray-800 border-input
-                      bg-background px-3 py-2 text-sm ring-offset-background
-                      file:border-0 file:!bg-transparent file:text-sm file:font-medium dark:text-gray-300
-                      placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2
-                      focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        !bg-gray-50 dark:!bg-gray-800 border-input
+                        bg-background px-3 py-2 text-sm ring-offset-background
+                        file:border-0 file:!bg-transparent file:text-sm file:font-medium dark:text-gray-300
+                        placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2
+                        focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       containerClass="mt-1 dark:!bg-gray-700"
                       buttonClass="!pr-2 dark:!bg-gray-800 dark:hover:bg-gray-700 !border-gray-300 dark:!border-gray-500"
                     />
                   </FormControl>
-                  {form.formState.errors.phone && (
-                    <p className="text-sm text-red-500">
-                      {t("fields.phone.error")}
-                    </p>
-                  )}
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -308,7 +292,7 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <select
-                    value={field.value ?? ""}
+                    value={field.value}
                     onChange={handleCountryChange}
                     className="flex h-10 w-full border dark:text-white border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
@@ -320,7 +304,7 @@ export default function RegisterForm() {
                     ))}
                   </select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -335,7 +319,7 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <select
-                    value={field.value ?? ""}
+                    value={field.value}
                     onChange={handleCityChange}
                     disabled={!countryId}
                     className="flex h-10 w-full border dark:!text-white  dark:border-gray-500 bg-gray-50 dark:bg-gray-800 rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 "
@@ -348,10 +332,11 @@ export default function RegisterForm() {
                     ))}
                   </select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -368,11 +353,7 @@ export default function RegisterForm() {
                     className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
-                {form.formState.errors.password && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.password.error")}
-                  </p>
-                )}
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -393,28 +374,24 @@ export default function RegisterForm() {
                     className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
                   />
                 </FormControl>
-                {form.formState.errors.confirmPassword && (
-                  <p className="text-sm text-red-500">
-                    {t("fields.confirmPassword.error")}
-                  </p>
-                )}
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
 
-          <div className="grid gap-2 md:col-span-2 relative h-fit  mt-4">
+          <div className="grid gap-2 md:col-span-2 relative h-fit mt-4">
             <FormField
               control={form.control}
               name="cv"
               render={({ field }) => (
                 <FormItem className="flex flex-col items-start justify-start">
-                  <FormLabel className="dark:text-gray-300 ">
+                  <FormLabel className="dark:text-gray-300">
                     {t("fields.cv.label")}
                   </FormLabel>
                   <FormControl className="pt-2">
                     <Dragger
                       {...uploadProps}
-                      className="mb-2 border-gray-300 rounded-md "
+                      className="mb-2 border-gray-300 rounded-md"
                     >
                       <p className="ant-upload-drag-icon">
                         <InboxOutlined />
@@ -425,12 +402,7 @@ export default function RegisterForm() {
                       <p className="ant-upload-hint">{t("fields.cv.hint")}</p>
                     </Dragger>
                   </FormControl>
-                  {/* <FormMessage className="text-red-400">
-                    {form.formState.errors.cv?.message ===
-                      "fields.cv.errorSize" && t("fields.cv.errorSize")}
-                    {form.formState.errors.cv?.message ===
-                      "fields.cv.errorType" && t("fields.cv.errorType")}
-                  </FormMessage> */}
+                  <FormMessage className="text-red-500 mt-4" />
                 </FormItem>
               )}
             />
@@ -487,14 +459,11 @@ export default function RegisterForm() {
                         </>
                       )}
                     </FormLabel>
+                    <FormMessage className="text-red-500 rtl:text-right !mt-4" />
                   </div>
                 </FormItem>
               )}
             />
-            <FormMessage className="text-red-400 rtl:text-right">
-              {form.formState.errors.acceptTerms &&
-                t("fields.acceptTerms.error")}
-            </FormMessage>
           </div>
 
           <Button
@@ -519,4 +488,3 @@ export default function RegisterForm() {
     </Form>
   );
 }
-import React from "react";

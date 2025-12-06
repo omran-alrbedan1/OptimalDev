@@ -50,22 +50,15 @@ export default function LoginForm() {
     try {
       dispatch(loginStart());
       const response = await login(values.login, values.password);
-      const isHttps = window.location.protocol === "https:";
 
-      setCookie("token", response.access_token, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-        secure: isHttps,
-        sameSite: isHttps ? "strict" : "lax",
-      });
-
+      // Dispatch success action - Redux will handle cookie storage
       dispatch(loginSuccess(response));
 
       toast.success(t("toast.success.title"));
       const redirectUrl =
         callbackUrl && callbackUrl.length > 0
           ? decodeURIComponent(callbackUrl)
-          : `/${locale}/home`;
+          : `/${locale}/career`;
       router.push(redirectUrl);
     } catch (error) {
       toast.error(t("toast.error.title"), {
@@ -73,7 +66,6 @@ export default function LoginForm() {
       });
     }
   }
-
   return (
     <Form {...form}>
       <form

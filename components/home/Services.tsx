@@ -5,9 +5,7 @@ import Header from "@/components/Header";
 import { motion } from "framer-motion";
 import ServiceCard from "../cards/ServiceCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useFetch } from "@/hooks/useFetch";
-import { fetchSubServices } from "@/lib/client-action";
+import { useEffect, useState } from "react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,17 +43,43 @@ const CustomArrow = ({
     </button>
   );
 };
+
 export default function Services() {
-  const t = useTranslations("ourServices");
-  const { data: services } = useFetch<SubService[]>(fetchSubServices);
+  const [services, setServices] = useState<ServicesResponse>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/services/sub-services");
+        const data = await response.json();
+        setServices(data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (!services) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-lg">Loading services...</div>
+      </div>
+    );
+  }
+
   return (
     <motion.section
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-col  w-full items-center mt-16  p-8 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
+      className="flex flex-col w-full items-center mt-16 p-8 px-5 sm:px-10 md:px-16 mx-auto mb-16 md:mb-20"
     >
-      <Header title={t("title")} paragraph={t("paragraph")} />
+      {/* Use 'services' instead of 'servicesResponse' */}
+      <Header
+        title={services?.section?.title}
+        paragraph={services?.section?.description}
+      />
 
       <motion.div
         className="w-full max-w-7xl relative"
@@ -69,7 +93,7 @@ export default function Services() {
           dots={{ className: "custom-dots" }}
           className="hover:cursor-pointer [&_.slick-dots]:bottom-[-30px] [&_.slick-dots_li_button]:bg-gray-300 [&_.slick-dots_li.slick-active_button]:bg-primary-color1"
         >
-          {services?.map((service, index) => (
+          {services?.data?.map((service, index) => (
             <div key={service.id} className="px-2">
               <ServiceCard service={service} index={index} />
             </div>

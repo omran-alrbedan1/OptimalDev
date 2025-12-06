@@ -2,13 +2,19 @@
 "use client";
 import { useAppSelector } from "@/hooks/hook";
 import { applyForJob } from "@/lib/client-action";
-import { Button, Dropdown, MenuProps } from "antd";
+import { Button, Dropdown, MenuProps, Tag } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
-import { FiBriefcase, FiClock, FiMapPin, FiShare2 } from "react-icons/fi";
+import { useState, useMemo, useRef } from "react";
+import {
+  FiBriefcase,
+  FiClock,
+  FiMapPin,
+  FiShare2,
+  FiCheck,
+} from "react-icons/fi";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -20,7 +26,7 @@ import {
 import { toast } from "sonner";
 import { JobApplicationModal } from "@/components/modal/JobApplicationModal";
 
-const JobCard = ({ job }: { job: any }) => {
+const JobCard = ({ job }) => {
   const t = useTranslations("careerPage.jobCard");
   const locale = useLocale();
   const router = useRouter();
@@ -33,19 +39,44 @@ const JobCard = ({ job }: { job: any }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [requiredTests, setRequiredTests] = useState<any[]>([]);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const dropdownRef = useRef<any>(null);
+
+  // Get all contract types from array
+  const contractTypes = useMemo(() => {
+    if (job.contract_types && job.contract_types.length > 0) {
+      return job.contract_types.map((contract) => contract.name);
+    }
+    return [t("fullTime")]; // fallback
+  }, [job.contract_types, t]);
+
+  // Get all work modes from array
+  const workModes = useMemo(() => {
+    if (job.work_modes && job.work_modes.length > 0) {
+      return job.work_modes.map((mode) => mode.name);
+    }
+    return [t("onSite")]; // fallback
+  }, [job.work_modes, t]);
+
+  // Get salary range from actual data
+  const salaryDisplay = useMemo(() => {
+    if (job.salary_min && job.salary_max) {
+      return `${t("currencySymbol")}${job.salary_min} - ${t("currencySymbol")}${
+        job.salary_max
+      }`;
+    }
+    return job.salary || t("salaryNotSpecified");
+  }, [job.salary_min, job.salary_max, job.salary, t]);
 
   // Fixed job URL construction
   const jobUrl = useMemo(() => {
-    // Check if window is defined (client-side)
     if (typeof window !== "undefined") {
       return `${window.location.origin}/${locale}/career/${job.id}`;
     }
-    // Fallback for server-side rendering
     return `/${locale}/career/${job.id}`;
   }, [locale, job.id]);
 
   const shareTitle = `${t("checkOutJob")}: ${job.title} ${t("at")} ${
-    job.company
+    job.company?.name || job.company
   }`;
 
   const applyToJob = async () => {
@@ -55,10 +86,16 @@ const JobCard = ({ job }: { job: any }) => {
       );
       return;
     }
+
+    // Check if already applied
+    if (job.applied) {
+      toast.info(t("alreadyApplied"));
+      return;
+    }
+
     setIsApplying(true);
     try {
       const response = await applyForJob(Number(job.id));
-      console.log(response);
       if (
         typeof response.message === "string" &&
         (response.message.includes("يرجى إكمال الاختبارات المطلوبة أولاً") ||
@@ -84,19 +121,47 @@ const JobCard = ({ job }: { job: any }) => {
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(jobUrl);
-    toast.success(t("linkCopied"), {
-      duration: 2000,
-    });
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    navigator.clipboard
+      .writeText(jobUrl)
+      .then(() => {
+        toast.success(t("linkCopied"), {
+          duration: 2000,
+        });
+        // Close the dropdown manually after copy
+        if (dropdownRef.current) {
+          dropdownRef.current?.close();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getWorkModeColor = (mode: string) => {
+    switch (mode) {
+      case "Remote":
+        return "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400";
+      case "Hybrid":
+        return "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400";
+      default:
+        return "bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
+    }
   };
 
   const items: MenuProps["items"] = [
     {
       key: "facebook",
       label: (
-        <FacebookShareButton url={jobUrl} quote={shareTitle}>
-          <div className={`flex items-center gap-2 px-2 py-1 `}>
+        <FacebookShareButton
+          url={jobUrl}
+          quote={shareTitle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <FacebookIcon size={24} round />
             <span>{t("facebook")}</span>
           </div>
@@ -111,8 +176,9 @@ const JobCard = ({ job }: { job: any }) => {
           title={job.title}
           summary={job.description}
           source={typeof window !== "undefined" ? window.location.hostname : ""}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className={`flex items-center gap-2 px-2 py-1`}>
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <LinkedinIcon size={24} round />
             <span>{t("linkedin")}</span>
           </div>
@@ -122,8 +188,12 @@ const JobCard = ({ job }: { job: any }) => {
     {
       key: "whatsapp",
       label: (
-        <WhatsappShareButton url={jobUrl} title={shareTitle}>
-          <div className={`flex items-center gap-2 px-2 py-1 `}>
+        <WhatsappShareButton
+          url={jobUrl}
+          title={shareTitle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={`flex items-center gap-2 px-2 py-1 w-full`}>
             <WhatsappIcon size={24} round />
             <span>{t("whatsapp")}</span>
           </div>
@@ -135,7 +205,7 @@ const JobCard = ({ job }: { job: any }) => {
       label: (
         <button
           onClick={handleCopyLink}
-          className={`flex items-center gap-2 px-2 py-1 w-full `}
+          className={`flex items-center gap-2 px-2 py-1 w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded`}
         >
           <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
             <FiShare2 className="text-gray-600 text-sm" />
@@ -146,21 +216,12 @@ const JobCard = ({ job }: { job: any }) => {
     },
   ];
 
-  const getWorkModeColor = (mode: string) => {
-    switch (mode) {
-      case "Remote":
-        return "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400";
-      case "Hybrid":
-        return "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400";
-      default:
-        return "bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
-    }
-  };
-
   return (
     <>
       <div
-        className={`bg-white dark:bg-gray-800 min-h-[18rem] sm:min-h-[20rem] rounded-lg md:rounded-xl shadow-sm p-4 md:p-6 hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 flex flex-col `}
+        className={`bg-white dark:bg-gray-800 min-h-[18rem] sm:min-h-[20rem] rounded-lg md:rounded-xl shadow-sm p-4 md:p-6 hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 flex flex-col ${
+          job.applied ? "border-l-4 border-l-green-500" : ""
+        }`}
       >
         <div className={`flex items-start gap-3 md:gap-4 flex-1 `}>
           <Link href={`/${locale}/career/${job.id}`} className="pb-10">
@@ -188,30 +249,43 @@ const JobCard = ({ job }: { job: any }) => {
                       {job.title}
                     </h3>
                     <span className="font-semibold text-xs md:text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 p-1 px-2 rounded-full self-start sm:self-auto mt-1 sm:mt-0">
-                      {job.salary}
+                      {salaryDisplay}
                     </span>
                   </div>
                   <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-0 md:mt-1 line-clamp-1">
-                    {job.company} • {job.city}, {job.country}
+                    {job.company?.name || job.company} •{" "}
+                    {job.city?.name || job.city},{" "}
+                    {job.country?.name || job.country}
                   </p>
                 </div>
               </div>
 
               <div className={`flex flex-wrap gap-1.5 md:gap-2 my-2 md:my-3 `}>
-                <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm flex items-center gap-1">
-                  <FiBriefcase className="text-[10px] md:text-xs" />
-                  {job.type_of_contract}
-                </span>
-                <span
-                  className={`${getWorkModeColor(
-                    job.work_mode
-                  )} px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm flex items-center gap-1`}
-                >
-                  <FiMapPin className="text-[10px] md:text-xs" />{" "}
-                  {job.work_mode}
-                </span>
+                {/* Display all contract types */}
+                {contractTypes.map((contract, index) => (
+                  <span
+                    key={`contract-${index}`}
+                    className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm flex items-center gap-1"
+                  >
+                    <FiBriefcase className="text-[10px] md:text-xs" />
+                    {contract}
+                  </span>
+                ))}
+
+                {/* Display all work modes */}
+                {workModes.map((mode, index) => (
+                  <span
+                    key={`mode-${index}`}
+                    className={`${getWorkModeColor(
+                      mode
+                    )} px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm flex items-center gap-1`}
+                  >
+                    <FiMapPin className="text-[10px] md:text-xs" /> {mode}
+                  </span>
+                ))}
+
                 <span className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm line-clamp-1">
-                  {t("industry")}: {job.industry}
+                  {t("industry")}: {job.work_sector?.name || job.industry}
                 </span>
               </div>
 
@@ -234,15 +308,25 @@ const JobCard = ({ job }: { job: any }) => {
                 </Link>
                 <div className={`flex gap-2 w-full xs:w-auto `}>
                   <Button
-                    type="primary"
+                    type={job.applied ? "default" : "primary"}
                     size="small"
                     loading={isApplying}
-                    className={`!px-3 md:!px-4 !rounded-[5px] !py-3 md:!py-3.5 !text-xs md:!text-sm !font-medium flex-1 xs:flex-none text-center dark:bg-blue-600 dark:hover:bg-blue-700 `}
+                    className={`!px-3 md:!px-4 !rounded-[5px] !py-3 md:!py-3.5 !text-xs md:!text-sm !font-medium flex-1 xs:flex-none text-center ${
+                      job.applied
+                        ? "!bg-green-50 !text-green-700 !border-green-200 dark:!bg-green-900/30 dark:!text-green-400 dark:!border-green-800"
+                        : "dark:bg-blue-600 dark:hover:bg-blue-700"
+                    }`}
                     onClick={applyToJob}
+                    disabled={job.applied}
                   >
                     {isApplying ? (
                       <span className="flex items-center justify-center gap-2">
                         {t("applying")}
+                      </span>
+                    ) : job.applied ? (
+                      <span className="flex items-center justify-center gap-1">
+                        <FiCheck className="text-sm" />
+                        {t("applied")}
                       </span>
                     ) : isAuthenticated ? (
                       t("applyNow")
@@ -251,10 +335,16 @@ const JobCard = ({ job }: { job: any }) => {
                     )}
                   </Button>
                   <Dropdown
+                    ref={dropdownRef}
                     menu={{ items }}
                     placement={locale === "ar" ? "bottomRight" : "bottomLeft"}
                     trigger={["click"]}
                     overlayClassName="share-dropdown"
+                    onOpenChange={(open) => {
+                      if (!open) {
+                        // Dropdown is closing
+                      }
+                    }}
                   >
                     <Button
                       size="small"
@@ -277,7 +367,7 @@ const JobCard = ({ job }: { job: any }) => {
         job={{
           id: job.id,
           title: job.title,
-          company: job.company,
+          company: job.company?.name || job.company,
         }}
         requiredTests={requiredTests}
         onClose={() => setModalVisible(false)}
