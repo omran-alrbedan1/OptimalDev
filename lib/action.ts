@@ -17,7 +17,7 @@ interface ApiResponse<T> {
 
 const fetchApi = async <T>(
   endpoint: string,
-  options?: RequestInit & { lang?: string }
+  options?: RequestInit & { lang?: string; returnFullResponse?: boolean }
 ): Promise<T> => {
   const url = `http://147.79.118.212:7099/api${endpoint}`;
 
@@ -35,7 +35,7 @@ const fetchApi = async <T>(
       },
     });
 
-    const responseData: ApiResponse<T> = await response.json();
+    const responseData = await response.json();
 
     if (!response.ok) {
       throw new Error(
@@ -45,6 +45,12 @@ const fetchApi = async <T>(
       );
     }
 
+    // If returnFullResponse is true, return the entire response
+    if (options?.returnFullResponse) {
+      return responseData as T;
+    }
+
+    // Otherwise, return only the data property if it exists
     return responseData.data !== undefined
       ? responseData.data
       : (responseData as T);
@@ -59,12 +65,24 @@ export const fetchSliders = async (lang?: string): Promise<Slider[]> => {
   return fetchApi("/sliders", { next: { revalidate: 3600 }, lang });
 };
 
-export const fetchPartners = async (lang?: string): Promise<Partner[]> => {
-  return fetchApi("/partners", { next: { revalidate: 3600 }, lang });
+export const fetchPartners = async (
+  lang?: string
+): Promise<PartnerResponse> => {
+  return fetchApi<PartnerResponse>("/partners", {
+    cache: "no-store",
+    next: { revalidate: 3600 },
+    lang,
+    returnFullResponse: true,
+  });
 };
 
-export const fetchClients = async (lang?: string): Promise<Client[]> => {
-  return fetchApi("/clients", { next: { revalidate: 3600 }, lang });
+export const fetchClients = async (lang?: string): Promise<ClientsResponse> => {
+  return fetchApi("/clients", {
+    cache: "no-store",
+    next: { revalidate: 3600 },
+    lang,
+    returnFullResponse: true,
+  });
 };
 
 export const fetchOrganization = async (

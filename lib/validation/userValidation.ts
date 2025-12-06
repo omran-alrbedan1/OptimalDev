@@ -61,61 +61,41 @@ export const subscribeFormShema = z.object({
     .email({ message: "Please enter a valid email address" }),
 });
 
-export const registerFormSchema = z
-  .object({
-    first_name: z.string().min(2, {
-      message: "registerForm.fields.name.error",
-    }),
-    last_name: z.string().min(2, {
-      message: "registerForm.fields.surname.error",
-    }),
-    email: z.string().email({
-      message: "registerForm.fields.email.error",
-    }),
-    phone: z.string().min(5, {
-      message: "registerForm.fields.phone.error",
-    }),
-    country_id: z.number().min(1, {
-      message: "registerForm.fields.country.error",
-    }),
-    city_id: z.number().min(1, {
-      message: "registerForm.fields.city.error",
-    }),
-    password: z.string().min(8, {
-      message: "registerForm.fields.password.error",
-    }),
-    password_confirmation: z.string(),
-    cv: z
-      .union([
-        z
-          .instanceof(File, {
-            message: "registerForm.fields.cv.errorType",
-          })
-          .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: "registerForm.fields.cv.errorSize",
-          })
-          .refine(
-            (file) =>
-              [
-                "application/pdf",
-                "application/msword",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              ].includes(file.type),
-            { message: "registerForm.fields.cv.errorType" }
-          ),
-        z.null().or(z.undefined()),
-      ])
-      .optional(),
-    acceptTerms: z.literal(true, {
-      errorMap: () => ({
-        message: "registerForm.fields.acceptTerms.error",
+export const registerFormSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      first_name: z.string().min(1, t("fields.name.error")),
+      last_name: z.string().min(1, t("fields.surname.error")),
+      email: z.string().email(t("fields.email.error")),
+      phone: z.string().min(1, t("fields.phone.error")),
+      country_id: z.string().min(1, t("fields.country.error")),
+      city_id: z.string().min(1, t("fields.city.error")),
+      password: z.string().min(8, t("fields.password.error")),
+      password_confirmation: z
+        .string()
+        .min(1, t("fields.confirmPassword.error")),
+      cv: z
+        .instanceof(File, { message: t("fields.cv.errorType") }) // Add custom message for instanceof
+        .refine((file) => file.size <= 5 * 1024 * 1024, {
+          message: t("fields.cv.errorSize"),
+        })
+        .refine(
+          (file) =>
+            [
+              "application/pdf",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ].includes(file.type),
+          { message: t("fields.cv.errorType") }
+        ),
+      acceptTerms: z.boolean().refine((val) => val === true, {
+        message: t("fields.acceptTerms.error"),
       }),
-    }),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "registerForm.fields.confirmPassword.error",
-    path: ["confirmPassword"],
-  });
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("fields.confirmPassword.error"),
+      path: ["password_confirmation"],
+    });
 
 export const passwordChangeSchema = (t: (key: string) => string) =>
   z
