@@ -100,18 +100,19 @@
     },
     
   "ApplicationList": {
-    "header": {
+    "header": { 
       "title": "My Applications"
     },
 
     "jobDetails": {
-      "salary": "Salary",
-      "experience": "Experience",
-      "contract": "Contract",
-      "workMode": "Work Mode",
-      "skills": "Required Skills",
-      "appliedDate": "Applied: {date}",
-      "years":"years"
+     "salary": "Salary",
+        "experience": "Experience",
+        "contract": "Contract",
+        "workMode": "Work Mode",
+        "deadline": "Deadline",
+        "skills": "Required Skills",
+        "appliedDate": "Applied: {date}",
+        "years": "years"
     },
     "actions": {
       "details": "Details",
@@ -291,7 +292,7 @@
     "previous": "Previous",
     "next": "Next",
     "errorLoadingJobs": "Error loading jobs",
-    "jobCard": {
+   "jobCard": {
       "checkOutJob": "Check out this job",
       "at": "at",
       "facebook": "Facebook",
@@ -302,33 +303,47 @@
       "industry": "Industry",
       "applyNow": "Apply Now",
       "loginToApply": "Login to Apply",
-      "applying": "Applying"
+      "applying": "Applying",
+      "alreadyApplied": "Already Applied",
+      "applied": "Applied",
+      "fullTime": "Full Time",
+      "onSite": "On Site",
+      "salaryNotSpecified": "Salary not specified",
+      "currencySymbol": "$"
     }
   },
 
-  "jobDetailsPage": {
-    "loading": "Loading...",
-    "error": "Failed to connect to server",
-    "jobNotFound": "Job not found",
-    "jobDescription": "Job Description",
-    "dutiesResponsibilities": "Duties and Responsibilities",
-    "technicalSkills": "Technical Skills",
-    "jobDetails": "Job Details",
-    "salaryRange": "Salary Range",
-    "publishedDate": "Published Date",
-    "expirationDate": "Expiration Date",
-    "jobType": "Job Type",
-    "requirements": "Requirements",
-    "yearsExperience": "Years of Experience",
-    "preferredCandidate": "Preferred Candidate",
-    "otherRequirements": "Other Requirements",
-    "companyInformation": "Company Information",
-    "address": "Address",
-    "email": "Email",
-    "phone": "Phone",
-    "applyNow": "Apply Now",
-    "loginToApply": "Login to Apply"
-  },
+"jobDetailsPage": {
+  "loading": "Loading...",
+  "error": "Failed to connect to server",
+  "jobNotFound": "Job not found",
+  "jobDescription": "Job Description",
+  "dutiesResponsibilities": "Duties and Responsibilities",
+  "technicalSkills": "Technical Skills",
+  "jobDetails": "Job Details",
+  "salaryRange": "Salary Range",
+  "publishedDate": "Published Date",
+  "expirationDate": "Expiration Date",
+  "jobType": "Job Type",
+  "requirements": "Requirements",
+  "yearsExperience": "Years of Experience",
+  "preferredCandidate": "Preferred Candidate",
+  "otherRequirements": "Other Requirements",
+  "companyInformation": "Company Information",
+  "address": "Address",
+  "email": "Email",
+  "phone": "Phone",
+  "applyNow": "Apply Now",
+  "loginToApply": "Login to Apply",
+  "applied": "Applied",
+  "alreadyApplied": "Already Applied",
+  "applicantsCount": "Applicants Count",
+  "contractTypes": "Contract Types",
+  "workModes": "Work Modes",
+  "experienceLevels": "Experience Levels",
+  "educationLevels": "Education Levels",
+  "companyDescription": "Company Description"
+},
   "ApplicationDetailsPage": {
     "header": {
       "remote": "Remote",
@@ -512,83 +527,85 @@
         "description": "An error occurred while trying to send the reset link. Please try again."
       }
     }
-},
-    "registerForm": {
-      "title": "Create an account",
-      "description": "Enter your details below to create your account",
-      "fields": {
-        "name": {
-          "label": "First Name",
-          "placeholder": "John",
-          "error": "Name must be at least 2 characters"
-        },
-        "surname": {
-          "label": "Surname",
-          "placeholder": "Doe",
-          "error": "Surname must be at least 2 characters"
-        },
-        "email": {
-          "label": "Email",
-          "placeholder": "example@example.com",
-          "error": "Please enter a valid email address"
-        },
-        "phone": {
-          "label": "Phone Number",
-          "error": "Please enter a valid phone number"
-        },
-        "country": {
-          "label": "Country",
-          "placeholder": "Select Country",
-          "error": "Please select a country"
-        },
-        "city": {
-          "label": "City",
-          "placeholder": "Select City",
-          "error": "Please select a city"
-        },
-        "password": {
-          "label": "Password",
-          "placeholder": "••••••••",
-          "error": "Password must be at least 8 characters"
-        },
-        "confirmPassword": {
-          "label": "Confirm Password",
-          "placeholder": "••••••••",
-          "error": "Passwords don't match"
-        },
-        "cv": {
-          "label": "Upload CV (PDF or Word)",
-          "dragText": "Click or drag file to this area to upload",
-          "hint": "Support for single upload. Only PDF and Word documents are accepted (max 5MB).",
-          "errorSize": "CV file must be less than 5MB",
-          "errorType": "Only PDF and Word documents are accepted",
-          "optional": "optional"
-        },
-   "acceptTerms": {
-      "label": "I accept the {terms} and {privacy}",
-      "terms": "Terms and Conditions",
-      "privacy": "Privacy Policy",
-      "error": "You must accept the terms and policies"
-    }
+}, 
+  "registerForm": {
+    "title": "Create an account",
+    "description": "Enter your details below to create your account",
+    "fields": {
+      "name": {
+        "label": "First Name",
+        "placeholder": "John",
+        "error": "Name must be at least 2 characters"
       },
-      "submit": "Create Account",
-      "submitting": "Creating account...",
-        "loginLink": {
-        "prefix": "Already have an account?",
-         "loginText": "login"
-        },
-      "login": "Login",
-      "toast": {
-        "success": {
-          "title": "Registration successful!",
-          "description": "Your account has been created successfully."
-        },
-        "error": {
-          "title": "Registration failed",
-          "description": "An error occurred. Please try again."
-        }
+      "surname": {
+        "label": "Surname",
+        "placeholder": "Doe",
+        "error": "Surname must be at least 2 characters"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "example@example.com",
+        "error": "Please enter a valid email address"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "error": "Please enter a valid phone number"
+      },
+      "country": {
+        "label": "Country",
+        "placeholder": "Select Country",
+        "error": "Please select a country"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select City",
+        "error": "Please select a city"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "••••••••",
+        "error": "Password must be at least 8 characters"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "••••••••",
+        "error": "Passwords don't match"
+      },
+      "cv": {
+        "label": "Upload CV (PDF or Word)",
+        "dragText": "Click or drag file to this area to upload",
+        "hint": "Support for single upload. Only PDF and Word documents are accepted (max 5MB).",
+        "errorSize": "CV file must be less than 5MB",
+        "errorType": "Only PDF and Word documents are accepted",
+        "optional": "optional"
+      },
+      "acceptTerms": {
+        "label": "I accept the {terms} and {privacy}",
+        "terms": "Terms and Conditions",
+        "privacy": "Privacy Policy",
+        "error": "You must accept the terms and policies"
       }
     },
+    "submit": "Create Account",
+    "submitting": "Creating account...",
+    "loginLink": {
+      "prefix": "Already have an account?",
+      "loginText": "login"
+    },
+    "login": "Login",
+    "toast": {
+      "success": {
+        "title": "Registration successful!",
+        "description": "Your account has been created successfully."
+      },
+      "error": {
+        "title": "Registration failed",
+        "description": "An error occurred. Please try again."
+      }
+    }
+  }
+
+  ,
 "passwordChangeForm": {
   "title": "Change Password",
   "description": "Enter your current and new password",
@@ -703,13 +720,39 @@
     "advice": "Take your time and think carefully",
     "previous": "Previous",
     "next": "Next",
-
     "submitTest": "Submit Test",
     "submitting": "Submitting...",
-    "textAnswerPlaceholder": "Type your answer here...",
-     "questionsCompleted": "Questions Completed",
-    "questionsRemaining": "Questions Remaining"
-},
+    "textAnswerPlaceholder": "Type your answer here...",
+    "questionsCompleted": "Questions Completed",
+    "questionsRemaining": "Questions Remaining",
+    "details": "Details",
+    "fileSelected": "File selected",
+    "clickToChangeFile": "Click to change file",
+    "uploadImage": "Upload image",
+    "uploadFile": "Upload file",
+    "dragAndDrop": "Drag and drop or click to browse",
+    "removeFile": "Remove file",
+    "unsupportedQuestionType": "Unsupported question type:",
+    "testValidation": {
+      "required": "This question is required",
+      "numeric": "Please enter numbers only",
+      "alpha": "Please enter letters only",
+      "alphanumeric": "Please enter letters and numbers only",
+      "email": "Please enter a valid email address",
+      "minLength": "Answer must be at least {min} characters",
+      "maxLength": "Answer must not exceed {max} characters",
+      "fileRequired": "Please upload a file",
+      "dateRequired": "Please select a date",
+      "optionRequired": "Please select an option",
+      "enterNumbersOnly": "Please enter numbers only",
+      "enterLettersOnly": "Please enter letters only",
+      "enterLettersNumbersOnly": "Please enter letters and numbers only",
+      "enterValidEmail": "Please enter a valid email address",
+      "invalid": "Invalid input",
+      "completeQuestion": "Please complete this question",
+      "thisField": "This field"
+    }
+  },
 "resultModal": {
   "perfectScore": {
     "title": "Perfect Score!",
@@ -761,21 +804,26 @@
         "description": "Budget information"
       }
     },
-    "form": {
-      "fullName": "Full Name",
-      "email": "Email",
-      "phone": "Phone",
-      "companyName": "Company Name",
-      "jobTitle": "Job Title",
-      "country": "Country",
-      "city": "City",
-      "selectCountry": "Select Country",
-      "selectCity": "Select City",
-      "textPlaceholder": "Enter your answer...",
-      "selectOption": "Select an option",
-      "selectOptions": "Select options",
-      "selectSubOptions": "Select sub-options"
-    },
+   "form": {
+  "fullName": "Full Name",
+  "email": "Email",
+  "phone": "Phone",
+  "companyName": "Company Name",
+  "jobTitle": "Job Title",
+  "country": "Country",
+  "city": "City",
+  "selectCountry": "Select Country",
+  "selectCity": "Select City",
+  "textPlaceholder": "Enter your answer...",
+  "selectOption": "Select an option",
+  "selectOptions": "Select options",
+  "selectSubOptions": "Select sub-options",
+  "removeFile": "Remove File",
+  "dragDropOrClick": "Drag & drop files here or click to upload",
+  "uploadFile": "Upload File",
+  "clickToChangeFile":"Click to change file "
+
+},
     "success": {
       "title": "Request Submitted Successfully!",
       "message": "Thank you for your request. Our team will review it and get back to you shortly.",
