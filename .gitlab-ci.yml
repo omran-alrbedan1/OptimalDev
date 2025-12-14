@@ -82,7 +82,7 @@ build:frontend:
     
     # Display image information
     - docker images | grep $CI_REGISTRY_IMAGE
-    - echo "Built image: $DOCKER_IMAGE:$DOCKER_TAG"
+    - 'echo "Built image: $DOCKER_IMAGE:$DOCKER_TAG"'
   artifacts:
     paths:
       - frontend-image.tar
@@ -137,8 +137,8 @@ test:frontend:
     # Display build summary
     - echo "=========================================="
     - echo "Test Stage Summary:"
-    - echo "  ✓ ESLint: PASSED"
-    - echo "  ✓ Build Verification: PASSED"
+    - 'echo "  ✓ ESLint: PASSED"'
+    - 'echo "  ✓ Build Verification: PASSED"'
     - echo "=========================================="
   after_script:
     # Display test completion message
@@ -211,9 +211,9 @@ push:frontend:
       fi
     
     # Push version-specific tag
-    - echo "Pushing version-specific tag: $DOCKER_IMAGE:$DOCKER_TAG"
+    - 'echo "Pushing version-specific tag: $DOCKER_IMAGE:$DOCKER_TAG"'
     - docker push $DOCKER_IMAGE:$DOCKER_TAG
-    - echo "✓ Successfully pushed: $DOCKER_IMAGE:$DOCKER_TAG"
+    - 'echo "✓ Successfully pushed: $DOCKER_IMAGE:$DOCKER_TAG"'
     
     # Push latest tag if on main or master branch
     - |
@@ -228,9 +228,9 @@ push:frontend:
     # Display summary
     - echo "=========================================="
     - echo "Push Summary:"
-    - echo "  Registry: $CI_REGISTRY"
-    - echo "  Image: $CI_REGISTRY_IMAGE"
-    - echo "  Version Tag: $DOCKER_TAG"
+    - 'echo "  Registry: $CI_REGISTRY"'
+    - 'echo "  Image: $CI_REGISTRY_IMAGE"'
+    - 'echo "  Version Tag: $DOCKER_TAG"'
     - |
       if [[ "$CI_COMMIT_REF_NAME" == "main" || "$CI_COMMIT_REF_NAME" == "master" ]]; then
         echo "  Latest Tag: YES"
