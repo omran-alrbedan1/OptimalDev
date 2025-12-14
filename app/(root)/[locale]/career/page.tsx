@@ -21,17 +21,7 @@ const JobSearchPage = () => {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
-    }
-  }, [isAuthenticated, router, pathname]);
-
-  if (!isAuthenticated) {
-    return <Loader />;
-  }
+ 
 
   const {
     // State
