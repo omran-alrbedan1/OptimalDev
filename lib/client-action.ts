@@ -224,7 +224,14 @@ export const logout = async (): Promise<void> => {
 };
 
 export const register = async (formData: FormData): Promise<any> => {
-  return post<any>("/api/register", formData, {}, true);
+  const response = await post<any>("/api/register", formData, {}, true);
+  setCookie("token", response.access_token, {
+    maxAge: 30 * 24 * 60 * 60,
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  return response;
 };
 
 export const forgetPassword = async (email: string): Promise<any> => {
