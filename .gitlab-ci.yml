@@ -89,11 +89,11 @@ build:frontend:
     reports:
       dotenv: build.env
     expire_in: 1 hour
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - branches
-    - tags
+    # - tags
 
 # Test Stage: Run linting and build verification
 # This stage depends on build stage completing successfully
@@ -152,8 +152,8 @@ test:frontend:
       # Store test outputs as artifacts for review
       junit: reports/*.xml
     expire_in: 1 day
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - branches
     - tags
@@ -241,8 +241,8 @@ push:frontend:
   after_script:
     # Logout from registry
     - docker logout $CI_REGISTRY || true
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - branches
     - tags
@@ -348,8 +348,8 @@ deploy:frontend:
   environment:
     name: production
     url: http://$SSH_HOST:3005
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - main
     - master
@@ -424,8 +424,8 @@ notify:success:
         echo "Email notifications can be configured in GitLab project settings"
         echo "Navigate to: Settings > Integrations > Emails on push"
       fi
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - branches
     - tags
@@ -475,8 +475,8 @@ notify:failure:
       else
         echo "SLACK_WEBHOOK_URL not configured, skipping Slack notification"
       fi
-  tags:
-    - docker
+  # tags:
+  #   - docker
   only:
     - branches
     - tags
