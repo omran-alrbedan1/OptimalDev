@@ -3,7 +3,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,
+    // Enable ESLint during builds for CI/CD pipeline
+    ignoreDuringBuilds: false,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -38,6 +39,9 @@ const nextConfig: NextConfig = {
   experimental: {
     esmExternals: true,
   },
+  // Enable standalone output for production Docker builds
+  // This creates a minimal production build with all dependencies
+  output: 'standalone',
 };
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

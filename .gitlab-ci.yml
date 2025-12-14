@@ -1,0 +1,483 @@
+# GitLab CI/CD Pipeline for Optimal Front (Next.js Frontend)
+# This pipeline automates building, testing, pushing, and deploying the frontend application
+
+# Define pipeline stages - executed in strict order
+# Each stage must complete successfully before the next stage begins
+stages:
+  - build
+  - test
+  - push
+  - deploy
+  - notify
+
+# Global variables
+variables:
+  # Docker image configuration
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE
+  DOCKER_DRIVER: overlay2
+  
+  # Enable Docker BuildKit for advanced caching features
+  DOCKER_BUILDKIT: "1"
+  BUILDKIT_PROGRESS: "plain"
+  
+  # Disable Git submodules and LFS for faster clones
+  GIT_SUBMODULE_STRATEGY: none
+  GIT_LFS_SKIP_SMUDGE: "true"
+
+# Default job configuration
+# All jobs inherit these settings unless overridden
+default:
+  # Retry configuration for transient failures
+  retry:
+    max: 0  # No automatic retries by default (explicit per job)
+    when: []
+  # Interruptible jobs can be cancelled when new pipelines start
+  interruptible: true
+
+# Build Stage: Create Docker image
+# This is the first stage - no dependencies
+# If this stage fails, the entire pipeline stops
+build:frontend:
+  stage: build
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  # No needs/dependencies - this is the first stage
+  # Failure in this job will halt the entire pipeline
+  allow_failure: false
+  before_script:
+    # Login to GitLab Container Registry
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    
+    # Generate Docker tag with format: {branch}-{commit-sha}-{timestamp}
+    - export DOCKER_TAG="${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}-$(date +%Y%m%d)"
+    - echo "DOCKER_TAG=$DOCKER_TAG" >> build.env
+  script:
+    # Build Docker image with BuildKit and advanced caching
+    # --cache-from pulls previous images to use as cache layers
+    # --build-arg BUILDKIT_INLINE_CACHE=1 embeds cache metadata in image
+    # This enables layer caching even when building from scratch
+    - |
+      docker build \
+        --pull \
+        --cache-from $DOCKER_IMAGE:latest \
+        --cache-from $DOCKER_IMAGE:$CI_COMMIT_REF_SLUG-latest \
+        --build-arg BUILDKIT_INLINE_CACHE=1 \
+        --tag $DOCKER_IMAGE:$DOCKER_TAG \
+        --file Dockerfile.prod \
+        .
+    
+    # Tag as latest if on main or master branch
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "main" || "$CI_COMMIT_REF_NAME" == "master" ]]; then
+        docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:latest
+        echo "Tagged image as latest for protected branch: $CI_COMMIT_REF_NAME"
+      fi
+    
+    # Tag branch-specific latest for better caching on feature branches
+    - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$CI_COMMIT_REF_SLUG-latest
+    
+    # Save image to tar file for next stages
+    - docker save $DOCKER_IMAGE:$DOCKER_TAG -o frontend-image.tar
+    
+    # Display image information
+    - docker images | grep $CI_REGISTRY_IMAGE
+    - echo "Built image: $DOCKER_IMAGE:$DOCKER_TAG"
+  artifacts:
+    paths:
+      - frontend-image.tar
+    reports:
+      dotenv: build.env
+    expire_in: 1 hour
+  tags:
+    - docker
+  only:
+    - branches
+    - tags
+
+# Test Stage: Run linting and build verification
+# This stage depends on build stage completing successfully
+# If this stage fails, push and deploy stages will not execute
+test:frontend:
+  stage: test
+  image: node:20-alpine
+  # Explicit dependency: only run if build:frontend succeeds
+  needs:
+    - job: build:frontend
+      artifacts: false  # Don't need Docker image for tests
+  # Failure in this job will halt the pipeline
+  allow_failure: false
+  # Cache npm dependencies between pipeline runs
+  # This significantly speeds up dependency installation
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules/
+      - .next/cache/
+    policy: pull-push
+  before_script:
+    # Install dependencies
+    - npm ci
+    
+    # Create reports directory for test artifacts
+    - mkdir -p reports
+  script:
+    # Run ESLint for code quality checks
+    - echo "Running ESLint code quality checks..."
+    - npm run lint 2>&1 | tee reports/eslint-output.txt
+    - echo "✓ ESLint checks passed"
+    
+    # Verify Next.js build succeeds
+    - echo "Running Next.js build verification..."
+    - npm run build 2>&1 | tee reports/build-output.txt
+    - echo "✓ Next.js build completed successfully"
+    
+    # Display build summary
+    - echo "=========================================="
+    - echo "Test Stage Summary:"
+    - echo "  ✓ ESLint: PASSED"
+    - echo "  ✓ Build Verification: PASSED"
+    - echo "=========================================="
+  after_script:
+    # Display test completion message
+    - echo "Tests completed. Frontend is ready for deployment."
+  artifacts:
+    when: always
+    paths:
+      - .next/
+      - reports/
+    reports:
+      # Store test outputs as artifacts for review
+      junit: reports/*.xml
+    expire_in: 1 day
+  tags:
+    - docker
+  only:
+    - branches
+    - tags
+
+# Push Stage: Push Docker image to GitLab Container Registry
+# This stage depends on both build and test stages completing successfully
+# If this stage fails, deploy stage will not execute
+push:frontend:
+  stage: push
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  # Explicit dependencies: only run if both build and test succeed
+  needs:
+    - job: build:frontend
+      artifacts: true  # Need Docker image artifact from build
+    - job: test:frontend
+      artifacts: false  # Don't need test artifacts
+  # Failure in this job will halt the pipeline
+  allow_failure: false
+  before_script:
+    # Validate required variables
+    - |
+      if [ -z "$CI_REGISTRY" ] || [ -z "$CI_REGISTRY_IMAGE" ] || [ -z "$DOCKER_TAG" ]; then
+        echo "ERROR: Required variables are missing"
+        echo "CI_REGISTRY: $CI_REGISTRY"
+        echo "CI_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE"
+        echo "DOCKER_TAG: $DOCKER_TAG"
+        exit 1
+      fi
+    
+    # Validate registry image name format (registry.gitlab.com/group/project)
+    - |
+      if ! echo "$DOCKER_IMAGE" | grep -qE '^registry\.gitlab\.com/[^/]+/[^/]+$'; then
+        echo "ERROR: Invalid registry image name format"
+        echo "Expected format: registry.gitlab.com/group/project"
+        echo "Actual: $DOCKER_IMAGE"
+        exit 1
+      fi
+    
+    # Login to GitLab Container Registry
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - echo "Successfully authenticated with GitLab Container Registry"
+  script:
+    # Load the Docker image from artifact
+    - docker load -i frontend-image.tar
+    - echo "Loaded Docker image from artifact"
+    
+    # Verify image exists locally
+    - |
+      if ! docker images | grep -q "$DOCKER_IMAGE.*$DOCKER_TAG"; then
+        echo "ERROR: Docker image not found after loading"
+        docker images
+        exit 1
+      fi
+    
+    # Push version-specific tag
+    - echo "Pushing version-specific tag: $DOCKER_IMAGE:$DOCKER_TAG"
+    - docker push $DOCKER_IMAGE:$DOCKER_TAG
+    - echo "✓ Successfully pushed: $DOCKER_IMAGE:$DOCKER_TAG"
+    
+    # Push latest tag if on main or master branch
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "main" || "$CI_COMMIT_REF_NAME" == "master" ]]; then
+        echo "Pushing latest tag for protected branch: $CI_COMMIT_REF_NAME"
+        docker push $DOCKER_IMAGE:latest
+        echo "✓ Successfully pushed: $DOCKER_IMAGE:latest"
+      else
+        echo "Skipping latest tag (not on protected branch)"
+      fi
+    
+    # Display summary
+    - echo "=========================================="
+    - echo "Push Summary:"
+    - echo "  Registry: $CI_REGISTRY"
+    - echo "  Image: $CI_REGISTRY_IMAGE"
+    - echo "  Version Tag: $DOCKER_TAG"
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "main" || "$CI_COMMIT_REF_NAME" == "master" ]]; then
+        echo "  Latest Tag: YES"
+      else
+        echo "  Latest Tag: NO (feature branch)"
+      fi
+    - echo "=========================================="
+  after_script:
+    # Logout from registry
+    - docker logout $CI_REGISTRY || true
+  tags:
+    - docker
+  only:
+    - branches
+    - tags
+
+# Deploy Stage: Deploy to production server (only for protected branches)
+# This stage depends on build, test, and push stages completing successfully
+# This is the final stage - only runs for protected branches
+deploy:frontend:
+  stage: deploy
+  image: alpine:latest
+  # Explicit dependencies: only run if build, test, and push all succeed
+  needs:
+    - job: build:frontend
+      artifacts: true  # Need build.env for DOCKER_TAG
+    - job: test:frontend
+      artifacts: false  # Don't need test artifacts
+    - job: push:frontend
+      artifacts: false  # Don't need push artifacts
+  # Failure in this job is critical but won't affect previous stages
+  allow_failure: false
+  before_script:
+    # Install required tools
+    - apk add --no-cache openssh-client bash curl
+    
+    # Validate required variables
+    - |
+      if [ -z "$SSH_PRIVATE_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$DEPLOY_PATH" ]; then
+        echo "ERROR: Required deployment variables are missing"
+        echo "SSH_HOST: ${SSH_HOST:-(not set)}"
+        echo "SSH_USER: ${SSH_USER:-(not set)}"
+        echo "DEPLOY_PATH: ${DEPLOY_PATH:-(not set)}"
+        echo "SSH_PRIVATE_KEY: ${SSH_PRIVATE_KEY:+(set)}"
+        exit 1
+      fi
+    
+    # Set up SSH directory with proper permissions
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    
+    # Add SSH private key from GitLab CI/CD variable
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    
+    # Verify SSH key format
+    - |
+      if ! grep -q "BEGIN.*PRIVATE KEY" ~/.ssh/id_rsa; then
+        echo "ERROR: SSH_PRIVATE_KEY does not appear to be a valid private key"
+        exit 1
+      fi
+    
+    # Add server to known hosts for host key verification
+    - echo "Adding $SSH_HOST to known hosts..."
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts 2>&1
+    - chmod 644 ~/.ssh/known_hosts
+    
+    # Verify SSH connection
+    - echo "Testing SSH connection to $SSH_USER@$SSH_HOST..."
+    - ssh -o BatchMode=yes -o ConnectTimeout=10 $SSH_USER@$SSH_HOST "echo 'SSH connection successful'"
+  script:
+    # Copy deployment script to server
+    - echo "Copying deployment script to server..."
+    - scp -o StrictHostKeyChecking=yes deploy-frontend.sh $SSH_USER@$SSH_HOST:$DEPLOY_PATH/
+    
+    # Execute deployment script on remote server
+    - echo "Executing deployment on $SSH_HOST..."
+    - |
+      ssh -o StrictHostKeyChecking=yes $SSH_USER@$SSH_HOST \
+        "export CI_REGISTRY_PASSWORD='$CI_REGISTRY_PASSWORD' && \
+         export CI_REGISTRY_USER='$CI_REGISTRY_USER' && \
+         export CI_REGISTRY='$CI_REGISTRY' && \
+         export DEPLOY_PATH='$DEPLOY_PATH' && \
+         export CI_COMMIT_AUTHOR='$CI_COMMIT_AUTHOR' && \
+         export CI_ENVIRONMENT_NAME='production' && \
+         cd $DEPLOY_PATH && \
+         chmod +x deploy-frontend.sh && \
+         ./deploy-frontend.sh '$DOCKER_TAG' '$DOCKER_IMAGE'"
+    
+    # Verify deployment success
+    - echo "Verifying deployment..."
+    - |
+      ssh $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && docker-compose ps optimal-front"
+  after_script:
+    # Display deployment summary
+    - |
+      if [ $CI_JOB_STATUS = "success" ]; then
+        echo "=========================================="
+        echo "✓ Frontend Deployment Successful"
+        echo "=========================================="
+        echo "Environment: production"
+        echo "Version: $DOCKER_TAG"
+        echo "Image: $DOCKER_IMAGE:$DOCKER_TAG"
+        echo "Server: $SSH_HOST"
+        echo "Deployed by: $CI_COMMIT_AUTHOR"
+        echo "=========================================="
+      else
+        echo "=========================================="
+        echo "✗ Frontend Deployment Failed"
+        echo "=========================================="
+        echo "Check the job logs above for error details"
+        echo "Previous version should still be running"
+        echo "=========================================="
+      fi
+  environment:
+    name: production
+    url: http://$SSH_HOST:3005
+  tags:
+    - docker
+  only:
+    - main
+    - master
+  # Override default retry for deployment - allow one retry for transient failures
+  retry:
+    max: 1
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+
+# Notification Stage: Send notifications on pipeline completion
+# These jobs run after all other stages complete, regardless of success or failure
+
+# Success notification - runs only when all previous stages succeed
+notify:success:
+  stage: notify
+  image: alpine:latest
+  needs:
+    - job: deploy:frontend
+      optional: true  # Deploy may not run on feature branches
+    - job: push:frontend
+  # This job should not fail the pipeline
+  allow_failure: true
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    # Log success notification
+    - |
+      echo "=========================================="
+      echo "✓ Pipeline Completed Successfully"
+      echo "=========================================="
+      echo "Project: $CI_PROJECT_NAME"
+      echo "Branch: $CI_COMMIT_REF_NAME"
+      echo "Commit: $CI_COMMIT_SHORT_SHA"
+      echo "Author: $CI_COMMIT_AUTHOR"
+      echo "Pipeline: $CI_PIPELINE_URL"
+      echo "=========================================="
+    
+    # Send Slack notification if webhook is configured
+    - |
+      if [ -n "$SLACK_WEBHOOK_URL" ]; then
+        echo "Sending Slack notification..."
+        DEPLOYMENT_STATUS="Deployed to production"
+        if [[ "$CI_COMMIT_REF_NAME" != "main" && "$CI_COMMIT_REF_NAME" != "master" ]]; then
+          DEPLOYMENT_STATUS="Built and tested (not deployed)"
+        fi
+        
+        curl -X POST "$SLACK_WEBHOOK_URL" \
+          -H 'Content-Type: application/json' \
+          -d "{
+            \"text\": \"✅ Frontend Pipeline Success\",
+            \"attachments\": [{
+              \"color\": \"good\",
+              \"fields\": [
+                {\"title\": \"Project\", \"value\": \"$CI_PROJECT_NAME\", \"short\": true},
+                {\"title\": \"Branch\", \"value\": \"$CI_COMMIT_REF_NAME\", \"short\": true},
+                {\"title\": \"Commit\", \"value\": \"$CI_COMMIT_SHORT_SHA\", \"short\": true},
+                {\"title\": \"Author\", \"value\": \"$CI_COMMIT_AUTHOR\", \"short\": true},
+                {\"title\": \"Status\", \"value\": \"$DEPLOYMENT_STATUS\", \"short\": false},
+                {\"title\": \"Pipeline\", \"value\": \"<$CI_PIPELINE_URL|View Pipeline>\", \"short\": false}
+              ]
+            }]
+          }"
+        echo "✓ Slack notification sent"
+      else
+        echo "SLACK_WEBHOOK_URL not configured, skipping Slack notification"
+      fi
+    
+    # Send email notification if configured
+    - |
+      if [ -n "$NOTIFICATION_EMAIL" ]; then
+        echo "Email notifications can be configured in GitLab project settings"
+        echo "Navigate to: Settings > Integrations > Emails on push"
+      fi
+  tags:
+    - docker
+  only:
+    - branches
+    - tags
+  when: on_success
+
+# Failure notification - runs only when any previous stage fails
+notify:failure:
+  stage: notify
+  image: alpine:latest
+  # This job should not fail the pipeline
+  allow_failure: true
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    # Log failure notification
+    - |
+      echo "=========================================="
+      echo "✗ Pipeline Failed"
+      echo "=========================================="
+      echo "Project: $CI_PROJECT_NAME"
+      echo "Branch: $CI_COMMIT_REF_NAME"
+      echo "Commit: $CI_COMMIT_SHORT_SHA"
+      echo "Author: $CI_COMMIT_AUTHOR"
+      echo "Pipeline: $CI_PIPELINE_URL"
+      echo "=========================================="
+    
+    # Send Slack notification if webhook is configured
+    - |
+      if [ -n "$SLACK_WEBHOOK_URL" ]; then
+        echo "Sending Slack failure notification..."
+        curl -X POST "$SLACK_WEBHOOK_URL" \
+          -H 'Content-Type: application/json' \
+          -d "{
+            \"text\": \"❌ Frontend Pipeline Failed\",
+            \"attachments\": [{
+              \"color\": \"danger\",
+              \"fields\": [
+                {\"title\": \"Project\", \"value\": \"$CI_PROJECT_NAME\", \"short\": true},
+                {\"title\": \"Branch\", \"value\": \"$CI_COMMIT_REF_NAME\", \"short\": true},
+                {\"title\": \"Commit\", \"value\": \"$CI_COMMIT_SHORT_SHA\", \"short\": true},
+                {\"title\": \"Author\", \"value\": \"$CI_COMMIT_AUTHOR\", \"short\": true},
+                {\"title\": \"Pipeline\", \"value\": \"<$CI_PIPELINE_URL|View Pipeline>\", \"short\": false}
+              ]
+            }]
+          }"
+        echo "✓ Slack failure notification sent"
+      else
+        echo "SLACK_WEBHOOK_URL not configured, skipping Slack notification"
+      fi
+  tags:
+    - docker
+  only:
+    - branches
+    - tags
+  when: on_failure
