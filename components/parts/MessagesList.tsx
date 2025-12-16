@@ -1,6 +1,5 @@
 "use client";
 import { MessageOutlined, LockOutlined } from "@ant-design/icons";
-
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
@@ -9,9 +8,9 @@ import { fetchConversations } from "@/lib/client-action";
 
 const MessageLists = () => {
   const t = useTranslations("chat");
+  const locale = useLocale();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
-
   const [shouldRefreshMessages, setShouldRefreshMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +47,12 @@ const MessageLists = () => {
     const date = new Date(dateString);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  // Calculate direction based on locale
+  const isRTL = locale === "ar";
+  const textDirection = isRTL ? "rtl" : "ltr";
+  const timeDirection = "ltr"; // Time should always be LTR
+  const gradientDirection = isRTL ? "to-l" : "to-r";
 
   return (
     <div className="mt-10 flex flex-col lg:flex-row gap-6 min-h-[500px]">
@@ -108,9 +113,7 @@ const MessageLists = () => {
       <div className="flex-1 lg:w-3/5">
         <div className="bg-white dark:bg-gray-800 rounded-[5px] border border-gray-200 dark:border-gray-700 overflow-hidden shadow-2xl h-[600px] flex flex-col transform transition-all hover:shadow-xl">
           <div
-            className={`${
-              useLocale() === "ar" ? "bg-gradient-to-l" : "bg-gradient-to-r"
-            } from-[#22ace3] to-[#1e88e5] dark:from-[#1976d2] dark:to-[#0d47a1] p-4 text-white relative overflow-hidden`}
+            className={`bg-gradient-${gradientDirection} from-[#22ace3] to-[#1e88e5] dark:from-[#1976d2] dark:to-[#0d47a1] p-4 text-white relative overflow-hidden`}
           >
             <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div>
             <div className="flex items-center gap-x-3 relative z-10">
@@ -185,8 +188,8 @@ const MessageLists = () => {
                               </span>
                               <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                               <span
-                                className="text-xs  text-gray-500 dark:text-gray-400"
-                                dir={useLocale() === "ar" ? "ltr" : "ltr"}
+                                className="text-xs text-gray-500 dark:text-gray-400"
+                                dir={timeDirection} // Use the variable
                               >
                                 {formatTime(message.created_at)}
                               </span>
@@ -195,14 +198,12 @@ const MessageLists = () => {
                             <div className="relative">
                               <div
                                 className={`absolute ${
-                                  useLocale() === "ar" ? "-right-2" : "-left-2"
+                                  isRTL ? "-right-2" : "-left-2"
                                 } top-4 w-4 h-4 bg-white dark:bg-gray-700 transform rotate-45 border-l border-t border-gray-50 dark:border-gray-600`}
                               ></div>
                               <div
                                 className={`bg-white dark:bg-gray-700 rounded-2xl ${
-                                  useLocale() === "ar"
-                                    ? "rounded-tr-none"
-                                    : "rounded-tl-none"
+                                  isRTL ? "rounded-tr-none" : "rounded-tl-none"
                                 } p-4 shadow-sm border border-gray-100 dark:border-gray-600`}
                               >
                                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
