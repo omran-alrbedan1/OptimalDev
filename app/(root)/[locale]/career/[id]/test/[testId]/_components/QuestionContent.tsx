@@ -313,11 +313,12 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 
                   <div className="flex-1">
                     {option.image && (
-                      <div className="relative w-20 h-20 mb-2 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                      <div className="relative w-40 h-40 mb-2 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
                         <Image
                           src={option.image}
                           alt={option.title.current}
                           fill
+                          
                           className="object-cover"
                         />
                       </div>

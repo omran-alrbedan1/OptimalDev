@@ -81,7 +81,7 @@ const ServiceRequestPage = () => {
           <div
             className=""
             dangerouslySetInnerHTML={{
-              __html: service?.description || "",
+              __html: service?.service_note || "",
             }}
           />
         </div>

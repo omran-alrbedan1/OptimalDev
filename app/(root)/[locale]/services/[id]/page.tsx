@@ -4,29 +4,39 @@ import { useFetchWithId } from "@/hooks/useFetch";
 import { fetchSubService } from "@/lib/client-action";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();
+  const router = useRouter();
   const t = useTranslations("serviceDetails");
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const { data: service, isLoading } = useFetchWithId<SubService>(
     fetchSubService,
     Number(id)
   );
 
-  if (isLoading) {
+  // Handle navigation manually for faster response
+  const handleRequestServiceClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsNavigating(true);
+    router.push(`/services/${id}/request-service`);
+  };
+
+
+
+  if (isLoading || isNavigating) {
     return <Loader />;
   }
-
-  console.log(service);
 
   return (
     <div className="min-h-screen overflow-hidden">
       <section className="relative h-screen flex flex-col justify-center overflow-hidden">
+        {/* Image container with priority loading */}
         <div className="absolute inset-0 z-0">
           {service?.image && (
             <div className="w-full h-full relative">
@@ -36,6 +46,11 @@ const ServiceDetailsPage = () => {
                 fill
                 className="object-cover"
                 priority
+                loading="eager"
+                sizes="100vw"
+                quality={75}
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjIyIi8+PC9zdmc+"
               />
             </div>
           )}
@@ -56,27 +71,40 @@ const ServiceDetailsPage = () => {
               {t("subtitle")}
             </p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - Using onClick instead of Link for immediate response */}
             <div className="flex flex-wrap gap-4 mt-10">
-              <Link
-                href={`/services/${id}/request-service`}
-                className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-primary/30 hover:shadow-primary/50 flex items-center gap-2"
+              <button
+                onClick={handleRequestServiceClick}
+                disabled={isNavigating}
+                className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-primary/30 hover:shadow-primary/50 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {t("cta.requestService")}
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"
-                  />
-                </svg>
-              </Link>
+                {isNavigating ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    {t("cta.loading")}
+                  </>
+                ) : (
+                  <>
+                    {t("cta.requestService")}
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                  </>
+                )}
+              </button>
 
               <button
                 onClick={() => {
@@ -111,32 +139,45 @@ const ServiceDetailsPage = () => {
         <div dangerouslySetInnerHTML={{ __html: service?.description || "" }} />
       </section>
 
-      {/* Bottom CTA Button */}
+      {/* Bottom CTA Button - Also use onClick */}
       <div className="px-4 flex justify-center pb-14 -mt-14">
-        <Link
-          href={`/services/${id}/request-service`}
-          className="group relative inline-flex w-fit items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-primary hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+        <button
+          onClick={handleRequestServiceClick}
+          disabled={isNavigating}
+          className="group relative inline-flex w-fit items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-primary hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {/* Button shine effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 
           <span className="relative flex items-center gap-3">
-            {t("cta.requestService")}
-            <svg
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
+            {isNavigating ? (
+              <>
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                {t("cta.loading")}
+              </>
+            ) : (
+              <>
+                {t("cta.requestService")}
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </>
+            )}
           </span>
-        </Link>
+        </button>
       </div>
     </div>
   );
