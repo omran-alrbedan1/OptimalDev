@@ -50,6 +50,14 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
   const [expandedOptions, setExpandedOptions] = useState<Set<number>>(
     new Set()
   );
+    // Clean up object URLs on unmount
+  useEffect(() => {
+    return () => {
+      Object.values(imagePreviews).forEach(previewUrl => {
+        URL.revokeObjectURL(previewUrl);
+      });
+    };
+  }, []);
   const [imagePreviews, setImagePreviews] = useState<Record<number, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   if (!currentQuestion) return null;
@@ -101,14 +109,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
   };
     const currentImagePreview = currentQuestion ? imagePreviews[currentQuestion.id] : null;
 
-  // Clean up object URLs on unmount
-  useEffect(() => {
-    return () => {
-      Object.values(imagePreviews).forEach(previewUrl => {
-        URL.revokeObjectURL(previewUrl);
-      });
-    };
-  }, []);
+
 
   const handleSubOptionSelect = (
     optionId: number,
