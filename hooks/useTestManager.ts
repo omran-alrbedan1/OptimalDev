@@ -202,7 +202,7 @@ export const useTestManager = (jobId: number, testId: number) => {
     setAnswers((prev) => ({
       ...prev,
       ...savedAnswers,
-    }));
+    }));  
   }, [jobId, testId]);
 
   // Save answers whenever they change
@@ -271,6 +271,18 @@ export const useTestManager = (jobId: number, testId: number) => {
 
     return !error;
   };
+
+
+  const clearFileForQuestion = (questionId: number) => {
+  setAnswers(prev => ({
+    ...prev,
+    fileAnswers: {
+      ...prev.fileAnswers,
+      [questionId]: null 
+    }
+  }));
+};
+
 
   const getQuestionError = (question: Question): string | null => {
     if (!question.is_required) return null;
@@ -538,19 +550,38 @@ export const useTestManager = (jobId: number, testId: number) => {
     return true;
   };
 
-  const handleNextQuestion = () => {
-    if (!canGoToNextQuestion()) {
-      setHasAttemptedSubmit(true);
-      return;
+// In your useTestManager hook, add this function:
+const clearFileForQuestion = (questionId: number) => {
+  setAnswers(prev => ({
+    ...prev,
+    fileAnswers: {
+      ...prev.fileAnswers,
+      [questionId]: null // Explicitly clear file for specific question
     }
+  }));
+};
 
-    if (
-      testData?.questions &&
-      currentQuestionIndex < testData.questions.length - 1
-    ) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+// Then update handleNextQuestion and handlePreviousQuestion:
+const handleNextQuestion = () => {
+  if (!canGoToNextQuestion()) {
+    setHasAttemptedSubmit(true);
+    return;
+  }
+
+  if (currentQuestion?.type === 'file' || currentQuestion?.type === 'image') {
+    const questionId = currentQuestion.id;
+    clearFileForQuestion(questionId);
+    if (answers.fileAnswers[questionId]) {
+      URL.revokeObjectURL(imagePreviewUrl); 
     }
-  };
+  }
+
+  if (testData?.questions && currentQuestionIndex < testData.questions.length - 1) {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  }
+};
+
+
 
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {

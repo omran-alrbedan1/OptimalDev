@@ -39,11 +39,7 @@ const nextConfig: NextConfig = {
   experimental: {
     esmExternals: true,
   },
-  output: 'standalone',
-    devIndicators: {
-    appIsrStatus: false,
-    buildActivity: false, 
-  },
+  devIndicators: false
 };
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

@@ -344,6 +344,3 @@ section {
   animation: spin-slow 8s linear infinite;
 }
 
-.nextjs-build-indicator {
-  display: none !important;
-}
