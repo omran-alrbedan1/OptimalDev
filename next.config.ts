@@ -39,9 +39,11 @@ const nextConfig: NextConfig = {
   experimental: {
     esmExternals: true,
   },
-  // Enable standalone output for production Docker builds
-  // This creates a minimal production build with all dependencies
   output: 'standalone',
+    devIndicators: {
+    appIsrStatus: false,
+    buildActivity: false, 
+  },
 };
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

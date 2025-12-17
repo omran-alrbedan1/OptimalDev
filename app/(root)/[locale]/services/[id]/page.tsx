@@ -22,7 +22,6 @@ const ServiceDetailsPage = () => {
     return <Loader />;
   }
 
-  console.log(service);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -60,6 +59,7 @@ const ServiceDetailsPage = () => {
             <div className="flex flex-wrap gap-4 mt-10">
               <Link
                 href={`/services/${id}/request-service`}
+                prefetch={true}
                 className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-primary/30 hover:shadow-primary/50 flex items-center gap-2"
               >
                 {t("cta.requestService")}
@@ -115,6 +115,7 @@ const ServiceDetailsPage = () => {
       <div className="px-4 flex justify-center pb-14 -mt-14">
         <Link
           href={`/services/${id}/request-service`}
+          prefetch={true}
           className="group relative inline-flex w-fit items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-primary hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
         >
           {/* Button shine effect */}
