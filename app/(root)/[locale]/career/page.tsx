@@ -4,6 +4,7 @@ import Loader from "@/components/Loader";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { useJobSearch } from "@/hooks/useJobSearch";
+import { formatPostedDate } from "@/lib/utils";
 import { Button, Input, Pagination } from "antd";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
@@ -11,12 +12,15 @@ import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
 import JobFilters from "./_components/jobFilters";
 import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
-import { formatPostedDate } from "@/lib/utils";
+import { useAppSelector } from "@/hooks/hook";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const JobSearchPage = () => {
-  const locale = useLocale();
   const t = useTranslations("careerPage");
-  
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
  
 
   const {
@@ -160,7 +164,7 @@ const JobSearchPage = () => {
 
           {/* Jobs List - Independent Scroll */}
           <div className="lg:col-span-3 p-4 -mr-2">
-            <div className="h-[calc(100vh-150px)] overflow-y-auto">
+            <div className="">
               {jobs?.length === 0 ? (
                 <div className="p-8 rounded-xl shadow-sm text-center max-w-md mx-auto">
                   <div className="flex justify-center mb-6">
@@ -218,7 +222,7 @@ const JobSearchPage = () => {
                             post_data: job.published_at,
                             image: job.company.logo || icons.job,
                             description: job.description,
-                         posted: formatPostedDate(job.published_at, locale),
+                            posted: formatPostedDate(job.published_at),
                             type: job.type,
                             duties_responsibilities:
                               job.duties_responsibilities,

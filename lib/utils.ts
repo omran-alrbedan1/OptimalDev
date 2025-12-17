@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 import { ClassValue, clsx } from "clsx";
+import { useLocale } from "next-intl";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -17,13 +18,13 @@ export const getLocaleFromUrl = (): string => {
   return supportedLocales.includes(possibleLocale) ? possibleLocale : "en";
 };
 
-export const formatPostedDate = (dateString: string, locale: string = "en") => {
+export const formatPostedDate = (dateString: string) => {
   const publishedDate = new Date(dateString);
   const currentDate = new Date();
   const diffTime = Math.abs(currentDate.getTime() - publishedDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (locale === "ar") {
+  if (useLocale() === "ar") {
     const arabicNumerals = diffDays
       .toString()
       .replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[parseInt(d)]);
@@ -96,3 +97,17 @@ export const shootRelisticConfetti = () => {
   }, 5000);
 };
 
+const extractTextFromHTML = (htmlString: string): string => {
+  if (typeof document === "undefined") {
+    // Fallback for server-side rendering
+    return htmlString.replace(/<[^>]*>/g, "");
+  }
+
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlString;
+  return (
+    tempDiv.textContent ||
+    tempDiv.innerText ||
+    htmlString.replace(/<[^>]*>/g, "")
+  );
+};

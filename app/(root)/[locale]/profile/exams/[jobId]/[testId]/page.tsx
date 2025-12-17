@@ -1,6 +1,7 @@
 "use client";
 import Loader from "@/components/Loader";
 import ExamResultModal from "@/components/modal/ExamResultModal";
+import TestResultsModal from "@/components/modal/TestResultModal";
 import { images } from "@/constants/images";
 import { fetchJobTest, submitTestAnswers } from "@/lib/client-action";
 import { Button } from "antd";
@@ -9,8 +10,16 @@ import {
   ArrowRight,
   CheckCircle2,
   Timer,
-  Brain, Target, Award,
-  Clock, Sparkles
+  Brain,
+  Zap,
+  Trophy,
+  BookOpen,
+  Target,
+  Send,
+  Award,
+  Clock,
+  BarChart3,
+  Sparkles,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
@@ -44,7 +53,6 @@ const ExamPage = () => {
   const params = useParams();
   const jobId = Number(params.jobId);
   const testId = Number(params.testId);
-  const locale = useLocale(); 
   const t = useTranslations("testQuestionPage");
   const [testData, setTestData] = useState<TestData | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -425,7 +433,7 @@ const ExamPage = () => {
                 <FaQuestion className="w-4 h-4 text-[#22ace3]" />
               </div>
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                {locale === "ar" ? "السؤال" : "Question"}{" "}
+                {useLocale() === "ar" ? "السؤال" : "Question"}{" "}
                 {currentQuestionIndex + 1}
               </span>
             </div>
@@ -448,7 +456,7 @@ const ExamPage = () => {
                 : "border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-[#22ace3] hover:bg-[#22ace3]/5 hover:text-[#22ace3] bg-white dark:bg-gray-700 shadow-sm"
             }`}
           >
-            {locale === "ar" ? (
+            {useLocale() === "ar" ? (
               <>
                 <ArrowRight className="w-4 h-4" />
                 <span>{t("previous")}</span>
@@ -486,7 +494,7 @@ const ExamPage = () => {
               }`}
             >
               <span>{t("next")}</span>
-              {locale === "ar" ? (
+              {useLocale() === "ar" ? (
                 <ArrowLeft className="w-4 h-4" />
               ) : (
                 <ArrowRight className="w-4 h-4" />

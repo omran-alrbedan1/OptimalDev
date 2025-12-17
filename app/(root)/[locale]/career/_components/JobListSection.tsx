@@ -103,7 +103,7 @@ export default function JobListSection() {
                     salary: `${t("currencySymbol")}${job.salary_min} - ${t(
                       "currencySymbol"
                     )}${job.salary_max}`,
-                    posted: formatPostedDate(job.published_at,locale),
+                    posted: formatPostedDate(job.published_at),
                     type: job.type,
                     duties_responsibilities: job.duties_responsibilities,
                     technical_skills: job.technical_skills,

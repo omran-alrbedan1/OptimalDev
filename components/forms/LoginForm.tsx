@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -12,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginFormSchema } from "@/lib/validation/userValidation";
 import { useLocale, useTranslations } from "next-intl";
-import { setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess } from "@/store/slices/authSlice";
 import { login } from "@/lib/client-action";
@@ -28,6 +29,9 @@ export default function LoginForm() {
   const locale = useLocale();
   const isRTL = locale === "ar";
   const router = useRouter();
+  
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const getRegisterUrl = () => {
     const params = new URLSearchParams();
@@ -66,6 +70,11 @@ export default function LoginForm() {
       });
     }
   }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -99,7 +108,7 @@ export default function LoginForm() {
             )}
           </div>
 
-          {/* Password Field */}
+          {/* Password Field with Eye Icon */}
           <div className="space-y-2">
             <div className="flex items-center">
               <Label htmlFor="password">{t("fields.password.label")}</Label>
@@ -112,14 +121,27 @@ export default function LoginForm() {
                 {t("forgotPassword")}
               </Link>
             </div>
-            <Input
-              id="password"
-              type="password"
-              placeholder={t("fields.password.placeholder")}
-              {...form.register("password")}
-              autoComplete="current-password"
-              className="dark:bg-gray-800"
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder={t("fields.password.placeholder")}
+                {...form.register("password")}
+                autoComplete="current-password"
+                className="dark:bg-gray-800 pr-10"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
             {form.formState.errors.password && (
               <p className="text-sm text-red-500">
                 {t("fields.password.error")}

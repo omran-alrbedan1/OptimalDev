@@ -38,13 +38,13 @@ import Loader from "@/components/Loader";
 
 const ClientProfileContent = () => {
   const t = useTranslations("profilePage");
-  const locale = useLocale();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
+  const locale = useLocale();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 

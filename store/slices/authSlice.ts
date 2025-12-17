@@ -9,18 +9,6 @@ interface AuthState {
   error: string | null;
 }
 
-// Add this interface for partial user updates
-interface UpdateUserPayload {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  phone?: string;
-  profile_image?: string;
-  country_id?: string;
-  city_id?: string;
-  // Add other user fields as needed
-}
-
 const loadInitialState = (): AuthState => {
   const authData = getCookie("authData");
   return authData
@@ -93,31 +81,6 @@ const authSlice = createSlice({
         state.isAuthenticated = storedAuth.isAuthenticated;
       }
     },
-    // Add the updateUser reducer here
-    updateUser(state, action: PayloadAction<UpdateUserPayload>) {
-      if (state.user) {
-        //@ts-ignore
-        state.user = {
-          ...state.user,
-          ...action.payload,
-        };
-        
-        setCookie(
-          "authData",
-          JSON.stringify({
-            user: state.user,
-            token: state.token,
-            isAuthenticated: true,
-          }),
-          {
-            maxAge: 30 * 24 * 60 * 60,
-            path: "/",
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-          }
-        );
-      }
-    },
   },
 });
 
@@ -127,7 +90,6 @@ export const {
   loginFailure,
   logout,
   loadStoredAuth,
-  updateUser, 
 } = authSlice.actions;
 
 export default authSlice.reducer;
