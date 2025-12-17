@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
-    console.error("Error fetching applications:", error);
+    console.log("Error fetching applications:", error);
     return NextResponse.json(
       {
         error:

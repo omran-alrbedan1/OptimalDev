@@ -32,7 +32,7 @@ export async function POST(
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Error applying for job:", error);
+    console.log("Error applying for job:", error);
     const status = error.response?.status || 500;
     const errorMessage =
       error.response?.data?.message ||

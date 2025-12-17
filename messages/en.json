@@ -16,7 +16,9 @@
     "careerPath": "Career Path",
     "internship": "Internship",
     "login":"Login",
-    "register":"Sign Up"
+    "register":"Sign Up",
+    "profile":"Profile",
+    "logout":"Logout"
   },
     "ourServices":{
     "title":"Our Services",
@@ -292,25 +294,32 @@
     "previous": "Previous",
     "next": "Next",
     "errorLoadingJobs": "Error loading jobs",
-   "jobCard": {
-      "checkOutJob": "Check out this job",
-      "at": "at",
-      "facebook": "Facebook",
-      "linkedin": "LinkedIn",
-      "whatsapp": "WhatsApp",
-      "copyLink": "Copy Link",
-      "linkCopied": "Link copied to clipboard!",
-      "industry": "Industry",
-      "applyNow": "Apply Now",
-      "loginToApply": "Login to Apply",
-      "applying": "Applying",
-      "alreadyApplied": "Already Applied",
-      "applied": "Applied",
-      "fullTime": "Full Time",
-      "onSite": "On Site",
-      "salaryNotSpecified": "Salary not specified",
-      "currencySymbol": "$"
-    }
+"jobCard": {
+  "checkOutJob": "Check out this job",
+  "at": "at",
+  "facebook": "Facebook",
+  "linkedin": "LinkedIn",
+  "whatsapp": "WhatsApp",
+  "copyLink": "Copy Link",
+  "linkCopied": "Link copied to clipboard!",
+  "industry": "Industry",
+  "applyNow": "Apply Now",
+  "loginToApply": "Login to Apply",
+  "applying": "Applying",
+  "alreadyApplied": "Already Applied",
+  "applied": "Applied",
+  "fullTime": "Full Time",
+  "onSite": "On Site",
+  "salaryNotSpecified": "Salary not specified",
+  "currencySymbol": "$",
+  "company": "Company",
+  "location": "Location",
+  "jobHighlights": "Job Highlights",
+  "work": "work",
+  "salary": "Salary",
+  "jobOpportunity": "Job Oppurtunities at Optimal Path",
+  "competitiveSalary": "Competitive Salary"
+}
   },
 
 "jobDetailsPage": {

@@ -202,7 +202,7 @@ export const useTestManager = (jobId: number, testId: number) => {
     setAnswers((prev) => ({
       ...prev,
       ...savedAnswers,
-    }));
+    }));  
   }, [jobId, testId]);
 
   // Save answers whenever they change
@@ -271,6 +271,10 @@ export const useTestManager = (jobId: number, testId: number) => {
 
     return !error;
   };
+
+
+ 
+
 
   const getQuestionError = (question: Question): string | null => {
     if (!question.is_required) return null;
@@ -552,6 +556,8 @@ export const useTestManager = (jobId: number, testId: number) => {
     }
   };
 
+  
+
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -595,83 +601,104 @@ export const useTestManager = (jobId: number, testId: number) => {
     return !hasErrors;
   };
 
-  const submitTest = async () => {
-    if (!testData) return;
+const submitTest = async () => {
+  if (!testData) return;
 
-    // Validate all questions before submission
-    if (!validateAllQuestions()) {
-      toast.error("Please complete all required questions");
-      return;
+  if (!validateAllQuestions()) {
+    toast.error("Please complete all required questions");
+    return;
+  }
+
+  setSubmitLoading(true);
+  try {
+    const formattedAnswers: { answers: Record<string, any> } = {
+      answers: {},
+    };
+
+    testData.questions.forEach((question) => {
+      switch (question.type) {
+        case "radio":
+        case "image":
+          formattedAnswers.answers[question.id] =
+            answers.selectedOptions[question.id] || null;
+          break;
+
+        case "checkbox":
+          formattedAnswers.answers[question.id] =
+            answers.selectedOptions[question.id] || [];
+          break;
+
+        case "text":
+        case "country":
+        case "city":
+          formattedAnswers.answers[question.id] =
+            answers.textAnswers[question.id] || "";
+          break;
+
+        case "date":
+          formattedAnswers.answers[question.id] =
+            answers.dateAnswers[question.id] || "";
+          break;
+
+        case "file":
+          formattedAnswers.answers[question.id] = answers.fileAnswers[
+            question.id
+          ]
+            ? "file_uploaded"
+            : "";
+          break;
+
+        default:
+          formattedAnswers.answers[question.id] = "";
+      }
+    });
+
+    console.log("📤 Sending answers to backend:", formattedAnswers);
+    
+    const result = await submitTestAnswers(jobId, testId, formattedAnswers);
+
+    // ⭐⭐ اطبع الـ response كاملًا ⭐⭐
+    console.log("📥 Backend response:", result);
+    console.log("Response structure:", JSON.stringify(result, null, 2));
+
+    // تحقق من الـ status بناءً على الـ response
+    let status: "success" | "failed" = "success";
+    
+    if (result.passed !== undefined) {
+      status = result.passed ? "success" : "failed";
+    } else if (result.status) {
+      status = result.status === "success" || result.status === "passed" ? "success" : "failed";
+    } else if (result.score !== undefined) {
+      // إذا كان هناك score، تحقق إذا كان ناجحًا (مثلاً إذا كان النتيجة 70% أو أكثر)
+      status = result.score >= 70 ? "success" : "failed";
     }
+    
+    console.log("Determined status:", status);
 
-    setSubmitLoading(true);
-    try {
-      const formattedAnswers: { answers: Record<string, any> } = {
-        answers: {},
-      };
+    setTestResult({
+      message: result.message || (status === "success" ? "Test passed" : "Test failed"),
+      score: result.score || 0,
+      status: status,
+    });
 
-      testData.questions.forEach((question) => {
-        switch (question.type) {
-          case "radio":
-          case "image":
-            formattedAnswers.answers[question.id] =
-              answers.selectedOptions[question.id] || null;
-            break;
+    clearAnswersFromStorage(jobId, testId);
+    localStorage.removeItem(`test_current_index_${jobId}_${testId}`);
 
-          case "checkbox":
-            formattedAnswers.answers[question.id] =
-              answers.selectedOptions[question.id] || [];
-            break;
-
-          case "text":
-          case "country":
-          case "city":
-            formattedAnswers.answers[question.id] =
-              answers.textAnswers[question.id] || "";
-            break;
-
-          case "date":
-            formattedAnswers.answers[question.id] =
-              answers.dateAnswers[question.id] || "";
-            break;
-
-          case "file":
-            formattedAnswers.answers[question.id] = answers.fileAnswers[
-              question.id
-            ]
-              ? "file_uploaded"
-              : "";
-            break;
-
-          default:
-            formattedAnswers.answers[question.id] = "";
-        }
-      });
-
-      const result = await submitTestAnswers(jobId, testId, formattedAnswers);
-
-      // Clear saved answers after successful submission
-      clearAnswersFromStorage(jobId, testId);
-      localStorage.removeItem(`test_current_index_${jobId}_${testId}`);
-
-      setTestResult({
-        message: result.message,
-        score: result.score,
-        status: "success",
-      });
-      setShowResultsModal(true);
-    } catch (error: any) {
-      console.error("Submission error:", error);
-      setTestResult({
-        message: error.message || "Test submission failed",
-        score: 0,
-        status: "failed",
-      });
-      setShowResultsModal(true);
-    } finally {
-      setSubmitLoading(false);
-    }
-  };
+    setShowResultsModal(true);
+  } catch (error: any) {
+    console.log("❌ Submission error:", error);
+    console.log("Error details:", JSON.stringify(error, null, 2));
+    
+    setTestResult({
+      message: error.message || "Test submission failed",
+      score: 0,
+      status: "failed",
+    });
+    setShowResultsModal(true);
+  } finally {
+    setSubmitLoading(false);
+  }
+};
 
   const handleResultsModalClose = () => {
     setShowResultsModal(false);

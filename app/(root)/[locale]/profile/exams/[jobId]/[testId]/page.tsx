@@ -44,7 +44,7 @@ const ExamPage = () => {
   const params = useParams();
   const jobId = Number(params.jobId);
   const testId = Number(params.testId);
-  const locale = useLocale(); 
+  const locale = useLocale();
   const t = useTranslations("testQuestionPage");
   const [testData, setTestData] = useState<TestData | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

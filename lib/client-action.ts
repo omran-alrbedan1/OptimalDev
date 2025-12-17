@@ -46,7 +46,7 @@ const get = async <T>(
     return await response.json();
   } catch (error) {
     // Safe error logging without circular references
-    console.error(
+    console.log(
       `Error fetching ${endpoint}:`,
       error instanceof Error ? error.message : String(error)
     );
@@ -67,68 +67,27 @@ const post = async <T>(
   const locale = getLocaleFromUrl();
   const token = getCookie("token");
 
-  try {
-    const headers: Record<string, string> = {
-      "Accept-Language": locale,
-      ...(!isFormData && { "Content-Type": "application/json" }),
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    };
+  const headers: Record<string, string> = {
+    "Accept-Language": locale,
+    ...(!isFormData && { "Content-Type": "application/json" }),
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      ...options,
-      headers,
-      body: isFormData ? body : JSON.stringify(body),
-    });
+  const response = await fetch(endpoint, {
+    method: "POST",
+    ...options,
+    headers,
+    body: isFormData ? body : JSON.stringify(body),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `Failed to post to ${endpoint}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`Error posting to ${endpoint}:`, error);
-    throw error;
+  const data = await response.json();
+  
+  if (!response.ok) {
+    return Promise.reject(data);
   }
-};
 
-// Base PUT function
-const put = async <T>(
-  endpoint: string,
-  body: any,
-  options: ApiOptions = {},
-  isFormData: boolean = false
-): Promise<T> => {
-  const locale = getLocaleFromUrl();
-  const token = getCookie("token");
-
-  try {
-    const headers: Record<string, string> = {
-      "Accept-Language": locale,
-      ...(!isFormData && { "Content-Type": "application/json" }),
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    };
-
-    const response = await fetch(endpoint, {
-      method: "PUT",
-      ...options,
-      headers,
-      body: isFormData ? body : JSON.stringify(body),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `Failed to update ${endpoint}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`Error updating ${endpoint}:`, error);
-    throw error;
-  }
+  return data;
 };
 
 export const fetchCountries = async (): Promise<Country[]> => {
@@ -213,7 +172,7 @@ export const logout = async (): Promise<void> => {
       }
     );
   } catch (error) {
-    console.error("Error during logout:", error);
+    console.log("Error during logout:", error);
   } finally {
     // حذف الكوكيز دائمًا حتى لو فشل طلب الخروج من الخادم
     deleteCookie("token");
@@ -224,14 +183,25 @@ export const logout = async (): Promise<void> => {
 };
 
 export const register = async (formData: FormData): Promise<any> => {
-  const response = await post<any>("/api/register", formData, {}, true);
-  setCookie("token", response.access_token, {
-    maxAge: 30 * 24 * 60 * 60,
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
-  return response;
+  try {
+    const response = await post<any>("/api/register", formData, {}, true);
+    
+    if (response.access_token) {
+      setCookie("token", response.access_token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+      return response;
+    }
+    
+    // If no access_token but response exists, throw it as error
+    throw response;
+  } catch (error: any) {
+    console.log("Registration error in client-action:", error);
+    throw error;
+  }
 };
 
 export const forgetPassword = async (email: string): Promise<any> => {
@@ -298,14 +268,28 @@ export const submitTestAnswers = async (
   jobId: number,
   testId: number,
   answers: { answers: Record<string, any> }
-): Promise<TestSubmissionResponse> => {
+): Promise<any> => {
   try {
     const endpoint = `/api/jobs/${jobId}/tests/${testId}/submit`;
-    const response = await post<TestSubmissionResponse>(endpoint, answers);
+    console.log("🌐 Calling API endpoint:", endpoint);
+    
+    const response = await post<any>(endpoint, answers);
+    
+    console.log("✅ API response received:", response);
+    console.log("📊 Response data:", JSON.stringify(response, null, 2));
+    
     return response;
   } catch (error: any) {
-    console.error("Test submission failed:", error);
-    throw new Error(error.message || "Test submission failed");
+    console.log("❌ API error:", error);
+    console.log("Error object:", error);
+    
+    if (error.response) {
+      console.log("Error response:", error.response);
+      console.log("Error data:", error.response.data);
+      console.log("Error status:", error.response.status);
+    }
+    
+    throw error;
   }
 };
 
@@ -411,30 +395,30 @@ export const requestService = async (
     const response = await post<any>(endpoint, requestData);
     return response;
   } catch (error: any) {
-    console.error("Service request failed:", error);
+    console.log("Service request failed:", error);
 
     if (error.response) {
-      console.error("Status:", error.response.status);
-      console.error("Headers:", error.response.headers);
-      console.error("Response data:", error.response.data);
+      console.log("Status:", error.response.status);
+      console.log("Headers:", error.response.headers);
+      console.log("Response data:", error.response.data);
 
       if (error.response.data?.errors) {
-        console.error("Validation errors:", error.response.data.errors);
+        console.log("Validation errors:", error.response.data.errors);
       } else if (error.response.data?.message) {
-        console.error("Error message:", error.response.data.message);
+        console.log("Error message:", error.response.data.message);
       }
       if (error.response) {
-        console.error(
+        console.log(
           "Backend validation errors:",
           JSON.stringify(error.response.data, null, 2)
         );
-        console.error("Backend status:", error.response.status);
-        console.error("Backend headers:", error.response.headers);
+        console.log("Backend status:", error.response.status);
+        console.log("Backend headers:", error.response.headers);
       }
     } else if (error.request) {
-      console.error("No response received:", error.request);
+      console.log("No response received:", error.request);
     } else {
-      console.error("Error setting up request:", error.message);
+      console.log("Error setting up request:", error.message);
     }
 
     throw error;

@@ -2,6 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { 
+  FiUser, 
+  FiLogOut,
+  FiSettings 
+} from "react-icons/fi";
 import { ThemeToggler } from "@/components/ui/ThemeToggler";
 import { images } from "@/constants/images";
 import {
@@ -12,6 +17,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from "../elements/Switcher";
 import { useFetch } from "@/hooks/useFetch";
@@ -24,6 +30,7 @@ interface DesktopHeaderProps {
   isAuthenticated: boolean;
   onLogout: () => void;
 }
+
 
 const DesktopHeader = ({
   t,
@@ -128,12 +135,38 @@ const DesktopHeader = ({
 
           {/* User Profile or Auth Buttons */}
           {isAuthenticated ? (
-            <button
-              onClick={() => router.push("/profile")}
-              className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none"
-            >
-              {getUserAvatar(user, "md")}
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none">
+                  {getUserAvatar(user, "md")}
+           
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="w-48 bg-white dark:bg-darkMod-200 border-none shadow-xl rounded-md p-1.5"
+              >
+                <DropdownMenuItem 
+                  onClick={() => router.push("/profile")}
+                  className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-sm"
+                >
+                  <FiUser className="w-4 h-4" />
+                  <span>{t("profile") || "Profile"}</span>
+                </DropdownMenuItem>
+                
+          
+                
+                <DropdownMenuSeparator className="my-1 bg-gray-200 dark:bg-gray-700" />
+                
+                <DropdownMenuItem 
+                  onClick={onLogout}
+                  className="flex items-center gap-2 p-2 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 rounded-sm"
+                >
+                  <FiLogOut className="w-4 h-4" />
+                  <span>{t("logout") || "Logout"}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             isCareerPage && (
               <div className="flex items-center gap-2 ml-4">

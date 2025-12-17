@@ -17,6 +17,7 @@ import { MdWork } from "react-icons/md";
 import { RiContractFill } from "react-icons/ri";
 import { TbFileDescription } from "react-icons/tb";
 
+// Updated Job type interface to match the actual data
 interface Job {
   id: number;
   title: string;
@@ -76,7 +77,6 @@ interface Job {
 }
 
 const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const locale = useLocale();
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -84,6 +84,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [modalType, setModalType] = useState<"success" | "error" | "tests">(
     "success"
   );
+  const locale = useLocale();
   const [requiredTests, setRequiredTests] = useState<any[]>([]);
   const [modalMessage, setModalMessage] = useState<any>("");
   const [modalVisible, setModalVisible] = useState(false);

@@ -4,20 +4,23 @@ import Loader from "@/components/Loader";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { useJobSearch } from "@/hooks/useJobSearch";
-import { Button, Input, Pagination } from "antd";
+import { formatPostedDate } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
 import JobFilters from "./_components/jobFilters";
 import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
-import { formatPostedDate } from "@/lib/utils";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button, Input, Pagination } from "antd";
 
 const JobSearchPage = () => {
-  const locale = useLocale();
   const t = useTranslations("careerPage");
+  const locale = useLocale();
   
- 
+  // Add a ref to track when carousel should render
+  const [isCarouselReady, setIsCarouselReady] = useState(false);
 
   const {
     // State
@@ -54,6 +57,15 @@ const JobSearchPage = () => {
     handleSearchClick,
   } = useJobSearch();
 
+  // Delay the carousel rendering to ensure DOM is ready
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCarouselReady(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   if (isLoading && !filterOptions) {
     return <Loader />;
   }
@@ -74,18 +86,21 @@ const JobSearchPage = () => {
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Carousel Section */}
-      <motion.section
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white dark:bg-gray-800 shadow-sm"
-      >
-        <LatestJobsCarousel jobs={featuredJobs} />
-      </motion.section>
+      {/* Carousel Section - Only render when featuredJobs is available */}
+      {featuredJobs && featuredJobs.length > 0 && isCarouselReady && (
+        <motion.section
+          key="carousel-section"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white dark:bg-gray-800 shadow-sm"
+        >
+          <LatestJobsCarousel jobs={featuredJobs} />
+        </motion.section>
+      )}
 
       {/* Main Content Container */}
-      <div className=" mx-auto  sm:px-6 lg:px-16 py-8  -mt-16">
+      <div className={`mx-auto sm:px-6 lg:px-16 py-8 ${featuredJobs && featuredJobs.length > 0 ? '-mt-16' : ''}`}>
         {/* Search Header Section */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -109,7 +124,7 @@ const JobSearchPage = () => {
                   <FiSearch className="text-gray-400 dark:text-gray-300 text-xl ml-2" />
                   <Input
                     placeholder={t("searchPlaceholder")}
-                    className="text-lg h-8 md:h-10 focus:outline-none border-0 outline-none focus:border-none focus:ring-0   dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                    className="text-lg h-8 md:h-10 focus:outline-none border-0 outline-none focus:border-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -132,36 +147,38 @@ const JobSearchPage = () => {
         </div>
 
         {/* Filters and Jobs Grid - Independent Scroll Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 min-h-[630px]  custom-scrollbar -mr-2">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 min-h-[630px] custom-scrollbar -mr-2">
           {/* Filters Sidebar - Independent Scroll */}
           <div className="lg:col-span-1">
-            <div className=" top-8 h-[calc(100vh-100px)] overflow-y-auto hide-scrollbar">
-              <JobFilters
-                //@ts-ignore
-                filterOptions={filterOptions}
-                selectedIndustries={selectedIndustries}
-                selectedJobTypes={selectedJobTypes}
-                selectedWorkModes={selectedWorkModes}
-                selectedExperienceLevels={selectedExperienceLevels}
-                selectedEducationLevels={selectedEducationLevels}
-                selectedCountries={selectedCountries}
-                salaryRange={salaryRange}
-                onIndustryChange={handleIndustryChange}
-                onJobTypeChange={handleJobTypeChange}
-                onWorkModeChange={handleWorkModeChange}
-                onSalaryChange={handleSalaryChange}
-                onExperienceLevelChange={handleExperienceLevelChange}
-                onEducationLevelChange={handleEducationLevelChange}
-                onCountryChange={handleCountryChange}
-                onResetFilters={handleResetFilters}
-              />
+            <div className="top-8 h-[calc(100vh-100px)] overflow-y-auto hide-scrollbar">
+              {filterOptions && (
+                <JobFilters
+                  //@ts-ignore
+                  filterOptions={filterOptions}
+                  selectedIndustries={selectedIndustries}
+                  selectedJobTypes={selectedJobTypes}
+                  selectedWorkModes={selectedWorkModes}
+                  selectedExperienceLevels={selectedExperienceLevels}
+                  selectedEducationLevels={selectedEducationLevels}
+                  selectedCountries={selectedCountries}
+                  salaryRange={salaryRange}
+                  onIndustryChange={handleIndustryChange}
+                  onJobTypeChange={handleJobTypeChange}
+                  onWorkModeChange={handleWorkModeChange}
+                  onSalaryChange={handleSalaryChange}
+                  onExperienceLevelChange={handleExperienceLevelChange}
+                  onEducationLevelChange={handleEducationLevelChange}
+                  onCountryChange={handleCountryChange}
+                  onResetFilters={handleResetFilters}
+                />
+              )}
             </div>
           </div>
 
           {/* Jobs List - Independent Scroll */}
           <div className="lg:col-span-3 p-4 -mr-2">
-            <div className="h-[calc(100vh-150px)] overflow-y-auto">
-              {jobs?.length === 0 ? (
+            <div className="">
+              {!jobs || jobs.length === 0 ? (
                 <div className="p-8 rounded-xl shadow-sm text-center max-w-md mx-auto">
                   <div className="flex justify-center mb-6">
                     <Image
@@ -218,7 +235,7 @@ const JobSearchPage = () => {
                             post_data: job.published_at,
                             image: job.company.logo || icons.job,
                             description: job.description,
-                         posted: formatPostedDate(job.published_at, locale),
+                            posted: formatPostedDate(job.published_at),
                             type: job.type,
                             duties_responsibilities:
                               job.duties_responsibilities,
@@ -233,7 +250,7 @@ const JobSearchPage = () => {
                     ))}
                   </div>
 
-                  {jobs?.length > 0 && (
+                  {jobs?.length > 0 && paginationMeta && (
                     <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}

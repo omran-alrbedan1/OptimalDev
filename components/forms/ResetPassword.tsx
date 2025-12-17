@@ -6,6 +6,8 @@ import * as z from "zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +28,10 @@ export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isRTL = locale === "ar";
+  
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const email = searchParams.get("email") || "";
   const token = searchParams.get("token") || "";
@@ -39,6 +45,14 @@ export default function ResetPasswordForm() {
       password_confirmation: "",
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   async function onSubmit(values: {
     email: string;
@@ -60,7 +74,7 @@ export default function ResetPasswordForm() {
 
       router.push(`/${locale}/login`);
     } catch (error) {
-      console.error("Error resetting password", error);
+      console.log("Error resetting password", error);
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),
       });
@@ -87,7 +101,7 @@ export default function ResetPasswordForm() {
         <input type="hidden" {...form.register("token")} />
 
         <div className="space-y-4">
-          {/* New Password Field */}
+          {/* New Password Field with Eye Icon */}
           <FormField
             control={form.control}
             name="password"
@@ -95,19 +109,32 @@ export default function ResetPasswordForm() {
               <FormItem>
                 <FormLabel>{t("fields.password.label")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("fields.password.placeholder")}
-                    className="dark:bg-gray-800 bg-gray-100"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("fields.password.placeholder")}
+                      className="dark:bg-gray-800 bg-gray-100 pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-400" />
               </FormItem>
             )}
           />
 
-          {/* Confirm New Password Field */}
+          {/* Confirm New Password Field with Eye Icon */}
           <FormField
             control={form.control}
             name="password_confirmation"
@@ -115,12 +142,25 @@ export default function ResetPasswordForm() {
               <FormItem>
                 <FormLabel>{t("fields.password_confirmation.label")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("fields.password_confirmation.placeholder")}
-                    className="dark:bg-gray-800 bg-gray-100"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder={t("fields.password_confirmation.placeholder")}
+                      className="dark:bg-gray-800 bg-gray-100 pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-400" />
               </FormItem>

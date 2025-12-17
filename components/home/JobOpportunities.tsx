@@ -71,7 +71,7 @@ const JobOpportunities: React.FC<JobOpportunitiesProps> = ({}) => {
         setJobs(transformedJobs);
       } catch (err: any) {
         setError(err.message || t("fetchError"));
-        console.error("Error fetching jobs:", err);
+        console.log("Error fetching jobs:", err);
       } finally {
         setIsLoading(false);
       }

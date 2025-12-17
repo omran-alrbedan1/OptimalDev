@@ -1,5 +1,4 @@
 //@ts-nocheck
-
 "use client";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -8,6 +7,8 @@ import * as z from "zod";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,13 +25,10 @@ import "react-phone-input-2/lib/style.css";
 import { Country, City } from "country-state-city";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { registerFormSchema } from "@/lib/validation/userValidation";
 import { useFetch, useFetchWithId } from "@/hooks/useFetch";
 import { fetchCities, fetchCountries, register } from "@/lib/client-action";
-import { setCookie } from "cookies-next";
-import { Trash } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/store/slices/authSlice";
 
@@ -38,6 +36,9 @@ const { Dragger } = Upload;
 
 export default function RegisterForm() {
   const [fileList, setFileList] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const t = useTranslations("forms.registerForm");
   const locale = useLocale();
   const isRTL = locale === "ar";
@@ -112,7 +113,7 @@ export default function RegisterForm() {
     },
     onChange(info: any) {
       if (info.file.status === "removed") {
-        form.setValue("cv", null, { shouldValidate: true }); // Add shouldValidate: true
+        form.setValue("cv", null, { shouldValidate: true });
         setFileList([]);
       }
     },
@@ -129,48 +130,83 @@ export default function RegisterForm() {
     form.setValue("city_id", value, { shouldValidate: true });
   };
 
-  async function onSubmit(values: z.infer<typeof schema>) {
-    try {
-      const formData = new FormData();
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-      formData.append("first_name", values.first_name);
-      formData.append("last_name", values.last_name);
-      formData.append("email", values.email);
-      formData.append("phone", values.phone);
-      formData.append("country_id", values.country_id);
-      formData.append("city_id", values.city_id);
-      formData.append("password", values.password);
-      formData.append("password_confirmation", values.password_confirmation);
-      formData.append("accept_terms", values.acceptTerms.toString());
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
-      if (values.cv) {
-        formData.append("cv", values.cv);
-      }
+async function onSubmit(values: z.infer<typeof schema>) {
+  try {
+    const formData = new FormData();
 
-      const response = await register(formData);
+    formData.append("first_name", values.first_name);
+    formData.append("last_name", values.last_name);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+    formData.append("country_id", values.country_id);
+    formData.append("city_id", values.city_id);
+    formData.append("password", values.password);
+    formData.append("password_confirmation", values.password_confirmation);
+    formData.append("accept_terms", values.acceptTerms.toString());
 
-      if (response.access_token) {
-        dispatch(loginSuccess(response));
-
-        toast.success(t("toast.success.title"), {
-          description: t("toast.success.description"),
-        });
-
-        const redirectUrl =
-          callbackUrl && callbackUrl.length > 0
-            ? decodeURIComponent(callbackUrl)
-            : `/${locale}/home`;
-        router.push(redirectUrl);
-      }
-    } catch (error) {
-      console.error("Registration error", error);
-
-      toast.error(t("toast.error.title"), {
-        description:
-          error instanceof Error ? error.message : t("toast.error.description"),
-      });
+    if (values.cv) {
+      formData.append("cv", values.cv);
     }
+
+    const response = await register(formData);
+
+    if (response.access_token) {
+      dispatch(loginSuccess(response));
+
+      toast.success(t("toast.success.title"), {
+        description: t("toast.success.description"),
+      });
+
+      const redirectUrl =
+        callbackUrl && callbackUrl.length > 0
+          ? decodeURIComponent(callbackUrl)
+          : `/${locale}/home`;
+      router.push(redirectUrl);
+    }
+  } catch (error: any) {
+
+    let errorMessage = t("toast.error.description");
+    
+    if (error.error) {
+      errorMessage = error.error;
+    }
+    
+    if (error.details) {
+      const errorDetails = Object.entries(error.details)
+        .map(([field, messages]: [string, any]) => {
+          const messageList = Array.isArray(messages) ? messages : [messages];
+          return ` ${messageList.join(", ")}`;
+        })
+        .join("; ");
+      
+      errorMessage = errorDetails || errorMessage;
+    }
+    
+    if (error.errors) {
+      const errorDetails = Object.entries(error.errors)
+        .map(([field, messages]: [string, any]) => {
+          const messageList = Array.isArray(messages) ? messages : [messages];
+          return `${messageList.join(", ")}`;
+        })
+        .join("; ");
+      
+      errorMessage = errorDetails || errorMessage;
+    }
+
+
+    toast.error(t("toast.error.title"), {
+      description: errorMessage,
+    });
   }
+}
 
   return (
     <Form {...form}>
@@ -337,6 +373,7 @@ export default function RegisterForm() {
             )}
           />
 
+          {/* Password Field with Eye Icon */}
           <FormField
             control={form.control}
             name="password"
@@ -346,18 +383,32 @@ export default function RegisterForm() {
                   {t("fields.password.label")}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("fields.password.placeholder")}
-                    {...field}
-                    className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("fields.password.placeholder")}
+                      {...field}
+                      className="border border-gray-200 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-300 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
 
+          {/* Confirm Password Field with Eye Icon */}
           <FormField
             control={form.control}
             name="password_confirmation"
@@ -367,12 +418,25 @@ export default function RegisterForm() {
                   {t("fields.confirmPassword.label")}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("fields.confirmPassword.placeholder")}
-                    {...field}
-                    className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder={t("fields.confirmPassword.placeholder")}
+                      {...field}
+                      className="border border-gray-200 dark:border-gray-400 bg-gray-50 dark:bg-gray-800 dark:text-gray-300 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>

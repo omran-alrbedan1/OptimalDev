@@ -74,7 +74,7 @@ const AboutPage = async () => {
                     >
                       <div
                         className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg "
-                        dangerouslySetInnerHTML={{ __html: section.content }}
+                        dangerouslySetInnerHTML={{ __html: section.content }} 
                       />
                     </Animate>
                   </div>

@@ -54,7 +54,7 @@ export default function Services() {
         const data = await response.json();
         setServices(data);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        console.log("Error fetching services:", error);
       }
     };
     fetchData();

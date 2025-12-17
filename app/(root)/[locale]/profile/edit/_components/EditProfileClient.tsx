@@ -52,7 +52,7 @@ type EditProfileValues = z.infer<ReturnType<typeof editProfileSchema>>;
 
 const EditProfilePage = () => {
   const t = useTranslations("editProfile");
-  const locale =useLocale();
+  const locale = useLocale();
   const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -184,7 +184,7 @@ const EditProfilePage = () => {
       toast.success(t("toast.success"));
       router.push("/profile");
     } catch (error) {
-      console.error("Update error:", error);
+      console.log("Update error:", error);
       toast.error(t("toast.error"));
     } finally {
       setLoading(false);
@@ -507,24 +507,24 @@ const EditProfilePage = () => {
                                       inputClass="!h-12  !w-full  rtl:pr-16 !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
                                       inputStyle={{
                                         direction:
-                                         locale === "ar" ? "ltr" : "ltr",
+                                          locale === "ar" ? "ltr" : "ltr",
                                         textAlign:
-                                         locale === "ar"
+                                          locale === "ar"
                                             ? "right"
                                             : "left",
                                       }}
                                       buttonStyle={{
                                         direction:
-                                         locale === "ar" ? "ltr" : "ltr",
+                                          locale === "ar" ? "ltr" : "ltr",
                                       }}
                                       placeholder={
-                                       locale === "ar"
+                                        locale === "ar"
                                           ? "رقم الهاتف"
                                           : "Phone Number"
                                       }
                                       containerStyle={{
                                         direction:
-                                         locale === "ar" ? "rtl" : "ltr",
+                                          locale === "ar" ? "rtl" : "ltr",
                                       }}
                                     />
                                   </div>

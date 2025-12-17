@@ -16,7 +16,9 @@
     "careerPath": "مسار وظيفي",
     "internship": "تدريب عملي",
   "login": "تسجيل الدخول",
-  "register": "إنشاء حساب"
+  "register": "إنشاء حساب",
+      "profile":"الملف الشخصي",
+    "logout":"تسجيل الخروج "
 
   },
   "ourServices": {
@@ -305,25 +307,32 @@
     "next": "التالي",
     "errorLoadingJobs": "خطأ في تحميل الوظائف",
 
-  "jobCard": {
-      "checkOutJob": "اطلع على هذه الوظيفة",
-      "at": "في",
-      "facebook": "فيسبوك",
-      "linkedin": "لينكدإن",
-      "whatsapp": "واتساب",
-      "copyLink": "نسخ الرابط",
-      "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-      "industry": "الصناعة",
-      "applyNow": "تقدم الآن",
-      "loginToApply": "سجل الدخول للتقديم",
-      "applying": "جاري التقديم",
-      "alreadyApplied": "تم التقديم مسبقاً",
-      "applied": "تم التقديم",
-      "fullTime": "دوام كامل",
-      "onSite": "حضوري",
-      "salaryNotSpecified": "الراتب غير محدد",
-      "currencySymbol": "دينار"
-    }
+"jobCard": {
+  "checkOutJob": "اطلع على هذه الوظيفة",
+  "at": "في",
+  "facebook": "فيسبوك",
+  "linkedin": "لينكدإن",
+  "whatsapp": "واتساب",
+  "copyLink": "نسخ الرابط",
+  "linkCopied": "تم نسخ الرابط إلى الحافظة!",
+  "industry": "الصناعة",
+  "applyNow": "تقدم الآن",
+  "loginToApply": "سجل الدخول للتقديم",
+  "applying": "جاري التقديم",
+  "alreadyApplied": "تم التقديم مسبقاً",
+  "applied": "تم التقديم",
+  "fullTime": "دوام كامل",
+  "onSite": "حضوري",
+  "salaryNotSpecified": "الراتب غير محدد",
+  "currencySymbol": "دينار",
+  "company": "الشركة",
+  "location": "الموقع",
+  "jobHighlights": "أبرز مميزات الوظيفة",
+  "work": "عمل",
+  "salary": "الراتب",
+  "jobOpportunity": "فرصة عمل",
+  "competitiveSalary": "راتب تنافسي"
+}
   },
 
   "jobDetailsPage": {
