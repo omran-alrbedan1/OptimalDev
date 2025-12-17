@@ -507,24 +507,24 @@ const EditProfilePage = () => {
                                       inputClass="!h-12  !w-full  rtl:pr-16 !rounded-[4px] !border-slate-300 dark:!border-slate-600 !bg-white/50 dark:!bg-slate-700/50 !shadow-sm focus:!ring-2 focus:!ring-primary-color1 focus:!border-primary-color1 !transition-all !duration-200"
                                       inputStyle={{
                                         direction:
-                                          useLocale() === "ar" ? "ltr" : "ltr",
+                                          locale === "ar" ? "ltr" : "ltr",
                                         textAlign:
-                                          useLocale() === "ar"
+                                          locale === "ar"
                                             ? "right"
                                             : "left",
                                       }}
                                       buttonStyle={{
                                         direction:
-                                          useLocale() === "ar" ? "ltr" : "ltr",
+                                          locale === "ar" ? "ltr" : "ltr",
                                       }}
                                       placeholder={
-                                        useLocale() === "ar"
+                                        locale === "ar"
                                           ? "رقم الهاتف"
                                           : "Phone Number"
                                       }
                                       containerStyle={{
                                         direction:
-                                          useLocale() === "ar" ? "rtl" : "ltr",
+                                          locale === "ar" ? "rtl" : "ltr",
                                       }}
                                     />
                                   </div>

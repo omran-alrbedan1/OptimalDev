@@ -9,6 +9,7 @@ import { fetchConversations } from "@/lib/client-action";
 
 const MessageLists = () => {
   const t = useTranslations("chat");
+  const locale = useLocale();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
@@ -109,7 +110,7 @@ const MessageLists = () => {
         <div className="bg-white dark:bg-gray-800 rounded-[5px] border border-gray-200 dark:border-gray-700 overflow-hidden shadow-2xl h-[600px] flex flex-col transform transition-all hover:shadow-xl">
           <div
             className={`${
-              useLocale() === "ar" ? "bg-gradient-to-l" : "bg-gradient-to-r"
+              locale === "ar" ? "bg-gradient-to-l" : "bg-gradient-to-r"
             } from-[#22ace3] to-[#1e88e5] dark:from-[#1976d2] dark:to-[#0d47a1] p-4 text-white relative overflow-hidden`}
           >
             <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div>
@@ -186,7 +187,7 @@ const MessageLists = () => {
                               <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                               <span
                                 className="text-xs  text-gray-500 dark:text-gray-400"
-                                dir={useLocale() === "ar" ? "ltr" : "ltr"}
+                                dir={locale === "ar" ? "ltr" : "ltr"}
                               >
                                 {formatTime(message.created_at)}
                               </span>
@@ -195,12 +196,12 @@ const MessageLists = () => {
                             <div className="relative">
                               <div
                                 className={`absolute ${
-                                  useLocale() === "ar" ? "-right-2" : "-left-2"
+                                  locale === "ar" ? "-right-2" : "-left-2"
                                 } top-4 w-4 h-4 bg-white dark:bg-gray-700 transform rotate-45 border-l border-t border-gray-50 dark:border-gray-600`}
                               ></div>
                               <div
                                 className={`bg-white dark:bg-gray-700 rounded-2xl ${
-                                  useLocale() === "ar"
+                                  locale === "ar"
                                     ? "rounded-tr-none"
                                     : "rounded-tl-none"
                                 } p-4 shadow-sm border border-gray-100 dark:border-gray-600`}
