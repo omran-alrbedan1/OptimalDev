@@ -184,7 +184,7 @@ const EditProfilePage = () => {
       toast.success(t("toast.success"));
       router.push("/profile");
     } catch (error) {
-      console.error("Update error:", error);
+      console.log("Update error:", error);
       toast.error(t("toast.error"));
     } finally {
       setLoading(false);

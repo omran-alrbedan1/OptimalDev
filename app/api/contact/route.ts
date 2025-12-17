@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       data: response.data,
     });
   } catch (error: any) {
-    console.error("Contact API Error Details:", {
+    console.log("Contact API Error Details:", {
       message: error.message,
       response: error.response?.data,
       status: error.response?.status,
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error(
+    console.log(
       "Contact GET API Error:",
       error.response?.data || error.message
     );

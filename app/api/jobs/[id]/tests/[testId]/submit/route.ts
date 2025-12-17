@@ -40,7 +40,7 @@ export async function POST(
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Error submitting test:", error);
+    console.log("Error submitting test:", error);
     const status = error.response?.status || 500;
     const errorMessage =
       error.response?.data?.error ||

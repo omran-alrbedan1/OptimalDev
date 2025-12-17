@@ -23,7 +23,7 @@ const HrefCard = ({ url }: { url: string }) => {
         );
         setMetadata(response.data.data);
       } catch (err) {
-        console.error("Error fetching metadata:", err);
+        console.log("Error fetching metadata:", err);
         setError("Failed to load project metadata");
       } finally {
         setLoading(false);

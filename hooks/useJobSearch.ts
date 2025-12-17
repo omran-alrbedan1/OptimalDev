@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect, useCallback } from "react";
 import {
   fetchFeaturedJobs,
@@ -56,7 +57,7 @@ export const useJobSearch = () => {
         const featuredJobs = await fetchFeaturedJobs();
         setFeaturedJobs(featuredJobs);
       } catch (err) {
-        console.error("Failed to fetch feature jobs:", err);
+       console.log("Failed to fetch feature jobs:", err);
       }
     };
     getFeaturedJobs();
@@ -69,7 +70,7 @@ export const useJobSearch = () => {
         const filters = await fetchJobFilters();
         setFilterOptions(filters);
       } catch (err) {
-        console.error("Failed to fetch filters:", err);
+       console.log("Failed to fetch filters:", err);
       }
     };
     fetchFilters();

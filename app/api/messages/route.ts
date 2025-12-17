@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     const data = response.data?.data || response.data;
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Conversation fetch error:", error);
+    console.log("Conversation fetch error:", error);
     return NextResponse.json(
       {
         error:

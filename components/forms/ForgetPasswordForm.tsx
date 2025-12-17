@@ -36,7 +36,7 @@ export default function ForgotPasswordForm() {
       });
       router.push("/verify_reset_code");
     } catch (error) {
-      console.error("Error sending reset link", error);
+      console.log("Error sending reset link", error);
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),
       });

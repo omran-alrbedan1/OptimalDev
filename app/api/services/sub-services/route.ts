@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("API route error:", error.message);
+    console.log("API route error:", error.message);
     return NextResponse.json(
       { error: error.message || "Failed to fetch sub-services" },
       { status: 500 }

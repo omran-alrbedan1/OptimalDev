@@ -163,7 +163,7 @@ ${locationText}
     navigator.clipboard.writeText(jobUrl).then(() => {
       toast.success(t("linkCopied"), { duration: 2000 });
       dropdownRef.current?.close();
-    }).catch(console.error);
+    }).catch(console.log);
   };
 
   const getWorkModeColor = (mode: string) => {

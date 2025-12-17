@@ -114,7 +114,7 @@ export const useServiceRequestForm = () => {
         }
       }
     } catch (error) {
-      console.error("Error loading stored form data:", error);
+      console.log("Error loading stored form data:", error);
       localStorage.removeItem(STORAGE_KEY);
     }
     return null;
@@ -125,7 +125,7 @@ export const useServiceRequestForm = () => {
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {
-      console.error("Error clearing form data:", error);
+      console.log("Error clearing form data:", error);
     }
   };
 
@@ -141,7 +141,7 @@ export const useServiceRequestForm = () => {
         })
       );
     } catch (error) {
-      console.error("Error saving form data:", error);
+      console.log("Error saving form data:", error);
     }
   };
 
@@ -519,7 +519,7 @@ export const useServiceRequestForm = () => {
             );
           }
         } catch (error) {
-          console.error("Error marking form as submitted:", error);
+          console.log("Error marking form as submitted:", error);
         }
       }
 
@@ -527,7 +527,7 @@ export const useServiceRequestForm = () => {
       resetFormToInitialState();
       setSubmitSuccess(true);
     } catch (error: any) {
-      console.error("❌ COMPLETE SUBMISSION FAILURE:", {
+      console.log("❌ COMPLETE SUBMISSION FAILURE:", {
         name: error.name,
         message: error.message,
         stack: error.stack,
@@ -610,7 +610,7 @@ export const useServiceRequestForm = () => {
         );
       }
     } catch (error) {
-      console.error("Error saving navigation state:", error);
+      console.log("Error saving navigation state:", error);
     }
   }, [step, currentQuestionIndex]);
 
@@ -686,7 +686,7 @@ export const useServiceRequestForm = () => {
           }
         }
       } catch (error) {
-        console.error("Error checking submitted data:", error);
+        console.log("Error checking submitted data:", error);
         clearStoredFormData();
       }
     };

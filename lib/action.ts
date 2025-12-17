@@ -55,7 +55,7 @@ const fetchApi = async <T>(
       ? responseData.data
       : (responseData as T);
   } catch (error: any) {
-    console.error(`API Error (${endpoint}):`, error);
+    console.log(`API Error (${endpoint}):`, error);
     throw new Error(error.message || `Failed to fetch ${endpoint}`);
   }
 };

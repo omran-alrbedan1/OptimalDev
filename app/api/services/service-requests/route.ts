@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Backend Error:", error.response?.data || error.message);
+    console.log("Backend Error:", error.response?.data || error.message);
 
     // Pass through the backend validation errors
     if (error.response?.status === 422) {

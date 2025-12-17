@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   CheckCircle,
@@ -50,9 +50,8 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
   const [expandedOptions, setExpandedOptions] = useState<Set<number>>(
     new Set()
   );
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<Record<number, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   if (!currentQuestion) return null;
 
   const toggleSubOptions = (optionId: number) => {
@@ -69,22 +68,47 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && currentQuestion) {
       handleFileUpload(file);
       if (file.type.startsWith("image/")) {
         const previewUrl = URL.createObjectURL(file);
-        setImagePreview(previewUrl);
+        // Store preview by question ID
+        setImagePreviews(prev => ({
+          ...prev,
+          [currentQuestion.id]: previewUrl
+        }));
       }
     }
   };
 
   const handleClearFile = () => {
-    handleFileUpload(null);
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    if (currentQuestion) {
+      handleFileUpload(null);
+      // Clear preview for current question
+      setImagePreviews(prev => {
+        const newPreviews = { ...prev };
+        // Revoke the object URL to prevent memory leaks
+        if (newPreviews[currentQuestion.id]) {
+          URL.revokeObjectURL(newPreviews[currentQuestion.id]);
+          delete newPreviews[currentQuestion.id];
+        }
+        return newPreviews;
+      });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
+    const currentImagePreview = currentQuestion ? imagePreviews[currentQuestion.id] : null;
+
+  // Clean up object URLs on unmount
+  useEffect(() => {
+    return () => {
+      Object.values(imagePreviews).forEach(previewUrl => {
+        URL.revokeObjectURL(previewUrl);
+      });
+    };
+  }, []);
 
   const handleSubOptionSelect = (
     optionId: number,
@@ -479,11 +503,14 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
     );
   };
 
-  const renderFileUpload = () => (
-    <div className="space-y-4">
-      <div
+  const renderFileUpload = () => {
+     const currentFileAnswer = answers.fileAnswers?.[currentQuestion.id];
+  const currentImagePreview = imagePreviews[currentQuestion.id];
+    return(
+   <div className="space-y-4">
+        <div
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 ${
-          answers.fileAnswers?.[currentQuestion.id] || imagePreview
+          currentFileAnswer || currentImagePreview
             ? "border-[#22ace3] bg-[#22ace3]/5"
             : "border-gray-300 dark:border-gray-600 hover:border-[#22ace3] hover:bg-gray-50 dark:hover:bg-gray-700"
         } ${hasError ? "border-red-300 dark:border-red-700" : ""}`}
@@ -496,13 +523,14 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
           className="hidden"
           accept={currentQuestion.type === "image" ? "image/*" : "*/*"}
         />
+    
 
-        {answers.fileAnswers?.[currentQuestion.id] || imagePreview ? (
+         {currentFileAnswer || currentImagePreview ? (
           <div className="space-y-3">
-            {imagePreview && (
+            {currentImagePreview && (
               <div className="mx-auto max-w-48 max-h-48 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
                 <img
-                  src={imagePreview}
+                  src={currentImagePreview}
                   alt="Preview"
                   className="w-full h-full object-cover"
                 />
@@ -510,13 +538,14 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
             )}
             <Upload className="h-8 w-8 text-[#22ace3] mx-auto" />
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {answers.fileAnswers?.[currentQuestion.id]?.name ||
+              {currentFileAnswer?.name ||
                 t("fileSelected", { defaultValue: "File selected" })}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {t("clickToChangeFile", { defaultValue: "Click to change file" })}
             </p>
           </div>
+
         ) : (
           <div className="space-y-2">
             <Upload className="h-12 w-12 text-gray-400 mx-auto" />
@@ -534,7 +563,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
         )}
       </div>
 
-      {(answers.fileAnswers?.[currentQuestion.id] || imagePreview) && (
+        {(currentFileAnswer || currentImagePreview) && (
         <button
           type="button"
           onClick={handleClearFile}
@@ -545,7 +574,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
         </button>
       )}
     </div>
-  );
+  )};
 
   const renderTextInput = () => (
     <div className="mt-4">

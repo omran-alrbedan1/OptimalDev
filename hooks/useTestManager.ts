@@ -227,7 +227,7 @@ export const useTestManager = (jobId: number, testId: number) => {
           setCurrentQuestionIndex(parseInt(savedIndex, 10));
         }
       } catch (err) {
-        console.error(err);
+        console.log(err);
         toast.error("Failed to load test");
       } finally {
         setLoading(false);
@@ -273,15 +273,7 @@ export const useTestManager = (jobId: number, testId: number) => {
   };
 
 
-  const clearFileForQuestion = (questionId: number) => {
-  setAnswers(prev => ({
-    ...prev,
-    fileAnswers: {
-      ...prev.fileAnswers,
-      [questionId]: null 
-    }
-  }));
-};
+ 
 
 
   const getQuestionError = (question: Question): string | null => {
@@ -550,38 +542,21 @@ export const useTestManager = (jobId: number, testId: number) => {
     return true;
   };
 
-// In your useTestManager hook, add this function:
-const clearFileForQuestion = (questionId: number) => {
-  setAnswers(prev => ({
-    ...prev,
-    fileAnswers: {
-      ...prev.fileAnswers,
-      [questionId]: null // Explicitly clear file for specific question
+  const handleNextQuestion = () => {
+    if (!canGoToNextQuestion()) {
+      setHasAttemptedSubmit(true);
+      return;
     }
-  }));
-};
 
-// Then update handleNextQuestion and handlePreviousQuestion:
-const handleNextQuestion = () => {
-  if (!canGoToNextQuestion()) {
-    setHasAttemptedSubmit(true);
-    return;
-  }
-
-  if (currentQuestion?.type === 'file' || currentQuestion?.type === 'image') {
-    const questionId = currentQuestion.id;
-    clearFileForQuestion(questionId);
-    if (answers.fileAnswers[questionId]) {
-      URL.revokeObjectURL(imagePreviewUrl); 
+    if (
+      testData?.questions &&
+      currentQuestionIndex < testData.questions.length - 1
+    ) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  }
+  };
 
-  if (testData?.questions && currentQuestionIndex < testData.questions.length - 1) {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
-  }
-};
-
-
+  
 
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
@@ -692,7 +667,7 @@ const handleNextQuestion = () => {
       });
       setShowResultsModal(true);
     } catch (error: any) {
-      console.error("Submission error:", error);
+      console.log("Submission error:", error);
       setTestResult({
         message: error.message || "Test submission failed",
         score: 0,

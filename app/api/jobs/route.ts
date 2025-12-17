@@ -68,7 +68,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
-    console.error("API Route Error:", error.response?.data || error.message);
+    console.log("API Route Error:", error.response?.data || error.message);
 
     // Provide more specific error messages
     let errorMessage = "Failed to fetch jobs";

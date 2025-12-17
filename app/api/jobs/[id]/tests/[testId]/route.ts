@@ -32,7 +32,7 @@ export async function GET(
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Error fetching test:", error);
+    console.log("Error fetching test:", error);
     return NextResponse.json(
       {
         error:

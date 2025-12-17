@@ -25,7 +25,7 @@ const MessageLists = () => {
           setMessages(conversations.messages);
         }
       } catch (error) {
-        console.error("Failed to load messages:", error);
+        console.log("Failed to load messages:", error);
       } finally {
         setIsLoadingMessages(false);
       }

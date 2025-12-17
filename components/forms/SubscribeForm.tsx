@@ -30,7 +30,7 @@ export default function SubscribeForm() {
       });
       form.reset();
     } catch (error) {
-      console.error("Form submission error", error);
+      console.log("Form submission error", error);
       toast.error(t("error.title"), {
         description: t("error.description"),
       });

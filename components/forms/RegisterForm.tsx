@@ -138,48 +138,75 @@ export default function RegisterForm() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  async function onSubmit(values: z.infer<typeof schema>) {
-    try {
-      const formData = new FormData();
+async function onSubmit(values: z.infer<typeof schema>) {
+  try {
+    const formData = new FormData();
 
-      formData.append("first_name", values.first_name);
-      formData.append("last_name", values.last_name);
-      formData.append("email", values.email);
-      formData.append("phone", values.phone);
-      formData.append("country_id", values.country_id);
-      formData.append("city_id", values.city_id);
-      formData.append("password", values.password);
-      formData.append("password_confirmation", values.password_confirmation);
-      formData.append("accept_terms", values.acceptTerms.toString());
+    formData.append("first_name", values.first_name);
+    formData.append("last_name", values.last_name);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+    formData.append("country_id", values.country_id);
+    formData.append("city_id", values.city_id);
+    formData.append("password", values.password);
+    formData.append("password_confirmation", values.password_confirmation);
+    formData.append("accept_terms", values.acceptTerms.toString());
 
-      if (values.cv) {
-        formData.append("cv", values.cv);
-      }
-
-      const response = await register(formData);
-
-      if (response.access_token) {
-        dispatch(loginSuccess(response));
-
-        toast.success(t("toast.success.title"), {
-          description: t("toast.success.description"),
-        });
-
-        const redirectUrl =
-          callbackUrl && callbackUrl.length > 0
-            ? decodeURIComponent(callbackUrl)
-            : `/${locale}/home`;
-        router.push(redirectUrl);
-      }
-    } catch (error) {
-      console.error("Registration error", error);
-
-      toast.error(t("toast.error.title"), {
-        description:
-          error instanceof Error ? error.message : t("toast.error.description"),
-      });
+    if (values.cv) {
+      formData.append("cv", values.cv);
     }
+
+    const response = await register(formData);
+
+    if (response.access_token) {
+      dispatch(loginSuccess(response));
+
+      toast.success(t("toast.success.title"), {
+        description: t("toast.success.description"),
+      });
+
+      const redirectUrl =
+        callbackUrl && callbackUrl.length > 0
+          ? decodeURIComponent(callbackUrl)
+          : `/${locale}/home`;
+      router.push(redirectUrl);
+    }
+  } catch (error: any) {
+
+    let errorMessage = t("toast.error.description");
+    
+    if (error.error) {
+      errorMessage = error.error;
+    }
+    
+    if (error.details) {
+      const errorDetails = Object.entries(error.details)
+        .map(([field, messages]: [string, any]) => {
+          const messageList = Array.isArray(messages) ? messages : [messages];
+          return ` ${messageList.join(", ")}`;
+        })
+        .join("; ");
+      
+      errorMessage = errorDetails || errorMessage;
+    }
+    
+    if (error.errors) {
+      const errorDetails = Object.entries(error.errors)
+        .map(([field, messages]: [string, any]) => {
+          const messageList = Array.isArray(messages) ? messages : [messages];
+          return `${messageList.join(", ")}`;
+        })
+        .join("; ");
+      
+      errorMessage = errorDetails || errorMessage;
+    }
+
+
+    toast.error(t("toast.error.title"), {
+      description: errorMessage,
+    });
   }
+}
 
   return (
     <Form {...form}>

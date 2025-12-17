@@ -48,7 +48,7 @@ export default function VerifyResetCodeForm() {
         )}&token=${values.token}`
       );
     } catch (error) {
-      console.error("Error verifying code", error);
+      console.log("Error verifying code", error);
 
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),

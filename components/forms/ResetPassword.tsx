@@ -74,7 +74,7 @@ export default function ResetPasswordForm() {
 
       router.push(`/${locale}/login`);
     } catch (error) {
-      console.error("Error resetting password", error);
+      console.log("Error resetting password", error);
       toast.error(t("toast.error.title"), {
         description: t("toast.error.description"),
       });

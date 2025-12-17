@@ -246,7 +246,7 @@ const CustomFormField = (props: CustomProps) => {
           setDefaultCountry(data.country_code);
         }
       } catch (error) {
-        console.error("Failed to fetch country code", error);
+        console.log("Failed to fetch country code", error);
       }
     };
 

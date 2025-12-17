@@ -54,7 +54,7 @@ export const useAuth = (requireAuth = false) => {
         window.location.reload();
       }
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.log("Logout failed:", error);
     }
   }, [dispatch, router, pathname]);
 
