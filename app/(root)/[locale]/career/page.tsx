@@ -5,7 +5,6 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { useJobSearch } from "@/hooks/useJobSearch";
 import { formatPostedDate } from "@/lib/utils";
-import { Button, Input, Pagination } from "antd";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
@@ -14,11 +13,11 @@ import JobFilters from "./_components/jobFilters";
 import LatestJobsCarousel from "@/components/parts/LatestJobsCarousel ";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Button, Input, Pagination } from "antd";
 
 const JobSearchPage = () => {
   const t = useTranslations("careerPage");
   const locale = useLocale();
-
   
   // Add a ref to track when carousel should render
   const [isCarouselReady, setIsCarouselReady] = useState(false);

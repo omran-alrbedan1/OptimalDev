@@ -323,7 +323,6 @@ ${locationText}
                     menu={{ items: shareItems }}
                     placement={locale === "ar" ? "bottomRight" : "bottomLeft"}
                     trigger={["click"]}
-                    overlayClassName="share-dropdown"
                   >
                     <Button
                       size="small"

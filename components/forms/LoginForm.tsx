@@ -50,26 +50,36 @@ export default function LoginForm() {
     },
   });
 
-  async function onSubmit(values: LoginFormValues) {
-    try {
-      dispatch(loginStart());
-      const response = await login(values.login, values.password);
+async function onSubmit(values: LoginFormValues) {
+  try {
+    dispatch(loginStart());
+    const response = await login(values.login, values.password);
 
-      // Dispatch success action - Redux will handle cookie storage
-      dispatch(loginSuccess(response));
+    // Dispatch success action - Redux will handle cookie storage
+    dispatch(loginSuccess(response));
 
-      toast.success(t("toast.success.title"));
-      const redirectUrl =
-        callbackUrl && callbackUrl.length > 0
-          ? decodeURIComponent(callbackUrl)
-          : `/${locale}/career`;
-      router.push(redirectUrl);
-    } catch (error) {
-      toast.error(t("toast.error.title"), {
-        description: t("toast.error.description"),
-      });
+    toast.success(t("toast.success.title"));
+    const redirectUrl =
+      callbackUrl && callbackUrl.length > 0
+        ? decodeURIComponent(callbackUrl)
+        : `/${locale}/career`;
+    router.push(redirectUrl);
+  } catch (error: any) {
+    let errorMessage = t("toast.error.description"); 
+    
+    if (error?.message) {
+      errorMessage = error.message;
+    } else if (error?.error) {
+      errorMessage = error.error;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
     }
+    
+    toast.error(errorMessage, {
+      duration: 5000,
+    });
   }
+}
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

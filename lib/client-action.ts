@@ -268,14 +268,28 @@ export const submitTestAnswers = async (
   jobId: number,
   testId: number,
   answers: { answers: Record<string, any> }
-): Promise<TestSubmissionResponse> => {
+): Promise<any> => {
   try {
     const endpoint = `/api/jobs/${jobId}/tests/${testId}/submit`;
-    const response = await post<TestSubmissionResponse>(endpoint, answers);
+    console.log("🌐 Calling API endpoint:", endpoint);
+    
+    const response = await post<any>(endpoint, answers);
+    
+    console.log("✅ API response received:", response);
+    console.log("📊 Response data:", JSON.stringify(response, null, 2));
+    
     return response;
   } catch (error: any) {
-    console.log("Test submission failed:", error);
-    throw new Error(error.message || "Test submission failed");
+    console.log("❌ API error:", error);
+    console.log("Error object:", error);
+    
+    if (error.response) {
+      console.log("Error response:", error.response);
+      console.log("Error data:", error.response.data);
+      console.log("Error status:", error.response.status);
+    }
+    
+    throw error;
   }
 };
 
