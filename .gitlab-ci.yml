@@ -324,7 +324,7 @@ deploy:frontend:
     # Verify deployment success
     - echo "Verifying deployment..."
     - |
-      ssh $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && docker-compose ps optimal-front"
+      ssh $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && docker compose ps optimal-front"
   after_script:
     # Display deployment summary
     - |

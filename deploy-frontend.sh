@@ -115,7 +115,7 @@ log "Version file updated: FRONT_VERSION=${IMAGE_TAG}"
 
 # Restart frontend service (only optimal-front)
 log "Restarting frontend service (optimal-front)..."
-if docker-compose up -d optimal-front; then
+if docker compose up -d optimal-front; then
     log "Service restart initiated"
 else
     error "Failed to restart service"
@@ -123,7 +123,7 @@ else
     if [ -f "${VERSIONS_FILE}.backup" ]; then
         warning "Attempting to restore previous version..."
         mv "${VERSIONS_FILE}.backup" "$VERSIONS_FILE"
-        docker-compose up -d optimal-front
+        docker compose up -d optimal-front
     fi
     exit 1
 fi
@@ -166,16 +166,16 @@ if ! $FRONTEND_HEALTHY; then
     
     # Show container logs for debugging
     log "Container status:"
-    docker-compose ps optimal-front
+    docker compose ps optimal-front
     
     log "Recent logs from optimal-front:"
-    docker-compose logs --tail=20 optimal-front
+    docker compose logs --tail=20 optimal-front
     
     # Attempt rollback if previous version exists
     if [ "$PREVIOUS_VERSION" != "none" ] && [ -f "${VERSIONS_FILE}.backup" ]; then
         warning "Attempting automatic rollback to previous version: ${PREVIOUS_VERSION}"
         mv "${VERSIONS_FILE}.backup" "$VERSIONS_FILE"
-        docker-compose up -d optimal-front
+        docker compose up -d optimal-front
         sleep 10
         error "Deployment failed. Rolled back to previous version."
     else
