@@ -21,7 +21,7 @@ const fetchApi = async <T>(
 ): Promise<T> => {
   const url = `http://147.79.118.212:7099/api${endpoint}`;
 
-  const cookieStore = cookies();
+  const cookieStore = await  cookies();
   const preferredLanguage = cookieStore.get("preferredLanguage")?.value;
 
   try {
