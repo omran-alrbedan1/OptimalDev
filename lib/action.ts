@@ -90,6 +90,11 @@ export const fetchOrganization = async (
 ): Promise<Organization> => {
   return fetchApi("/organization", { next: { revalidate: 3600 }, lang });
 };
+export const fetchServices = async (
+  lang?: string
+): Promise<Service[]> => {
+  return fetchApi("/services", { next: { revalidate: 3600 }, lang });
+};
 
 export const fetchContactInfo = async (lang?: string): Promise<Contact> => {
   return fetchApi("/contact", { next: { revalidate: 3600 }, lang });

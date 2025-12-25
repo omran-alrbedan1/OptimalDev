@@ -1,22 +1,27 @@
-// Example for app/api/filter-options/route.ts
+// app/api/filter-options/route.ts
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(request: Request) {
   try {
     const language = request.headers.get("Accept-Language") || "en";
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/filter-options`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/filter-options`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+      },
+    });
 
-    const data = response.data?.data || response.data;
+    const responseData = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { error: responseData?.message || "Failed to fetch filter-options", details: responseData },
+        { status: res.status }
+      );
+    }
+
+    const data = responseData?.data || responseData;
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(

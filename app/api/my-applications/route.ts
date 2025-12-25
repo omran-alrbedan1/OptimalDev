@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(request: Request) {
   try {
@@ -16,38 +15,46 @@ export async function GET(request: Request) {
     }
 
     const token = authHeader.split(" ")[1];
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/my-applications?page=${page}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-          Authorization: `Bearer ${token}`,
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/my-applications?page=${page}`;
+
+    const response = await fetch(apiUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store", 
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return NextResponse.json(
+        {
+          error: errorData?.message || "Failed to fetch applications",
+          details: errorData,
         },
-      }
-    );
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
 
     return NextResponse.json({
-      data: response.data?.data || response.data,
-      meta: response.data?.meta || {
+      data: data?.data || data,
+      meta: data?.meta || {
         current_page: 1,
         last_page: 1,
         per_page: 15,
-        total: response.data?.length || 0,
+        total: data?.length || 0,
       },
     });
   } catch (error: any) {
     console.log("Error fetching applications:", error);
     return NextResponse.json(
       {
-        error:
-          error.response?.data?.message ||
-          error.message ||
-          "Failed to fetch applications",
+        error: error.message || "Failed to fetch applications",
       },
-      {
-        status: error.response?.status || 500,
-      }
+      { status: 500 }
     );
   }
 }

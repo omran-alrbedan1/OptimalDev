@@ -1,6 +1,5 @@
 // app/api/cities/[id]/route.ts
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(
   request: Request,
@@ -10,25 +9,31 @@ export async function GET(
     const language = request.headers.get("Accept-Language") || "en";
     const { id } = params;
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/cities/${id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/cities/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+      },
+      cache: "no-store", // لمنع التخزين المؤقت
+    });
 
-    const data = response.data?.data || response.data;
-    return NextResponse.json(data);
+    const responseData = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { 
+          error: responseData?.message || "Failed to fetch city",
+          details: responseData?.errors || {}
+        },
+        { status: res.status }
+      );
+    }
+
+    return NextResponse.json(responseData?.data || responseData);
   } catch (error: any) {
     return NextResponse.json(
-      {
-        error: error.response?.data?.message || "Failed to fetch city",
-        details: error.response?.data?.errors || {},
-      },
-      { status: error.response?.status || 500 }
+      { error: error.message || "Failed to fetch city" },
+      { status: 500 }
     );
   }
 }

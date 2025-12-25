@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/app/globals.css";
 import { Toaster } from "sonner";
+import { fetchServices } from "@/lib/action";
 
 export const zain = localFont({
   src: [
@@ -17,7 +18,7 @@ export const zain = localFont({
       path: "../../fonts/Zain-Black.ttf",
       weight: "900",
       style: "normal",
-    },
+    },  
     {
       path: "../../fonts/Zain-ExtraBold.ttf",
       weight: "800",
@@ -62,7 +63,7 @@ export default async function LocaleLayout({
   }
 
   const messages = (await import(`@/messages/${params.locale}.json`)).default;
-
+  const services = await fetchServices(); 
   return (
     <html
       lang={params.locale}
@@ -77,7 +78,7 @@ export default async function LocaleLayout({
                 locale={params.locale}
                 messages={messages}
               >
-                <Header />
+                <Header services={services} />
                 {children}
                 <Footer />
                 <Toaster

@@ -29,6 +29,7 @@ interface DesktopHeaderProps {
   user: any;
   isAuthenticated: boolean;
   onLogout: () => void;
+  services: Service[];
 }
 
 
@@ -37,10 +38,10 @@ const DesktopHeader = ({
   user,
   isAuthenticated,
   onLogout,
+  services,
 }: DesktopHeaderProps) => {
   const path = usePathname();
   const router = useRouter();
-  const { data: services } = useFetch<Service[]>(fetchServices);
 
   const isArabic = path.includes("/ar");
   const isCareerPage = path.includes("/career");
@@ -61,13 +62,13 @@ const DesktopHeader = ({
     <header className="hidden lg:block fixed top-0 w-full dark:bg-darkMod-200 bg-white z-50 shadow-md">
       <div className="max-w-[85rem] mx-auto flex justify-between items-center h-[90px] px-4">
         {/* Logo */}
-        <Link href="/home" className="flex items-center gap-2">
+        <Link href="/home" prefetch className="flex items-center gap-2">
           <Image
             src={images.logo}
             width={300}
             height={90}
             alt="logo"
-            priority
+            priority={false}
           />
         </Link>
 

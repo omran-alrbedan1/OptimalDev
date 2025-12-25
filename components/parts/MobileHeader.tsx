@@ -12,8 +12,6 @@ import { ThemeToggler } from "@/components/ui/ThemeToggler";
 import { images } from "@/constants/images";
 import LanguageSwitcher from "../elements/Switcher";
 import { cn } from "@/lib/utils";
-import { useFetch } from "@/hooks/useFetch";
-import { fetchServices } from "@/lib/client-action";
 import { getUserAvatar } from "./avatar";
 
 interface MobileHeaderProps {
@@ -21,6 +19,7 @@ interface MobileHeaderProps {
   user: any;
   isAuthenticated: boolean;
   onLogout: () => void;
+  services: Service[];
 }
 
 const MobileHeader = ({
@@ -28,11 +27,11 @@ const MobileHeader = ({
   user,
   isAuthenticated,
   onLogout,
+  services,
 }: MobileHeaderProps) => {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
-  const { data: services } = useFetch<Service[]>(fetchServices);
 
   const isArabic = path.includes("/ar");
   const isCareerPage = path.includes("/career");

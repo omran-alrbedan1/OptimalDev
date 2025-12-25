@@ -1,15 +1,27 @@
 "use client";
-import { Suspense, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import Loader from "@/components/Loader";
 import ContactForm from "@/components/forms/ContactForm";
 import { Smartphone } from "lucide-react";
-import { useFetch } from "@/hooks/useFetch";
 import { fetchContactInfo, fetchOrganization } from "@/lib/client-action";
 
 const ContactUsPage = () => {
-  const { data: contactInfo } = useFetch<Contact>(fetchContactInfo);
-  const { data: organization } = useFetch<Organization>(fetchOrganization);
+  const [contactInfo, setContactInfo] = useState<any>(null);
+  const [organization, setOrganization] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([fetchContactInfo(), fetchOrganization()])
+      .then(([contactData, orgData]) => {
+        setContactInfo(contactData);
+        setOrganization(orgData);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="min-h-[90vh] overflow-y-auto relative">

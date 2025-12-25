@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(request: Request) {
   try {
@@ -15,27 +14,33 @@ export async function GET(request: Request) {
 
     const token = authHeader.split(" ")[1];
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/profile`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    const data = response.data?.data || response.data;
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return NextResponse.json(
+        {
+          error: errorData?.message || "Failed to fetch profile",
+          details: errorData,
+        },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    const status = error.response?.status || 500;
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Failed to fetch profile";
-
-    return NextResponse.json({ error: errorMessage }, { status });
+    return NextResponse.json(
+      { error: error.message || "Failed to fetch profile" },
+      { status: 500 }
+    );
   }
 }
 
@@ -54,26 +59,38 @@ export async function POST(request: Request) {
 
     const token = authHeader.split(" ")[1];
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/profile`,
-      formData,
-      {
-        headers: {
-          "Accept-Language": language,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const formJson: Record<string, any> = {};
+    formData.forEach((value, key) => {
+      formJson[key] = value;
+    });
 
-    const data = response.data?.data || response.data;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formJson),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return NextResponse.json(
+        {
+          error: errorData?.message || "Profile update failed",
+          details: errorData?.errors || {},
+        },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
-      {
-        error: error.response?.data?.message || "Profile update failed",
-        details: error.response?.data?.errors || {},
-      },
-      { status: error.response?.status || 500 }
+      { error: error.message || "Profile update failed" },
+      { status: 500 }
     );
   }
 }

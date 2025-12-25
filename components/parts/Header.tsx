@@ -9,7 +9,7 @@ import { logout, loadStoredAuth } from "@/store/slices/authSlice";
 import DesktopHeader from "./DesktopHeader";
 import MobileHeader from "./MobileHeader";
 
-const Header = () => {
+const Header = ({ services }: { services: Service[] }) => {
   const t = useTranslations("header");
   const [isClient, setIsClient] = useState(false);
   const dispatch = useDispatch();
@@ -35,17 +35,21 @@ const Header = () => {
 
   return (
     <>
-      <DesktopHeader
-        t={t}
-        user={user}
-        isAuthenticated={isAuthenticated}
-        onLogout={handleLogout}
-      />
+ <DesktopHeader
+  t={t}
+  user={user}
+  isAuthenticated={isAuthenticated}
+  onLogout={handleLogout}
+  services={services}
+/>
+
       <MobileHeader
         t={t}
         user={user}
         isAuthenticated={isAuthenticated}
         onLogout={handleLogout}
+  services={services}
+
       />
     </>
   );

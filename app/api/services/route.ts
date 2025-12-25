@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(request: Request) {
   try {
     const language = request.headers.get("Accept-Language") || "en";
 
-    const response = await axios.get(
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/services`,
       {
         headers: {
@@ -15,7 +14,13 @@ export async function GET(request: Request) {
       }
     );
 
-    const data = response.data?.data || response.data;
+    if (!res.ok) {
+      throw new Error("Failed to fetch services");
+    }
+
+    const responseData = await res.json();
+    const data = responseData?.data || responseData;
+
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(

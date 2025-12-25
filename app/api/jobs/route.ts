@@ -1,6 +1,5 @@
 // app/api/jobs/route.ts
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function GET(request: Request) {
   try {
@@ -26,74 +25,81 @@ export async function GET(request: Request) {
     const apiParams = new URLSearchParams();
     apiParams.append("page", params.page);
 
-    // Only append parameters that have values
     Object.entries(params).forEach(([key, value]) => {
       if (value && value.length > 0 && key !== "page") {
-        // Handle array parameters (comma-separated)
-        if (value.includes(',')) {
-          apiParams.append(key, value);
-        } else {
-          apiParams.append(key, value);
-        }
+        apiParams.append(key, value);
       }
     });
 
-    const apiUrl = `${
-      process.env.NEXT_PUBLIC_BASE_URL
-    }/jobs?${apiParams.toString()}`;
-    
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/jobs?${apiParams.toString()}`;
+
     // Prepare headers dynamically
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       "Accept-Language": language,
     };
 
-    // Only add Authorization if token exists
     if (authHeader && authHeader !== "null" && authHeader !== "undefined") {
       headers["Authorization"] = authHeader;
     }
 
-    const response = await axios.get(apiUrl, {
+    const res = await fetch(apiUrl, {
       headers,
-      timeout: 10000,
+      cache: "no-store",
     });
 
+    const responseData = await res.json();
+
+    // محاكاة axios error handling
+    if (!res.ok) {
+      let errorMessage = "Failed to fetch jobs";
+
+      if (res.status === 401) {
+        errorMessage = "Authentication required";
+      } else if (res.status === 404) {
+        errorMessage = "Jobs endpoint not found";
+      } else if (res.status >= 400 && res.status < 500) {
+        errorMessage = "Client error occurred";
+      }
+
+      return NextResponse.json(
+        {
+          error: errorMessage,
+          details: responseData,
+          status: res.status,
+        },
+        { status: res.status }
+      );
+    }
+
     return NextResponse.json({
-      data: response.data?.data || response.data || [],
-      meta: response.data?.meta || {
+      data: responseData?.data || responseData || [],
+      meta: responseData?.meta || {
         current_page: parseInt(params.page),
         per_page: 15,
-        total: response.data?.data?.length || response.data?.length || 0,
-        last_page: Math.ceil((response.data?.data?.length || response.data?.length || 0) / 15),
+        total:
+          responseData?.data?.length ||
+          responseData?.length ||
+          0,
+        last_page: Math.ceil(
+          (
+            responseData?.data?.length ||
+            responseData?.length ||
+            0
+          ) / 15
+        ),
       },
     });
   } catch (error: any) {
-    console.log("API Route Error:", error.response?.data || error.message);
-
-    // Provide more specific error messages
-    let errorMessage = "Failed to fetch jobs";
-    let statusCode = 500;
-    
-    if (error.response) {
-      statusCode = error.response.status;
-      if (statusCode === 401) {
-        errorMessage = "Authentication required";
-      } else if (statusCode === 404) {
-        errorMessage = "Jobs endpoint not found";
-      } else if (statusCode >= 400 && statusCode < 500) {
-        errorMessage = "Client error occurred";
-      }
-    } else if (error.request) {
-      errorMessage = "No response from server - network error";
-    }
+    console.log("API Route Error:", error.message);
 
     return NextResponse.json(
       {
-        error: errorMessage,
-        details: error.response?.data || error.message,
-        status: statusCode,
+        error: "No response from server - network error",
+        details: error.message,
+        status: 500,
       },
-      { status: statusCode }
+      { status: 500 }
     );
   }
 }

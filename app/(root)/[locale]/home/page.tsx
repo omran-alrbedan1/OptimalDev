@@ -16,10 +16,13 @@ import { cn } from "@/lib/utils";
 import { zain } from "../layout";
 
 const Page = async () => {
-  const sliders = await fetchSliders();
-  const partners = await fetchPartners();
-  const clients = await fetchClients();
-  const organization = await fetchOrganization();
+const [sliders, partners, clients, organization] = await Promise.all([
+  fetchSliders(),
+  fetchPartners(),
+  fetchClients(),
+  fetchOrganization(),
+]);
+
   return (
     <Suspense fallback={<Loader />}>
       <div className="relative w-full duration-500">

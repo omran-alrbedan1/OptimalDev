@@ -1,31 +1,44 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
     const language = request.headers.get("Accept-Language") || "en";
 
-    const response = await axios.post(
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/newsletter/subscribe`,
-      { email },
       {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
+        body: JSON.stringify({ email }),
       }
     );
 
-    const data = response.data?.data || response.data;
+    const responseData = await res.json();
+
+    // محاكاة سلوك axios في حالة الخطأ
+    if (!res.ok) {
+      return NextResponse.json(
+        {
+          error: responseData?.message || "Failed",
+          details: responseData?.errors || {},
+        },
+        { status: res.status }
+      );
+    }
+
+    const data = responseData?.data || responseData;
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json(
       {
-        error: error.response?.data?.message || "Failed",
-        details: error.response?.data?.errors || {},
+        error: error.message || "Failed",
+        details: {},
       },
-      { status: error.response?.status || 500 }
+      { status: 500 }
     );
   }
 }

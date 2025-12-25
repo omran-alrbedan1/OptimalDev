@@ -1,26 +1,6 @@
-//@ts-nocheck
+// hooks/useJobSearch.ts - COMPLETE OPTIMIZED VERSION
 import { useState, useEffect, useCallback } from "react";
-import {
-  fetchFeaturedJobs,
-  fetchJobFilters,
-  fetchJobs,
-} from "@/lib/client-action";
-
-export interface FilterOptions {
-  work_sectors: Array<{ id: number; name: string }>;
-  contract_types: Array<{ id: number; name: string }>;
-  work_modes: Array<{ id: number; name: string }>;
-  experience_levels: Array<{ id: number; name: string }>;
-  education_levels: Array<{ id: number; name: string }>;
-  countries: Array<{ id: number; name: string }>;
-}
-
-export interface PaginationMeta {
-  current_page: number;
-  last_page: number;
-  per_page: number;
-  total: number;
-}
+import { fetchJobs } from "@/lib/client-action";
 
 export const useJobSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,60 +9,95 @@ export const useJobSearch = () => {
   const [selectedIndustries, setSelectedIndustries] = useState<number[]>([]);
   const [selectedJobTypes, setSelectedJobTypes] = useState<number[]>([]);
   const [selectedWorkModes, setSelectedWorkModes] = useState<number[]>([]);
-  const [selectedExperienceLevels, setSelectedExperienceLevels] = useState<
-    number[]
-  >([]);
-  const [selectedEducationLevels, setSelectedEducationLevels] = useState<
-    number[]
-  >([]);
+  const [selectedExperienceLevels, setSelectedExperienceLevels] = useState<number[]>([]);
+  const [selectedEducationLevels, setSelectedEducationLevels] = useState<number[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<number[]>([]);
   const [salaryRange, setSalaryRange] = useState<[number, number]>([0, 2000]);
   const [jobs, setJobs] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(
-    null
-  );
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 15,
-    total: 0,
+  const [isLoading, setIsLoading] = useState({
+    initial: true,
+    jobs: true,
+    filters: true,
   });
+  const [error, setError] = useState<any>(null);
+  const [filterOptions, setFilterOptions] = useState<any>(null);
+  const [paginationMeta, setPaginationMeta] = useState<any>(null);
 
-  // Fetch featured jobs
+  // Load ALL initial data in parallel
   useEffect(() => {
-    const getFeaturedJobs = async () => {
+    let mounted = true;
+
+    const loadInitialData = async () => {
       try {
-        const featuredJobs = await fetchFeaturedJobs();
-        setFeaturedJobs(featuredJobs);
-      } catch (err) {
-       console.log("Failed to fetch feature jobs:", err);
+        // Fetch career data from combined endpoint
+        const careerDataResponse = await fetch('/api/career-data');
+        const careerData = await careerDataResponse.json();
+
+        if (!mounted) return;
+
+        if (careerDataResponse.ok) {
+          setFeaturedJobs(careerData.featuredJobs || []);
+          setFilterOptions(careerData.filterOptions || {});
+          
+          // Update loading states
+          setIsLoading(prev => ({ ...prev, filters: false }));
+        } else {
+          throw new Error(careerData.error || 'Failed to fetch career data');
+        }
+
+        // Fetch first page of jobs
+        const jobsResponse = await fetchJobs({
+          page: 1,
+          search: "",
+          salary_min: 0,
+          salary_max: 2000,
+        });
+
+        if (!mounted) return;
+
+        setJobs(jobsResponse.data || []);
+        setPaginationMeta(jobsResponse.meta || {
+          current_page: 1,
+          last_page: 1,
+          per_page: 15,
+          total: jobsResponse.data?.length || 0,
+        });
+
+        setIsLoading(prev => ({ ...prev, jobs: false, initial: false }));
+      } catch (err: any) {
+        if (!mounted) return;
+        console.log("Initial data loading error:", err);
+        setError(err.message || "Failed to load initial data");
+        setIsLoading({ initial: false, jobs: false, filters: false });
       }
     };
-    getFeaturedJobs();
-  }, []);
 
-  // Fetch filters
-  useEffect(() => {
-    const fetchFilters = async () => {
-      try {
-        const filters = await fetchJobFilters();
-        setFilterOptions(filters);
-      } catch (err) {
-       console.log("Failed to fetch filters:", err);
-      }
+    loadInitialData();
+
+    return () => {
+      mounted = false;
     };
-    fetchFilters();
-  }, []);
+  }, []); // Empty dependency array - runs once on mount
 
-  // Memoized fetch function
-  const fetchJobsData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  // Optimized fetch function with caching
+  const fetchJobsData = useCallback(async (page: number, filters: any) => {
+    const cacheKey = `jobs_${page}_${JSON.stringify(filters)}`;
+    const cached = sessionStorage.getItem(cacheKey);
+    
+    if (cached && page === currentPage) {
+      const parsed = JSON.parse(cached);
+      if (Date.now() - parsed.timestamp < 30000) { // 30 second cache
+        setJobs(parsed.data);
+        setPaginationMeta(parsed.meta);
+        return;
+      }
+    }
+
+    setIsLoading(prev => ({ ...prev, jobs: true }));
+    
     try {
       const response = await fetchJobs({
-        page: currentPage,
+        page,
         search: searchQuery,
         work_sectors: selectedIndustries,
         contract_types: selectedJobTypes,
@@ -93,20 +108,47 @@ export const useJobSearch = () => {
         salary_min: salaryRange[0],
         salary_max: salaryRange[1],
       });
-      setJobs(response.data);
-      setPaginationMeta(
-        response.meta || {
-          current_page: currentPage,
-          total: response.data.length,
-          per_page: response.meta?.per_page || 15,
-          last_page: Math.ceil(response.data.length / 15),
-        }
-      );
+      
+      setJobs(response.data || []);
+      setPaginationMeta(response.meta || {
+        current_page: page,
+        total: response.data?.length || 0,
+        per_page: 15,
+        last_page: Math.ceil((response.data?.length || 0) / 15),
+      });
+
+      // Cache the response
+      sessionStorage.setItem(cacheKey, JSON.stringify({
+        data: response.data || [],
+        meta: response.meta,
+        timestamp: Date.now()
+      }));
     } catch (err: any) {
       setError(err.message || "Failed to fetch jobs");
     } finally {
-      setIsLoading(false);
+      setIsLoading(prev => ({ ...prev, jobs: false }));
     }
+  }, [searchQuery, selectedIndustries, selectedJobTypes, selectedWorkModes, 
+      selectedExperienceLevels, selectedEducationLevels, selectedCountries, salaryRange]);
+
+  // Debounced jobs fetching with immediate feedback
+  useEffect(() => {
+    if (isLoading.initial) return; // Don't run on initial load
+
+    const timeoutId = setTimeout(() => {
+      fetchJobsData(currentPage, {
+        searchQuery,
+        selectedIndustries,
+        selectedJobTypes,
+        selectedWorkModes,
+        selectedExperienceLevels,
+        selectedEducationLevels,
+        selectedCountries,
+        salaryRange,
+      });
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
   }, [
     currentPage,
     searchQuery,
@@ -117,16 +159,9 @@ export const useJobSearch = () => {
     selectedEducationLevels,
     selectedCountries,
     salaryRange,
+    fetchJobsData,
+    isLoading.initial,
   ]);
-
-  // Main jobs fetching effect
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      fetchJobsData();
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [fetchJobsData]);
 
   // Filter handlers
   const handleIndustryChange = (industryId: number) => {
@@ -201,6 +236,16 @@ export const useJobSearch = () => {
     setSalaryRange([0, 2000]);
     setSearchQuery("");
     setCurrentPage(1);
+    
+    // Clear search-related cache
+    const keysToRemove = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key && key.startsWith('jobs_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => sessionStorage.removeItem(key));
   };
 
   // Clear search only
@@ -212,6 +257,35 @@ export const useJobSearch = () => {
   // Manual search trigger
   const handleSearchClick = () => {
     setCurrentPage(1);
+  };
+
+  // Clear error
+  const clearError = () => {
+    setError(null);
+  };
+
+  // Force refresh jobs
+  const refreshJobs = () => {
+    // Clear cache and refetch
+    const keysToRemove = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key && key.startsWith('jobs_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => sessionStorage.removeItem(key));
+    
+    fetchJobsData(currentPage, {
+      searchQuery,
+      selectedIndustries,
+      selectedJobTypes,
+      selectedWorkModes,
+      selectedExperienceLevels,
+      selectedEducationLevels,
+      selectedCountries,
+      salaryRange,
+    });
   };
 
   return {
@@ -227,7 +301,10 @@ export const useJobSearch = () => {
     selectedCountries,
     salaryRange,
     jobs,
-    isLoading,
+    isLoading: isLoading.initial || isLoading.jobs || isLoading.filters,
+    initialLoading: isLoading.initial,
+    filtersLoading: isLoading.filters,
+    jobsLoading: isLoading.jobs,
     error,
     filterOptions,
     paginationMeta,
@@ -237,7 +314,7 @@ export const useJobSearch = () => {
     setSearchQuery,
     setSalaryRange,
 
-    // Handlers
+    // Filter Handlers
     handleIndustryChange,
     handleJobTypeChange,
     handleWorkModeChange,
@@ -248,5 +325,9 @@ export const useJobSearch = () => {
     handleResetFilters,
     handleClearSearch,
     handleSearchClick,
+    
+    // Utility functions
+    clearError,
+    refreshJobs,
   };
 };
